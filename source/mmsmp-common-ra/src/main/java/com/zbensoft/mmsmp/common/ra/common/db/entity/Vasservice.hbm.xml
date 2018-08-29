@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.aceway.common.db.entity.Vasservice" table="VASSERVICE">
+        <id name="uniqueid" type="java.lang.Integer">
+            <column name="UNIQUEID" />
+            <generator class="hilo" />
+        </id>
+        <property name="vaspid" type="java.lang.String">
+            <column name="VASPID" length="20" />
+        </property>
+        <property name="vasid" type="java.lang.String">
+            <column name="VASID" length="20" />
+        </property>
+        <property name="vassmsid" type="java.lang.String">
+            <column name="VASSMSID" length="20" not-null="true" />
+        </property>
+        <property name="servicecode" type="java.lang.String">
+            <column name="SERVICECODE" length="20" not-null="true" />
+        </property>
+        <property name="servicename" type="java.lang.String">
+            <column name="SERVICENAME" />
+        </property>
+        <property name="servicetype" type="java.lang.String">
+            <column name="SERVICETYPE" length="64" />
+        </property>
+        <property name="feetype" type="java.lang.String">
+            <column name="FEETYPE" length="1" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="STATUS" length="1" />
+        </property>
+        <property name="runstatus" type="java.lang.String">
+            <column name="RUNSTATUS" length="1" not-null="true" />
+        </property>
+        <property name="createdate" type="java.lang.String">
+            <column name="CREATEDATE" length="30" />
+        </property>
+        <property name="updatedate" type="java.lang.String">
+            <column name="UPDATEDATE" length="30" />
+        </property>
+        <property name="servicedesc" type="java.lang.String">
+            <column name="SERVICEDESC" />
+        </property>
+        <property name="orderfee" type="java.lang.Double">
+            <column name="ORDERFEE" precision="53" scale="0" />
+        </property>
+        <property name="ondemandfee" type="java.lang.Double">
+            <column name="ONDEMANDFEE" precision="53" scale="0" />
+        </property>
+        <property name="ondemanddesc" type="java.lang.String">
+            <column name="ONDEMANDDESC" length="100" />
+        </property>
+        <property name="feedesc" type="java.lang.String">
+            <column name="FEEDESC" length="100" />
+        </property>
+        <property name="mtcontentmode" type="java.lang.String">
+            <column name="MTCONTENTMODE" length="1" />
+        </property>
+        <property name="mtmode" type="java.lang.String">
+            <column name="MTMODE" length="1" />
+        </property>
+        <property name="smskey" type="java.lang.String">
+            <column name="SMSKEY" length="20" />
+        </property>
+        <property name="treeid" type="java.lang.String">
+            <column name="TREEID" length="50" />
+        </property>
+        <property name="ordercode" type="java.lang.String">
+            <column name="ORDERCODE" length="10" />
+        </property>
+        <property name="cancelordercode" type="java.lang.String">
+            <column name="CANCELORDERCODE" length="10" />
+        </property>
+        <property name="viewpic" type="java.lang.String">
+            <column name="VIEWPIC" length="50" />
+        </property>
+        <property name="smallpic" type="java.lang.String">
+            <column name="SMALLPIC" length="50" />
+        </property>
+        <property name="defaultflag" type="java.lang.String">
+            <column name="DEFAULTFLAG" length="1" />
+        </property>
+         <property name="featurestrnum" type="java.lang.Integer">
+            <column name="featureStrNum"/>
+         </property>
+        <property name="ondemandcode" type="java.lang.String">
+            <column name="ONDEMANDCODE" length="10" />
+        </property>
+        <property name="featurestrrange" type="java.lang.String">
+            <column name="FEATURESTRRANGE" length="255" />
+        </property>
+        
+        <property name="source" type="java.lang.Integer">
+            <column name="source" />
+        </property>
+        <property name="cpid" type="java.lang.Integer">
+            <column name="cpid" />
+        </property>
+        <property name="producttype" type="java.lang.String">
+            <column name="product_type" />
+        </property>
+        <property name="proorderid" type="java.lang.String">
+            <column name="proorderid" />
+        </property>
+        <property name="bookManName" type="java.lang.String">
+            <column name="bookMan_Name" />
+        </property>
+        <property name="separateScale" type="java.lang.String">
+            <column name="separate_Scale" />
+        </property>
+        <property name="composeTimeInterval" type="java.lang.String">
+            <column name="compose_TimeInterval" />
+        </property>
+        <property name="auditTimeInterval" type="java.lang.String">
+            <column name="audit_TimeInterval" />
+        </property>
+        <property name="proofTimeInterval" type="java.lang.String">
+            <column name="proof_TimeInterval" />
+        </property>
+        <property name="proAuditTimeInterval" type="java.lang.String">
+            <column name="pro_audit_TimeInterval" />
+        </property>
+        <property name="approver" type="java.lang.String">
+            <column name="approver" />
+        </property>
+        <property name="opinion" type="java.lang.String">
+            <column name="opinion" />
+        </property>
+         <property name="productdesc" type="java.lang.String">
+            <column name="productdesc" />
+         </property>
+         <property name="isPackage" type="java.lang.String">
+            <column name="isPackage" />
+        </property>
+         <property name="priority" type="java.lang.Integer">
+            <column name="priority" />
+        </property>
+         <property name="dealStatus" type="java.lang.Integer">
+            <column name="dealStatus" />
+        </property>
+        
+         <set name="products" table="VASSERVICE_RELATION" lazy="false" inverse="false" cascade="none">
+        	<key column="PACKAGE_ID"></key>
+        	<many-to-many class="com.aceway.common.db.entity.Vasservice" column="PRODUCT_ID" />
+        </set>
+        <set name="packages" table="VASSERVICE_RELATION" lazy="false" inverse="true" cascade="none">
+        	<key column="PRODUCT_ID"></key>
+        	<many-to-many class="com.aceway.common.db.entity.Vasservice" column="PACKAGE_ID" />
+        </set>
+    </class>
+</hibernate-mapping>

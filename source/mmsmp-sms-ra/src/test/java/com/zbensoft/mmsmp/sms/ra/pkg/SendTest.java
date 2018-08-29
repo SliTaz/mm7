@@ -57,7 +57,7 @@ public class SendTest {
                 }
             });
 
-            // Start the client.
+            // Start the smsclient.
             ChannelFuture f = b.connect("192.168.1.116", 8801).sync(); // (5)
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();

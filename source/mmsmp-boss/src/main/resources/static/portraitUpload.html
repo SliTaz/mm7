@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title>E-Payment Boss main</title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico"><!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+	
+<link rel="stylesheet" href="lib/cropper-3.0.0-rc.2/dist/cropper.min.css">
+<link rel="stylesheet" href="lib/cropper-3.0.0-rc.2/dist/myCropper.css">
+
+<link rel="stylesheet" href="css/zben.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/cropper-3.0.0-rc.2/dist/cropper.min.js"></script>
+<script src="js/zben.js"></script>
+<script src="js/zben-Cropper.js"></script>
+<script src="js/controller/portraitUpload_controller.js"></script>
+<script src="js/service/portraitUpload_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="mainModule"
+	id="content-wrapper" ng-controller="mainCtrl as ctrl">
+	<div class="wrapper">
+			<!-- 头部和左侧 开始 -->
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+   <!-- 头部和左侧 结束 -->
+		<div class="content-wrapper">
+			<section class="content-header" id="content_section">
+				<h1>Main</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> {{'common.home' | translate }}</a></li>
+					<li class="active">Main</li>
+				</ol>
+			</section>
+			<section class="content">
+				 <!-- 头像上传测试部分 开始 -->
+				<div class="container" id="crop-avatar">
+			
+			    <!-- Current avatar -->
+			    <div class="avatar-view" title="Change the avatar">
+			      <img src="/consumerUser/get/picture/path/userImg1497256424561" alt="Avatar" onerror="this.src='imgs/default.png'">
+			    </div>
+			
+			    <!-- Cropping modal -->
+			    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+			      <div class="modal-dialog modal-lg">
+			        <div class="modal-content">
+			          <form class="avatar-form" enctype="multipart/form-data" method="post">
+			            <div class="modal-header">
+			              <button type="button" class="close" data-dismiss="modal">&times;</button>
+			              <h4 class="modal-title" id="avatar-modal-label">Change Avatar</h4>
+			            </div>
+			            <div class="modal-body">
+			              <div class="avatar-body">
+			
+			                <!-- Upload image and data -->
+			                <div class="avatar-upload">
+			                  <input type="hidden" class="avatar-src" name="avatar_src">
+			                  <input type="hidden" class="avatar-data" name="avatar_data">
+			                  <label for="avatarInput">Local upload</label>
+			                  <input type="file" class="avatar-input" id="avatarInput" name="avatar_file">
+			                </div>
+			
+			                <!-- Crop and preview -->
+			                <div class="row">
+			                  <div class="col-md-9">
+			                    <div class="avatar-wrapper"></div>
+			                  </div>
+			                  <div class="col-md-3">
+			                    <div class="avatar-preview preview-lg"></div>
+			                    <div class="avatar-preview preview-md"></div>
+			                    <div class="avatar-preview preview-sm"></div>
+			                  </div>
+			                </div>
+			
+			                <div class="row avatar-btns">
+			                  <div class="col-md-9">
+			                    <div class="btn-group">
+			                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="-15"><i class="fa fa-fw fa-rotate-left"></i>Rotate Left</button><!-- 逆时针15度 -->
+			                    </div>
+			                    <div class="btn-group">
+			                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="15"><i class="fa fa-fw fa-rotate-right"></i>Rotate Right</button><!-- 顺时针15度 -->
+			                    </div>
+			                  </div>
+			                  <div class="col-md-3">
+			                    <button type="submit" class="btn btn-primary btn-block avatar-save"><i class="fa fa-fw fa-save"></i>Done</button>
+			                  </div>
+			                </div>
+			              </div>
+			            </div>
+			            <!-- <div class="modal-footer">
+			              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			            </div> -->
+			          </form>
+			        </div>
+			      </div>
+			    </div><!-- /.modal -->
+			
+			    <!-- Loading state -->
+			    <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+			  </div>
+			  <!-- 头像上传测试部分 结束-->
+			</section>
+			
+
+			
+			
+			<!-- <section>
+			    <div>
+			        <form ng-submit="ctrl.upload()">
+			            <input type="text" name="aaa" placeholder="商品名称：" ng-model="ctrl.text" />
+			            <div>
+			                采用angular循环的方式，对存入thumb的图片进行展示
+			                    <label>
+			                        <img ng-src="imgs/add_1.png"/>
+			                    </label>
+			                    <span ng-if="item.imgSrc" ng-click="img_del($index)"></span>
+			                这里之所以写个循环，是为了后期万一需要多个‘加号’框
+			                    <label>
+			                         <input type="file" id="one-input" accept="imgs/*" file-model="images" onchange="angular.element(this).scope().img_upload(this.files)"/>
+			                    </label>
+			            </div>
+			            <input type="submit" name="" value="提 交" />
+			        </form>
+			    </div>
+			</section> -->
+
+		</div>
+		<!-- end controller -->
+
+
+
+
+
+	</div>
+</body>
+</html>

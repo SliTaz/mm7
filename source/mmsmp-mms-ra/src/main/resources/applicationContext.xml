@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="GBK" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+           default-lazy-init="true">
+	
+	<!-- 
+		Author:wanghy@aceway.com.cn
+		Description: MmsAgent Component Configure
+	 -->
+	 
+	<bean id="mo_queue" class="java.util.concurrent.LinkedBlockingQueue">
+		<constructor-arg value="10000"/>
+	</bean>
+	<bean id="mt_queue" class="java.util.concurrent.LinkedBlockingQueue">
+		<constructor-arg value="10000"/>
+	</bean>
+	<bean id="hr_queue" class="java.util.concurrent.LinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>
+	
+	<bean id="messageRoutePolocy" class="java.util.concurrent.ConcurrentHashMap">
+		<constructor-arg> 
+			<map>  
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_MMDeliverSPMessage" value-ref="mo_queue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_MMHttpSPMessage" value-ref="mt_queue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_ReportMessage" value-ref="hr_queue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_ReportMessage" value-ref="hr_queue"/>
+    		</map> 
+    	</constructor-arg>  
+	</bean>
+	
+	<bean id="messageRouter" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MessageRouter">
+		<property name="policyMap" ref="messageRoutePolocy"/> 
+	</bean>
+	
+	<bean id="minaClientProxy" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MinaClientProxy">
+		<property name="host" value="10.199.201.71"/>
+		<property name="port" value="8000"/>
+	</bean>
+	
+<bean id="mm7ClientProxy" class="com.zbensoft.mmsmp.mms.ra.mmsagent.Mm7ClientProxy">
+		<property name="messageRouter" ref="messageRouter"/>
+                 
+		<property name="mmsmcUrl" value="http://10.199.84.188:8899/vas"/> 
+                 
+
+                <!--property name="mmsmcUrl" value="http://10.199.201.69:8086/mmsagentmock/mmsc/ReceiveServlet"/-->	
+	</bean>
+	
+	<bean id="messageDispather" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MessageDispather">
+		<property name="minaClientProxy" ref="minaClientProxy"/>
+		<property name="mm7ClientProxy" ref="mm7ClientProxy"/>
+	</bean>
+	
+	<bean id="moQueueListener" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener">
+		<property name="dispather" ref="messageDispather"/>
+		<property name="queue" ref="mo_queue"/>
+		<property name="number" value="3"/>
+	</bean>
+	
+	<bean id="mtQueueListener" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener">
+		<property name="dispather" ref="messageDispather"/>
+		<property name="queue" ref="mt_queue"/>
+		<property name="number" value="10"/>
+	</bean>
+	
+	<bean id="hrQueueListener" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener">
+		<property name="dispather" ref="messageDispather"/>
+		<property name="queue" ref="hr_queue"/>
+		<property name="number" value="2"/>
+	</bean>
+	
+	<bean id="minaServerHandler" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MinaServerHandler">
+		<property name="messageRouter" ref="messageRouter"/> 
+	</bean>
+	
+	<bean id="executorFilter" class="org.apache.mina.filter.executor.ExecutorFilter"/>
+
+	<bean id="minaCodecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter"> 
+        <constructor-arg> 
+            <bean class="org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory" /> 
+        </constructor-arg> 
+    </bean> 
+
+	<bean id="minaChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder"> 
+        <property name="filters"> 
+            <map> 
+                <entry key="codecFilter" value-ref="minaCodecFilter" />
+		<entry key="executor" value-ref="executorFilter" /> 
+            </map> 
+        </property> 
+    </bean> 
+    
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer"> 
+        <property name="customEditors"> 
+            <map> 
+              <entry key="java.net.SocketAddress"> 
+                <bean class="org.apache.mina.integration.beans.InetSocketAddressEditor"/> 
+              </entry> 
+            </map> 
+        </property> 
+    </bean>
+    
+    <bean id="minaSocketAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor"
+        init-method="bind" destroy-method="unbind"> 
+        <property name="defaultLocalAddress" value=":8006" /> 
+        <property name="handler" ref="minaServerHandler" /> 
+        <property name="filterChainBuilder" ref="minaChainBuilder" /> 
+    </bean> 
+    
+	
+</beans>

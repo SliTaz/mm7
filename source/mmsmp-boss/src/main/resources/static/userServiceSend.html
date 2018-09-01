@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title></title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico"><!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="lib/datetimepicker/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="css/zben.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="lib/select2/dist/css/select2.css">
+<link rel="stylesheet" href="lib/web_uploader/webuploader.css">
+<link rel="stylesheet" href="lib/bootstrap-select/bootstrap-select.min.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/jquery/jQuery.resizeEnd.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/web_uploader/webuploader.js"></script>
+<script src="lib/daterangepicker/moment.min.js"></script>
+<script src="lib/select2/dist/js/select2.js"></script>
+<script src="js/zben.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="lib/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="js/controller/userServiceSend_controller_server.js"></script>
+<script src="js/service/userServiceSend_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="userServiceSendModule"
+	id="content-wrapper" ng-controller="ServerSideCtrl as ctrl">
+	<div class="wrapper">
+	
+		<!-- 头部和左侧 开始 -->
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+   <!-- 头部和左侧 结束 -->
+		<div class="content-wrapper">
+			<section class="content-header" id="content_section">
+				<h1 translate="common.userServiceSend"></h1>
+				<ol class="breadcrumb">
+					<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
+					<li class="active" translate="common.userServiceSendM"></li>
+				</ol>
+			</section>
+			<section class="content">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="box box-primary collapsed-box">
+							<form class="form-horizontal" ng-submit="ctrl.reloadData()"
+								name="searchForm">
+								<div class="box-search-info">
+									<div class="box-header with-border">
+										<div class="row">
+											<div class="col-sm-8 pull-left">
+												<button type="button"
+													class="btn btn-primary btn-sm table-tool-left" id="btn-add"
+													data-toggle="modal" data-target="#myModal"
+													ng-click="ctrl.addInit()" translate="common.add"></button>
+											</div>
+											<div class="col-sm-4 pull-right">
+											<button type="button"
+												class="btn btn-info btn-sm table-tool-right"
+												data-widget="collapse" data-toggle="tooltip" id="queryBtn" title="">
+												<i class="fa  fa-angle-double-down" translate="common.expand.query">&nbsp;</i>
+											</button>
+									     	</div>
+										</div>
+									</div>
+								</div>
+					<!-- table start -->
+					<div class="box-body" style="display: none">
+						 <div class="row">
+					        	 <div class="form-group col-sm-6">
+										<label for="isEnable"
+											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.reportTimeStart"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="reportTimeStart" autocomplete="off" name="reportTimeStart"
+												placeholder="{{'userServiceSend.reportTimeStart'   | translate }}" ng-model="ctrl.beanSer.reportTimeStart">
+										</div>
+									</div>
+						      <div class="form-group col-sm-6">
+										<label for="status"
+											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.reportTimeEnd"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="reportTimeEnd" autocomplete="off" name="reportTimeEnd"
+												placeholder="{{'userServiceSend.reportTimeEnd'   | translate }}" ng-model="ctrl.beanSer.reportTimeEnd">
+										</div>
+									</div>
+					        </div>
+						<div class="row">
+							<!-- <div class="form-group col-sm-6">
+									<label for="cpInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="userServiceSend.userServiceSendId"></label>
+									<div class="col-sm-7">
+										<input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.userServiceSendId"
+											placeholder="{{'userServiceSend.userServiceSendId' | translate }}">
+									</div>
+								</div> -->
+								<div class="form-group col-sm-6">
+									<label for="spInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="userRecv.phoneNumber"></label>
+									<div class="col-sm-7">
+		                                <select class="form-control" id="phoneNumber" ng-model="ctrl.beanSer.phoneNumber" style="width:100%">
+											<option value="" translate="common.choose"></option>
+											<option ng-repeat="x in ctrl.userInfoData" value="{{x.phoneNumber}}" ng-bind="x.phoneNumber"></option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group col-sm-6">
+									<label for="cpInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="cpInfo.spInfo"></label>
+									<div class="col-sm-7">
+										<select class="form-control" id="spInfo" ng-model="ctrl.beanSer.spInfoId" style="width:100%">
+											<option value="" translate="common.choose"></option>
+											<option ng-repeat="x in ctrl.spInfoData" value="{{x.spInfoId}}" ng-bind="x.companyName"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label for="spInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="userServiceSend.productInfoId"></label>
+									<div class="col-sm-7">
+		                                 <input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.productInfoId"
+												placeholder="{{'userServiceSend.productInfoId'   | translate }}">
+									</div>
+								</div>
+								<div class="form-group col-sm-6">
+										<label for="isEnable"
+											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.status"></label>
+										<div class="col-sm-7">
+											<select class="form-control" placeholder="{{'userServiceSend.status' | translate }}" 
+													ng-model="ctrl.beanSer.status">
+													     <option value="" translate="common.choose"></option>
+													    <option value="1" translate="userServiceSend.issued"></option>
+													    <option value="2" translate="userServiceSend.successSubmit"></option>
+													    <option value="3" translate="userServiceSend.unknownStatus"></option>
+													    <option value="4" translate="userServiceSend.AuthenticationFailure"></option>
+													    <option value="5" translate="userServiceSend.successRecv"></option>
+													    <option value="6" translate="userServiceSend.successSubmitPay"></option>
+													    <option value="7" translate="userServiceSend.issueException"></option>
+													    <option value="8" translate="userServiceSend.isagQuenu"></option>
+													</select>
+										</div>
+									</div>
+							</div>
+					        <div class="row">
+						      <div class="form-group col-sm-6">
+										<label for="status"
+											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.serviceType"></label>
+										<div class="col-sm-7">
+											<select class="form-control" placeholder="{{'userServiceSend.serviceType' | translate }}" 
+											ng-model="ctrl.beanSer.serviceType">
+											   <option value="" translate="common.choose"></option>
+		                                       <option value="1" translate="userServiceSend.MMS"></option>
+											   <option value="2" translate="userServiceSend.SMS"></option>
+											   <option value="3" translate="userServiceSend.wapPush"></option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group col-sm-6">
+										<label for="status"
+											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.sendServiceType"></label>
+										<div class="col-sm-7">
+											<select class="form-control" placeholder="{{'userServiceSend.sendServiceType' | translate }}" 
+											ng-model="ctrl.beanSer.sendServiceType">
+											   <option value="" translate="common.choose"></option>
+		                                       <option value="0" translate="userServiceSend.onDemand"></option>
+											   <option value="1" translate="userServiceSend.order"></option>
+											   <option value="2" translate="userServiceSend.free"></option>
+											   <option value="3" translate="userServiceSend.bulkHair"></option>
+											   <option value="4" translate="userServiceSend.cancelOrder"></option>
+											</select>
+										</div>
+									</div>
+					        </div>
+								<div class="row">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-block btn-info btn-sm"
+											style="float: right; width: 75px;" id="bth-searchDate" translate="search"></button>
+									</div>
+								</div>
+							</div>
+							<!-- end box-body -->
+								
+							</form>
+						</div>
+
+
+						<!-- table start -->
+						<div class="box box-primary" id="example">
+							<div class="box-body">
+								<table datatable="" id="table_id" dt-options="ctrl.dtOptions"
+									dt-columns="ctrl.dtColumns" dt-instance="ctrl.dtInstance"
+									class="row-border hover">
+								</table>
+							</div>
+							<!-- /.box-body -->
+							<div id="loadDiv"  style="position: absolute;top: 50%; left: 50%;width: 100%; height: 40px;margin-left: -50%;margin-top: -25px;padding-top: 20px;text-align: center;font-size: 1.2em;"translate="common.loading"></div>
+						</div>
+						<!-- table end -->
+					</div>
+				</div>
+			</section>
+
+
+			<!-- 模态框（Modal） -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<form class="form-horizontal" ng-submit="ctrl.submit()"
+					name="addEditForm">
+					<div class="modal-dialog">
+						<div class="modal-content" style="padding: 3px;">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">&times;</button>
+								<h4 class="modal-title" id="myModalLabel"><span ng-bind="ctrl.modelTitle"></span></h4>
+								<!-- 校验start -->
+								<div ng-include="'html/tips.html'"></div>
+								<!-- 校验end -->
+						</div>
+								<div class="box box-primary">
+								<div class="row">
+									<div class="col-xs-12">
+										<section class="content-header" id="content_section"></section>
+										<section class="content">
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="cpInfo.spInfo"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="spInfo2" name="spInfo" ng-model="ctrl.bean.spInfoId" style="width:100%" required>
+															<option value="" translate="common.choose"></option>
+															<option ng-repeat="x in ctrl.spInfoData" value="{{x.spInfoId}}" ng-bind="x.companyName"></option>
+														</select>
+																<div ng-show="addEditForm.spInfo.$error.required" style="color:red" translate="spInfo.spInfoId.required">
+	                                                         </div> 
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.productInfoId"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="productInfoId" id="productInfoId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.productInfoId" 
+															placeholder="{{'userServiceSend.productInfoId'   | translate }}" required>
+																<div ng-show="addEditForm.productInfoId.$error.required" style="color:red" translate="userServiceSend.productInfoId.required">
+	                                                         </div> 
+	                                                          <div ng-show="addEditForm.productInfoId.$error.maxlength" style="color:red" translate="userServiceSend.productInfoId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.productInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userRecv.phoneNumber"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="phoneNumber2" name="phoneNumber2" ng-model="ctrl.bean.phoneNumber" style="width:100%" required>
+															<option value="" translate="common.choose"></option>
+															<option ng-repeat="x in ctrl.userInfoData" value="{{x.phoneNumber}}" ng-bind="x.phoneNumber"></option>
+														</select>
+													<div ng-show="addEditForm.phoneNumber2.$error.required" style="color:red" translate="userRecv.phoneNumber.required">
+	                                                </div> 
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.requestId"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="requestId" id="requestId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.requestId" 
+															placeholder="{{'userServiceSend.requestId'   | translate }}" required>
+																<div ng-show="addEditForm.requestId.$error.required" style="color:red" translate="userServiceSend.requestId.required">
+	                                                         </div> 
+	                                                          <div ng-show="addEditForm.requestId.$error.maxlength" style="color:red" translate="userServiceSend.requestId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.requestId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.chargePhoneNumber"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="chargePhoneNumber" id="chargePhoneNumber" autocomplete="off" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,11}$/"  ng-maxlength="32" ng-model="ctrl.bean.chargePhoneNumber" 
+															placeholder="{{'userServiceSend.chargePhoneNumber'   | translate }}" required>
+																<div ng-show="addEditForm.chargePhoneNumber.$error.required" style="color:red" translate="userServiceSend.chargePhoneNumber.required">
+	                                                         </div> 
+	                                                          <div ng-show="addEditForm.chargePhoneNumber.$error.maxlength" style="color:red" translate="userServiceSend.chargePhoneNumber.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.chargePhoneNumber.$error.pattern" style="color:red" translate="common.chargePhone.error">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.contentInfoId"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="contentInfoId" id="contentInfoId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.contentInfoId" 
+															placeholder="{{'userServiceSend.contentInfoId'   | translate }}" required>
+																<div ng-show="addEditForm.contentInfoId.$error.required" style="color:red" translate="userServiceSend.contentInfoId.required">
+	                                                         </div> 
+	                                                          <div ng-show="addEditForm.contentInfoId.$error.maxlength" style="color:red" translate="userServiceSend.contentInfoId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.contentInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.status"></label>
+													<div class="col-sm-7">
+													<select class="form-control" id="status" name="status" placeholder="{{'userServiceSend.status' | translate }}" 
+													ng-model="ctrl.bean.status" required>
+													    <option value="" translate="common.choose"></option>
+													    <option value="1" translate="userServiceSend.issued"></option>
+													    <option value="2" translate="userServiceSend.successSubmit"></option>
+													    <option value="3" translate="userServiceSend.unknownStatus"></option>
+													    <option value="4" translate="userServiceSend.AuthenticationFailure"></option>
+													    <option value="5" translate="userServiceSend.successRecv"></option>
+													    <option value="6" translate="userServiceSend.successSubmitPay"></option>
+													    <option value="7" translate="userServiceSend.issueException"></option>
+													    <option value="8" translate="userServiceSend.isagQuenu"></option>
+													</select>
+													<div ng-show="addEditForm.status.$error.required" style="color:red" translate="userServiceSend.status.required">
+	                                                 </div> 
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.serviceType"></label>
+													<div class="col-sm-7">
+													<select class="form-control" id="serviceType" name="serviceType" placeholder="{{'userServiceSend.serviceType' | translate }}" 
+													ng-model="ctrl.bean.serviceType" required>
+													    <option value="" translate="common.choose"></option>
+		                                                <option value="1" translate="userServiceSend.MMS"></option>
+													    <option value="2" translate="userServiceSend.SMS"></option>
+													    <option value="3" translate="userServiceSend.wapPush"></option>
+													</select>
+													<div ng-show="addEditForm.serviceType.$error.required" style="color:red" translate="userServiceSend.serviceType.required">
+	                                         	</div> 
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userStartTime"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.reportTime"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="reportTime" autocomplete="off" name="reportTime"
+															placeholder="{{'userServiceSend.reportTime'   | translate }}" ng-model="ctrl.bean.reportTime" date-format required>
+															<div ng-show="addEditForm.reportTime.$error.required" style="color:red" translate="userServiceSend.reportTime.required">
+	                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.sendServiceType"></label>
+													<div class="col-sm-7">
+													<select class="form-control" id="sendServiceType" name="sendServiceType" placeholder="{{'userServiceSend.sendServiceType' | translate }}" 
+													ng-model="ctrl.bean.sendServiceType" required>
+													    <option value="" translate="common.choose"></option>
+		                                                <option value="0" translate="userServiceSend.onDemand"></option>
+													    <option value="1" translate="userServiceSend.order"></option>
+													    <option value="2" translate="userServiceSend.free"></option>
+													    <option value="3" translate="userServiceSend.bulkHair"></option>
+													    <option value="4" translate="userServiceSend.cancelOrder"></option>
+													</select>
+													<div ng-show="addEditForm.sendServiceType.$error.required" style="color:red" translate="userServiceSend.sendServiceType.required">
+	                                         	</div> 
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.sendType"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="sendType" id="sendType" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-model="ctrl.bean.sendType" 
+															placeholder="{{'userServiceSend.sendType'   | translate }}" required>
+																<div ng-show="addEditForm.sendType.$error.required" style="color:red" translate="userServiceSend.sendType.required">
+	                                                         </div> 
+	                                                         <div ng-show="addEditForm.sendType.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.batchId"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="batchId" id="batchId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.batchId" 
+															placeholder="{{'userServiceSend.batchId'   | translate }}" required>
+																<div ng-show="addEditForm.batchId.$error.required" style="color:red" translate="userServiceSend.batchId.required">
+	                                                         </div> 
+	                                                          <div ng-show="addEditForm.batchId.$error.maxlength" style="color:red" translate="userServiceSend.batchId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.batchId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.sendServiceRelId"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="sendServiceRelId" id="sendServiceRelId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.sendServiceRelId" 
+															placeholder="{{'userServiceSend.sendServiceRelId'   | translate }}" required>
+																<div ng-show="addEditForm.sendServiceRelId.$error.required" style="color:red" translate="userServiceSend.sendServiceRelId.required">
+	                                                         </div> 
+	                                                          <div ng-show="addEditForm.sendServiceRelId.$error.maxlength" style="color:red" translate="userServiceSend.sendServiceRelId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.sendServiceRelId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.errorInfo"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="errorInfo" name="errorInfo" 
+															placeholder="{{'userServiceSend.errorInfo' |translate }}" ng-model="ctrl.bean.errorInfo"  ng-maxlength="1000"></textarea>
+	                                                         <div ng-show=" addEditForm.errorInfo.$error.maxlength" style="color:red" translate="userServiceSend.errorInfo.length">
+	                                                          </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.mmsPath"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="mmsPath" name="mmsPath" 
+															placeholder="{{'userServiceSend.mmsPath' |translate }}" ng-model="ctrl.bean.mmsPath"  ng-maxlength="1000"></textarea>
+	                                                         <div ng-show=" addEditForm.mmsPath.$error.maxlength" style="color:red" translate="userServiceSend.mmsPath.length">
+	                                                          </div>
+													</div>
+												</div>
+											</div>
+										</div>
+							</section>
+								</div>
+							</div>
+						</div>
+						<!-- end box box-primary -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" translate="common.cancel"></button>
+							<button type="submit" class="btn btn-primary"ng-disabled="addEditForm.$invalid" translate="common.save"></button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+			</form>
+			<!-- /.modal -->
+			</div>
+		</div>
+
+	</div>
+</body>
+
+</html>

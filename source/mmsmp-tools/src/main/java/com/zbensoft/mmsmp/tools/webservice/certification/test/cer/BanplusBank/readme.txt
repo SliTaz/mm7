@@ -1,0 +1,4 @@
+client name:epayment-webservice-clientkey-BanplusBank
+client password:webserviceBanplusBank
+server name:epayment-webservice-servercert
+server password:webservice1116Zben

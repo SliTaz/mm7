@@ -1,0 +1,2 @@
+server.port=9093 <--> #server.port=9093
+var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://192.168.1.121:8080/api";

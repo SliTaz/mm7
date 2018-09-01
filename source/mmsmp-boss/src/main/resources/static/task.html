@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title>E-Payment Boss Task</title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico"><!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="lib/web_uploader/webuploader.css">
+<link rel="stylesheet" href="css/zben.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="lib/bootstrap-select/bootstrap-select.min.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/jquery/jQuery.resizeEnd.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/daterangepicker/moment.min.js"></script>
+<script src="lib/web_uploader/webuploader.js"></script>
+<script src="js/zben.js"></script>
+<script src="js/controller/task_controller.js"></script>
+<script src="js/service/task_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="taskModule"
+	id="content-wrapper" ng-controller="ClientSideCtrl as ctrl">
+	<div class="wrapper">
+			<!-- 头部和左侧 开始 -->
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+   <!-- 头部和左侧 结束 -->
+
+		<div id="content-wrapper" class="content-wrapper">
+			<section class="content-header" id="content_section">
+			<h1 style="height: 19px" translate="common.Task"></h1>
+					<ol class="breadcrumb">
+						<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
+						<li class="active" translate="common.TaskManage"></li>
+					</ol>
+			</section>
+			<section class="content">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="box box-primary collapsed-box">
+							<form class="form-horizontal" ng-submit="ctrl.reloadData()"
+								name="searchForm">
+								<div class="box-search-info">
+									<div class="box-header with-border">
+										<div class="row">
+											<div class="col-sm-8 pull-left">
+												<button type="button"
+													class="btn btn-primary btn-sm table-tool-left" id="btn-add"
+													data-toggle="modal" data-target="#myModal"
+													ng-click="ctrl.addInit()" translate="common.add"></button>
+											</div>
+										</div>
+									</div>
+								</div>
+						</form>
+					</div>
+
+
+					<!-- table start -->
+					<div class="box box-primary" id="example">
+						<div class="box-body">
+							<table datatable="" id="table_id" dt-options="ctrl.dtOptions"
+								dt-columns="ctrl.dtColumns" dt-instance="ctrl.dtInstance"
+								class="row-border hover">
+									<tfoot>
+										<tr>
+											<th translate="task.jobGroup"></th>
+											<th translate="task.jobName"></th>
+											<th translate="task.cronExpression"></th>
+											<th translate="task.nextFireTime"></th>
+											<th translate="task.finalFireTime"></th>
+											<th translate="task.startTime"></th>
+											<th translate="task.endTime"></th>
+											<th translate="task.previousFireTime"></th>
+											<th translate="task.jobStatus"></th>
+										</tr>
+									</tfoot>
+							</table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- table end -->
+				</div>
+			</div>
+		</section>
+
+
+
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<form class="form-horizontal" ng-submit="ctrl.submit()"
+				name="addEditForm">
+				<div class="modal-dialog">
+					<div class="modal-content" style="padding: 3px;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel" ng-model="ctrl.modelTitle"><span ng-bind="ctrl.modelTitle"></span></h4>
+							<!-- 校验start -->
+								<div ng-include="'html/tips.html'"></div>
+								<!-- 校验end -->
+						</div>
+                	<input type="hidden" ng-model="ctrl.bean.roleId" />
+						<div class="box box-primary">
+							<div class="row">
+								<div class="col-xs-12">
+									<section class="content-header" id="content_section"></section>
+									<section class="content">
+											<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="jobGroup"
+														class="col-sm-3 control-label control-label-zb" translate="task.jobGroup"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="jobGroup" name="jobGroup" style="width:400px" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'task.jobGroup' |translate }}" ng-model="ctrl.bean.jobGroup"  ng-maxlength="100" required ng-disabled="ctrl.disabled">
+															<div ng-show="addEditForm.jobGroup.$error.required" style="color:red" translate="task.jobGroup.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.jobGroup.$error.maxlength" style="color:red" translate="task.jobGroup.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.jobGroup.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="jobName"
+														class="col-sm-3 control-label control-label-zb" translate="task.jobName"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="jobName" name="jobName" style="width:400px" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'task.jobName' |translate }}" ng-model="ctrl.bean.jobName" ng-disabled="ctrl.disabled" ng-maxlength="100" required>
+															<div ng-show="addEditForm.jobName.$error.required" style="color:red" translate="task.jobName.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.jobName.$error.maxlength" style="color:red" translate="task.jobName.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.jobName.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="cronExpression"
+														class="col-sm-3 control-label control-label-zb" translate="task.cronExpression"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="cronExpression" name="cronExpression" style="width:400px"
+															placeholder="{{'task.cronExpression' |translate }}" ng-model="ctrl.bean.cronExpression"  ng-maxlength="128" required>
+															<div ng-show="addEditForm.cronExpression.$error.required" style="color:red" translate="task.cronExpression.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.cronExpression.$error.maxlength" style="color:red" translate="task.cronExpression.length">
+	                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+											<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="jobDescription"
+														class="col-sm-3 control-label control-label-zb" translate="task.jobDescription"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="jobDescription" name="jobDescription" style="width:400px" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'task.jobDescription' |translate }}" ng-model="ctrl.bean.jobDescription"  ng-maxlength="200" ></textarea>
+														<div ng-show=" addEditForm.jobDescription.$error.maxlength" style="color:red" translate="task.jobDescription.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.jobDescription.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+						<!-- end box box-primary -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" translate="common.cancel"></button>
+							<button type="submit" class="btn btn-primary" translate="common.save" ng-disabled="addEditForm.$invalid"> </button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				</form>
+			</div>
+			
+			<!-- /.modal -->
+</div>
+
+	</div>
+</body>
+
+</html>

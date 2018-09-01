@@ -1,0 +1,4 @@
+$('title').text(i18nData["common.title"]); <--> $('title').text(i18nData["common.test"] + i18nData["common.title"]);
+	if(ipAddrStrs[3]=="1"||ipAddrStrs[3]=="2"||ipAddrStrs[3]=="3"||ipAddrStrs[3]=="7"){ <--> 	if(ipAddrStrs[3]=="4"){
+	var apiUrl = "https://localhost:8080"; <--> var apiUrl = "http://localhost:8080";
+	var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://"+window.location.hostname+":8779/api";

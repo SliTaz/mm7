@@ -1,0 +1,2 @@
+    <property name="LOG_PATH" value="d:\\log\\e-payment" /> <-->     <property name="LOG_PATH" value="C:\\Wangchenyang\\log\\" />
+        <property name="LOG_PATH" value="c:\\Wangchenyang\\log\\e-payment" /> <-->     <property name="LOG_PATH" value="C:\\Wangchenyang\\log\\" />

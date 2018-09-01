@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title></title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico">
+<!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="lib/datepicker/datepicker3.css">
+<link rel="stylesheet" href="lib/datetimepicker/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="css/zben.css">
+<link rel="stylesheet" href="lib/select2/dist/css/select2.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/jquery/jQuery.resizeEnd.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/datepicker/bootstrap-datepicker.js"></script>
+<script src="lib/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="lib/daterangepicker/moment.min.js"></script>
+<script src="lib/select2/dist/js/select2.js"></script>
+<script src="js/zben.js"></script>
+<script src="js/controller/userInfo_controller_server.js"></script>
+<script src="js/service/userInfo_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="userInfoModule"
+	id="content-wrapper" ng-controller="ServerSideCtrl as ctrl">
+
+<div class="wrapper">
+
+
+	<!-- 头部和左侧 开始 -->
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+	<div id="content-wrapper" class="content-wrapper">
+		<section class="content-header" id="content_section">
+				<h1 translate="common.userInfo"></h1>
+				<ol class="breadcrumb">
+				<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
+					<li class="active" translate="common.customerM"></li>
+				</ol>
+		</section>
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="box box-primary collapsed-box">
+						<form class="form-horizontal" ng-submit="ctrl.reloadData()"
+							name="searchForm">
+						<div class="box-search-info">
+								<div class="box-header with-border">
+									<div class="row">
+										<div class="col-sm-8 pull-left">
+											<button type="button"
+												class="btn btn-primary btn-sm table-tool-left" id="btn-add"
+												data-toggle="modal" data-target="#myModal"
+												ng-click="ctrl.addInit()" translate="common.add"></button>
+										</div>
+										<div class="col-sm-4 pull-right">
+											<button type="button"
+												class="btn btn-info btn-sm table-tool-right" id="queryBtn"
+												data-widget="collapse" data-toggle="tooltip" title="">
+												<i class="fa  fa-angle-double-down" translate="common.expand.query">&nbsp;</i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- end box-search-info -->
+							<div class="box-body" style="display: none">
+								<div class="row">
+									<div class="form-group col-sm-6">
+										<label for="phoneNumber"
+											class="col-sm-4 control-label control-label-zb" translate="userInfo.phoneNumber"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" ng-model="ctrl.beanSer.phoneNumber"
+												placeholder="{{'userInfo.phoneNumber'   | translate }}">
+										</div>
+									</div>
+									<div class="form-group col-sm-6">
+										<label for="chargePhoneNumber"
+											class="col-sm-4 control-label control-label-zb" translate="userInfo.chargePhoneNumber"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" ng-model="ctrl.beanSer.chargePhoneNumber"
+												placeholder="{{'userInfo.chargePhoneNumber'   | translate }}">
+										</div>
+									</div>
+	
+									</div>
+	
+									<div class="row">
+									<div class="form-group col-sm-6">
+										<label for="terminalType"
+											class="col-sm-4 control-label control-label-zb" translate="userInfo.terminalType"></label>
+										<div class="col-sm-7">
+                                           <select class="form-control"  placeholder="{{'userInfo.terminalType' | translate }}" 
+											ng-model="ctrl.beanSer.terminalType">
+											    <option value="" translate="common.choose"></option>
+                                                <option value="1" translate="common.mmsTerminal"></option>
+											    <option value="2" translate="common.unknownTerminal"></option>
+											    <option value="3" translate="common.nonmmsterminal"></option>
+											</select>
+										</div>
+									</div>
+									
+									<div class="form-group col-sm-6">
+										<label for="status"
+											class="col-sm-4 control-label control-label-zb" translate="app.status"></label>
+										<div class="col-sm-7">
+                                           <select class="form-control"  placeholder="{{'app.status' | translate }}" 
+											ng-model="ctrl.beanSer.status">
+											    <option value="" translate="common.choose"></option>
+                                                <option value="1" translate="common.normals"></option>
+											    <option value="2" translate="common.downtime"></option>
+											    <option value="3" translate="common.arrears"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-block btn-info btn-sm"
+										style="float: right; width: 75px;" id="bth-searchDate" translate="search"></button>
+									</div>
+								</div>
+							</div>
+							<!-- end box-body -->
+
+						</form>
+					</div>
+
+
+					<!-- table start -->
+					<div class="box box-primary" id="example">
+						<div class="box-body">
+							<table datatable="" id="table_id" dt-options="ctrl.dtOptions"
+								dt-columns="ctrl.dtColumns" dt-instance="ctrl.dtInstance"
+								class="row-border hover">
+							</table>
+						</div>
+						<!-- /.box-body -->
+						<div id="loadDiv"  style="position: absolute;top: 50%; left: 50%;width: 100%; height: 40px;margin-left: -50%;
+                            margin-top: -25px;padding-top: 20px;text-align: center;font-size: 1.2em;"translate="common.loading"></div>
+					</div>
+					<!-- table end -->
+				</div>
+			</div>
+		</section>
+
+
+
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<form class="form-horizontal" ng-submit="ctrl.submit()"
+				name="addEditForm">
+				<div class="modal-dialog">
+					<div class="modal-content" style="padding: 3px;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel" ng-model="ctrl.modelTitle"><span ng-bind="ctrl.modelTitle"></span></h4>
+                                <!-- 校验start -->
+								<div ng-include="'html/tips.html'"></div>
+								<!-- 校验end -->
+						</div>
+
+						<div class="box box-primary">
+							<div class="row">
+								<div class="col-xs-12">
+									<section class="content-header" id="content_section"></section>
+									<section class="content">
+										<input type="hidden" ng-model="ctrl.bean.alarmInfoCode" />
+										
+										
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="phoneNumber"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.phoneNumber"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="phoneNumber" name="phoneNumber" ng-pattern="/^\d+$/"
+															placeholder="{{'userInfo.phoneNumber'   | translate }}" ng-model="ctrl.bean.phoneNumber"
+															ng-readonly="ctrl.readonlyID"  ng-maxlength="32" required>
+														 <div ng-show="addEditForm.phoneNumber.$error.required" style="color:red" translate="userInfo.phoneNumber.required">
+                                                         </div>
+														 <div ng-show="addEditForm.phoneNumber.$error.maxlength" style="color:red" translate="userInfo.phoneNumber.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.phoneNumber.$error.pattern" style="color:red" translate="common.digital">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="chargePhoneNumber"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.chargePhoneNumber"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="chargePhoneNumber" name="chargePhoneNumber" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.chargePhoneNumber'   | translate }}" ng-model="ctrl.bean.chargePhoneNumber" ng-maxlength="32" >
+														 <div ng-show="addEditForm.chargePhoneNumber.$error.maxlength" style="color:red" translate="userInfo.chargePhoneNumber.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.chargePhoneNumber.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="terminalType"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.terminalType"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="terminalType" name="terminalType" placeholder="{{'userInfo.terminalType' | translate }}" ng-model="ctrl.bean.terminalType"
+														 ng-options="obj.value as obj.text for obj in ctrl.terminalTypeData">
+													    <option value="" translate="common.choose"></option>
+													    </select>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="province"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.province"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="province" name="province" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.province'   | translate }}" ng-model="ctrl.bean.province" ng-maxlength="32" >
+														 <div ng-show="addEditForm.province.$error.maxlength" style="color:red" translate="userInfo.province.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.province.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="city"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.city"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="city" name="city" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.city'   | translate }}" ng-model="ctrl.bean.city" ng-maxlength="32" >
+														 <div ng-show="addEditForm.city.$error.maxlength" style="color:red" translate="userInfo.city.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.city.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+												<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="status"
+														class="col-sm-4 control-label control-label-zb" translate="alarmInfo.status"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="status" name="status" placeholder="{{'alarmInfo。status' | translate }}" ng-model="ctrl.bean.status"
+														 ng-options="obj.value as obj.text for obj in ctrl.statusData">
+													    <option value="" translate="common.choose"></option>
+													    </select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row" style="display:none;" id="pwd_div">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userPassword"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.userPassword"></label>
+													<div class="col-sm-7">
+													
+													  <div style="width: 200px; position: absolute;">
+														<input type="text"  class="form-control"  id="userPassword"  name="userPassword" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.userPassword' |translate }}" ng-model="ctrl.bean.userPassword" ng-maxlength="6"  required 
+															ng-readonly="ctrl.readonlyID" style="width: 100%;height:30px;"/>
+															</div>
+															 <div style="margin-left: 200px;">
+															<input  class="btn btn-info" type="button" value="{{'common.random' |translate }}" id="pwdBtn" ng-click="ctrl.getPwd();"style="height:30px;"/>
+															 </div> 
+															<div id="password_required_id"  ng-show="addEditForm.userPassword.$error.required" style="color:red" translate="userInfo.userPassword.required">
+	                                                         </div> 
+	                                                         <div id="password_required_id"  ng-show=" addEditForm.userPassword.$error.maxlength" style="color:red" translate="user.password.length">
+	                                                         </div>
+	                                                          <div ng-show="addEditForm.userPassword.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userName"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.userName"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="userName" name="userName" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.userName'   | translate }}" ng-model="ctrl.bean.userName" ng-maxlength="32" required>
+														 <div ng-show="addEditForm.userName.$error.maxlength" style="color:red" translate="userInfo.userName.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.userName.$error.required" style="color:red" translate="userInfo.userName.required">
+									                     </div>
+                                                         <div ng-show="addEditForm.userName.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="nickName"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.nickName"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="nickName" name="nickName" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.nickName'   | translate }}" ng-model="ctrl.bean.nickName" ng-maxlength="32" >
+														 <div ng-show="addEditForm.nickName.$error.maxlength" style="color:red" translate="userInfo.nickName.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.nickName.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userSex"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.userSex"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="userSex" name="userSex" placeholder="{{'userInfo.userSex' | translate }}" ng-model="ctrl.bean.userSex"
+														 ng-options="obj.value as obj.text for obj in ctrl.userSexData">
+													    <option value="" translate="common.choose"></option>
+													    </select>
+									                     </div>
+													</div>
+												</div>
+											</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="birthday"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.birthday"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="birthday" name="birthday" autocomplete="off"
+															placeholder="{{'userInfo.birthday'   | translate }}" ng-model="ctrl.bean.birthday" ng-maxlength="32" >
+														 <div ng-show="addEditForm.birthday.$error.maxlength" style="color:red" translate="userInfo.birthday.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.birthday.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="profession"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.profession"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="profession" name="profession" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.profession'   | translate }}" ng-model="ctrl.bean.profession" ng-maxlength="64" >
+														 <div ng-show="addEditForm.profession.$error.maxlength" style="color:red" translate="userInfo.profession.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.profession.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userEmail"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.userEmail"></label>
+													<div class="col-sm-7">
+														<input type="email" class="form-control" id="userEmail" name="userEmail"
+															placeholder="{{'userInfo.userEmail'   | translate }}" ng-model="ctrl.bean.userEmail" ng-maxlength="32" >
+														 <div ng-show="addEditForm.userEmail.$error.maxlength" style="color:red" translate="userInfo.userEmail.length">
+                                                         </div>
+                                                          <div ng-show=" addEditForm.userEmail.$error.email" style="color:red" translate="common.email.error">
+	                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userAddr"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.userAddr"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="userAddr" name="userAddr" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.userAddr'   | translate }}" ng-model="ctrl.bean.userAddr" ng-maxlength="128" >
+														 <div ng-show="addEditForm.userAddr.$error.maxlength" style="color:red" translate="userInfo.userAddr.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.userAddr.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="hobby"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.hobby"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="hobby" name="hobby" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.hobby'   | translate }}" ng-model="ctrl.bean.hobby" ng-maxlength="64" >
+														 <div ng-show="addEditForm.hobby.$error.maxlength" style="color:red" translate="userInfo.hobby.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.hobby.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="postalCode"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.postalCode"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="postalCode" name="postalCode" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.postalCode'   | translate }}" ng-model="ctrl.bean.postalCode" ng-maxlength="32" >
+														 <div ng-show="addEditForm.postalCode.$error.maxlength" style="color:red" translate="userInfo.postalCode.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.postalCode.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="country"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.country"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="country" name="country" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.country'   | translate }}" ng-model="ctrl.bean.country" ng-maxlength="32" >
+														 <div ng-show="addEditForm.country.$error.maxlength" style="color:red" translate="userInfo.country.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.country.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="nationality"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.nationality"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="nationality" name="nationality" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.nationality'   | translate }}" ng-model="ctrl.bean.nationality" ng-maxlength="32" >
+														 <div ng-show="addEditForm.nationality.$error.maxlength" style="color:red" translate="userInfo.nationality.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.nationality.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="marriage"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.marriage"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="marriage" name="marriage" placeholder="{{'userInfo.marriage' | translate }}" ng-model="ctrl.bean.marriage"
+														 ng-options="obj.value as obj.text for obj in ctrl.marriageData">
+													    <option value="" translate="common.choose"></option>
+													    </select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="certificateType"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.certificateType"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="certificateType" name="certificateType" placeholder="{{'userInfo.certificateType' | translate }}" ng-model="ctrl.bean.certificateType"
+														 ng-options="obj.value as obj.text for obj in ctrl.certificateTypeData">
+													    <option value="" translate="common.choose"></option>
+													    </select>
+													</div>
+												</div>
+											</div>
+										</div>
+											
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="certificateNumber"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.certificateNumber"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="certificateNumber" name="certificateNumber" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.certificateNumber'   | translate }}" ng-model="ctrl.bean.certificateNumber" ng-maxlength="32" >
+														 <div ng-show="addEditForm.certificateNumber.$error.maxlength" style="color:red" translate="userInfo.certificateNumber.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.certificateNumber.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="brand"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.brand"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="brand" name="brand" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'userInfo.brand'   | translate }}" ng-model="ctrl.bean.brand" ng-maxlength="32" >
+														 <div ng-show="addEditForm.brand.$error.maxlength" style="color:red" translate="userInfo.brand.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.brand.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+									</section>
+								</div>
+							</div>
+						</div>
+						<!-- end box box-primary -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" translate="common.cancel"></button>
+							<button type="submit" class="btn btn-primary" ng-disabled="addEditForm.$invalid" translate="common.save"></button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+			</form>
+			<!-- /.modal -->
+		</div>
+
+	</div>
+</div>
+</body>
+
+</html>

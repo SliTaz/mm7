@@ -1,0 +1,5 @@
+    <property name="LOG_PATH" value="d:\\log\\e-payment" /> <-->     <property name="LOG_PATH" value="/zte/local/log/" />
+     <property name="CDR_PATH" value="d:\\log\\e-payment\\cdr" /> <-->      <property name="CDR_PATH" value="/zte/local/cdr/" />
+        <appender-ref ref="STDOUT" /> <-->         <!--<appender-ref ref="STDOUT" />-->
+           <property name="LOG_PATH" value="C:\\Wangchenyang\\log\\" /> <-->     <property name="LOG_PATH" value="/zte/local/log/" />
+                <property name="CDR_PATH" value="c:\\Wangchenyang\\log\\e-payment\\cdr" /> <-->      <property name="CDR_PATH" value="/zte/local/cdr/" />

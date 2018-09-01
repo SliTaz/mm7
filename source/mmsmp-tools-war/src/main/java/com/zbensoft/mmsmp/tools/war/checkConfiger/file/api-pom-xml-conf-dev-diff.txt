@@ -1,0 +1,13 @@
+		<dependency> <--> 		<!--1<dependency>
+		</dependency> <--> 		</dependency>1-->
+		<!--2 <dependency> <--> 		<dependency>
+		</dependency> 2--> <--> 		</dependency>
+		<dependency> <--> 		<!--3<dependency>
+		</dependency> <--> 		</dependency> 3-->
+     <!--<resources> <-->      <resources>
+        </resources>--> <-->         </resources>
+	<packaging>jar</packaging> <--> 	<packaging>war</packaging>
+	    <artifactId>itext</artifactId> <-->     <artifactId>iText</artifactId>
+</dependency> <--> </dependency>       
+    <artifactId>itext-rtf</artifactId> <-->     <artifactId>iText-rtf</artifactId>
+</dependency> <--> </dependency> 

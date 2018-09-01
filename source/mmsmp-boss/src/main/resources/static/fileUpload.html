@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="js/zben.js"></script>
+</head>
+
+<body>
+<span id="message"></span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="format"></span>UTF-8<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="type"></span>txt<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="quantity"></span>1<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="size"></span>(<span id="max"></span>)<label id="file_max_size_id" style="font-weight:400"></label><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="content"></span>useId<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="example"></span>10001<br/>
+
+<br/>
+<input  id="m_delete_id" type="checkbox" name="m_delete_id" value=""/><span id="delete"></span>
+<br/>
+<br/>
+<div id="picker"><span id="selDocument"></span></div>
+<div id="m_warning_div_id"></div>
+</body>
+<script>
+   $("#message").text(i18nData["common.file.message"]);
+   $("#format").text(i18nData["common.file.format"]);
+   $("#type").text(i18nData["common.file.type"]);
+   $("#quantity").text(i18nData["common.file.quantity"]);
+   $("#size").text(i18nData["common.file.size"]);
+   $("#max").text(i18nData["common.file.max"]);
+   $("#content").text(i18nData["common.file.content"]);
+   $("#example").text(i18nData["common.file.example"]);
+   $("#selDocument").text(i18nData["common.selDocument"]);
+   $("#delete").text(i18nData["common.file.delete"]);
+</script>
+</html>

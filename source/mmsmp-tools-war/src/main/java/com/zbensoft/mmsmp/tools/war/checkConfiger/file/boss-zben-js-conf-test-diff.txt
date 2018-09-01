@@ -1,0 +1,15 @@
+var apiUrl = "https://localhost:8080"; <--> var apiUrl = "https://desarrolo.billeteramovil.gob.ve/api";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+$('title').text(i18nData["common.bossTitle"]); <--> $('title').text(i18nData["common.test"] + i18nData["common.bossTitle"]);
+var ipPix=ipAddrStrs[0]+"."+ipAddrStrs[1]+"."+ipAddrStrs[2]+"."; <--> //var ipPix=ipAddrStrs[0]+"."+ipAddrStrs[1]+"."+ipAddrStrs[2]+".";
+	if(ipAddrStrs[3]=="10"||ipAddrStrs[3]=="8"||ipAddrStrs[3]=="9"){ <--> 	if(ipAddrStrs[3]=="4"){
+	         apiUrl = "http://"+ipPix+"7/api"; <--> 		apiUrl = "http://"+address+"/api";
+													window.location = "/"; <--> 													window.location = "./";
+		window.location = "/"; <--> 		window.location = "./";
+		var apiUrl = "http://localhost:8080"; <--> var apiUrl = "https://desarrolo.billeteramovil.gob.ve/api";

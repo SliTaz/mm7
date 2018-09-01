@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title></title>
+<style type="text/css">
+
+</style>
+<script src="js/zben.js"></script>
+</head>
+
+<body>
+	<h4 class="control-sidebar-heading" style="padding:0px;" id="display_panel_names"></h4>
+	<ul class="control-sidebar-menu" id="showDashboard">
+		<li class="NoticeItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-list-ul"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_notice_names"></h4>
+					</div>
+			</a>
+		</li>
+		<li class="AlarmItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-volume-up"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_alarm_name"></h4>
+					</div>
+			</a>
+		</li>
+		<li class="CalendarItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-calendar"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_calendar_name"></h4>
+					</div>
+			</a>
+		</li>
+		<li class="MainFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_mainface_name"></h4>
+					</div>
+			</a>
+		</li>
+		<li class="BankFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_bankface_name"></h4>
+					</div>
+			</a>
+		</li>
+			<li class="RealTimeFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_realTimeFace_name"></h4>
+					</div>
+			</a>
+		</li>
+		
+		<li class="KpiFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_kpiFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		<li class="BuyerFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_buyerFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		
+		<li class="SellerFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_sellerFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		
+			<li class="OtherSellerTotalFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_otherSellerTotalFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		
+			<li class="EPSTPSFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_EPSTPSFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		<li class="ClapStoreTotalFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_clapStoreTotalFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		
+		<li class="BuyerTotalFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_buyerTotalFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		
+		<li class="BuyerIncrementalFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_buyerIncrementalFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		
+		<li class="SellerIncrementalFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_sellerIncrementalFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+		
+		<li class="TransactionFaceItem" style="display: none">
+			<a href="javascript:void(0)" style="padding:0px 15px;">
+					<i class="menu-icon fa fa-line-chart"></i>
+					<div class="menu-info" style="margin-top:10px;">
+						<h4 class="control-sidebar-subheading" id="display_transactionFaceItem_name"></h4>
+					</div>
+			</a>
+		</li>
+	</ul>
+</body>
+
+</html>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://unibusiness.sjb.vas.aceway.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://unibusiness.sjb.vas.aceway.com" xmlns:intf="http://unibusiness.sjb.vas.aceway.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://unibusiness.sjb.vas.aceway.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <complexType name="CommonRequest">
+    <sequence>
+     <element name="channel" nillable="true" type="xsd:string"/>
+     <element name="operator" nillable="true" type="xsd:string"/>
+     <element name="streamingNum" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ServiceCapabilityManageRequest">
+    <complexContent>
+     <extension base="impl:CommonRequest">
+      <sequence>
+       <element name="operate" type="xsd:int"/>
+       <element name="serviceCapabilityID" nillable="true" type="xsd:string"/>
+       <element name="spID" nillable="true" type="xsd:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="request" type="impl:ServiceCapabilityManageRequest"/>
+   <complexType name="Response">
+    <sequence>
+     <element name="desc" nillable="true" type="xsd:string"/>
+     <element name="returnCode" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="serviceCapabilityManageReturn" type="impl:Response"/>
+   <complexType name="ServiceManageRequest">
+    <complexContent>
+     <extension base="impl:CommonRequest">
+      <sequence>
+       <element name="operate" type="xsd:int"/>
+       <element name="serviceID" nillable="true" type="xsd:string"/>
+       <element name="spID" nillable="true" type="xsd:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="request1" type="impl:ServiceManageRequest"/>
+   <element name="serviceManageReturn" type="impl:Response"/>
+   <complexType name="ProductManageRequest">
+    <complexContent>
+     <extension base="impl:CommonRequest">
+      <sequence>
+       <element name="operate" type="xsd:int"/>
+       <element name="productID" nillable="true" type="xsd:string"/>
+       <element name="productType" nillable="true" type="xsd:string"/>
+       <element name="spID" nillable="true" type="xsd:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="request2" type="impl:ProductManageRequest"/>
+   <element name="produceManageReturn" type="impl:Response"/>
+   <complexType name="OrderRelationRequest">
+    <complexContent>
+     <extension base="impl:CommonRequest">
+      <sequence>
+       <element name="oldProduceID" nillable="true" type="xsd:string"/>
+       <element name="orderType" type="xsd:int"/>
+       <element name="productID" nillable="true" type="xsd:string"/>
+       <element name="spCode" nillable="true" type="xsd:string"/>
+       <element name="status" type="xsd:int"/>
+       <element name="userPhone" nillable="true" type="xsd:string"/>
+       <element name="userType" type="xsd:int"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="request3" type="impl:OrderRelationRequest"/>
+   <element name="orderRelationManageReturn" type="impl:Response"/>
+   
+   <complexType name="ReverseUnsubscribeManageRequest">
+    <complexContent>
+     <extension base="impl:CommonRequest">
+      <sequence>
+       <element name="phone" nillable="true" type="xsd:string"/>
+       <element name="userType" nillable="true" type="xsd:int"/>
+       <element name="productType" nillable="true" type="xsd:int"/>
+       <element name="productID" nillable="true" type="xsd:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="request4" type="impl:ReverseUnsubscribeManageRequest"/>
+   <element name="reverseUnsubscribeManageReturn" type="impl:Response"/>
+  </schema>
+ </wsdl:types>
+ 
+ <wsdl:message name="reverseUnsubscribeManageResponse">
+
+      <wsdl:part element="impl:reverseUnsubscribeManageReturn" name="reverseUnsubscribeManageReturn"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="reverseUnsubscribeManageRequest">
+
+      <wsdl:part element="impl:request4" name="request"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="serviceCapabilityManageResponse">
+
+      <wsdl:part element="impl:serviceCapabilityManageReturn" name="serviceCapabilityManageReturn"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="orderRelationManageResponse">
+
+      <wsdl:part element="impl:orderRelationManageReturn" name="orderRelationManageReturn"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="orderRelationManageRequest">
+
+      <wsdl:part element="impl:request3" name="request"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="produceManageResponse">
+
+      <wsdl:part element="impl:produceManageReturn" name="produceManageReturn"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="serviceManageResponse">
+
+      <wsdl:part element="impl:serviceManageReturn" name="serviceManageReturn"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="serviceManageRequest">
+
+      <wsdl:part element="impl:request1" name="request"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="serviceCapabilityManageRequest">
+
+      <wsdl:part element="impl:request" name="request"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="produceManageRequest">
+
+      <wsdl:part element="impl:request2" name="request"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="UniBusiness">
+   
+    <wsdl:operation name="reverseUnsubscribeManage" parameterOrder="request">
+
+         <wsdl:input message="impl:reverseUnsubscribeManageRequest" name="reverseUnsubscribeManageRequest"/>
+
+         <wsdl:output message="impl:reverseUnsubscribeManageResponse" name="reverseUnsubscribeManageResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="serviceCapabilityManage" parameterOrder="request">
+
+         <wsdl:input message="impl:serviceCapabilityManageRequest" name="serviceCapabilityManageRequest"/>
+
+         <wsdl:output message="impl:serviceCapabilityManageResponse" name="serviceCapabilityManageResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="serviceManage" parameterOrder="request">
+
+         <wsdl:input message="impl:serviceManageRequest" name="serviceManageRequest"/>
+
+         <wsdl:output message="impl:serviceManageResponse" name="serviceManageResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="produceManage" parameterOrder="request">
+
+         <wsdl:input message="impl:produceManageRequest" name="produceManageRequest"/>
+
+         <wsdl:output message="impl:produceManageResponse" name="produceManageResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="orderRelationManage" parameterOrder="request">
+
+         <wsdl:input message="impl:orderRelationManageRequest" name="orderRelationManageRequest"/>
+
+         <wsdl:output message="impl:orderRelationManageResponse" name="orderRelationManageResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="UniBusinessServiceSoapBinding" type="impl:UniBusiness">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+	  <wsdl:operation name="reverseUnsubscribeManage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="reverseUnsubscribeManageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="reverseUnsubscribeManageResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="serviceCapabilityManage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="serviceCapabilityManageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="serviceCapabilityManageResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="serviceManage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="serviceManageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="serviceManageResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="produceManage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="produceManageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="produceManageResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="orderRelationManage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="orderRelationManageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="orderRelationManageResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="UniBusinessService">
+
+      <wsdl:port binding="impl:UniBusinessServiceSoapBinding" name="UniBusinessService">
+
+         <wsdlsoap:address location="http://localhost:8080/axis/services/UniBusinessService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title></title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico">
+<link rel="icon" type="image/x-icon" href="imgs/title.ico"><!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="css/zben.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/shCircleLoader/jquery.shCircleLoader.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="js/zben.js"></script>
+<script src="js/controller/login_controller.js"></script>
+<script src="js/service/login_service.js"></script>
+</head>
+
+<body class="hold-transition login-page" ng-app="loginModule" style="background: #000000  url(imgs/loginBackgroud.png) no-repeat 0 0 fixed;background-position:center center;background-repeat:no-repeat;background-size:cover;">
+	<div class="login-box" ng-controller="loginCtrl as ctrl" style="margin:15% auto;margin-left:60%;">
+		<div class="login-box-body" style="padding:40px;background:rgba(255,255,255,.7)">
+			<div class="login-logo">
+				<b style="color:#c90000;">MMSMP&nbsp;Boss</b>
+			</div>
+			
+			<!-- 登录code校验start -->
+			<div ng-if="ctrl.statusCode=='UNKNOWN'">  
+                  <p style="color:red;" translate="common.unknown" id="statusTips"></p>
+            </div>
+            
+            <div ng-if="ctrl.statusCode=='LOGIN_USER_NAME_NOTEMPTY'">  
+                  <p style="color:red;" translate="common.userNameNotempty" id="statusTips"></p>
+            </div>
+            
+            <div ng-if="ctrl.statusCode=='LOGIN_PASSWORD_NOTEMPTY'">  
+                  <p style="color:red;" translate="common.passwordNotempty" id="statusTips"></p>
+            </div>
+            
+			<div ng-if="ctrl.statusCode=='LOGIN_TYPE_NOTEMPTY'">  
+                  <p style="color:red;" translate="common.loginTypeNotempty" id="statusTips"></p>
+            </div>
+            
+            <div ng-if="ctrl.statusCode=='LOGIN_TYPE_ERROR'">  
+                  <p style="color:red;" translate="common.loginTypeError" id="statusTips"></p>
+            </div>
+            
+            <div ng-if="ctrl.statusCode=='LOGIN_USER_PASSWORD_ERROR_COUNT'">  
+                  <p style="color:red;" translate="common.overPwdRrrorCount" id="statusTips"></p>
+            </div>
+            
+             <div ng-if="ctrl.statusCode=='LOGIN_USER_NOTFUND'">  
+                  <p style="color:red;" translate="common.loginUserNotfund" id="statusTips"></p>
+            </div>
+            
+            <div ng-if="ctrl.statusCode=='LOGIN_USER_DISABLE'">  
+                  <p style="color:red;" translate="common.loginUserDisable" id="statusTips"></p>
+            </div>
+            
+			<div ng-if="ctrl.statusCode=='LOGIN_USER_LOCKED'">  
+                  <p style="color:red;" translate="common.loginUserLocked" id="statusTips"></p>
+            </div>
+            
+            <div ng-if="ctrl.statusCode=='LOGIN_USER_NAME_PASSWORD_ERROR'" >  
+                   <p style="color:red;" id="statusTips"> 
+                  <span translate="common.lockedOne"></span> &nbsp;<span ng-bind="ctrl.bean.remainingTimes"></span>&nbsp; <span translate="common.lockedTwo"></span></p>
+            </div>
+            
+            <div ng-if="ctrl.statusCode=='LOGIN_UNKONW_ERROR'">  
+                  <p style="color:red;" translate="common.loginUnkonwError" id="statusTips"></p>
+            </div>          
+            
+			<!-- 登录code校验end -->
+			
+			<form ng-submit="ctrl.login()" autocomplete="off">
+		      <div class="form-group has-feedback">
+		        <input type="text" class="form-control" placeholder="" ng-model="ctrl.bean.userName" id="login_name" autocomplete="off">
+		        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+		      </div>
+		      <div class="form-group has-feedback">
+		        <input type="password" class="form-control" placeholder="" ng-model="ctrl.bean.password" id="login_password" autocomplete="off">
+		        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+		      </div>
+		      <div class="row">
+		        <div class="col-xs-8">
+		        </div>
+		        <div class="col-xs-4">
+		          <button type="submit" class="btn btn-primary btn-block btn-flat" style="width:85px;margin-left:-10px" translate="common.login" id="loginBth"></button>
+		        </div>
+		      </div>
+		      <div  id="shclDefault" style="display: none;width:40px; height:40px; margin:5px auto;"></div>
+	      	</form>
+		</div><!-- end login-box-body -->
+	</div><!-- end controller -->
+</body>
+
+</html>

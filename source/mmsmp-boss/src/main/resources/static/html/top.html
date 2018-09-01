@@ -1,0 +1,74 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script src="js/app.js"></script>
+</head>
+<!-- Logo -->
+<a href="main.html" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
+	
+	<img src="imgs/logo.png" style="vertical-align:top;margin-left:-40px;"/>
+</a>
+
+<!-- Header Navbar: style can be found in header.less -->
+<nav class="navbar navbar-static-top">
+	<!-- Sidebar toggle button-->
+	<a href="#" class="sidebar-toggle" data-toggle="offcanvas"
+		role="button"> <span class="sr-only"></span>
+	</a>
+	<div class="navbar-custom-menu">
+		<ul class="nav navbar-nav">
+		
+			<!-- alarm start -->
+			<li class="dropdown notifications-menu">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="height:50px;"> 
+					<i class="fa fa-bell-o"></i> <span class="label label-warning" ng-bind="ctrl.topAlarmWarningSize"></span>
+				</a>
+				<ul class="dropdown-menu" style="width: 340px;">
+					<li class="header"translate="common.alarmInfo"></li>
+						<li>
+							<ul class="menu">
+							<li ng-repeat="alarm in ctrl.ZBalarmRecords">
+								<a href="#"> <i class="fa fa-volume-up text-aqua"></i><span title="{{alarm.content}}" ng-click="ctrl.alarmInfoOnes(alarm.alarmInfoCode)">[<span ng-bind="alarm.alarmTime"></span>][<span ng-bind="alarm.alarmLevelName"></span>]
+								<span ng-bind="alarm.alarmOriginName"></span></span></a>
+							</li>
+							</ul>
+						</li>
+					<li class="footer"><a href="alarmInfo.html" translate="common.viewAll"></a></li>
+				</ul>
+			</li>
+			<!-- alarm end -->
+			
+			<!-- start user -->
+			<li class="dropdown notifications-menu"><a href="#"
+				class="dropdown-toggle" data-toggle="dropdown" > <!-- <img
+				src="dist/img/user2-160x160.jpg" class="user-image"
+				alt="User Image"> -->	<span translate="common.welcome"></span> <span class="hidden-xs" ng-bind="ctrl.ltuserName"></span>
+			</a>
+				<ul class="dropdown-menu">
+					<li class="header" ><span translate="common.welcome"></span> <span class="hidden-xs" ng-bind="ctrl.ltuserName"></span></li>
+					<li>
+						<ul class="menu">
+							<li>
+								<a href="javascript:void(0)" ng-click="ctrl.topModifyPassword()"><i class="fa fa-key text-aqua" translate="common.modifyPwd"></i></a>
+							</li>
+							<li><a href="javascript:void(0)" ng-click="ctrl.exit();" ><i class="fa fa-sign-out text-aqua" translate="common.logout"></i>
+									 </a></li>
+							<!-- end task item -->
+						</ul>
+					</li>
+				</ul></li>
+			<!-- end user -->
+		</ul>
+
+
+	</div>
+	
+	<script>
+	   function exit()
+	   {
+		   window.location="login.html"
+	   }
+	</script>
+</nav>

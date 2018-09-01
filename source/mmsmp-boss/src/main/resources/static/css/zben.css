@@ -1,0 +1,111 @@
+.dataTables_wrapper .dataTables_length {
+	padding-left: 10px;
+	padding-top: 5px;
+}
+
+.modal-content {
+	border-radius: 6px;
+}
+
+/*
+.skin-blue .sidebar a {
+	color: #ffffff;
+}
+.skin-blue .wrapper, .skin-blue .main-sidebar, .skin-blue .left-side {
+	background-color: #202020;
+}
+
+.skin-blue .sidebar-menu>li>.treeview-menu {
+	background: #202020;
+}
+
+.skin-blue .treeview-menu>li>a {
+	color: #ffffff;
+}
+
+.skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a
+	{
+	background: #0a0a0a;
+	border-left-color: #0a0a0a;
+}
+*/
+
+.skin-blue .treeview-menu>li>a {
+	color: #ffffff;
+}
+.skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a
+	{
+	border-left-color: #1e282c;
+}
+.skin-blue .treeview-menu>li.active>a, .skin-blue .treeview-menu>li>a:hover
+	{
+	background: #c90000;
+}
+
+
+
+
+.skin-blue .main-header .logo{
+	
+	background-color: #c90000;
+}
+.skin-blue .main-header .logo:hover {
+  background-color: #c90000;
+}
+.skin-blue .main-header .navbar{
+  background-color: #c90000;
+}
+.main-header .sidebar-toggle:hover{
+  background-color: #c90000;
+}
+
+.ng-cloak
+{
+	display: none;
+}
+
+
+.string 
+{ 
+	color: green;
+}
+.number 
+{ 
+	color: darkorange;
+}
+.boolean
+{
+	color: blue; 
+}
+.null
+{
+	color: magenta; 
+}
+.key
+{
+	color: red; 
+}
+
+.dataTables_scrollBody table tbody td{
+  white-space: nowrap;
+}
+.dataTables_scrollBody table tbody tr td{
+  white-space: nowrap;
+}
+
+
+/* 
+缩小页面，标题与"主页>..."文字不在一行了.
+*/
+.content-header>.breadcrumb {
+    float: right;
+    background: transparent;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    padding: 7px 5px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    border-radius: 2px;
+}

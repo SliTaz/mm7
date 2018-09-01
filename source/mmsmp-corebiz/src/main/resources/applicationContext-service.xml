@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="GBK" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+           default-lazy-init="true">
+	
+	<!--Port Assignment
+		
+		corebiz	 server   8000  公共消息mina服务端口
+		corebiz  server   8001  vacAgent专用mina服务端口
+		corebiz  server   8002  xfire webservices端口
+		corebiz  server	  8003  http server端口
+		corebiz  server	  8004  备用端口
+		
+		smsAgent client	  8005  
+	    mmsAgent client   8006
+	    spAgent  client   8007
+	    vacAgent client   8008
+	    woAgent  client   8009
+	    ownbiz	 client   8010
+	    mmsaget	client 8011 
+	-->
+	
+	<!-- common message mina server -->
+    <bean id="commonMinaServer" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind"> 
+        
+        <property name="defaultLocalAddress" value=":19011" /> 
+        <property name="handler" ref="receiveMessageMinaHandler" /> 
+        <property name="filterChainBuilder" ref="minaChainBuilder" /> 
+    </bean> 
+    
+    <!-- vac message mina server -->
+    <bean id="vacMinaServer" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind"> 
+        <property name="defaultLocalAddress" value=":19012" /> 
+        <property name="handler" ref="receiveMessageMinaHandler" /> 
+        <property name="filterChainBuilder" ref="minaChainBuilder" /> 
+    </bean>
+
+    <!-- mmsagent message mina server -->
+    <bean id="mmsagentMinaServer" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind"> 
+        <property name="defaultLocalAddress" value=":19013" /> 
+        <property name="handler" ref="receiveMessageMinaHandler" /> 
+        <property name="filterChainBuilder" ref="minaChainBuilder" /> 
+    </bean>
+    
+
+    <!-- xfire webservice  -->
+    <!-- <bean id="XfireServerListener" class="com.zbensoft.mmsmp.corebiz.service.xfire.XFireServiceListener">
+    	<property name="port" value="8002"/>
+    	<property name="uniBusinessServiceImpl">
+			<bean class="com.zbensoft.mmsmp.corebiz.service.xfire.UniBusinessServiceImpl">
+			   <property name="receiveRouter" ref="receiveMessageRouter" />
+			</bean>
+		</property>
+    </bean> -->
+   
+    
+     
+    <!-- <bean id="tomcatListenter" class="com.zbensoft.mmsmp.corebiz.tomcat.TomcatServerListener">
+    	<property name="tomcat">
+    		<bean class="com.zbensoft.mmsmp.corebiz.tomcat.EmbeddedTomcat" destroy-method="shutdown">
+    			<property name="CATALINA_HOME" value="/home/mmsmp/corebiz/tomcat"/>
+    			<property name="WEBAPP_PATH" value="/home/mmsmp/corebiz/web"/>
+    			<property name="CONTEXT_PATH" value="/"/>
+    			<property name="ENCODING" value="UTF-8"/>
+    			<property name="PORT" value="8003"/>
+    	</bean>
+    	</property>
+    </bean>
+     -->
+	<!-- smsAgent message mina client -->
+    <bean id="smsAgentClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+		<property name="host" value="10.199.201.70"/>
+		<property name="port" value="8005"/>
+		<property name="info" value="corebiz-> smsagent"/>
+	</bean>
+	
+	<!-- mmsAgent message mina client -->
+	<bean id="mmsAgentClient0" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+		<property name="host" value="10.199.201.71"/>
+		<property name="port" value="8006"/>
+		<property name="info" value="corebiz--> mmsagent[133-0-8006]"/>
+	</bean>
+	
+	<bean id="mmsAgentClient1" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+		<property name="host" value="10.199.201.71"/>
+		<property name="port" value="8106"/>
+		<property name="info" value="corebiz--> mmsagent[133-1-8106]"/>
+	</bean>
+	<!--
+        <bean id="mmsAgentClient2" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+                    <property name="host" value="172.16.2.90"/>
+                    <property name="port" value="8107"/>
+                    <property name="info" value="corebiz - mmsagent[133-1-8107]"/> 
+        </bean> --> 
+       <!--
+        <bean id="mmsAgentClient3" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+                    <property name="host" value="172.16.2.90"/>
+                    <property name="port" value="8108"/>
+                    <property name="info" value="corebiz- mmsagent[133-1-8108]"/>
+        </bean>
+	-->
+	<!-- spAgent message mina client -->
+	<bean id="spAgentClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+		<property name="host" value="10.199.201.71"/>
+		<property name="port" value="8007"/>
+		<property name="info" value="corebiz-> spagent"/>
+	</bean>
+	
+	<!-- vacAgent message mina client -->
+	<bean id="vacAgentClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+		<property name="host" value="192.168.1.220"/>
+		<property name="port" value="8008"/>
+		<property name="info" value="corebiz-> vacagent"/>
+	</bean>
+	
+	<!-- woAgent message mina client -->
+	<bean id="woAgentClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+		<property name="host" value="10.199.201.70"/>
+		<property name="port" value="8009"/>
+		<property name="info" value="corebiz-> woagent"/>
+	</bean>
+	
+	<!-- ownbiz message mina client -->
+	<bean id="ownbizClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
+		<property name="host" value="10.199.201.69"/>
+		<property name="port" value="8012"/>
+		<property name="info" value="corebiz-> ownbiz"/>
+	</bean>
+	
+	<bean id="minaCodecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter"> 
+        <constructor-arg> 
+            <bean class="org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory" /> 
+        </constructor-arg> 
+    </bean> 
+
+	<bean id="minaChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder"> 
+        <property name="filters"> 
+            <map><entry key="codecFilter" value-ref="minaCodecFilter" /></map> 
+        </property> 
+    </bean> 
+    
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer"> 
+        <property name="customEditors"> 
+            <map> 
+             <entry key="java.net.SocketAddress"
+					value="org.apache.mina.integration.beans.InetSocketAddressEditor">
+				</entry>
+            </map> 
+        </property>
+    </bean>
+        
+    <bean id="commonMinaServerListener" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaServerListener">
+    	<property name="nioSocketAcceptors">
+		<map>  
+        	 <entry key="common" value-ref="commonMinaServer"/>
+    		</map> 
+	</property>
+    </bean>
+    
+    <bean id="vacMinaServerListener" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaServerListener">
+    	<property name="nioSocketAcceptors">
+		<map>  
+        	 <entry key="vac" value-ref="vacMinaServer"/>
+    		</map> 
+	</property>
+    </bean>
+    
+    <bean id="mmsagentMinaServerListener" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaServerListener">
+    	<property name="nioSocketAcceptors">
+		<map>  
+        	 <entry key="mmsagent" value-ref="mmsagentMinaServer"/>
+    		</map> 
+	</property>
+    </bean>
+    
+    
+
+ </beans>

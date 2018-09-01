@@ -305,8 +305,8 @@
 		<smsQuenceSize>10000</smsQuenceSize>
 		<smsServerIP>127.0.0.1</smsServerIP>
 		<smsServerPort>8005</smsServerPort>
-		<smsClientIP>10.199.201.71</smsClientIP>
-		<smsClientPort>8000</smsClientPort>
+		<smsClientIP>192.168.1.15</smsClientIP>
+		<smsClientPort>19011</smsClientPort>
 		
 		<!-- vac agent-->
 		<vacRequestThreadNum>5</vacRequestThreadNum>
@@ -340,9 +340,9 @@
 	
 	<SGIPConnect>
 		<!-- SMG主机地址  10.199.70.151 -->
-		<host>10.199.70.151</host>
+		<host>127.0.0.1</host>
 		<!-- SMG主机端口号 -->
-		<port>8881</port>
+		<port>8801</port>
 		<!-- 操作超时时间(单位：秒) -->
 		<transaction_timeout>10</transaction_timeout>
 		<!-- 物理连接读操作超时时间(单位：秒) -->
@@ -352,9 +352,9 @@
 		<!--双方协商的版本号(大于0，小于256)-->
 		<version>1</version>
 		<!-- 服务端地址 -->
-		<localHost>10.199.201.70</localHost>
+		<localHost>127.0.0.1</localHost>
 		<!-- 服务端端口 -->
-		<localPort>8025</localPort>
+		<localPort>8801</localPort>
 		<!--登陆用户名(最大为六位字符)-->
 		<login_name>10655565</login_name>
 		<!--登陆密码-->

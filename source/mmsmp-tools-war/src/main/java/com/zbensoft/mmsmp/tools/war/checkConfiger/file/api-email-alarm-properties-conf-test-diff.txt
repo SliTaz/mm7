@@ -1,0 +1,16 @@
+mail.password=2ruKutrA=7Ew1 <--> mail.password=2ruKutrA=7Ew
+mail.smtp.host=smtp.mailgun.org <--> mail.smtp.host=smtp.dch.cantv.com.ve
+mail.smtp.port=25 <--> mail.smtp.port=2525
+mail.username=chenyangw@sandboxa437eef8354145fab550e90dcc9c1027.mailgun.org <--> mail.username=alarmas@billeteramovil.gob.ve
+mail.username.rename=chenyangw@sandboxa437eef8354145fab550e90dcc9c1027.mailgun.org <--> mail.username.rename=Alarm-cantv-epay
+mail.password=jony12345 <--> mail.password=2ruKutrA=7Ew
+mail.smtp.host=smtp.dch.cantv.com.ve1 <--> mail.smtp.host=smtp.dch.cantv.com.ve
+mail.smtp.port=25251 <--> mail.smtp.port=2525
+mail.username=alarmas@billeteramovil.gob.ve1 <--> mail.username=alarmas@billeteramovil.gob.ve
+mail.username=chenyangw@sandboxa437eef8354145fab550e90dcc9c1027.mailgun.org <--> mail.username=recuperaciondeclave#mail.var.mailindex#@billeteramovil.gob.ve
+#mail.var.mailindex=100 <--> mail.var.mailindex=100
+mail.password=jony12345 <--> mail.password=B$mov1L2017
+mail.smtp.host=smtp.qq.com <--> mail.smtp.host=correo.billeteramovil.gob.ve
+#mail.smtp.port=25 <--> mail.smtp.port=25
+mail.username=61557865@qq.com <--> mail.username=alarmas@billeteramovil.gob.ve
+mail.password=xxx <--> mail.password=2ruKutrA=7Ew

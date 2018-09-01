@@ -1,0 +1,5 @@
+server.port=9095 <--> #server.port=9095
+httpClient.bankTran.rechargeApi=http://localhost:8080/webservice/bankTran/recharge <--> httpClient.bankTran.rechargeApi=http://10.11.2.7/api/webservice/bankTran/recharge
+httpClient.bankTran.reverseApi=http://localhost:8080/webservice/bankTran/reverse <--> httpClient.bankTran.reverseApi=http://10.11.2.7/api/webservice/bankTran/reverse
+cxf.bankTran.endpointUrl=/webservice/bankTran <--> cxf.bankTran.endpointUrl=/bankTran
+cxf.bankTran.endpointUrl.V2=/webservice/v2/bankTran <--> cxf.bankTran.endpointUrl.V2=/v2/bankTran

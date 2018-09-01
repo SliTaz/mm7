@@ -1,0 +1,3 @@
+    <property name="LOG_PATH" value="d:\\log\\e-payment" /> <-->    <property name="LOG_PATH" value="C:\\Wangchenyang\\log\\" />
+     <property name="CDR_PATH" value="d:\\log\\e-payment\\cdr" /> <-->      <property name="CDR_PATH" value="C:\\Wangchenyang\\log\\cdr" />
+          <property name="CDR_PATH" value="c:\\Wangchenyang\\log\\e-payment\\cdr" /> <-->      <property name="CDR_PATH" value="C:\\Wangchenyang\\log\\cdr" />

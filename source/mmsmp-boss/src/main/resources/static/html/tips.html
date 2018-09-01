@@ -1,0 +1,52 @@
+	 <!-- 新增成功 -->
+	 <div ng-if="ctrl.statusCode=='CREATED'">  
+	 <label class="center-block" style="text-align:center;color:green;font-weight:400" translate="common.created.success"></label>
+	 </div>
+	
+	<!-- 修改成功 -->
+	<div ng-if="ctrl.statusCode=='OK'">  
+		<label class="center-block" style="text-align:center;color:green;font-weight:400" translate="common.edit.success"></label>
+	 </div>
+	 
+	<!-- 记录已存在 -->
+	<div ng-if="ctrl.statusCode=='CONFLICT'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="common.conflict.success"></label>
+	</div>
+	<div ng-if="ctrl.statusCode=='PARENTPROVINCECITYNAME_NOT_EXIST'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="mmsmp.parentProvinceCity.Id.NotExisted"></label>
+	</div>
+	<div ng-if="ctrl.statusCode=='PROVINCECITYNAME_IS_EXIST'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="mmsmp.ProvinceCity.Name.NotExisted"></label>
+	</div>
+	<div ng-if="ctrl.statusCode=='PROVINCECITYNAME_SAME_PARENT'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="mmsmp.ProvinceCity.Parent.Name.Same"></label>
+	</div>
+	<div ng-if="ctrl.statusCode=='SEGEMENT_IS_EXIST'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="mmsmp.Segment.Existed"></label>
+	</div>
+	
+	<div ng-if="ctrl.statusCode=='NOT_FOUND'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="common.notFound.success"></label>
+	</div>
+	
+	<div ng-if="ctrl.statusCode=='PASSWORD_ERROR'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="redis.password"></label>
+	</div>
+	
+	<div ng-if="ctrl.statusCode=='CUSTOMER_NUMBER_ERROR'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="customer.number.error"></label>
+	</div>
+	
+	<div ng-if="ctrl.statusCode=='MERCHANT_NUMBER_ERROR'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="merchant.number.error"></label>
+	</div>
+	
+	 <div ng-if="ctrl.statusCode=='UNKNOWN'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="common.unknown"></label>
+	</div>
+	<div ng-if="ctrl.statusCode=='REQUESTTOPKPI_NUMBER_ERROR'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="requestTopKpi.number.error"></label>
+	</div>
+	<div ng-if="ctrl.statusCode=='PROVINCECITYNAME_ILLEGA_EXIST'">  
+	 	<label class="center-block" style="text-align:center;color:red;font-weight:400" translate="mmsmp.ProvinceCity.ID。Illega"></label>
+	</div>

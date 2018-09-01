@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+	<!-- Bootstrap 3.3.6 -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="js/zben.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<style>
+.errContent {
+	margin-top: 100px;
+}
+
+.btIndex {
+	margin-top: 20px;
+}
+
+.errC {
+	margin-top: 20px;
+}
+
+.center {
+	width: auto;
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+}
+</style>
+
+</head>
+<body>
+	<div class="container">
+		<div class="center errContent">
+			<img src="imgs/404.png" alt="" />
+
+		</div>
+		<div class="center errC">
+			<span id="errcomment"></span>
+		</div>
+		<button type="button" class="btn btn-info center btIndex" onClick="javascript:window.location = './home.html';"><span id="returnindex"></span></button>
+	</div>
+</body>
+
+<script>
+   $("#errcomment").text(i18nData["server.err.comment"]);
+   $("#returnindex").text(i18nData["recharge.result.returnindex"]);
+</script>
+</html>

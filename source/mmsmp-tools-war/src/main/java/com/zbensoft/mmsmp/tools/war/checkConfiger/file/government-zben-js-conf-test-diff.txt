@@ -1,0 +1,13 @@
+var apiUrl = "https://localhost:8080"; <--> var apiUrl = "https://"+window.location.hostname+"/api";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+$('title').text(i18nData["common.govTitle"]); <--> $('title').text(i18nData["common.test"] + i18nData["common.govTitle"]);
+	if(ipAddrStrs[3]=="1"||ipAddrStrs[3]=="2"||ipAddrStrs[3]=="3"||ipAddrStrs[3]=="7"){ <--> 	if(ipAddrStrs[3]=="4"){
+													window.location = "/"; <--> 													window.location = "./";
+		window.location = "/"; <--> 		window.location = "./";
+var apiUrl = "http://localhost:8080"; <--> var apiUrl = "https://"+window.location.hostname+"/api";

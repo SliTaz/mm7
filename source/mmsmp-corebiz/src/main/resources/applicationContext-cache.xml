@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="GBK" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+           default-lazy-init="true">
+	
+	
+	<!-- Cache Manager Center -->
+	<bean id="cacheCenter" class="com.zbensoft.mmsmp.corebiz.cache.CacheCenter">		
+		<property name="dataCache" ref="dataCache"/>
+		<property name="dataMemory" ref="dataMemory"/>
+	</bean>
+	
+	<!-- DataBase Cache -->
+	<bean id="dataCache" class="com.zbensoft.mmsmp.corebiz.cache.DataCache">		
+		<!-- <property name="daoUtil" ref="daoUtil"/> -->
+	</bean>
+	
+	<!-- Memony Cache -->
+	<bean id="dataMemory" class="com.zbensoft.mmsmp.corebiz.cache.DataMemory">		
+		<property name="smsDataMap" ref="smsDataMemory"/>
+		<property name="mmsDataMap" ref="mmsDataMemory"/>
+		<property name="uniDataMap" ref="uniDataMemory"/>
+		<property name="commonDataMap" ref="commonDataMemory"/>
+		<property name="mmsRportDataMap" ref="mmsReportDataMemory"/>
+	</bean>
+	<bean id="smsDataMemory" class="java.util.concurrent.ConcurrentHashMap"/>
+	<bean id="mmsDataMemory" class="java.util.concurrent.ConcurrentHashMap"/>
+	<bean id="uniDataMemory" class="java.util.concurrent.ConcurrentHashMap"/>
+	<bean id="commonDataMemory" class="java.util.concurrent.ConcurrentHashMap"/>
+	<bean id="mmsReportDataMemory" class="java.util.concurrent.ConcurrentHashMap"/>
+
+</beans>

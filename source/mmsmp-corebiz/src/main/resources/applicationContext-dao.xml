@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="GBK" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+           default-lazy-init="true">
+	
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>com.ibm.db2.jcc.DB2Driver</value>
+		</property>
+		<property name="url">
+	 		<value>jdbc:db2://10.199.201.72:50000/ucmms</value> 
+	 		<!--<value>jdbc:db2://202.106.63.135:50000/ucmms</value> -->
+	 		
+		</property>
+		<property name="username">
+			<value>ucmms</value>
+		</property>
+		<property name="password">
+			<value>ACEway1UN</value>
+		</property>
+		<property name="initialSize">
+			<value>20</value>
+		</property>
+		<property name="maxActive">
+			<value>300</value>
+		</property>
+		<property name="maxIdle">
+			<value>10</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxWait">
+			<value>10000</value>
+		</property>
+		<property name="removeAbandoned">
+			<value>false</value>
+		</property>
+		<property name="logAbandoned">
+			<value>true</value>
+		</property>
+		<property name="removeAbandonedTimeout">
+			<value>60</value>
+		</property>
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>900000</value>
+		</property>
+		<property name="minEvictableIdleTimeMillis">
+			<value>1800000</value>
+		</property>
+		<property name="numTestsPerEvictionRun">
+			<value>200</value>
+		</property>
+		<property name="testOnBorrow">
+			<value>true</value>
+		</property>
+		<property name="testOnReturn">
+			<value>false</value>
+		</property>
+		<property name="testWhileIdle">
+			<value>true</value>
+		</property>
+	</bean>
+	
+	<bean id="logDao" class="com.aceway.vas.sjb.data.LogDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="demandDao" class="com.aceway.vas.sjb.data.DemandDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="businessManageDAO" class="com.aceway.vas.sjb.data.BusinessManageDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="loadUserOrderDao" class="com.aceway.vas.sjb.data.LoadUserOrderDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="orderRelationDAO" class="com.aceway.vas.sjb.data.OrderRelationDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="contentInfoDAO" class="com.aceway.vas.sjb.data.ContentInfoDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="userServiceHisDao" class="com.aceway.vas.sjb.data.UserServiceHisDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="smsSenderDao" class="com.aceway.send.sgipsms.SmsSenderDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="mm7dao" class="com.aceway.utils.MM7DAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="userMTQuotaDao" class="com.aceway.send.MM7.UserMTQuotaDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="userBlackWhiteListDao" class="com.aceway.send.MM7.UserBlackWhiteListDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+
+	<bean id="syncNotifySPDao" class="com.ckp.server.SyncNotifySPDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="userRelationDAO" class="com.aceway.orderRelationsFtp.UserRelationDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="productInfoDAO" class="com.aceway.productInfoFtp.ProductInfoDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="serviceInfoDAO" class="com.aceway.serviceInfoFtp.ServiceInfoDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="serviceCapacityDAO" class="com.aceway.serviceCapacityFtp.ServiceCapacityDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="spInfoDAO" class="com.aceway.spFtp.SpInfoDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="smsDAO" class="com.aceway.corebiz.dao.SmsDAO">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>	
+	
+	<bean id="daoUtil" class="com.aceway.corebiz.dao.DaoUtil">
+	    <property name="logDao" ref="logDao"/>
+		<property name="demandDao" ref="demandDao"/>
+		<property name="businessManageDAO" ref="businessManageDAO"/>
+		<property name="loadUserOrderDao" ref="loadUserOrderDao"/>
+		<property name="orderRelationDAO" ref="orderRelationDAO"/>
+		<property name="contentInfoDAO" ref="contentInfoDAO"/>
+		<property name="userServiceHisDao" ref="userServiceHisDao"/>
+		<property name="smsSenderDao" ref="smsSenderDao"/>
+		<property name="mm7dao" ref="mm7dao"/>
+		<property name="userMTQuotaDao" ref="userMTQuotaDao"/>
+		<property name="userBlackWhiteListDao" ref="userBlackWhiteListDao"/>
+		<property name="syncNotifySPDao" ref="syncNotifySPDao"/>
+		<property name="userRelationDAO" ref="userRelationDAO"/>
+		<property name="productInfoDAO" ref="productInfoDAO"/>
+		<property name="serviceInfoDAO" ref="serviceInfoDAO"/>
+		<property name="serviceCapacityDAO" ref="serviceCapacityDAO"/>
+		<property name="spInfoDAO" ref="spInfoDAO"/>
+		
+		<!-- added by liss -->
+		<property name="smsDAO" ref="smsDAO"/>
+	</bean>
+	
+</beans>

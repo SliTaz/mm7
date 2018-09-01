@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title></title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico">
+<!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="lib/datepicker/datepicker3.css">
+<link rel="stylesheet" href="lib/datetimepicker/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="css/zben.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/jquery/jQuery.resizeEnd.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/daterangepicker/moment.min.js"></script>
+<script src="lib/datepicker/bootstrap-datepicker.js"></script>
+<script src="lib/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="js/zben.js"></script>
+<script src="lib/layer/layer.js"></script>
+<script src="js/controller/sysLog_controller_server.js"></script>
+<script src="js/service/sysLog_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="sysLogModule"
+	id="content-wrapper" ng-controller="ServerSideCtrl as ctrl">
+	<div class="wrapper">
+		<!-- 头部和左侧 开始 -->
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+   <!-- 头部和左侧 结束 -->
+		<div class="content-wrapper">
+			<section class="content-header" id="content_section">
+				<h1 translate="common.sysLog"></h1>
+				<ol class="breadcrumb">
+				<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
+					<li class="active" translate="common.sysLogM"></li>
+				</ol>
+			</section>
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="box box-primary collapsed-box">
+						<form class="form-horizontal" ng-submit="ctrl.reloadData()"
+							name="searchForm">
+							<div class="box-search-info">
+								<div class="box-header with-border">
+									<div class="row">
+										<div class="col-sm-8 pull-left">
+											<!-- <button type="button"
+												class="btn btn-primary btn-sm table-tool-left" id="btn-add"
+												data-toggle="modal" data-target="#myModal"
+												ng-click="ctrl.addInit()" translate="common.add"></button> -->
+											<button type="button"
+												class="btn btn-primary btn-sm table-tool-left" id="btn_import"
+												ng-click="ctrl.test()" translate="common.delete" ></button>
+										</div>
+										<div class="col-sm-4 pull-right">
+											<button type="button"
+												class="btn btn-info btn-sm table-tool-right"
+												data-widget="collapse" data-toggle="tooltip" title="">
+												<i class="fa  fa-angle-double-down" translate="common.expand.query">&nbsp;</i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+					<!-- table start -->
+					<div class="box-body" style="display: none">
+						        <div class="form-group col-sm-6">
+									<label for="sysLogId"
+										class="col-sm-4 control-label control-label-zb" translate="sysLog.sysLogId"></label>
+									<div class="col-sm-7">
+										<input type="text" class="form-control" ng-model="ctrl.beanSer.sysLogId"
+											placeholder="{{'sysLog.sysLogId' | translate }}">
+									</div>
+								</div>
+								
+								<div class="form-group col-sm-6">
+									<label for="operUser"
+										class="col-sm-4 control-label control-label-zb" translate="sysLog.operUser"></label>
+									<div class="col-sm-7">
+										<input type="text" class="form-control" ng-model="ctrl.beanSer.operUser"
+											placeholder="{{'sysLog.operUser' | translate }}">
+									</div>
+								</div>
+								
+								<div class="form-group col-sm-6">
+									<label for="operModel"
+										class="col-sm-4 control-label control-label-zb" translate="sysLog.operModel"></label>
+									<div class="col-sm-7">
+										   <select class="form-control" id="operModel" name="operModel" placeholder="{{'sysLog.operType' | translate }}" 
+											ng-model="ctrl.beanSer.operModel">
+											    <option value="" translate="common.choose"></option>
+											    <option value="1" translate="common.consumer"></option>
+											    <option value="2" translate="common.merchant"></option>
+											    <option value="3" translate="common.finance"></option>
+											    <option value="4" translate="common.accounting"></option>
+											    <option value="5" translate="common.payments"></option>
+											    <option value="6" translate="common.reconciliation"></option>
+											    <option value="7" translate="common.govUser"></option>
+											    <option value="8" translate="common.couponManage"></option>
+											    <option value="10" translate="common.fraultManagement"></option>
+											    <option value="11" translate="common.task"></option>
+											    <option value="12" translate="common.biReport"></option>
+											    <option value="13" translate="common.alarm"></option>
+											    <option value="14" translate="common.appUpdate"></option>
+											    <option value="15" translate="common.notice"></option>
+											    <option value="16" translate="common.systemManage"></option>
+											</select>
+									</div>
+								</div>
+								
+								<div class="form-group col-sm-6">
+									<label for="operType"
+										class="col-sm-4 control-label control-label-zb"  translate="sysLog.operType"></label>
+									<div class="col-sm-7">
+										   <select class="form-control" id="operType" name="operType" placeholder="{{'sysLog.operType' | translate }}" 
+											ng-model="ctrl.beanSer.operType">
+											    <option value=""    translate="common.choose"></option>
+											    <option value="1"   translate="common.add"></option>
+											    <option value="2"   translate="common.edit"></option>
+											    <option value="3"   translate="common.delete"></option>
+												<option value="4"   translate="common.activate"></option>
+											    <option value="5"   translate="common.inactivate"></option>
+											    <option value="6"   translate="common.islocked"></option>
+											    <option value="7"   translate="common.unlocked"></option>
+											    <option value="8"   translate="common.resetPwd"></option>
+											    <option value="9"   translate="common.resetPayPwd"></option>
+											    <option value="10"  translate="common.import"></option>
+											    <option value="11"  translate="common.publish"></option>
+											    <option value="12"  translate="common.revoked"></option>
+											    <option value="13"  translate="common.executed"></option>
+											    <option value="14"  translate="common.unexecuted"></option>
+											    <option value="15"  translate="common.success"></option>
+											    <option value="16"  translate="common.failure"></option>
+											    <option value="17"  translate="common.paused"></option>
+											    <option value="18"  translate="common.normal"></option>
+											</select>
+									</div>
+								</div>
+								
+								
+								<div class="form-group col-sm-6">
+										<label for="operateTimeStart"
+											class="col-sm-4 control-label control-label-zb"  translate="common.operateTimeStart"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="operateTimeStart"
+												ng-model="ctrl.beanSer.operateTimeStart" placeholder="{{'common.operateTimeStart' | translate }}">
+										</div>
+								</div>
+									
+								<div class="form-group col-sm-6">
+										<label for="operateTimeEnd"
+											class="col-sm-4 control-label control-label-zb"  translate="common.operateTimeEnd"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="operateTimeEnd"
+												ng-model="ctrl.beanSer.operateTimeEnd" placeholder="{{'common.operateTimeEnd' | translate }}">
+										</div>
+									</div>	
+
+									
+					
+							 
+		                        
+							
+
+								<div class="row">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-block btn-info btn-sm"
+											style="float: right; width: 75px;" id="bth-searchDate" translate="search"></button>
+									</div>
+								</div>
+							</div>
+							<!-- end box-body -->
+
+						</form>
+					</div>
+
+
+					<!-- table start -->
+					<div class="box box-primary" id="example">
+						<div class="box-body">
+							<table datatable="" id="table_id" dt-options="ctrl.dtOptions"
+								dt-columns="ctrl.dtColumns" dt-instance="ctrl.dtInstance"
+								class="row-border hover">
+							</table>
+						</div>
+						<!-- /.box-body -->
+						<div id="loadDiv"  style="position: absolute;top: 50%; left: 50%;width: 100%; height: 40px;margin-left: -50%;
+margin-top: -25px;padding-top: 20px;text-align: center;font-size: 1.2em;"translate="common.loading"></div>
+					</div>
+					<!-- table end -->
+				</div>
+			</div>
+		</section>
+
+
+
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<form class="form-horizontal" ng-submit="ctrl.submit()"
+				name="addEditForm">
+				<div class="modal-dialog">
+					<div class="modal-content" style="padding: 3px;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel" ><span ng-bind="ctrl.modelTitle"></span></h4>
+							<!-- 后台校验 -->
+							<div ng-if="ctrl.statusCode=='CREATED'">  
+                            	<label class="center-block" style="text-align:center;color:green;font-weight:400"  translate="common.created.success"></label>
+                            </div>
+                            
+                            <div ng-if="ctrl.statusCode=='OK'">  
+                            	<label class="center-block" style="text-align:center;color:green;font-weight:400"  translate="common.edit.success"></label>
+                            </div>
+                            
+                           <div ng-if="ctrl.statusCode=='CONFLICT'">  
+                            	<label class="center-block" style="text-align:center;color:red;font-weight:400"  translate="common.conflict.success"></label>
+                           </div>
+						</div>
+
+						<div class="box box-primary">
+							<div class="row">
+								<div class="col-xs-12">
+									<section class="content-header" id="content_section"></section>
+									<section class="content">
+										<input type="hidden" ng-model="ctrl.bean.sysLogId" />
+
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="operTime"
+														class="col-sm-4 control-label control-label-zb"  translate="sysLog.operTime"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="operTime"
+															placeholder="{{'sysLog.operTime' | translate }}" ng-model="ctrl.bean.operTime"
+															name="operTime">
+													</div>
+												</div>
+											</div>
+										</div>
+
+										
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="operUser"
+														class="col-sm-4 control-label control-label-zb"  translate="sysLog.operUser"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="operUser"
+															placeholder="{{'sysLog.operUser' | translate }}" ng-model="ctrl.bean.operUser"
+															name="operUser">
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="operModel"
+														class="col-sm-4 control-label control-label-zb"  translate="sysLog.operModel"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="operModel"
+															placeholder="{{'sysLog.operModel' | translate }}" ng-model="ctrl.bean.operModel"
+															name="operModel">
+													</div>
+												</div>
+											</div>
+										</div>	
+										
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="operType"
+														class="col-sm-4 control-label control-label-zb"  translate="sysLog.operType"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="operType"
+															placeholder="{{'sysLog.operType' | translate }}" ng-model="ctrl.bean.operType"
+															name="operType">
+													</div>
+												</div>
+											</div>
+										</div>	
+										
+																				
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="operContent"
+														class="col-sm-4 control-label control-label-zb"  translate="sysLog.operContent"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="operContent"
+															placeholder="{{'sysLog.operContent' | translate }}" ng-model="ctrl.bean.operContent"
+															name="operContent"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>																				
+										
+										
+									</section>
+								</div>
+							</div>
+						</div>
+						<!-- end box box-primary -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal"  translate="common.cancel"></button>
+							<button type="submit" class="btn btn-primary"  translate="common.save"></button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+			</form>
+			<!-- /.modal -->
+			</div>
+		</div>
+
+	</div><!-- end controller -->
+</body>
+
+</html>

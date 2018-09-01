@@ -1,0 +1,11 @@
+var apiUrl = "https://localhost:8080"; <--> var apiUrl = "http://192.168.1.121:8080/api";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+													window.location = "/"; <--> 													window.location = "./";
+		window.location = "/"; <--> 		window.location = "./";
+var apiUrl = "http://localhost:8080"; <--> var apiUrl = "https://localhost:8080";

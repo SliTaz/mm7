@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.log4j.Logger;
 
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
-import com.zbensoft.mmsmp.common.ra.common.mina.TcpClient;
+import com.zbensoft.mmsmp.common.ra.vas.commons.tcp.TcpClient;
 import com.zbensoft.mmsmp.common.ra.vas.commons.tcp.impl.TcpClientImpl;
 
 public class MessageQueueClientTcpImpl implements MessageQueueClientInf {

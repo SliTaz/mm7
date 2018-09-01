@@ -1,7 +1,7 @@
 package com.zbensoft.mmsmp.sms.ra.mine;
 
 import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
-import com.zbensoft.mmsmp.sms.ra.mina.utils.SmsMessageQuene;
+import com.zbensoft.mmsmp.sms.ra.utils.SmsMessageQuene;
 import org.apache.log4j.Logger;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;

@@ -1,0 +1,21 @@
+var apiUrl = "https://localhost:8080"; <--> var apiUrl = "https://desarrollo.billeteramovil.gob.ve/api";
+var monitorLogInfoUrl ="http://www.baidu.com/"; <--> var monitorLogInfoUrl ="http://10.11.2.4:15672/";
+var monitorMessageQueueUrl ="http://mail.163.com/"; <--> var monitorMessageQueueUrl ="http://10.11.2.4:15672/";
+var monitorSystenInfoUrl ="http://www.sogou.com/"; <--> var monitorSystenInfoUrl ="http://10.11.2.4:15672/";
+var monitorProxyStatusUrl ="http://www.sogou.com/"; <--> var monitorProxyStatusUrl ="http://10.11.2.4:15672/";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+$('title').text(i18nData["common.bossTitle"]); <--> $('title').text(i18nData["common.test"] + i18nData["common.bossTitle"]);
+var ipPix=ipAddrStrs[0]+"."+ipAddrStrs[1]+"."+ipAddrStrs[2]+"."; <--> //var ipPix=ipAddrStrs[0]+"."+ipAddrStrs[1]+"."+ipAddrStrs[2]+".";
+	if(ipAddrStrs[3]=="10"||ipAddrStrs[3]=="8"||ipAddrStrs[3]=="9"){ <--> 	if(ipAddrStrs[3]=="4"){
+	         apiUrl = "http://"+ipPix+"7/api"; <--> 		apiUrl = "http://"+address+"/api";
+													window.location = "/"; <--> 													window.location = "./";
+		window.location = "/"; <--> 		window.location = "./";
+		var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://192.168.1.87/api";
+		var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://192.168.1.87:8779/api";
+		var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://www.zbensoft.com:8779/api";

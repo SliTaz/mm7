@@ -3,9 +3,9 @@ import com.zbensoft.mmsmp.common.ra.common.config.util.ConfigUtil;
 import com.zbensoft.mmsmp.common.ra.common.message.MT_SMMessage;
 import com.zbensoft.mmsmp.common.ra.common.queue.MessageQueueClientTcpImpl;
 import com.zbensoft.mmsmp.common.ra.vas.commons.tcp.impl.TcpServerImpl;
-import com.zbensoft.mmsmp.sms.ra.mina.thread.ReceiveMessageThread;
-import com.zbensoft.mmsmp.sms.ra.mina.utils.ReceiveMTSmsHandler;
-import com.zbensoft.mmsmp.sms.ra.mina.utils.SmsMessageQuene;
+import com.zbensoft.mmsmp.sms.ra.thread.ReceiveMessageThread;
+import com.zbensoft.mmsmp.sms.ra.utils.ReceiveMTSmsHandler;
+import com.zbensoft.mmsmp.sms.ra.utils.SmsMessageQuene;
 import org.apache.log4j.Logger;
 
 public class TestReceiveMessageThread {

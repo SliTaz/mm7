@@ -1,5 +1,12 @@
 package com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.smsagent.sgip;
 
+import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.cmppapi.CMPP_ActiveTest;
+import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.sgipapi.SGIP_Bind;
+import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.sgipapi.SGIP_BindResp;
+import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.sgipapi.SGIP_Command;
+import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.sgipapi.SGIP_Submit;
+import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.socket.ClientSocket;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -33,10 +40,10 @@ public class SmsSPClientSocket extends ClientSocket {
         (new Thread(new Runnable() {
             public void run() {
                 while(true) {
-                    if (!SmsSPClientSocket.this.readResp(SmsSPClientSocket.access$1(SmsSPClientSocket.this))) {
+                    if (!SmsSPClientSocket.this.readResp(SmsSPClientSocket.this.sc)) {
                         try {
                             Thread.sleep(1000L);
-                            SmsSPClientSocket.access$4(SmsSPClientSocket.this, SmsSPClientSocket.this.refreshSocket(SmsSPClientSocket.access$1(SmsSPClientSocket.this)));
+                            SmsSPClientSocket.this.refreshSocket(SmsSPClientSocket.this.sc);
                         } catch (Exception var2) {
                             ;
                         }
@@ -114,7 +121,6 @@ public class SmsSPClientSocket extends ClientSocket {
         try {
             InputStream reader = sc.getInputStream();
             byte[] buffer = new byte[464];
-            int len = true;
             int len = reader.read(buffer);
             if (len == -1) {
                 this.rmvUnresp();

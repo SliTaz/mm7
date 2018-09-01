@@ -300,7 +300,7 @@ public class Smil {
 		smil.setLayout(new Layout(rootLayout, image, text));
 		List metas = new ArrayList();
 
-		metas.add(new Meta("title", "锟斤拷锟斤拷"));
+		metas.add(new Meta("title", "test"));
 		metas.add(new Meta("author", "tongsj"));
 
 		smil.setMetas(metas);

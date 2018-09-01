@@ -1,0 +1,1 @@
+HsmLogPath 	= /data/master/zben/log/01/Hsm <--> HsmLogPath 	= /zte/local/log/Hsm

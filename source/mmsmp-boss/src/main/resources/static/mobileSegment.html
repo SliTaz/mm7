@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title>mmsmp</title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico"><!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet" href="lib/select2/dist/css/select2.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="lib/zTreeStyle/metro.css"/>
+<link rel="stylesheet" href="css/zben.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/jquery/jQuery.resizeEnd.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/ztree/jquery.ztree.all-3.5.min.js"></script>
+<script src="lib/select2/dist/js/select2.js"></script>
+<script src="js/zben.js"></script>
+<script src="js/controller/mobileSegement_controller.js"></script>
+<script src="js/service/mobileSegment_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="mobileSegementModule"
+	id="content-wrapper" ng-controller="ServerSideCtrl as ctrl">
+	<div class="wrapper">
+	
+			<!-- 头部和左侧 开始 -->
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+	<div id="content-wrapper" class="content-wrapper">
+			<section class="content-header" id="content_section">
+			<h1 style="height: 19px" translate="common.MobileSegment"></h1>
+					<ol class="breadcrumb">
+						<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
+						<li class="active" translate="common.MobileSegment"></li>
+					</ol>
+			</section>
+			<section class="content">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="box box-primary collapsed-box">
+							<form class="form-horizontal" ng-submit="ctrl.reloadData()"
+								name="searchForm">
+								<div class="box-search-info">
+									<div class="box-header with-border">
+										<div class="row">
+											<div class="col-sm-8 pull-left">
+												<button type="button"
+													class="btn btn-primary btn-sm table-tool-left" id="btn-add"
+													data-toggle="modal" data-target="#myModal"
+													ng-click="ctrl.addInit()" translate="common.add"></button>
+											</div>
+											<div class="col-sm-4 pull-right">
+                                     <button type="button"	class="btn btn-info btn-sm table-tool-right"
+                                     data-widget="collapse" data-toggle="tooltip" id="queryBtn" title="">
+	                                         <i class="fa  fa-angle-double-down" translate="common.expand.query">&nbsp;</i>
+                                      </button>
+										</div>
+										</div>
+									</div>
+								</div>
+								<!-- table start -->
+					           <div class="box-body" style="display: none">
+								<div class="row">
+												<div class="form-group col-sm-6">
+													<label for="mobileSegmentId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.Id"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" ng-model="ctrl.beanSer.mobileSegmentId"
+															placeholder="{{'mmsmp.mobileSegment.Id' | translate }}">
+													</div>
+												</div>
+										<div class="form-group col-sm-6">
+													<label for="segment"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.segment"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" ng-model="ctrl.beanSer.segment"
+															placeholder="{{'mmsmp.mobileSegment.segment' | translate }}">
+													</div>
+									   </div>
+								</div>
+								
+								<div class="row">
+								<div class="form-group col-sm-6">
+													<label for="provinceId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.provinceId"></label>
+													<div class="col-sm-7">
+													<select class="form-control" id="provinceId" autocomplete="off"  ng-model="ctrl.beanSer.provinceId" style="width:100%">
+										            <option value="" translate="common.choose"></option>
+										            <option ng-repeat="x in ctrl.provinceData" value="{{x.provinceCityId}}" ng-bind="x.provinceCityName"></option>
+						                          </select>
+												</div>
+									</div>
+									<div class="form-group col-sm-6">
+													<label for="cityId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.cityId"></label>
+													<div class="col-sm-7">
+												 <select class="form-control" id="cityId" autocomplete="off"  ng-disabled="ctrl.disabled" ng-model="ctrl.beanSer.cityId" style="width:100%">
+										            <option value="" translate="common.choose"></option>
+										            <option ng-repeat="x in ctrl.cityIdData" value="{{x.provinceCityId}}" ng-bind="x.provinceCityName"></option>
+						                          </select>
+													</div>
+									   </div>
+
+					           </div>
+								<div class="row">
+								<div class="form-group col-sm-6">
+													<label for="areaCode"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.areaCode"></label>
+													<div class="col-sm-7">
+												<!-- 	<select class="form-control" id="areaCode" autocomplete="off"  ng-model="ctrl.beanSer.areaCode" style="width:100%">
+										            <option value="" translate="common.choose"></option>
+										            <option ng-repeat="x in ctrl.areaCodeData" value="{{x.areaCode}}" ng-bind="x.areaCode"></option>
+						                          </select> -->
+									               <input type="text" class="form-control" ng-model="ctrl.beanSer.areaCode"
+															placeholder="{{'mmsmp.mobileSegment.areaCode' | translate }}">
+										</div>
+									   </div>
+								
+								</div>
+									
+								<div class="row">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-block btn-info btn-sm"
+											style="float: right; width: 75px;" id="bth-searchDate" translate="search"></button>
+                                      </div>
+									</div>
+							      </div>
+							<!-- end box-body -->
+						</form>
+					</div>
+
+					<!-- table start -->
+					<div class="box box-primary" id="example">
+						<div class="box-body">
+							<table datatable="" id="table_id" dt-options="ctrl.dtOptions"
+								dt-columns="ctrl.dtColumns" dt-instance="ctrl.dtInstance"
+								class="row-border hover">
+							</table>
+						</div>
+						<!-- /.box-body -->
+						<div id="loadDiv"  style="position: absolute;top: 50%; left: 50%;width: 100%; height: 40px;margin-left: -50%;margin-top: -25px;padding-top: 20px;
+text-align: center;font-size: 1.2em;"translate="common.loading"></div>
+						
+					</div>
+					<!-- table end -->
+				</div>
+			</div>
+		</section>
+
+
+
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<form class="form-horizontal" ng-submit="ctrl.submit()"
+				name="addEditForm">
+				<div class="modal-dialog">
+					<div class="modal-content" style="padding: 3px;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel" ng-model="ctrl.modelTitle"><span ng-bind="ctrl.modelTitle"></span></h4>
+							<!-- 校验start -->
+								<div ng-include="'html/tips.html'"></div>
+								<!-- 校验end -->
+						</div>
+                	   <!-- <input type="hidden" ng-model="ctrl.bean.roleId" /> -->
+						<div class="box box-primary">
+							<div class="row">
+								<div class="col-xs-12">
+									<section class="content-header" id="content_section"></section>
+									<section class="content">
+										
+											<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="code"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.Id"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="mobileSegmentId" name="mobileSegmentId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.mobileSegment.Id' |translate }}" ng-model="ctrl.bean.mobileSegmentId"  ng-maxlength="32" ng-disabled="ctrl.readonlyID" required>
+															<div ng-show="addEditForm.mobileSegmentId.$error.required" style="color:red" translate="mmsmp.mobileSegment.Id.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.mobileSegmentId.$error.maxlength" style="color:red" translate="mmsmp.mobileSegment.Id.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.mobileSegmentId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="provinceCityName"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.segment"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="segment" name="segment" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.mobileSegment.segment' |translate }}" ng-model="ctrl.bean.segment" ng-minlength="7" autocomplete="off"  ng-maxlength="7" required>								
+	                                                          <div ng-show=" addEditForm.segment.$error.minlength" style="color:red" translate="mmsmp.mobileSegment.segment.length">
+	                                                         </div>
+	                                                         <div ng-show=" addEditForm.segment.$error.maxlength" style="color:red" translate="mmsmp.mobileSegment.segment.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.segment.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="ProvinceCityId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.provinceId"></label>
+													<div class="col-sm-7">
+	                                                <select class="form-control" id="provinceId1" name="provinceId1" autocomplete="off" ng-maxlength="32"   ng-model="ctrl.bean.provinceId" style="width:100%" required>
+										            <option value="" translate="common.choose"></option>
+										            <option ng-repeat="x in ctrl.provinceData" value="{{x.provinceCityId}}" ng-bind="x.provinceCityName"></option>
+						                          </select>
+															<div ng-show="addEditForm.provinceId1.$error.required" style="color:red" translate="mmsmp.mobileSegment.provinceId.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.provinceId1.$error.maxlength" style="color:red" translate="mmsmp.mobileSegment.provinceId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.provinceId1.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="parentProvinceCityId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.cityId"></label>
+													<div class="col-sm-7">
+	                                               <select class="form-control" id="cityId1" name="cityId1" autocomplete="off" ng-maxlength="32" ng-disabled="ctrl.confirmDisabled" ng-model="ctrl.bean.cityId" style="width:100%" required>
+										            <option value="" translate="common.choose"></option>
+										            <option ng-repeat="x in ctrl.cityIdData1" value="{{x.provinceCityId}}" ng-bind="x.provinceCityName"></option>
+						                          </select>
+															<div ng-show="addEditForm.cityId1.$error.required" style="color:red" translate="mmsmp.mobileSegment.cityId.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.cityId1.$error.maxlength" style="color:red" translate="mmsmp.mobileSegment.cityId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.cityId1.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+								<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="areaCode"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.mobileSegment.areaCode"></label>
+													<div class="col-sm-7">
+	                                               <!--  <select class="form-control" id="areaCode1" name="areaCode1" autocomplete="off"  ng-model="ctrl.bean.areaCode" style="width:100%" ng-maxlength="32" required>
+										            <option value="" translate="common.choose"></option>
+										            <option ng-repeat="x in ctrl.areaCodeData1" value="{{x.areaCode}}" ng-bind="x.areaCode"></option>
+						                          </select> -->
+						                          <input type="text" class="form-control" id="areaCode1" name="areaCode1" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.mobileSegment.Id' |translate }}" ng-model="ctrl.bean.areaCode"  ng-maxlength="32"  required>
+															<div ng-show="addEditForm.areaCode1.$error.required" style="color:red" translate="mmsmp.mobileSegment.areaCode.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.areaCode1.$error.maxlength" style="color:red" translate="mmsmp.mobileSegment.areaCode.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.areaCode1.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>									
+								</section>
+								</div>
+							</div>
+						</div>
+						<!-- end box box-primary -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" translate="common.cancel"></button>
+							<button type="submit" class="btn btn-primary" ng-disabled="addEditForm.$invalid"  translate="common.save"> </button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				</form>
+			</div>
+			
+			<!-- /.modal -->
+</div>
+
+	</div>
+</body>
+
+</html>

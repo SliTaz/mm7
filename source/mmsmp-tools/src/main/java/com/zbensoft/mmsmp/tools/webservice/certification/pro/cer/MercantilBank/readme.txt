@@ -1,0 +1,4 @@
+client name:epayment-webservice-clientkey-MercantilBank
+client password:webserviceMercantilBank119
+server name:epayment-webservice-servercert
+server password:webservice911epay

@@ -33,7 +33,7 @@ import com.zbensoft.mmsmp.common.ra.common.db.entity.ServCtlsDAO;
 /*    */   public void refreshCache()
 /*    */   {
 /* 42 */     ServCtlsDAO dao = new ServCtlsDAO();
-/* 43 */     List servCtlsList = dao.findAll();
+/* 43 */     List<ServCtls> servCtlsList = dao.findAll();
 /* 44 */     this.cacheList = servCtlsList;
 /* 45 */     for (ServCtls servCtls : servCtlsList)
 /* 46 */       this.cacheMap.put(servCtls.getServuniqueid(), servCtls);

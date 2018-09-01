@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 
 import org.apache.log4j.Logger;
 import org.apache.mina.core.future.ConnectFuture;
+import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
@@ -38,24 +39,40 @@ import com.zbensoft.mmsmp.common.ra.common.message.SendNotificationMessage;
        connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
        connector.setHandler(new ClientHandler());
        ConnectFuture future = connector.connect(new InetSocketAddress(this.host, this.port));
-       future.addListener(new IoFutureListener(message)
-       {
-         public void operationComplete(ConnectFuture future)
-         {
-           if (future.isConnected())
-           {
-             IoSession session = future.getSession();
-             session.write(this.val$message);
-             session.close();
- 
-             SendNotifyMessageMinaClientProxy.logger.info("SendNotifyMessageMinaClientProxy send message:\r\n" + this.val$message.toString());
+       future.addListener(new IoFutureListener<ConnectFuture>() {
+           public void operationComplete(ConnectFuture future) {
+               if (future.isConnected())
+               {
+                 IoSession session = future.getSession();
+                 session.write(message);
+                 session.close();
+     
+                 SendNotifyMessageMinaClientProxy.logger.info("SendNotifyMessageMinaClientProxy send message:\r\n" + message.toString());
+               }
+               else
+               {
+                 SendNotifyMessageMinaClientProxy.logger.info("SendNotifyMessageMinaClientProxy send message failed:\r\n" + message);
+               }
            }
-           else
-           {
-             SendNotifyMessageMinaClientProxy.logger.info("SendNotifyMessageMinaClientProxy send message failed:\r\n" + this.val$message);
-           }
-         }
        });
+//       future.addListener(new IoFutureListener(message)
+//       {
+//         public void operationComplete(ConnectFuture future)
+//         {
+//           if (future.isConnected())
+//           {
+//             IoSession session = future.getSession();
+//             session.write(this.val$message);
+//             session.close();
+// 
+//             SendNotifyMessageMinaClientProxy.logger.info("SendNotifyMessageMinaClientProxy send message:\r\n" + this.val$message.toString());
+//           }
+//           else
+//           {
+//             SendNotifyMessageMinaClientProxy.logger.info("SendNotifyMessageMinaClientProxy send message failed:\r\n" + this.val$message);
+//           }
+//         }
+//       });
        result = 0;
      }
      catch (Exception ex)

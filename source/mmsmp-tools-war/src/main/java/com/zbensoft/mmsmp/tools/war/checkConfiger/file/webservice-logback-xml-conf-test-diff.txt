@@ -1,0 +1,4 @@
+    <property name="LOG_PATH" value="d:\\log\\e-payment" /> <-->     <property name="LOG_PATH" value="/zte/local/log/" />
+        <appender-ref ref="FILEDEBUG" /> <--> 	<!--<appender-ref ref="FILEDEBUG" />
+        <appender-ref ref="STDOUT" /> <-->         <appender-ref ref="STDOUT" />-->
+    <property name="LOG_PATH" value="c:\\Wangchenyang\\log\\e-payment" /> <-->     <property name="LOG_PATH" value="/zte/local/log/" />

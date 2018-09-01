@@ -1,0 +1,5 @@
+    <property name="LOG_PATH" value="d:\\log\\e-payment" /> <-->     <property name="LOG_PATH" value="/data/master/zben/log/01" />
+        <!-- 生产环境将请  去掉 --> <-->         <!-- 生产环境将请stdout,testfile去掉 -->
+        <appender-ref ref="FILEDEBUG" /> <-->         <!-- <appender-ref ref="FILEDEBUG" />-->
+        <appender-ref ref="STDOUT" /> <-->         <!--<appender-ref ref="STDOUT" />-->
+        <property name="LOG_PATH" value="c:\\Wangchenyang\\log\\e-payment" /> <-->     <property name="LOG_PATH" value="/data/master/zben/log/01" />

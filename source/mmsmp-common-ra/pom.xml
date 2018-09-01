@@ -12,11 +12,106 @@
     <artifactId>mmsmp-common-ra</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mmsmp-common-ra</name>
-    <url>http://maven.apache.org</url>
+    <url>http://maven.apache.org</url> 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+    	<!-- axis is ok start -->
+    	<dependency>
+		    <groupId>org.apache.axis</groupId>
+		    <artifactId>axis</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis-jaxrpc</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis-saaj</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- axis is ok end -->
+        
+        <!-- mm7 is ok start -->
+		<!-- https://mvnrepository.com/artifact/concurrent/concurrent -->
+		<dependency>
+		    <groupId>concurrent</groupId>
+		    <artifactId>concurrent</artifactId>
+		    <version>1.3.4</version>
+		</dependency>
+<!-- https://mvnrepository.com/artifact/jdom/jdom -->
+<dependency>
+    <groupId>jdom</groupId>
+    <artifactId>jdom</artifactId>
+    <version>1.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/xerces/xercesImpl -->
+<dependency>
+    <groupId>xerces</groupId>
+    <artifactId>xercesImpl</artifactId>
+    <version>2.9.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/xerces/xmlParserAPIs -->
+<dependency>
+    <groupId>xerces</groupId>
+    <artifactId>xmlParserAPIs</artifactId>
+    <version>2.6.2</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>3.1.0</version>
+    <scope>provided</scope>
+</dependency>
+
+        <dependency>
+            <groupId>mm7</groupId>
+            <artifactId>mm7</artifactId>
+	      	<version>0.0.1</version>
+            <scope>system</scope>
+	      	<systemPath>${project.basedir}/lib/mm7.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>mm7api</groupId>
+            <artifactId>mm7api</artifactId>
+	      	<version>0.0.1</version>
+            <scope>system</scope>
+	      	<systemPath>${project.basedir}/lib/mm7api.jar</systemPath>
+        </dependency>
+        <!-- mm7 is ok end -->
+        
+        <!-- xfire is ok start -->
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-core</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-annotations</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-aegis</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-jaxb2</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+        <!-- xfire is ok end -->
+        
         <!-- https://mvnrepository.com/artifact/log4j/log4j -->
         <dependency>
             <groupId>log4j</groupId>
@@ -41,6 +136,11 @@
             <artifactId>commons-logging</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
         <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
         <dependency>
             <groupId>javax.mail</groupId>
@@ -66,5 +166,6 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    
   </dependencies>
 </project>

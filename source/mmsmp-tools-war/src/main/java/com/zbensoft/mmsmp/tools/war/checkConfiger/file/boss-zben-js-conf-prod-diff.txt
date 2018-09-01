@@ -1,0 +1,16 @@
+var apiUrl = "https://localhost:8080"; <--> var apiUrl = "https://www.billeteramovil.gob.ve/api";
+var monitorLogInfoUrl ="http://www.baidu.com/"; <--> var monitorLogInfoUrl ="http://"+address+":5601/app/kibana";
+var monitorMessageQueueUrl ="http://mail.163.com/"; <--> var monitorMessageQueueUrl ="http://"+address+":15672/";
+var monitorSystenInfoUrl ="http://www.sogou.com/"; <--> var monitorSystenInfoUrl ="http://"+address+":8080";
+var monitorProxyStatusUrl ="http://www.sogou.com/"; <--> var monitorProxyStatusUrl ="http://"+address.split('.')[0]+"."+address.split('.')[0]+"."+"1.3:8090/Nginxstatus";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/en.json"; <--> 	file="./il8n/en.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/zh.json"; <--> 	file="./il8n/zh.json";
+	file="../il8n/es.json"; <--> 	file="./il8n/es.json";
+													window.location = "/"; <--> 													window.location = "./";
+		window.location = "/"; <--> 		window.location = "./";
+var monitorProxyStatusUrl ="http://www.sogou.com/"; <--> var monitorProxyStatusUrl ="http://"+address.split('.')[0]+"."+address.split('.')[1]+"."+"1.3:8090/Nginxstatus";
+var apiUrl = "http://localhost:8080"; <--> var apiUrl = "https://www.billeteramovil.gob.ve/api";

@@ -1,6 +1,7 @@
 package com.zbensoft.mmsmp.sms.ra.mina;
 
 import com.zbensoft.mmsmp.common.ra.common.message.MT_SMMessage;
+import com.zbensoft.mmsmp.sms.ra.log.SMS_LOG;
 import com.zbensoft.mmsmp.sms.ra.utils.SmsMessageQuene;
 import org.apache.log4j.Logger;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -20,18 +21,18 @@ public class ServerHandler extends IoHandlerAdapter {
     public void messageReceived(IoSession session, Object message) throws Exception {
         if (message instanceof MT_SMMessage) {
             MT_SMMessage mtmsg = (MT_SMMessage)message;
-            logger.info("receive MT_SMMessage from  corebiz...." + mtmsg);
+            SMS_LOG.INFO("receive MT_SMMessage from  corebiz...." + mtmsg);
             this.quence.getMtQuence().put(mtmsg);
             session.write("1");
-            logger.info("put the MT_SMMessage to mtquence....");
+            SMS_LOG.INFO("put the MT_SMMessage to mtquence....");
         } else {
-            logger.info("the message is not MT_SMMessage..." + message);
+            SMS_LOG.INFO("the message is not MT_SMMessage..." + message);
         }
 
     }
 
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
-        logger.error(" server exceptionCaught(IoSession, Throwable)", cause);
+        SMS_LOG.ERROR(" server exceptionCaught(IoSession, Throwable)", cause);
     }
 
     public void sessionOpened(IoSession session) {

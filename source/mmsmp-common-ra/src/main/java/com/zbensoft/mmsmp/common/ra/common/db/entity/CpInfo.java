@@ -6,7 +6,7 @@
 /*     */   implements Serializable
 /*     */ {
 /*     */   private static final long serialVersionUID = 1636226613199980279L;
-/*     */   private Integer cpid;
+/*     */   private String cpid;
 /*     */   private String cpname;
 /*     */   private String cpaddress;
 /*     */   private String artificialperson;
@@ -82,12 +82,12 @@
 /*  94 */     this.financelinkmanemail = financelinkmanemail;
 /*     */   }
 /*     */ 
-/*     */   public Integer getCpid()
+/*     */   public String getCpid()
 /*     */   {
 /* 101 */     return this.cpid;
 /*     */   }
 /*     */ 
-/*     */   public void setCpid(Integer cpid) {
+/*     */   public void setCpid(String cpid) {
 /* 105 */     this.cpid = cpid;
 /*     */   }
 /*     */ 

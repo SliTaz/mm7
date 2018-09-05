@@ -71,7 +71,7 @@ public class HttpRequest implements HttpServletRequest {
 				try {
 					in.close();
 					in = null;
-				} catch (IOException e) {
+				} catch (IOException e1) {
 					e.printStackTrace();
 				}
 		} finally {

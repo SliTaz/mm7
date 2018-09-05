@@ -284,6 +284,13 @@ public interface MessageDef {
 		/** 1：已发布 **/
 		public static int PUBLISH = 1;
 	}
+	
+	public interface BLACK_WHITE_LIST_TYPE {
+		/** 1：黑名单 **/
+		public static int BLACK = 1;
+		/** 2：白名单**/
+		public static int WHITE = 2;
+	}
 
 	public interface NOTICE_STATUE {
 		/** 1：编辑中 **/

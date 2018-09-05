@@ -7,6 +7,7 @@ import com.zbensoft.mmsmp.common.ra.common.message.*;
 import com.zbensoft.mmsmp.common.ra.smssgip.proxy.sgip.SGIPSMSProxy;
 import com.zbensoft.mmsmp.common.ra.smssgip.proxy.util.Resource;
 import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.sgipapi.*;
+import com.zbensoft.mmsmp.sms.ra.log.SMS_LOG;
 import com.zbensoft.mmsmp.sms.ra.utils.SmsMessageQuene;
 import org.apache.log4j.Logger;
 
@@ -35,7 +36,7 @@ public class SmsSender extends SGIPSMSProxy {
             this.sgipConnect = ConfigUtil.getInstance().getSGIPConnect();
 
             try {
-                logger.info("----->loginname:" + this.sgipConnect.getLogin_name() + "   ----->loginpass:" + this.sgipConnect.getLogin_pass());
+                SMS_LOG.INFO("----->loginname:" + this.sgipConnect.getLogin_name() + "   ----->loginpass:" + this.sgipConnect.getLogin_pass());
                 this.isConnect = this.connect(this.sgipConnect.getLogin_name(), this.sgipConnect.getLogin_pass());
             } catch (Exception var2) {
                 logger.error("", var2);
@@ -43,13 +44,13 @@ public class SmsSender extends SGIPSMSProxy {
 
             this.startService(this.sgipConnect.getLocalHost(), this.sgipConnect.getLocalPort());
             if (this.isConnect) {
-                logger.info("=====>connect smsgw successful");
+                SMS_LOG.INFO("=====>connect smsgw successful");
                 return true;
             }
 
-            logger.error("=====>connect smsgw failed");
+            SMS_LOG.ERROR("=====>connect smsgw failed");
         } catch (Exception var3) {
-            logger.error("", var3);
+            SMS_LOG.ERROR("", var3);
         }
 
         return false;
@@ -82,12 +83,12 @@ public class SmsSender extends SGIPSMSProxy {
 
         try {
             SGIP_Submit submit = new SGIP_Submit(srcNode, spNumber, "000000000000000000000", desTermId, corpId, serviceType, feeType, feeValue, givenValue, agentFlag, morelatetoMTFla, sgipMsgPriority, expireTime, scheduleTime, reportFlag, tp_pid, tp_udhi, messageCoding, messageType, msgContext, "");
-            logger.info("=====>send content to smsc:" + msgContext);
+            SMS_LOG.INFO("=====>send content to smsc:" + msgContext);
             SGIP_SubmitResp res = (SGIP_SubmitResp)super.send(submit);
             msgID = this.getSubmitSeq(submit);
         } catch (Exception var28) {
             flag = true;
-            logger.error("=====>send sms to smsc error:" + msgContext, var28);
+            SMS_LOG.ERROR("=====>send sms to smsc error:" + msgContext, var28);
             return String.valueOf(msgID);
         }
 
@@ -96,7 +97,7 @@ public class SmsSender extends SGIPSMSProxy {
 
     public void sendSMS(MT_SMMessage mtSms) {
         String trantId = null;
-        logger.info("------------begin to send sms...-----------------");
+        SMS_LOG.INFO("------------begin to send sms...-----------------");
 
         try {
             String[] phone = mtSms.getRcvAddresses();
@@ -109,13 +110,13 @@ public class SmsSender extends SGIPSMSProxy {
 
             mtSms.setRcvAddresses(phone);
             trantId = this.send(mtSms);
-            logger.info("------------ send sms is end... trantId = " + trantId + "-----------------");
+            SMS_LOG.INFO("------------ send sms is end... trantId = " + trantId + "-----------------");
         } catch (Exception var5) {
             var5.printStackTrace();
-            logger.error("------------send sms is error...-----------------");
+            SMS_LOG.ERROR("------------send sms is error...-----------------");
         }
 
-        logger.info("deal MT_ReportMessage....");
+        SMS_LOG.INFO("deal MT_ReportMessage....");
         MT_ReportMessage rm = new MT_ReportMessage();
         rm.setCorrelator(mtSms.getMtTranId());
         rm.setReqId(trantId);
@@ -149,8 +150,8 @@ public class SmsSender extends SGIPSMSProxy {
     }
 
     public SGIP_Command onDeliver(SGIP_Deliver msg) {
-        logger.info("=====>receive SGIP Deliver Message: " + msg);
-        logger.info("begin change SGIP Deliver Message to MO_SMMessage");
+        SMS_LOG.INFO("=====>receive SGIP Deliver Message: " + msg);
+        SMS_LOG.INFO("begin change SGIP Deliver Message to MO_SMMessage");
         String userNumber = msg.getUserNumber();
         if (userNumber.length() > 11) {
             userNumber = userNumber.substring(userNumber.length() - 11);
@@ -173,10 +174,10 @@ public class SmsSender extends SGIPSMSProxy {
 
         try {
             this.moQuence.put(momsg);
-            logger.info("put mosms to moquene success. usernumber:" + userNumber + "  messageid:" + momsg.getGlobalMessageid());
+            SMS_LOG.INFO("put mosms to moquene success. usernumber:" + userNumber + "  messageid:" + momsg.getGlobalMessageid());
         } catch (Exception var5) {
-            logger.info("put mosms to moquene failed, usernumber:" + userNumber);
-            logger.error("usernumber:" + userNumber, var5);
+            SMS_LOG.INFO("put mosms to moquene failed, usernumber:" + userNumber);
+            SMS_LOG.ERROR("usernumber:" + userNumber, var5);
         }
 
         return super.onDeliver(msg);
@@ -194,7 +195,7 @@ public class SmsSender extends SGIPSMSProxy {
         moSmmessage.setCorrelator(String.valueOf(value));
         String host = ConfigUtil.getInstance().getAdminConfig().getNotifyMessageIP();
         int port = ConfigUtil.getInstance().getCorebizConfig().getMoQueueListenPort();
-        logger.info("receive Report: " + moSmmessage);
+        SMS_LOG.INFO("receive Report: " + moSmmessage);
         return super.onReport(msg);
     }
 

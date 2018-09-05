@@ -82,7 +82,8 @@
              
              if ((mhm != null) && (System.currentTimeMillis() - mhm.getReceiveDate().getTime() < MmsUpdateListener.this.cacheTime * 60 * 1000))
              {
-               int result = MmsUpdateListener.this.smsDAO.updateGatewaySRecord(mhm.getStatus(), mhm.getMessageId(), mhm.getReqId(), mhm.getMmsGreCode());
+            	 //TODO updateGatewaySRecord() 
+               int result = 1;//MmsUpdateListener.this.smsDAO.updateGatewaySRecord(mhm.getStatus(), mhm.getMessageId(), mhm.getReqId(), mhm.getMmsGreCode());
                if (result <= 0) {
                  MmsUpdateListener.this.mmsUpdate.put(mhm);
                  MmsUpdateListener.logger.info(" update fail ! ");

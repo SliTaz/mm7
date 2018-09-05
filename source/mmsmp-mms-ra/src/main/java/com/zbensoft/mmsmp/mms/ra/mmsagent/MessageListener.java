@@ -12,6 +12,7 @@ public class MessageListener {
 	ExecutorService execor;
 
 	public void start() {
+		System.out.println("MessageListener start;queue:"+queue);
 		sleeping(200);
 		this.execor = Executors.newFixedThreadPool(this.number);
 

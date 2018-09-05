@@ -313,7 +313,7 @@
 		<vacQuenceSize>10000</vacQuenceSize>
 		<vacServerIP>10.199.201.70</vacServerIP>
 		<vacServerPort>8008</vacServerPort>
-		<vacClientIP>192.168.1.15</vacClientIP>
+		<vacClientIP>192.168.1.16</vacClientIP>
 		<vacClientPort>19012</vacClientPort>
 		
 		<!-- sp agent-->

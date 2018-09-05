@@ -13,12 +13,15 @@ import java.io.PrintWriter;
 import java.util.UUID;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
 
+//接收sp模拟器发送过来的MTMMS
+@WebServlet(urlPatterns = "/SPReceiveMTMMS")
 public class ReceiveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(ReceiveServlet.class);
@@ -28,12 +31,13 @@ public class ReceiveServlet extends HttpServlet {
 	}
 
 	protected void service(HttpServletRequest req, HttpServletResponse response) throws IOException, ServletException {
+		logger.info("into ReceiveServlet service method");
+		
 		if (!"POST".equals(req.getMethod())) {
 			logger.error("your request must be POST");
 			response.sendError(400, "Http Method Must Be POST!");
 			return;
 		}
-
 		HttpRequest request = new HttpRequest(req);
 		SubmitReq submit = new SubmitReq();
 		submit.parser(request.getContent());
@@ -64,7 +68,12 @@ public class ReceiveServlet extends HttpServlet {
 		while ((count = in.read(b)) > 0) {
 			baos.write(b, 0, count);
 		}
-		spmmsmessage.setContentbyte(baos.toByteArray());
+		
+		byte[] byteArrays=baos.toByteArray();
+		logger.info("byteArrays-> str:"+new String(byteArrays));
+		
+//		spmmsmessage.setContentbyte(baos.toByteArray());
+		spmmsmessage.setContentbyte(byteArrays);
 
 		spmmsmessage.setGlobalMessageTime(System.currentTimeMillis());
 		try {

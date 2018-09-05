@@ -36,6 +36,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	vm.beanSer = {};
     //列的状态start
     vm.columnStatusData=[];
+    vm.provinceData=[];
     //列的状态end
     vm.dtOptions = DTOptionsBuilder.fromSource(getFromSource(apiUrl + '/spInfo')).withOption(
 			'createdRow', createdRow);
@@ -54,7 +55,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		DTColumnBuilder.newColumn('webAddr').withTitle($translate('spInfo.webAddr')).notSortable(),
 		DTColumnBuilder.newColumn('officeAddr').withTitle($translate('spInfo.officeAddr')).notSortable(),
 		DTColumnBuilder.newColumn('createTime').withTitle($translate('user.createTime')).renderWith(timeRender).notSortable().notVisible(),
-		DTColumnBuilder.newColumn('province').withTitle($translate('spInfo.province')).notSortable().notVisible(),
+		DTColumnBuilder.newColumn('provinceCityName').withTitle($translate('spInfo.province')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('status').withTitle($translate('user.status')).renderWith(statusType).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('updateTime').withTitle($translate('spInfo.updateTime')).renderWith(timeRender).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('maxCon').withTitle($translate('spInfo.maxCon')).notSortable(),
@@ -69,8 +70,11 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	vm.deleteBean = deleteBean;
 	vm.serlfSp = serlfSp;
 	vm.statusType = statusType;
+	vm.spUrl = spUrl;
 	//表头start
 	tableHandle();
+	vm.selData = selData;
+	selData();
 	//表头end
 	initltCommon(vm,localStorageService,topleftService);
 	$("#loadDiv").hide();
@@ -107,7 +111,9 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		}
 		
 	}
-	
+	function spUrl(){
+		window.open("spUrl.html",'','height=530, width=1020, top=105, left=172, toolbar=no, menubar=no, scrollbars=yes,resizable=yes,location=no, status=yes');
+	}
 	
 	function statusType(data, type, full, meta){
 		if(data=='1'){
@@ -128,8 +134,26 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			return '';
 		}
 	}
+	function selData() {
+		SpInfoService.fetchProvince().then(function(d) {
+			vm.provinceData = d.body;
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
+	}
+	function selectDevice(){
+		//解决 select2在模态框使用，模糊输入框无效
+		$("#province").select2();
+		$("#myModal").attr("tabindex","");
+		//解决selec2在火狐模太框中输入框不能输入start
+		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
+		};
+		//解决selec2在火狐模太框中输入框不能输入end
+	}
 	
 	function addInit() {
+		selectDevice();
+		$("#province").val("").select2();
 		vm.modelTitle = $translate.instant('spInfo.add');
 		vm.readonlyID = false;
 		vm.bean = {};
@@ -141,7 +165,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		vm.bean.faxNo=null;
 		vm.bean.emailAddr=null;
 		vm.bean.status=1;
-		vm.bean.serlfSp=1;
+		vm.bean.serlfSp=0;
 		vm.bean.webAddr=null;
 		vm.bean.officeAddr=null;
 		vm.bean.province=null;
@@ -157,7 +181,9 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		vm.statusMessage="";
 	}
 	function edit(bean) {
+		selectDevice();
 		reloadData();
+		$("#province").val(bean.province).select2();
 		vm.modelTitle = $translate.instant('spInfo.edit');
 		vm.readonlyID = true;
 		vm.bean = bean;

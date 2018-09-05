@@ -4,6 +4,8 @@ import com.zbensoft.mmsmp.common.ra.common.message.MT_MMHttpSPMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.MT_SPMMHttpMessage;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import com.zbensoft.mmsmp.mms.ra.config.SpringBeanUtil;
 import com.zbensoft.mmsmp.mms.ra.test.MinaServerTestCase;
 
 import java.io.IOException;
@@ -55,84 +57,96 @@ public class ApplicationListener implements ServletContextListener {
 	static MessageDispather messageDispather;
 	
 	
-	public static final int serverPort=8006;
+	public static final int serverPort=19093;//mms的服务端port
+	
+	public static boolean flag_read_spring_xml=true;
+	
+	public static String mmsmcUrl="http://localhost:29093/MMSServerServlet";//mms模拟器的接收地址
+	public static String corebiz_host="192.168.1.16";//corebiz_host
+	public static int corebiz_port=19011;//corebiz_port
+	
+	
+	public static boolean flag_is_test_by_simulator=true;//是否是通过模拟器进行测试
 	
 	static{
-		System.out.println("ApplicationListener static");
-		
-		moQueue=new java.util.concurrent.LinkedBlockingQueue(10000);
-		mtQueue=new java.util.concurrent.LinkedBlockingQueue(10000);
-		hrQueue=new java.util.concurrent.LinkedBlockingQueue(5000);
-		
-		messageRouter=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageRouter();
-		
-		ConcurrentHashMap<String, BlockingQueue> messageRoutePolocy=new java.util.concurrent.ConcurrentHashMap<String, BlockingQueue>();
-		messageRoutePolocy.put("com.zbensoft.mmsmp.common.ra.common.message.MO_MMDeliverSPMessage", moQueue);
-		messageRoutePolocy.put("com.zbensoft.mmsmp.common.ra.common.message.MT_MMHttpSPMessage", mtQueue);
-		messageRoutePolocy.put("com.zbensoft.mmsmp.common.ra.common.message.MO_ReportMessage", hrQueue);
-		messageRoutePolocy.put("com.zbensoft.mmsmp.common.ra.common.message.MT_ReportMessage", hrQueue);
-		
-		messageRouter.setPolicyMap(messageRoutePolocy);
-		
-		minaClientProxy=new com.zbensoft.mmsmp.mms.ra.mmsagent.MinaClientProxy();
-		minaClientProxy.setHost("10.199.201.71");
-		minaClientProxy.setPort(8000);
-		
-		mm7ClientProxy=new com.zbensoft.mmsmp.mms.ra.mmsagent.Mm7ClientProxy();
-		mm7ClientProxy.setMessageRouter(messageRouter);
-		mm7ClientProxy.setMmsmcUrl("http://10.199.84.188:8899/vas");
-		
-		messageDispather=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageDispather();
-		messageDispather.setMinaClientProxy(minaClientProxy);
-		messageDispather.setMm7ClientProxy(mm7ClientProxy);
-		
-		moQueueListener=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener();
-		moQueueListener.setDispather(messageDispather);
-		moQueueListener.setQueue(moQueue);
-		moQueueListener.setNumber(3);
-		
-		mtQueueListener=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener();
-		mtQueueListener.setDispather(messageDispather);
-		mtQueueListener.setQueue(mtQueue);
-		mtQueueListener.setNumber(10);
-		
-		hrQueueListener=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener();
-		hrQueueListener.setDispather(messageDispather);
-		hrQueueListener.setQueue(hrQueue);
-		hrQueueListener.setNumber(2);
-		
-		
-		//start mina server
-		MinaServerHandler minaServerHandler=new com.zbensoft.mmsmp.mms.ra.mmsagent.MinaServerHandler();
-		minaServerHandler.setMessageRouter(messageRouter);
-		
-//		org.apache.mina.filter.executor.ExecutorFilter executorFilter=new org.apache.mina.filter.executor.ExecutorFilter();
-//		org.apache.mina.filter.codec.ProtocolCodecFilter minaCodecFilter=new org.apache.mina.filter.codec.ProtocolCodecFilter(new org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory());
-//		Map<String, IoFilter> filters=new HashMap<String,IoFilter>();
-//		filters.put("codecFilter", minaCodecFilter);
-//		filters.put("executor", executorFilter);
-//		
-//		org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder minaChainBuilder=new org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder();
-//		minaChainBuilder.setFilters(filters);
-		
-		minaServer=new org.apache.mina.transport.socket.nio.NioSocketAcceptor();
-		
-		//去除通过set的方式，改为sp接口中的方式。通过addlast的方式
-//		minaServer.setFilterChainBuilder(minaChainBuilder);
-		DefaultIoFilterChainBuilder chain = minaServer.getFilterChain();
-		chain.addLast("codec", new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
-		chain.addLast("ThreadPool", new ExecutorFilter());
-		
-		minaServer.setHandler(minaServerHandler);
-		//int serverPort=serverPort;//
-		try {
-			minaServer.bind(new InetSocketAddress(serverPort));
-			logger.info("started mina server at port: " + serverPort + " success");
-		} catch (IOException e) {
-			logger.error("started mina server at port: " + serverPort + " failed ", e);
+		if(!flag_read_spring_xml){
+			System.out.println("ApplicationListener static not read spring xml ");
+			
+			moQueue=new java.util.concurrent.LinkedBlockingQueue(10000);
+			mtQueue=new java.util.concurrent.LinkedBlockingQueue(10000);
+			hrQueue=new java.util.concurrent.LinkedBlockingQueue(5000);
+			
+			messageRouter=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageRouter();
+			
+			ConcurrentHashMap<String, BlockingQueue> messageRoutePolocy=new java.util.concurrent.ConcurrentHashMap<String, BlockingQueue>();
+			messageRoutePolocy.put("com.zbensoft.mmsmp.common.ra.common.message.MO_MMDeliverSPMessage", moQueue);
+			messageRoutePolocy.put("com.zbensoft.mmsmp.common.ra.common.message.MT_MMHttpSPMessage", mtQueue);
+			messageRoutePolocy.put("com.zbensoft.mmsmp.common.ra.common.message.MO_ReportMessage", hrQueue);
+			messageRoutePolocy.put("com.zbensoft.mmsmp.common.ra.common.message.MT_ReportMessage", hrQueue);
+			
+			messageRouter.setPolicyMap(messageRoutePolocy);
+			
+			minaClientProxy=new com.zbensoft.mmsmp.mms.ra.mmsagent.MinaClientProxy();
+			minaClientProxy.setHost(corebiz_host);
+			minaClientProxy.setPort(corebiz_port);
+			
+			mm7ClientProxy=new com.zbensoft.mmsmp.mms.ra.mmsagent.Mm7ClientProxy();
+			mm7ClientProxy.setMessageRouter(messageRouter);
+			mm7ClientProxy.setMmsmcUrl(mmsmcUrl);
+			
+			messageDispather=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageDispather();
+			messageDispather.setMinaClientProxy(minaClientProxy);
+			messageDispather.setMm7ClientProxy(mm7ClientProxy);
+			
+			moQueueListener=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener();
+			moQueueListener.setDispather(messageDispather);
+			moQueueListener.setQueue(moQueue);
+			moQueueListener.setNumber(3);
+			
+			mtQueueListener=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener();
+			mtQueueListener.setDispather(messageDispather);
+			mtQueueListener.setQueue(mtQueue);
+			mtQueueListener.setNumber(10);
+			
+			hrQueueListener=new com.zbensoft.mmsmp.mms.ra.mmsagent.MessageListener();
+			hrQueueListener.setDispather(messageDispather);
+			hrQueueListener.setQueue(hrQueue);
+			hrQueueListener.setNumber(2);
+			
+			
+			//start mina server
+			MinaServerHandler minaServerHandler=new com.zbensoft.mmsmp.mms.ra.mmsagent.MinaServerHandler();
+			minaServerHandler.setMessageRouter(messageRouter);
+			
+//			org.apache.mina.filter.executor.ExecutorFilter executorFilter=new org.apache.mina.filter.executor.ExecutorFilter();
+//			org.apache.mina.filter.codec.ProtocolCodecFilter minaCodecFilter=new org.apache.mina.filter.codec.ProtocolCodecFilter(new org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory());
+//			Map<String, IoFilter> filters=new HashMap<String,IoFilter>();
+//			filters.put("codecFilter", minaCodecFilter);
+//			filters.put("executor", executorFilter);
+//			
+//			org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder minaChainBuilder=new org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder();
+//			minaChainBuilder.setFilters(filters);
+			
+			minaServer=new org.apache.mina.transport.socket.nio.NioSocketAcceptor();
+			
+			//去除通过set的方式，改为sp接口中的方式。通过addlast的方式
+//			minaServer.setFilterChainBuilder(minaChainBuilder);
+			DefaultIoFilterChainBuilder chain = minaServer.getFilterChain();
+			chain.addLast("codec", new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+			chain.addLast("ThreadPool", new ExecutorFilter());
+			
+			minaServer.setHandler(minaServerHandler);
+			//int serverPort=serverPort;//
+			try {
+				minaServer.bind(new InetSocketAddress(serverPort));
+				logger.info("started mina server at port: " + serverPort + " success");
+			} catch (IOException e) {
+				logger.error("started mina server at port: " + serverPort + " failed ", e);
+			}
 		}
-		
-		
+		else{
+			logger.info("read spring xml ");
+		}
 	}
 
 	public void contextDestroyed(ServletContextEvent content) {
@@ -167,57 +181,82 @@ public class ApplicationListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent content) {
-//		this.applicationContext = WebApplicationContextUtils.getWebApplicationContext(content.getServletContext());
-//		
-//		runLevel = content.getServletContext().getInitParameter("runLevel");
-//		runEcho = true;
-//		try {
-//			echoInterval = Integer.parseInt(content.getServletContext().getInitParameter("logInterval"));
-//		} catch (Exception ex) {
-//			echoInterval = 60;
-//		}
-//
-//		this.minaServer = ((NioSocketAcceptor) this.applicationContext.getBean("minaSocketAcceptor"));
-//		System.out.println("MmsAgent mt Server startup with port " + this.minaServer.getLocalAddress().getPort());
-//
-//		this.moQueueListener = ((MessageListener) this.applicationContext.getBean("moQueueListener"));
-//		this.moQueueListener.start();
-//		System.out.println("MmsAgent mo Queue Listener startup with " + this.moQueueListener.getNumber() + " Threads");
-//
-//		this.mtQueueListener = ((MessageListener) this.applicationContext.getBean("mtQueueListener"));
-//		this.mtQueueListener.start();
-//		System.out.println("MmsAgent mt Queue Listener startup with " + this.mtQueueListener.getNumber() + " Threads");
-//
-//		this.hrQueueListener = ((MessageListener) this.applicationContext.getBean("hrQueueListener"));
-//		this.hrQueueListener.start();
-//		System.out.println("MmsAgent hr Queue Listener startup with " + this.hrQueueListener.getNumber() + " Threads");
-//
-//		this.moQueue = ((LinkedBlockingQueue) this.applicationContext.getBean("mo_queue"));
-//		this.mtQueue = ((LinkedBlockingQueue) this.applicationContext.getBean("mt_queue"));
-//		this.hrQueue = ((LinkedBlockingQueue) this.applicationContext.getBean("hr_queue"));
+		if(flag_read_spring_xml){
+//			this.applicationContext = WebApplicationContextUtils.getWebApplicationContext(content.getServletContext());
+			
+//			runLevel = content.getServletContext().getInitParameter("runLevel");
+//			runEcho = true;
+//			try {
+//				echoInterval = Integer.parseInt(content.getServletContext().getInitParameter("logInterval"));
+//			} catch (Exception ex) {
+//				echoInterval = 60;
+//			}
+
+//			this.minaServer = ((NioSocketAcceptor) this.applicationContext.getBean("minaSocketAcceptor"));
+			this.minaServer = SpringBeanUtil.getBean("minaSocketAcceptor",NioSocketAcceptor.class);
+			System.out.println("minaServer:"+minaServer);
+			System.out.println("MmsAgent mt Server startup with port " + this.minaServer.getLocalAddress().getPort());
+
+//			this.moQueueListener = ((MessageListener) this.applicationContext.getBean("moQueueListener"));
+			this.moQueueListener =  SpringBeanUtil.getBean("moQueueListener",MessageListener.class);
+			System.out.println("moQueueListener:"+moQueueListener);
+			this.moQueueListener.start();
+			System.out.println("MmsAgent mo Queue Listener startup with " + this.moQueueListener.getNumber() + " Threads");
+
+//			this.mtQueueListener = ((MessageListener) this.applicationContext.getBean("mtQueueListener"));
+			this.mtQueueListener = SpringBeanUtil.getBean("mtQueueListener",MessageListener.class);
+			System.out.println("mtQueueListener:"+mtQueueListener);
+			this.mtQueueListener.start();
+			System.out.println("MmsAgent mt Queue Listener startup with " + this.mtQueueListener.getNumber() + " Threads");
+
+//			this.hrQueueListener = ((MessageListener) this.applicationContext.getBean("hrQueueListener"));
+			this.hrQueueListener = SpringBeanUtil.getBean("hrQueueListener",MessageListener.class);
+			System.out.println("hrQueueListener:"+hrQueueListener);
+			this.hrQueueListener.start();
+			System.out.println("MmsAgent hr Queue Listener startup with " + this.hrQueueListener.getNumber() + " Threads");
+
+//			this.moQueue = ((LinkedBlockingQueue) this.applicationContext.getBean("mo_queue"));
+			this.moQueue = SpringBeanUtil.getBean("mo_queue",LinkedBlockingQueue.class);
+			System.out.println("moQueue:"+moQueue);
+			
+//			this.mtQueue = ((LinkedBlockingQueue) this.applicationContext.getBean("mt_queue"));
+			this.mtQueue = SpringBeanUtil.getBean("mt_queue",LinkedBlockingQueue.class);
+			System.out.println("mtQueue:"+mtQueue);
+			
+//			this.hrQueue = ((LinkedBlockingQueue) this.applicationContext.getBean("hr_queue"));
+			this.hrQueue = SpringBeanUtil.getBean("hr_queue",LinkedBlockingQueue.class);
+			System.out.println("hrQueue:"+hrQueue);
+		}else{
+			moQueueListener.start();
+			mtQueueListener.start();
+			hrQueueListener.start();
+		}
 		
-		moQueueListener.start();
-		mtQueueListener.start();
-		hrQueueListener.start();
+		
+		
 		
 		monitorInitialized(content);
 		debugInitialized(content);
 	}
 	
 	public static MessageRouter getMessageRouter(){
-		return messageRouter;
+//		return messageRouter;
+		return SpringBeanUtil.getBean("messageRouter",MessageRouter.class);
 	}
 	
 	public static MinaClientProxy getMinaClientProxy(){
-		return minaClientProxy;
+//		return minaClientProxy;
+		return SpringBeanUtil.getBean("minaClientProxy",MinaClientProxy.class);
 	}
 	
 	public static Mm7ClientProxy getMm7ClientProxy(){
-		return mm7ClientProxy;
+//		return mm7ClientProxy;
+		return SpringBeanUtil.getBean("mm7ClientProxy",Mm7ClientProxy.class);
 	}
 	
 	public static MessageDispather getMessageDispather(){
-		return messageDispather;
+//		return messageDispather;
+		return SpringBeanUtil.getBean("messageDispather",MessageDispather.class);
 	}
 
 	private void monitorInitialized(ServletContextEvent content) {

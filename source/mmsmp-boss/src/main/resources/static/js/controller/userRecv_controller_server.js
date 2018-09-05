@@ -60,10 +60,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	setDtOptionsServerSide(vm);
 	vm.dtColumns = [
 			DTColumnBuilder.newColumn('userRecvId').withTitle($translate('userRecv.userRecvId')).notSortable().notVisible(),
-			DTColumnBuilder.newColumn('messageType').withTitle($translate('userRecv.messageType')).notSortable().renderWith(messageTypeDetail),
-			DTColumnBuilder.newColumn('isCorrect').withTitle($translate('userRecv.isCorrect')).notSortable().renderWith(isCorrectDetail),
-			DTColumnBuilder.newColumn('isOrder').withTitle($translate('userRecv.isOrder')).notSortable().renderWith(isOrderDetail),
 			DTColumnBuilder.newColumn('phoneNumber').withTitle($translate('userRecv.phoneNumber')).notSortable(),
+			DTColumnBuilder.newColumn('messageType').withTitle($translate('userRecv.messageType')).notSortable().renderWith(messageTypeDetail),
+			DTColumnBuilder.newColumn('isCorrect').withTitle($translate('userRecv.isCorrect')).notSortable().renderWith(isCorrectDetail).notVisible(),
+			DTColumnBuilder.newColumn('isOrder').withTitle($translate('userRecv.isOrder')).notSortable().renderWith(isOrderDetail),
 			DTColumnBuilder.newColumn('recvTime').withTitle($translate('userRecv.recvTime')).notSortable().renderWith(timeRender),
 			DTColumnBuilder.newColumn('messageContent').withTitle($translate('userRecv.messageContent')).notSortable().notVisible().renderWith(remarkDetail),
 			DTColumnBuilder.newColumn(null).withTitle($translate('Actions')).withOption('width', '15%').notSortable().renderWith(actionsHtml) ];

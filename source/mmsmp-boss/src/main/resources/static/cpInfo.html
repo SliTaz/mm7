@@ -206,25 +206,6 @@
 										<section class="content-header" id="content_section"></section>
 										<section class="content">
 											<input type="hidden" ng-model="ctrl.bean.userId" />
-
-										<!-- <div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpInfoId"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="cpInfoId" id="cpInfoId" autocomplete="off"  ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-maxlength="32" ng-model="ctrl.bean.cpInfoId" 
-															placeholder="{{'cpInfo.cpInfoId'   | translate }}" required>
-															<div ng-show="addEditForm.cpInfoId.$error.required" style="color:red" translate="consumerGasCoupon.couponId.required">
-	                                                         </div> 
-	                                                         <div ng-show=" addEditForm.cpInfoId.$error.maxlength" style="color:red" translate="caption_account.name.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.cpInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div> -->
 										<div class="row">
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
@@ -266,9 +247,9 @@
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpAddr"></label>
 													<div class="col-sm-7">
 													  <input type="text" class="form-control" name="cpAddr" id="cpAddr" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="128" ng-model="ctrl.bean.cpAddr" 
-															placeholder="{{'cpInfo.cpAddr'   | translate }}" required>
-																<div ng-show="addEditForm.cpAddr.$error.required" style="color:red" translate="cpInfo.cpAddr.required">
-	                                                         </div> 
+															placeholder="{{'cpInfo.cpAddr'   | translate }}" >
+																<!-- <div ng-show="addEditForm.cpAddr.$error.required" style="color:red" translate="cpInfo.cpAddr.required">
+	                                                         </div>  -->
 	                                                          <div ng-show="addEditForm.cpAddr.$error.maxlength" style="color:red" translate="cpInfo.cpAddr.length">
 	                                                         </div>
 	                                                         <div ng-show="addEditForm.cpAddr.$error.pattern" style="color:red" translate="common.illegalChar">
@@ -354,9 +335,9 @@
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.faxNo"></label>
 													<div class="col-sm-7">
 													  <input type="text" class="form-control" name="faxNo" id="faxNo" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.faxNo" 
-															placeholder="{{'cpInfo.faxNo'   | translate }}" required>
-																<div ng-show="addEditForm.faxNo.$error.required" style="color:red" translate="cpInfo.faxNo.required">
-	                                                         </div> 
+															placeholder="{{'cpInfo.faxNo'   | translate }}">
+																<!-- <div ng-show="addEditForm.faxNo.$error.required" style="color:red" translate="cpInfo.faxNo.required">
+	                                                         </div>  -->
 	                                                        <div ng-show=" addEditForm.faxNo.$error.maxlength" style="color:red" translate="cpInfo.faxNo.length">
 	                                                         </div>
 	                                                         <div ng-show="addEditForm.faxNo.$error.pattern" style="color:red" translate="common.illegalChar">
@@ -389,14 +370,15 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.businessTel"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="businessTel" autocomplete="off" id="businessTel" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/"  ng-maxlength="32" ng-model="ctrl.bean.businessTel" 
-															placeholder="{{'cpInfo.businessTel'   | translate }}" required>
-																<div ng-show="addEditForm.businessTel.$error.required" style="color:red" translate="cpInfo.businessTel.required">
-	                                                         </div> 
+													<!--校验格式：ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/"  -->
+													  <input type="text" class="form-control" name="businessTel" autocomplete="off" id="businessTel"  ng-maxlength="32" ng-model="ctrl.bean.businessTel" 
+															placeholder="{{'cpInfo.businessTel'   | translate }}">
+																<!-- <div ng-show="addEditForm.businessTel.$error.required" style="color:red" translate="cpInfo.businessTel.required">
+	                                                         </div>  -->
 	                                                         <div ng-show=" addEditForm.businessTel.$error.maxlength" style="color:red" translate="cpInfo.businessTel.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.businessTel.$error.pattern" style="color:red" translate="common.tel.error">
-									                         </div>  
+	                                                         <!-- <div ng-show="addEditForm.businessTel.$error.pattern" style="color:red" translate="common.tel.error">
+									                         </div>   -->
 													</div>
 												</div>
 											</div>
@@ -407,14 +389,15 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.businessMobile"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="businessMobile" autocomplete="off" id="businessMobile" ng-pattern="/^1(3|4|5|7|8)\d{9}$/"  ng-maxlength="32" ng-model="ctrl.bean.businessMobile" 
-															placeholder="{{'cpInfo.businessTel'   | translate }}" required>
+													<!--校验格式：ng-pattern="/^1(3|4|5|7|8)\d{9}$/"   -->
+													  <input type="text" class="form-control" name="businessMobile" autocomplete="off" id="businessMobile"  ng-maxlength="32" ng-model="ctrl.bean.businessMobile" 
+															placeholder="{{'cpInfo.businessTel'   | translate }}">
 																<!-- <div ng-show="addEditForm.businessMobile.$error.required" style="color:red" translate="cpInfo.businessMobile.required">
 	                                                         </div>  -->
 	                                                         <div ng-show=" addEditForm.businessMobile.$error.maxlength" style="color:red" translate="cpInfo.businessMobile.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.businessMobile.$error.pattern" style="color:red" translate="common.phone.error">
-									                         </div>  
+	                                                        <!--  <div ng-show="addEditForm.businessMobile.$error.pattern" style="color:red" translate="common.phone.error">
+									                         </div>   -->
 													</div>
 												</div>
 											</div>
@@ -425,8 +408,8 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.businessEmail"></label>
 													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="businessEmail" autocomplete="off" id="businessEmail" ng-pattern="/^(?!.*[~!$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.businessEmail" 
-															placeholder="{{'cpInfo.businessEmail'   | translate }} " required>
+													  <input type="email" class="form-control" name="businessEmail" autocomplete="off" id="businessEmail"  ng-maxlength="32" ng-model="ctrl.bean.businessEmail" 
+															placeholder="{{'cpInfo.businessEmail'   | translate }} ">
 															<!-- <div ng-show="addEditForm.businessEmail.$error.required" style="color:red" translate="cpInfo.businessEmail.required">
 	                                                         </div>  -->
 	                                                       <div ng-show="addEditForm.businessEmail.$error.email" style="color:red" translate="common.email.error">
@@ -459,14 +442,14 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.customerTel"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="customerTel" autocomplete="off" id="customerTel" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/"  ng-maxlength="32" ng-model="ctrl.bean.customerTel" 
-															placeholder="{{'cpInfo.customerTel'   | translate }}" required>
-															<div ng-show="addEditForm.customerTel.$error.required" style="color:red" translate="cpInfo.customerTel.required">
-	                                                         </div> 
+													  <input type="text" class="form-control" name="customerTel" autocomplete="off" id="customerTel"  ng-maxlength="32" ng-model="ctrl.bean.customerTel" 
+															placeholder="{{'cpInfo.customerTel'   | translate }}">
+															<!-- <div ng-show="addEditForm.customerTel.$error.required" style="color:red" translate="cpInfo.customerTel.required">
+	                                                         </div>  -->
 	                                                        <div ng-show=" addEditForm.customerTel.$error.maxlength" style="color:red" translate="cpInfo.customerTel.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.customerTel.$error.pattern" style="color:red" translate="common.tel.error">
-									                         </div>  
+	                                                         <!-- <div ng-show="addEditForm.customerTel.$error.pattern" style="color:red" translate="common.tel.error">
+									                         </div>   -->
 													</div>
 												</div>
 											</div>
@@ -477,14 +460,14 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.customerMobile"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="customerMobile" autocomplete="off" id="customerMobile" ng-pattern="/^1(3|4|5|7|8)\d{9}$/"  ng-maxlength="32" ng-model="ctrl.bean.customerMobile" 
-															placeholder="{{'cpInfo.customerMobile'   | translate }}" required>
+													  <input type="text" class="form-control" name="customerMobile" autocomplete="off" id="customerMobile"  ng-maxlength="32" ng-model="ctrl.bean.customerMobile" 
+															placeholder="{{'cpInfo.customerMobile'   | translate }}" >
 																<!-- <div ng-show="addEditForm.customerMobile.$error.required" style="color:red" translate="cpInfo.customerMobile.required">
 	                                                         </div>  -->
 	                                                         <div ng-show=" addEditForm.customerMobile.$error.maxlength" style="color:red" translate="cpInfo.customerMobile.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.customerMobile.$error.pattern" style="color:red" translate="common.phone.error">
-									                         </div>  
+	                                                        <!--  <div ng-show="addEditForm.customerMobile.$error.pattern" style="color:red" translate="common.phone.error">
+									                         </div>  --> 
 													</div>
 												</div>
 											</div>
@@ -495,8 +478,8 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.customerEmail"></label>
 													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="customerEmail" autocomplete="off" id="customerEmail" ng-pattern="/^(?!.*[~!$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.customerEmail" 
-															placeholder="{{'cpInfo.customerEmail'   | translate }} " required>
+													  <input type="email" class="form-control" name="customerEmail" autocomplete="off" id="customerEmail"  ng-maxlength="32" ng-model="ctrl.bean.customerEmail" 
+															placeholder="{{'cpInfo.customerEmail'   | translate }} ">
 																<!-- <div ng-show="addEditForm.customerEmail.$error.required" style="color:red" translate="cpInfo.customerEmail.required">
 	                                                         </div>  -->
 	                                                       <div ng-show="addEditForm.customerEmail.$error.email" style="color:red" translate="common.email.error">
@@ -550,7 +533,7 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.registerEmail"></label>
 													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="registerEmail" autocomplete="off" id="registerEmail" ng-pattern="/^(?!.*[~!$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.registerEmail" 
+													  <input type="email" class="form-control" name="registerEmail" autocomplete="off" id="registerEmail"  ng-maxlength="32" ng-model="ctrl.bean.registerEmail" 
 															placeholder="{{'cpInfo.registerEmail'   | translate }} " required>
 																<div ng-show="addEditForm.registerEmail.$error.required" style="color:red" translate="cpInfo.registerEmail.required">
 	                                                         </div> 
@@ -618,14 +601,14 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.tecTel"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="tecTel" id="tecTel" autocomplete="off" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/"  ng-maxlength="32" ng-model="ctrl.bean.tecTel" 
-															placeholder="{{'cpInfo.tecTel'   | translate }}" required>
-																<div ng-show="addEditForm.tecTel.$error.required" style="color:red" translate="cpInfo.tecTel.required">
-	                                                         </div>
+													  <input type="text" class="form-control" name="tecTel" id="tecTel" autocomplete="off"  ng-maxlength="32" ng-model="ctrl.bean.tecTel" 
+															placeholder="{{'cpInfo.tecTel'   | translate }}">
+																<!-- <div ng-show="addEditForm.tecTel.$error.required" style="color:red" translate="cpInfo.tecTel.required">
+	                                                         </div> -->
 	                                                         <div ng-show=" addEditForm.tecTel.$error.maxlength" style="color:red" translate="cpInfo.tecTel.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.tecTel.$error.pattern" style="color:red" translate="common.tel.error">
-									                         </div>   
+	                                                         <!-- <div ng-show="addEditForm.tecTel.$error.pattern" style="color:red" translate="common.tel.error">
+									                         </div>    -->
 													</div>
 												</div>
 											</div>
@@ -636,14 +619,14 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.tecMobile"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="tecMobile" autocomplete="off" id="tecMobile" ng-pattern="/^1(3|4|5|7|8)\d{9}$/"  ng-maxlength="32" ng-model="ctrl.bean.tecMobile" 
-															placeholder="{{'cpInfo.tecMobile'   | translate }}" required>
+													  <input type="text" class="form-control" name="tecMobile" autocomplete="off" id="tecMobile" ng-maxlength="32" ng-model="ctrl.bean.tecMobile" 
+															placeholder="{{'cpInfo.tecMobile'   | translate }}">
 																<!-- <div ng-show="addEditForm.tecMobile.$error.required" style="color:red" translate="cpInfo.businessTel.required">
 	                                                         </div>  -->
 	                                                         <div ng-show=" addEditForm.tecMobile.$error.maxlength" style="color:red" translate="cpInfo.tecMobile.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.tecMobile.$error.pattern" style="color:red" translate="common.phone.error">
-									                         </div>  
+	                                                         <!-- <div ng-show="addEditForm.tecMobile.$error.pattern" style="color:red" translate="common.phone.error">
+									                         </div>   -->
 													</div>
 												</div>
 											</div>
@@ -654,8 +637,8 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.tecEmail"></label>
 													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="tecEmail" autocomplete="off" id="tecEmail" ng-pattern="/^(?!.*[~!$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.tecEmail" 
-															placeholder="{{'cpInfo.tecEmail'   | translate }} " required>
+													  <input type="email" class="form-control" name="tecEmail" autocomplete="off" id="tecEmail" ng-maxlength="32" ng-model="ctrl.bean.tecEmail" 
+															placeholder="{{'cpInfo.tecEmail'   | translate }} ">
 																<!-- <div ng-show="addEditForm.tecEmail.$error.required" style="color:red" translate="cpInfo.registerEmail.required">
 	                                                         </div>  -->
 	                                                       <div ng-show="addEditForm.tecEmail.$error.email" style="color:red" translate="common.email.error">
@@ -690,13 +673,13 @@
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.financeTel"></label>
 													<div class="col-sm-7">
 														<input type="text" class="form-control" id="financeTel"name="financeTel" 
-															placeholder="{{'cpInfo.financeTel' |translate }}" ng-model="ctrl.bean.financeTel" autocomplete="off" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/"  ng-maxlength="32" required>
-																<div ng-show="addEditForm.financeTel.$error.required" style="color:red" translate="cpInfo.financeTel.required">
-	                                                         </div> 
+															placeholder="{{'cpInfo.financeTel' |translate }}" ng-model="ctrl.bean.financeTel" autocomplete="off"  ng-maxlength="32">
+															<!-- 	<div ng-show="addEditForm.financeTel.$error.required" style="color:red" translate="cpInfo.financeTel.required">
+	                                                         </div>  -->
 	                                                         <div ng-show=" addEditForm.financeTel.$error.maxlength" style="color:red" translate="cpInfo.financeTel.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.financeTel.$error.pattern" style="color:red" translate="common.tel.error">
-									                         </div> 
+	                                                        <!--  <div ng-show="addEditForm.financeTel.$error.pattern" style="color:red" translate="common.tel.error">
+									                         </div>  -->
 													</div>
 												</div>
 											</div>
@@ -707,14 +690,14 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.financeMobile"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="financeMobile" autocomplete="off" id="financeMobile" ng-pattern="/^1(3|4|5|7|8)\d{9}$/"  ng-maxlength="32" ng-model="ctrl.bean.financeMobile" 
-															placeholder="{{'cpInfo.financeMobile'   | translate }}" required>
+													  <input type="text" class="form-control" name="financeMobile" autocomplete="off" id="financeMobile"  ng-maxlength="32" ng-model="ctrl.bean.financeMobile" 
+															placeholder="{{'cpInfo.financeMobile'   | translate }}">
 																<!-- <div ng-show="addEditForm.financeMobile.$error.required" style="color:red" translate="cpInfo.businessTel.required">
 	                                                         </div>  -->
 	                                                         <div ng-show=" addEditForm.financeMobile.$error.maxlength" style="color:red" translate="cpInfo.financeMobile.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.financeMobile.$error.pattern" style="color:red" translate="common.phone.error">
-									                         </div>  
+	                                                        <!--  <div ng-show="addEditForm.financeMobile.$error.pattern" style="color:red" translate="common.phone.error">
+									                         </div>   -->
 													</div>
 												</div>
 											</div>
@@ -725,8 +708,8 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.financeEmail"></label>
 													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="financeEmail" autocomplete="off" id="financeEmail" ng-pattern="/^(?!.*[~!$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.financeEmail" 
-															placeholder="{{'cpInfo.financeEmail'   | translate }} " required>
+													  <input type="email" class="form-control" name="financeEmail" autocomplete="off" id="financeEmail"  ng-maxlength="32" ng-model="ctrl.bean.financeEmail" 
+															placeholder="{{'cpInfo.financeEmail'   | translate }} ">
 																<!-- <div ng-show="addEditForm.financeEmail.$error.required" style="color:red" translate="cpInfo.registerEmail.required">
 	                                                         </div>  -->
 	                                                       <div ng-show="addEditForm.financeEmail.$error.email" style="color:red" translate="common.email.error">
@@ -742,9 +725,9 @@
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.auditTime"></label>
 													<div class="col-sm-7">
 														<input type="text" class="form-control" id="auditTime" autocomplete="off" name="auditTime"
-															placeholder="{{'cpInfo.auditTime'   | translate }}" ng-model="ctrl.bean.auditTime" date-format required>
-															<div ng-show="addEditForm.auditTime.$error.required" style="color:red" translate="cpInfo.auditTime.notEmpty">
-	                                                         </div>
+															placeholder="{{'cpInfo.auditTime'   | translate }}" ng-model="ctrl.bean.auditTime" date-format>
+															<!-- <div ng-show="addEditForm.auditTime.$error.required" style="color:red" translate="cpInfo.auditTime.notEmpty">
+	                                                         </div> -->
 													</div>
 												</div>
 											</div>
@@ -756,9 +739,9 @@
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpLogo"></label>
 													<div class="col-sm-7">
 														<input type="text" class="form-control" id="cpLogo" name="cpLogo" 
-															placeholder="{{'cpInfo.cpLogo' |translate }}" ng-model="ctrl.bean.cpLogo" autocomplete="off" ng-maxlength="256" required>
-																<div ng-show="addEditForm.cpLogo.$error.required" style="color:red" translate="cpInfo.cpLogo.required">
-	                                                         </div>
+															placeholder="{{'cpInfo.cpLogo' |translate }}" ng-model="ctrl.bean.cpLogo" autocomplete="off" ng-maxlength="256">
+																<!-- <div ng-show="addEditForm.cpLogo.$error.required" style="color:red" translate="cpInfo.cpLogo.required">
+	                                                         </div> -->
 	                                                          <div ng-show=" addEditForm.cpLogo.$error.maxlength" style="color:red" translate="cpInfo.cpLogo.length">
 	                                                         </div>
 													</div>
@@ -809,7 +792,7 @@
 														<input type="text" class="form-control" id="proportion" name="proportion" 
 															placeholder="{{'cpInfo.proportion' |translate }}" ng-model="ctrl.bean.proportion" ng-pattern="/^\d+(\.\d+)?$/" autocomplete="off" required>
 																<div ng-show="addEditForm.proportion.$error.required" style="color:red" translate="cpInfo.proportion.required">
-	                                                         </div> 
+	                                                         </div>
 	                                                         <div ng-show="addEditForm.proportion.$error.pattern" style="color:red" translate="common.illegalChar">
 									                         </div>
 													</div>
@@ -824,9 +807,9 @@
 														class="col-sm-4 control-label control-label-zb" translate="cpInfo.aear"></label>
 													<div class="col-sm-7">
 														<input type="text" class="form-control" id="aear" name="aear" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32"
-															placeholder="{{'cpInfo.aear' |translate }}" ng-model="ctrl.bean.aear" autocomplete="off" required>
-																<div ng-show="addEditForm.aear.$error.required" style="color:red" translate="cpInfo.aear.required">
-	                                                         </div> 
+															placeholder="{{'cpInfo.aear' |translate }}" ng-model="ctrl.bean.aear" autocomplete="off">
+																<!-- <div ng-show="addEditForm.aear.$error.required" style="color:red" translate="cpInfo.aear.required">
+	                                                         </div>  -->
 	                                                         <div ng-show=" addEditForm.aear.$error.maxlength" style="color:red" translate="cpInfo.aear.length">
 	                                                          </div>
 	                                                         <div ng-show="addEditForm.aear.$error.pattern" style="color:red" translate="common.illegalChar">
@@ -835,25 +818,6 @@
 												</div>
 											</div>
 										</div>
-										
-										<!-- <div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="app.type"></label>
-													<div class="col-sm-7">
-														<select class="form-control" id="type" name="type" placeholder="{{'app.type' | translate }}" 
-															ng-model="ctrl.bean.type" required>
-															    <option value="" translate="common.choose"></option>
-				                                                <option value="1" translate="cpInfo.CP"></option>
-															    <option value="2" translate="cpInfo.groupCustomer"></option>
-														</select>
-																<div ng-show="addEditForm.type.$error.required" style="color:red" translate="app.type.required">
-	                                                         </div> 
-													</div>
-												</div>
-											</div>
-										</div> -->
 										
 										<div class="row">
 											<div class="col-xs-12">

@@ -741,25 +741,29 @@ public class SmsBusinessHandlerImpl {
 		String[] values = mosms.getServiceCode().split("#");
 
 		String _msg = this.dataCache.getSysParams("UP_ONDEMAND_TIP");
+		_msg="{0}make{1}test{2}in{3}line";//TODO 测试数据，待删除
 		_msg = _msg.replace("{0}", values[3]);
 		_msg = _msg.replace("{1}", String.valueOf(Double.parseDouble(values[4]) / 100.0D));//资费
 
-		SmsSenderDto dto = this.dataCache.getSmsSenderDtoMap(mosms.getVasId());
-		if (dto != null) {
-			_msg = _msg.replace("{2}", dto.getVaspname());
-			_msg = _msg.replace("{3}", dto.getBusinessphone() == null ? "" : dto.getBusinessphone());
-		}
+//		SmsSenderDto dto = this.dataCache.getSmsSenderDtoMap(mosms.getVasId());
+//		if (dto != null) {
+//			_msg = _msg.replace("{2}", dto.getVaspname());
+//			_msg = _msg.replace("{3}", dto.getBusinessphone() == null ? "" : dto.getBusinessphone());
+//		}
+		mosms.setSendAddress("15895861272");
+		mosms.setSequence_Number_1(111);
+		mosms.setSequence_Number_2(222);
+		mosms.setSequence_Number_3(333);
 		String send_addr = mosms.getSendAddress();
 		sendMTMsgToQuence(_msg, send_addr);
 
 		logger.info("smsmo send demand success smsmt message [gmessage:" + messageid + ",userphone:" + send_addr
 				+ ",servicecode:" + mosms.getServiceCode() + "]");
-
-		String provinceCode = this.daoUtil.getSmsSenderDao().getAreaCodeByUserPhone(send_addr);
-		String cityCode = this.daoUtil.getSmsSenderDao().getCityCodeByUserPhone(send_addr);
-		this.daoUtil.getSmsDAO().saveDemandMessage(mosms, provinceCode, cityCode);
-
-		String url = this.daoUtil.getSmsSenderDao().getSmsSenderUrl(values[1]);
+		//TODO 测试数据，待删除
+		String provinceCode ="025091"; //this.daoUtil.getSmsSenderDao().getAreaCodeByUserPhone(send_addr);
+		String cityCode = "0250911";//this.daoUtil.getSmsSenderDao().getCityCodeByUserPhone(send_addr);
+//		this.daoUtil.getSmsDAO().saveDemandMessage(mosms, provinceCode, cityCode);
+		String url = "192.168.1.116:39095";//this.daoUtil.getSmsSenderDao().getSmsSenderUrl(values[1]);
 
 		if ((url != null) && (values[0] != null)) {
 			mosms.setNotirySPURL(url);
@@ -917,34 +921,35 @@ public class SmsBusinessHandlerImpl {
 	}
 
 	private OperatorType getOperatorType(MO_SMMessage mosms) {
-		String SERVICE_NUMBER = this.dataCache.getSysParams("ACC_NUMBER");
+		String SERVICE_NUMBER = "30100";//this.dataCache.getSysParams("ACC_NUMBER");
 		String TAKE_ACC_NUMBER = this.dataCache.getSysParams("TAKE_ACC_NUMBER");
 
 		String phoneNumber = mosms.getSendAddress();
-		String spNumber = mosms.getVasId();
+		String vasId = mosms.getVasId();//3010012345
 		String smstext = mosms.getSmsText().toLowerCase().trim();
 
 		logger.info("smsmo set operator type[gmessageid:" + mosms.getGlobalMessageid() + ",smstext:" + smstext
-				+ ",phoneNumber:" + phoneNumber + ",spNumber:" + spNumber + "]");
+				+ ",phoneNumber:" + phoneNumber + ",spNumber:" + vasId + "]");
 
-		this.daoUtil.getSmsSenderDao().saveMoMsg(smstext, phoneNumber, spNumber);
+//		TODO 测试删除，后续需要增加数据
+//		this.daoUtil.getSmsSenderDao().saveMoMsg(smstext, phoneNumber, spNumber);
 		logger.info("smsmo save database [gmessageid:" + mosms.getGlobalMessageid());
 
 		if ((smstext == null) || ("".equals(smstext.trim()))) {
-			logger.info("smsmo content is empty [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + spNumber
+			logger.info("smsmo content is empty [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 			return new OperatorType(EnumOptype.OTHER);
 		}
 
-		if (!spNumber.startsWith(SERVICE_NUMBER)) {
-			logger.info("smsmo vasid is wrong [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + spNumber
+		if (!vasId.startsWith(SERVICE_NUMBER)) {
+			logger.info("smsmo vasid is wrong [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 			return new OperatorType(EnumOptype.OTHER);
 		}
 
 		if ((TAKE_ACC_NUMBER != null) && (!TAKE_ACC_NUMBER.trim().equals(""))
-				&& (spNumber.startsWith(TAKE_ACC_NUMBER))) {
-			logger.info("smsmo take number command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + spNumber
+				&& (vasId.startsWith(TAKE_ACC_NUMBER))) {
+			logger.info("smsmo take number command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 
 			OperatorType operatorType = new OperatorType(EnumOptype.TAKE_NUMBER);
@@ -957,11 +962,11 @@ public class SmsBusinessHandlerImpl {
 
 			if (sp_productids == null) {
 				logger.info("smsmo cancel 00000 vas service is null [gmessageid:" + mosms.getGlobalMessageid()
-						+ ",spnumber:" + spNumber + ",smstext:" + smstext + "]");
+						+ ",spnumber:" + vasId + ",smstext:" + smstext + "]");
 				return new OperatorType(EnumOptype.OTHER);
 			}
 
-			logger.info("smsmo cancel all command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + spNumber
+			logger.info("smsmo cancel all command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + ",products:" + sp_productids + "]");
 
 			OperatorType optype = new OperatorType(EnumOptype.CANCEL_ALL);
@@ -969,18 +974,18 @@ public class SmsBusinessHandlerImpl {
 			return optype;
 		}
 
-		if (("0000".equals(smstext)) && (spNumber.length() > SERVICE_NUMBER.length())) {
+		if (("0000".equals(smstext)) && (vasId.length() > SERVICE_NUMBER.length())) {
 
-			SmsSenderDto dto = this.daoUtil.getSmsDAO().getVasSpCpInfo(spNumber);
+			SmsSenderDto dto = this.daoUtil.getSmsDAO().getVasSpCpInfo(vasId);
 
 			if (dto.getProducts().size() == 0) {
 				logger.info("smsmo cancel 0000 vas service is null [gmessageid:" + mosms.getGlobalMessageid()
-						+ ",spnumber:" + spNumber + ",smstext:" + smstext + "]");
+						+ ",spnumber:" + vasId + ",smstext:" + smstext + "]");
 				return new OperatorType(EnumOptype.OTHER);
 			}
 
 			logger.info("smsmo cancel current command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:"
-					+ spNumber + ",smstext:" + smstext + ",products:" + dto.getSp_productid() + "]");
+					+ vasId + ",smstext:" + smstext + ",products:" + dto.getSp_productid() + "]");
 
 			OperatorType optype = new OperatorType(EnumOptype.CANCEL_SERVICE);
 			optype.setCmdtext(smstext);
@@ -993,9 +998,9 @@ public class SmsBusinessHandlerImpl {
 			return optype;
 		}
 
-		if ((SERVICE_NUMBER.equals(spNumber)) && ("Y".equalsIgnoreCase(smstext))) {
+		if ((SERVICE_NUMBER.equals(vasId)) && ("Y".equalsIgnoreCase(smstext))) {
 
-			logger.info("smsmo confirm command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + spNumber
+			logger.info("smsmo confirm command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 
 			String[] smsText = this.daoUtil.getSmsDAO().getLatestMoOrderMsgText(phoneNumber, 0L, SERVICE_NUMBER);
@@ -1023,16 +1028,16 @@ public class SmsBusinessHandlerImpl {
 			return optype;
 		}
 
-		if (this.dataCache.getVasidsByOwner(spNumber) != null) {
-			logger.info("smsmo owner service command[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + spNumber
+		if (this.dataCache.getVasidsByOwner(vasId) != null) {
+			logger.info("smsmo owner service command[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 
-			Vasservice vasservice = this.dataCache.getOwnerProduct(smstext, spNumber);
+			Vasservice vasservice = this.dataCache.getOwnerProduct(smstext, vasId);
 			OperatorType optype = new OperatorType(EnumOptype.OTHER);
 
 			if (vasservice == null) {
 				logger.info("smsmo owner service vas service is null[gmessageid:" + mosms.getGlobalMessageid()
-						+ ",spnumber:" + spNumber + ",smstext:" + smstext + "]");
+						+ ",spnumber:" + vasId + ",smstext:" + smstext + "]");
 				return optype;
 			}
 			if ("1".equals(vasservice.getVassmsid())) {
@@ -1058,15 +1063,15 @@ public class SmsBusinessHandlerImpl {
 			return optype;
 		}
 
-		logger.info("smsmo sp service command[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + spNumber
+		logger.info("smsmo sp service command[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 				+ ",smstext:" + smstext + "]");
 
-		Vasservice vasservice = this.dataCache.getSpProduct(smstext, spNumber);
+		Vasservice vasservice = this.dataCache.getSpProduct(smstext, vasId);
 		OperatorType optype = new OperatorType(EnumOptype.OTHER);
 
 		if (vasservice == null) {
 			logger.info("smsmo sp service vas service is null[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:"
-					+ spNumber + ",smstext:" + smstext + "]");
+					+ vasId + ",smstext:" + smstext + "]");
 			return optype;
 		}
 		if ("1".equals(vasservice.getVassmsid())) {

@@ -89,7 +89,7 @@
 				<h1 translate="common.userOrderHis"></h1>
 				<ol class="breadcrumb">
 					<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
-					<li class="active" translate="common.userOrderHisM"></li>
+					<li class="active" translate="common.customerM"></li>
 				</ol>
 			</section>
 			<section class="content">
@@ -120,17 +120,17 @@
 					<!-- table start -->
 					<div class="box-body" style="display: none">
 						<div class="row">
-							<div class="form-group col-sm-6">
+							<!-- <div class="form-group col-sm-6">
 									<label for="cpInfoId"
 										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.userOrderHisId"></label>
 									<div class="col-sm-7">
 										<input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.userOrderHisId"
 											placeholder="{{'userOrderHis.userOrderHisId' | translate }}">
 									</div>
-								</div>
+								</div> -->
 								<div class="form-group col-sm-6">
 									<label for="spInfoId"
-										class="col-sm-4 control-label control-label-zb" translate="userRecv.phoneNumber"></label>
+										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.phoneNumber"></label>
 									<div class="col-sm-7">
 										<select class="form-control" id="phoneNumber" ng-model="ctrl.beanSer.phoneNumber" style="width:100%">
 											<option value="" translate="common.choose"></option>
@@ -138,11 +138,9 @@
 										</select>
 									</div>
 								</div>
-							</div>
-							<div class="row">
-							<div class="form-group col-sm-6">
+								<div class="form-group col-sm-6">
 									<label for="cpInfoId"
-										class="col-sm-4 control-label control-label-zb" translate="cpInfo.spInfo"></label>
+										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.spInfo"></label>
 									<div class="col-sm-7">
 										<select class="form-control" id="spInfo" ng-model="ctrl.beanSer.spInfoId" style="width:100%">
 											<option value="" translate="common.choose"></option>
@@ -150,72 +148,7 @@
 										</select>
 									</div>
 								</div>
-								<div class="form-group col-sm-6">
-									<label for="spInfoId"
-										class="col-sm-4 control-label control-label-zb" translate="userServiceSend.productInfoId"></label>
-									<div class="col-sm-7">
-		                                 <input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.productInfoId"
-												placeholder="{{'userServiceSend.productInfoId'   | translate }}">
-									</div>
-								</div>
 							</div>
-							<div class="row">
-					        	 <div class="form-group col-sm-6">
-										<label for="isEnable"
-											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.status"></label>
-										<div class="col-sm-7">
-											<select class="form-control" placeholder="{{'userServiceSend.status' | translate }}" 
-													ng-model="ctrl.beanSer.status">
-													    <option value="" translate="common.choose"></option>
-													    <option value="0" translate="userServiceSend.order"></option>
-													    <option value="1" translate="common.frozen"></option>
-													</select>
-										</div>
-									</div>
-						      <div class="form-group col-sm-6">
-										<label for="status"
-											class="col-sm-4 control-label control-label-zb" translate="userOrderHis.priority"></label>
-										<div class="col-sm-7">
-											<select class="form-control" placeholder="{{'userOrderHis.priority' | translate }}" 
-											ng-model="ctrl.beanSer.priority">
-											   <option value="" translate="common.choose"></option>
-		                                       <option value="1" translate="userOrderHis.VIP"></option>
-											   <option value="2" translate="userOrderHis.common"></option>
-											   <option value="3" translate="userOrderHis.experienceUser"></option>
-											</select>
-										</div>
-									</div>
-					        </div>
-							<div class="row">
-					        	<div class="form-group col-sm-6">
-										<label for="status"
-											class="col-sm-4 control-label control-label-zb" translate="userOrderHis.orderRoute"></label>
-										<div class="col-sm-7">
-											<select class="form-control" placeholder="{{'userOrderHis.orderRoute' | translate }}" 
-											ng-model="ctrl.beanSer.orderRoute">
-											   <option value="" translate="common.choose"></option>
-		                                       <option value="1" translate="userServiceSend.SMS"></option>
-											   <option value="2" translate="userServiceSend.MMS"></option>
-											   <option value="3" translate="userOrderHis.wap"></option>
-											   <option value="4" translate="userOrderHis.web"></option>
-											   <option value="5" translate="userOrderHis.customerService"></option>
-											</select>
-										</div>
-									</div>
-									<div class="form-group col-sm-6">
-										<label for="status"
-											class="col-sm-4 control-label control-label-zb" translate="userOrderHis.orderType"></label>
-										<div class="col-sm-7">
-											<select class="form-control" placeholder="{{'userOrderHis.orderType' | translate }}" 
-											ng-model="ctrl.beanSer.orderType">
-											   <option value="" translate="common.choose"></option>
-		                                       <option value="1" translate="userOrderHis.monthly"></option>
-											   <option value="2" translate="userServiceSend.onDemand"></option>
-											   <option value="3" translate="userServiceSend.free"></option>
-											</select>
-										</div>
-									</div>
-					        </div>
 					        <div class="row">
 					        	 <div class="form-group col-sm-6">
 										<label for="isEnable"
@@ -234,6 +167,16 @@
 										</div>
 									</div>
 					        </div>
+					        <div class="row">
+								<div class="form-group col-sm-6">
+									<label for="spInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.productName"></label>
+									<div class="col-sm-7">
+		                                 <input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.productInfoId"
+												placeholder="{{'userOrderHis.productName'   | translate }}">
+									</div>
+								</div>
+							</div>
 								<div class="row">
 									<div class="col-sm-10">
 										<button type="submit" class="btn btn-block btn-info btn-sm"

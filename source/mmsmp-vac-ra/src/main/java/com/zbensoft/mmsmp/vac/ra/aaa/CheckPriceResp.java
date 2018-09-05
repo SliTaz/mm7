@@ -127,14 +127,14 @@ public class CheckPriceResp extends Header {
 		sb.append(" ConfirmInterval=").append(this.ConfirmInterval);
 		sb.append(" NeedConfirm=").append(this.NeedConfirm);
 		sb.append(" originalADR=").append(this.originalADR);
-		sb.append(" \nLinkID=").append(this.LinkID);
-		sb.append(" \nFeeType=").append(this.FeeType);
-		sb.append(" \nRedirect=").append(this.Redirect);
-		sb.append(" \nReturnMessage=").append(this.ReturnMessage);
-		sb.append(" \nNeedToNextNode=").append(this.NeedToNextNode);
-		sb.append(" \nSP_ProductID=").append(this.SP_ProductID);
-		sb.append(" \nSPEC_ProductID=").append(this.SPEC_ProductID);
-		sb.append(" \nProductID=").append(this.ProductID);
+		sb.append(" LinkID=").append(this.LinkID);
+		sb.append(" FeeType=").append(this.FeeType);
+		sb.append(" Redirect=").append(this.Redirect);
+		sb.append(" ReturnMessage=").append(this.ReturnMessage);
+		sb.append(" NeedToNextNode=").append(this.NeedToNextNode);
+		sb.append(" SP_ProductID=").append(this.SP_ProductID);
+		sb.append(" SPEC_ProductID=").append(this.SPEC_ProductID);
+		sb.append(" ProductID=").append(this.ProductID);
 		sb.append(" ]");
 		return sb.toString();
 	}

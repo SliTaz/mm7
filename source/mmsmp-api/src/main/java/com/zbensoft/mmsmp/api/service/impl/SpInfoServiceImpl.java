@@ -53,4 +53,9 @@ public class SpInfoServiceImpl implements SpInfoService {
 		return spInfoMapper.count(record);
 	}
 
+	@Override
+	public List<SpInfo> getSpInfo(SpInfo record) {
+		return spInfoMapper.getSpInfo(record);
+	}
+
 }

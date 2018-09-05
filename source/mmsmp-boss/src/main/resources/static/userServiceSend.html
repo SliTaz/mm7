@@ -89,7 +89,7 @@
 				<h1 translate="common.userServiceSend"></h1>
 				<ol class="breadcrumb">
 					<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
-					<li class="active" translate="common.userServiceSendM"></li>
+					<li class="active" translate="common.customerM"></li>
 				</ol>
 			</section>
 			<section class="content">
@@ -119,24 +119,6 @@
 								</div>
 					<!-- table start -->
 					<div class="box-body" style="display: none">
-						 <div class="row">
-					        	 <div class="form-group col-sm-6">
-										<label for="isEnable"
-											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.reportTimeStart"></label>
-										<div class="col-sm-7">
-											<input type="text" class="form-control" id="reportTimeStart" autocomplete="off" name="reportTimeStart"
-												placeholder="{{'userServiceSend.reportTimeStart'   | translate }}" ng-model="ctrl.beanSer.reportTimeStart">
-										</div>
-									</div>
-						      <div class="form-group col-sm-6">
-										<label for="status"
-											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.reportTimeEnd"></label>
-										<div class="col-sm-7">
-											<input type="text" class="form-control" id="reportTimeEnd" autocomplete="off" name="reportTimeEnd"
-												placeholder="{{'userServiceSend.reportTimeEnd'   | translate }}" ng-model="ctrl.beanSer.reportTimeEnd">
-										</div>
-									</div>
-					        </div>
 						<div class="row">
 							<!-- <div class="form-group col-sm-6">
 									<label for="cpInfoId"
@@ -157,25 +139,15 @@
 									</div>
 								</div>
 								<div class="form-group col-sm-6">
-									<label for="cpInfoId"
-										class="col-sm-4 control-label control-label-zb" translate="cpInfo.spInfo"></label>
+									<label for="spInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.productName"></label>
 									<div class="col-sm-7">
-										<select class="form-control" id="spInfo" ng-model="ctrl.beanSer.spInfoId" style="width:100%">
-											<option value="" translate="common.choose"></option>
-											<option ng-repeat="x in ctrl.spInfoData" value="{{x.spInfoId}}" ng-bind="x.companyName"></option>
-										</select>
+		                                 <input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.productInfoId"
+												placeholder="{{'userOrderHis.productName'   | translate }}">
 									</div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="form-group col-sm-6">
-									<label for="spInfoId"
-										class="col-sm-4 control-label control-label-zb" translate="userServiceSend.productInfoId"></label>
-									<div class="col-sm-7">
-		                                 <input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.productInfoId"
-												placeholder="{{'userServiceSend.productInfoId'   | translate }}">
-									</div>
-								</div>
 								<div class="form-group col-sm-6">
 										<label for="isEnable"
 											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.status"></label>
@@ -194,34 +166,22 @@
 													</select>
 										</div>
 									</div>
-							</div>
-					        <div class="row">
-						      <div class="form-group col-sm-6">
-										<label for="status"
-											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.serviceType"></label>
+					        </div>
+					         <div class="row">
+					        	 <div class="form-group col-sm-6">
+										<label for="isEnable"
+											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.reportTimeStart"></label>
 										<div class="col-sm-7">
-											<select class="form-control" placeholder="{{'userServiceSend.serviceType' | translate }}" 
-											ng-model="ctrl.beanSer.serviceType">
-											   <option value="" translate="common.choose"></option>
-		                                       <option value="1" translate="userServiceSend.MMS"></option>
-											   <option value="2" translate="userServiceSend.SMS"></option>
-											   <option value="3" translate="userServiceSend.wapPush"></option>
-											</select>
+											<input type="text" class="form-control" id="reportTimeStart" autocomplete="off" name="reportTimeStart"
+												placeholder="{{'userServiceSend.reportTimeStart'   | translate }}" ng-model="ctrl.beanSer.reportTimeStart">
 										</div>
 									</div>
-									<div class="form-group col-sm-6">
+						      <div class="form-group col-sm-6">
 										<label for="status"
-											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.sendServiceType"></label>
+											class="col-sm-4 control-label control-label-zb" translate="userServiceSend.reportTimeEnd"></label>
 										<div class="col-sm-7">
-											<select class="form-control" placeholder="{{'userServiceSend.sendServiceType' | translate }}" 
-											ng-model="ctrl.beanSer.sendServiceType">
-											   <option value="" translate="common.choose"></option>
-		                                       <option value="0" translate="userServiceSend.onDemand"></option>
-											   <option value="1" translate="userServiceSend.order"></option>
-											   <option value="2" translate="userServiceSend.free"></option>
-											   <option value="3" translate="userServiceSend.bulkHair"></option>
-											   <option value="4" translate="userServiceSend.cancelOrder"></option>
-											</select>
+											<input type="text" class="form-control" id="reportTimeEnd" autocomplete="off" name="reportTimeEnd"
+												placeholder="{{'userServiceSend.reportTimeEnd'   | translate }}" ng-model="ctrl.beanSer.reportTimeEnd">
 										</div>
 									</div>
 					        </div>
@@ -349,14 +309,10 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.chargePhoneNumber"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="chargePhoneNumber" id="chargePhoneNumber" autocomplete="off" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,11}$/"  ng-maxlength="32" ng-model="ctrl.bean.chargePhoneNumber" 
-															placeholder="{{'userServiceSend.chargePhoneNumber'   | translate }}" required>
-																<div ng-show="addEditForm.chargePhoneNumber.$error.required" style="color:red" translate="userServiceSend.chargePhoneNumber.required">
-	                                                         </div> 
+													  <input type="text" class="form-control" name="chargePhoneNumber" id="chargePhoneNumber" autocomplete="off" ng-maxlength="32" ng-model="ctrl.bean.chargePhoneNumber" 
+															placeholder="{{'userServiceSend.chargePhoneNumber'   | translate }}">
 	                                                          <div ng-show="addEditForm.chargePhoneNumber.$error.maxlength" style="color:red" translate="userServiceSend.chargePhoneNumber.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.chargePhoneNumber.$error.pattern" style="color:red" translate="common.chargePhone.error">
-									                         </div>
 													</div>
 												</div>
 											</div>
@@ -368,9 +324,7 @@
 														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.contentInfoId"></label>
 													<div class="col-sm-7">
 													  <input type="text" class="form-control" name="contentInfoId" id="contentInfoId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.contentInfoId" 
-															placeholder="{{'userServiceSend.contentInfoId'   | translate }}" required>
-																<div ng-show="addEditForm.contentInfoId.$error.required" style="color:red" translate="userServiceSend.contentInfoId.required">
-	                                                         </div> 
+															placeholder="{{'userServiceSend.contentInfoId'   | translate }}">
 	                                                          <div ng-show="addEditForm.contentInfoId.$error.maxlength" style="color:red" translate="userServiceSend.contentInfoId.length">
 	                                                         </div>
 	                                                         <div ng-show="addEditForm.contentInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
@@ -429,9 +383,7 @@
 														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.reportTime"></label>
 													<div class="col-sm-7">
 														<input type="text" class="form-control" id="reportTime" autocomplete="off" name="reportTime"
-															placeholder="{{'userServiceSend.reportTime'   | translate }}" ng-model="ctrl.bean.reportTime" date-format required>
-															<div ng-show="addEditForm.reportTime.$error.required" style="color:red" translate="userServiceSend.reportTime.required">
-	                                                         </div>
+															placeholder="{{'userServiceSend.reportTime'   | translate }}" ng-model="ctrl.bean.reportTime" date-format>
 													</div>
 												</div>
 											</div>
@@ -464,9 +416,7 @@
 														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.sendType"></label>
 													<div class="col-sm-7">
 													  <input type="text" class="form-control" name="sendType" id="sendType" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-model="ctrl.bean.sendType" 
-															placeholder="{{'userServiceSend.sendType'   | translate }}" required>
-																<div ng-show="addEditForm.sendType.$error.required" style="color:red" translate="userServiceSend.sendType.required">
-	                                                         </div> 
+															placeholder="{{'userServiceSend.sendType'   | translate }}">
 	                                                         <div ng-show="addEditForm.sendType.$error.pattern" style="color:red" translate="common.illegalChar">
 									                         </div>
 													</div>
@@ -480,9 +430,7 @@
 														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.batchId"></label>
 													<div class="col-sm-7">
 													  <input type="text" class="form-control" name="batchId" id="batchId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.batchId" 
-															placeholder="{{'userServiceSend.batchId'   | translate }}" required>
-																<div ng-show="addEditForm.batchId.$error.required" style="color:red" translate="userServiceSend.batchId.required">
-	                                                         </div> 
+															placeholder="{{'userServiceSend.batchId'   | translate }}">
 	                                                          <div ng-show="addEditForm.batchId.$error.maxlength" style="color:red" translate="userServiceSend.batchId.length">
 	                                                         </div>
 	                                                         <div ng-show="addEditForm.batchId.$error.pattern" style="color:red" translate="common.illegalChar">
@@ -498,9 +446,7 @@
 														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.sendServiceRelId"></label>
 													<div class="col-sm-7">
 													  <input type="text" class="form-control" name="sendServiceRelId" id="sendServiceRelId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.sendServiceRelId" 
-															placeholder="{{'userServiceSend.sendServiceRelId'   | translate }}" required>
-																<div ng-show="addEditForm.sendServiceRelId.$error.required" style="color:red" translate="userServiceSend.sendServiceRelId.required">
-	                                                         </div> 
+															placeholder="{{'userServiceSend.sendServiceRelId'   | translate }}">
 	                                                          <div ng-show="addEditForm.sendServiceRelId.$error.maxlength" style="color:red" translate="userServiceSend.sendServiceRelId.length">
 	                                                         </div>
 	                                                         <div ng-show="addEditForm.sendServiceRelId.$error.pattern" style="color:red" translate="common.illegalChar">

@@ -32,6 +32,8 @@ public class Deliver extends Header {
 		Utils.putString(bb, this.MessageContent, getEncoding(this.MessageCoding));
 		Utils.putString(bb, this.Reserve, 8);
 		bb.flip();
+		
+		System.out.println("Deliver serialize is success");
 		return bb;
 	}
 

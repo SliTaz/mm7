@@ -41,7 +41,7 @@ public class SpUrlController {
 	private LocaleMessageSourceService localeMessageSourceService;
 
 	//查询通知，支持分页
-	@PreAuthorize("hasRole('R_SPU_Q')")
+	@PreAuthorize("hasRole('R_SPI_Q')")
 	@ApiOperation(value = "Query SpInfo，Support paging", notes = "")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseRestEntity<List<SpUrl>> selectPage(
@@ -80,7 +80,7 @@ public class SpUrlController {
 	}
 
 	//查询通知
-	@PreAuthorize("hasRole('R_SPU_Q')")
+	@PreAuthorize("hasRole('R_SPI_Q')")
 	@ApiOperation(value = "Query SpInfo", notes = "")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseRestEntity<SpUrl> selectByPrimaryKey(@PathVariable("id") String id) {
@@ -93,7 +93,7 @@ public class SpUrlController {
 	}
 
 	//新增通知
-	@PreAuthorize("hasRole('R_SPU_E')")
+	@PreAuthorize("hasRole('R_SPI_E')")
 	@ApiOperation(value = "Add SpInfo", notes = "")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseRestEntity<Void> create(@Valid @RequestBody SpUrl spUrl, BindingResult result, UriComponentsBuilder ucBuilder) {
@@ -117,7 +117,7 @@ public class SpUrlController {
 	}
 
 	//修改通知信息
-	@PreAuthorize("hasRole('R_SPU_E')")
+	@PreAuthorize("hasRole('R_SPI_E')")
 	@ApiOperation(value = "Edit SpUrl", notes = "")
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	public ResponseRestEntity<SpUrl> update(@PathVariable("id") String id, @Valid @RequestBody SpUrl spInfo, BindingResult result) {
@@ -146,7 +146,7 @@ public class SpUrlController {
 
 
 	//删除指定通知
-	@PreAuthorize("hasRole('R_SPU_E')")
+	@PreAuthorize("hasRole('R_SPI_E')")
 	@ApiOperation(value = "Delete SpInfo", notes = "")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseRestEntity<SpUrl> delete(@PathVariable("id") String id) {

@@ -120,35 +120,6 @@
 							<div class="box-body" style="display: none">
 								<div class="row">
 									<div class="form-group col-sm-6">
-										<label for="spInfoId"
-											class="col-sm-4 control-label control-label-zb" translate="contentSensitiveWord.contentSensitiveWordId"></label>
-										<div class="col-sm-7">
-											<input type="text" class="form-control" ng-model="ctrl.beanSer.contentSensitiveWordId"
-												placeholder="{{'contentSensitiveWord.contentSensitiveWordId'   | translate }}">
-										</div>
-									</div>
-									<div class="form-group col-sm-6">
-										<label for="companyCode"
-											class="col-sm-4 control-label control-label-zb" translate="contentSensitiveWord.word"></label>
-										<div class="col-sm-7">
-											<input type="text" class="form-control" ng-model="ctrl.beanSer.word"
-												placeholder="{{'contentSensitiveWord.word'   | translate }}">
-										</div>
-									</div>
-	
-									</div>
-	
-									<div class="row">
-									<div class="form-group col-sm-6">
-										<label for="companyName"
-											class="col-sm-4 control-label control-label-zb" translate="contentSensitiveWord.createrUser"></label>
-										<div class="col-sm-7">
-											<input type="text" class="form-control" ng-model="ctrl.beanSer.createrUser"
-												placeholder="{{'contentSensitiveWord.createrUser'   | translate }}">
-										</div>
-									</div>
-									
-									<div class="form-group col-sm-6">
 										<label for="status"
 											class="col-sm-4 control-label control-label-zb" translate="contentSensitiveWord.type"></label>
 										<div class="col-sm-7">
@@ -160,7 +131,15 @@
 											</select>
 										</div>
 									</div>
-								</div>
+									<div class="form-group col-sm-6">
+										<label for="companyCode"
+											class="col-sm-4 control-label control-label-zb" translate="contentSensitiveWord.word"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" ng-model="ctrl.beanSer.word"
+												placeholder="{{'contentSensitiveWord.word'   | translate }}">
+										</div>
+									</div>
+									</div>
 							 <div class="row">
 					        	 <div class="form-group col-sm-6">
 										<label for="isEnable"
@@ -267,24 +246,6 @@
 													</select>
 														 <div ng-show="addEditForm.type.$error.required" style="color:red" translate="contentSensitiveWord.type.required">
                                                          </div>
-													</div>
-												</div>
-											</div>
-										</div>
-									<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="companyCode"
-														class="col-sm-4 control-label control-label-zb" translate="contentSensitiveWord.createrUser"></label>
-													<div class="col-sm-7">
-														<input type="text" class="form-control" id="createrUser" name="createrUser" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
-															placeholder="{{'contentSensitiveWord.createrUser'   | translate }}" ng-model="ctrl.bean.createrUser" ng-maxlength="32" required>
-														<div ng-show="addEditForm.createrUser.$error.required" style="color:red" translate="contentSensitiveWord.createrUser.required">
-                                                         </div>
-														 <div ng-show="addEditForm.createrUser.$error.maxlength" style="color:red" translate="contentSensitiveWord.createrUser.length">
-                                                         </div>
-                                                         <div ng-show="addEditForm.createrUser.$error.pattern" style="color:red" translate="common.illegalChar">
-									                     </div>
 													</div>
 												</div>
 											</div>

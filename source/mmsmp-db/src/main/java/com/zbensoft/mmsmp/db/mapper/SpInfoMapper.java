@@ -54,6 +54,7 @@ public interface SpInfoMapper {
     int updateByPrimaryKey(SpInfo record);
     
     List<SpInfo> selectPage(SpInfo record);
+    List<SpInfo> getSpInfo(SpInfo record);
 
 	int count(SpInfo record);
 }

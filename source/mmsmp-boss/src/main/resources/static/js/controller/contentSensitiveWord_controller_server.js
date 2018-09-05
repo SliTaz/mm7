@@ -59,8 +59,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	setDtOptionsServerSide(vm);
 	vm.dtColumns = [
 		DTColumnBuilder.newColumn('contentSensitiveWordId').withTitle($translate('contentSensitiveWord.contentSensitiveWordId')).notSortable().notVisible(),
-		DTColumnBuilder.newColumn('word').withTitle($translate('contentSensitiveWord.word')).notSortable(),
 		DTColumnBuilder.newColumn('type').withTitle($translate('contentSensitiveWord.type')).notSortable().renderWith(typeDetail),
+		DTColumnBuilder.newColumn('word').withTitle($translate('contentSensitiveWord.word')).notSortable(),
 		DTColumnBuilder.newColumn('createrUser').withTitle($translate('contentSensitiveWord.createrUser')).notSortable(),
 		DTColumnBuilder.newColumn('createTime').withTitle($translate('contentSensitiveWord.createTime')).notSortable().renderWith(timeRender),
 		DTColumnBuilder.newColumn('updateTime').withTitle($translate('contentSensitiveWord.updateTime')).notSortable().notVisible().renderWith(timeRender),
@@ -142,6 +142,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	function submit() {
 		if (!vm.readonlyID) {
 			$.fn.dataTable.ext.errMode = 'none';
+			vm.bean.createrUser = vm.ltuserName;
+		
 			ContentSensitiveWordService.createContentSensitiveWord(vm.bean).then(onSubmitSuccess,
 					function(errResponse) {
  						handleAjaxError(errResponse);

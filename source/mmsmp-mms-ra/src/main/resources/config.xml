@@ -402,10 +402,10 @@
 		<logPath>/logs/vas_log</logPath>
 		<logLevel>0</logLevel>
 		<charset>GB2312</charset>
-		<mmscURL>/vas</mmscURL>
-		<mmscIP>10.199.84.188:8899</mmscIP>
+		<mmscURL>/MM7ReceiveServlet</mmscURL>
+		<mmscIP>127.0.0.1:9093</mmscIP>
 		<mmscID>910010</mmscID>
-		<useSSL>true</useSSL>
+		<useSSL>false</useSSL>
 		<listenIP>211.136.90.244</listenIP>
 		<listenPort>80</listenPort>
 		<backLog>50</backLog>

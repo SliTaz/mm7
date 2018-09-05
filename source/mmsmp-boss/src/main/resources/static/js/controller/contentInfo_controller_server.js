@@ -66,8 +66,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		DTColumnBuilder.newColumn('status').withTitle($translate('contentInfo.status')).notSortable().renderWith(statusType),
 		DTColumnBuilder.newColumn('author').withTitle($translate('contentInfo.author')).notSortable(),
 		DTColumnBuilder.newColumn('aduitUser').withTitle($translate('contentInfo.aduitUser')).notSortable(),
-		DTColumnBuilder.newColumn('lastAuditTime').withTitle($translate('contentInfo.lastAuditTime')).notSortable().renderWith(timeRender),
 		DTColumnBuilder.newColumn('createTime').withTitle($translate('contentInfo.createTime')).notSortable().renderWith(timeRender),
+		DTColumnBuilder.newColumn('lastAuditTime').withTitle($translate('contentInfo.lastAuditTime')).notSortable().renderWith(timeRender),
 		DTColumnBuilder.newColumn('contentCode').withTitle($translate('contentInfo.contentCode')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('contentPath').withTitle($translate('contentInfo.contentPath')).notSortable().notVisible().renderWith(remarkDetail),
 		DTColumnBuilder.newColumn('contentType').withTitle($translate('contentInfo.contentType')).notSortable().renderWith(contentTypeDetail).notVisible(),
@@ -225,11 +225,13 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		vm.readonlyID = false;
 		vm.statusCode="";
 		vm.statusMessage="";
+		$("#rejectReasonHide").hide();
 	}
 	function edit(bean) {
 		reloadData();
 		selectDevice();
 		$("#cpInfo2").val(bean.cpInfoId).select2();
+		$("#rejectReasonHide").show();
 		vm.modelTitle = $translate.instant('contentInfo.edit');
 		vm.bean = bean;
 		vm.readonlyID = true;
@@ -247,6 +249,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			$.fn.dataTable.ext.errMode = 'none';
 			vm.bean.startTime = timeFormatNew(vm.bean.startTime);
 			vm.bean.endTime = timeFormatNew(vm.bean.endTime);
+			vm.bean.author = vm.ltuserName;
 			ContentInfoService.createContentInfo(vm.bean).then(onSubmitSuccess,
 					function(errResponse) {
  						handleAjaxError(errResponse);

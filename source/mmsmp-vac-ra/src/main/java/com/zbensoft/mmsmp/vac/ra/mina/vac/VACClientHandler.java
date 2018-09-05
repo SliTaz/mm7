@@ -17,6 +17,7 @@ import com.zbensoft.mmsmp.vac.ra.aaa.HandsetResp;
 import com.zbensoft.mmsmp.vac.ra.aaa.Header;
 import com.zbensoft.mmsmp.vac.ra.aaa.Unbind;
 import com.zbensoft.mmsmp.vac.ra.aaa.UnbindResp;
+import com.zbensoft.mmsmp.vac.ra.log.PROCESS_LOG;
 import com.zbensoft.mmsmp.vac.ra.util.PropertiesHelper;
 
 public class VACClientHandler extends IoHandlerAdapter {
@@ -103,16 +104,16 @@ public class VACClientHandler extends IoHandlerAdapter {
 		logger.info("ByteBuffer posioton=" + bb.position() + ", capacity=" + bb.capacity() + ", limit=" + bb.limit());
 
 		Header header = new Header();
-		do_read(bb, header);
+		do_readHead(bb, header);
 		switch (header.getCommandId().intValue()) {
 		case Header.CMDID_BindResp:
-			BindResp o = new BindResp();
-			do_read(bb, o);
-			if (o.getResult_Code() == BindResp.SUCCESS) {
+			BindResp bindResp = new BindResp();
+			do_read(bb, bindResp);
+			if (bindResp.getResult_Code() == BindResp.SUCCESS) {
 				logger.info("login successful.");
 				sender_start();
 			} else {
-				logger.warn("login failed: " + o);
+				logger.warn("login failed: " + bindResp);
 				try {
 					Thread.sleep(5000L);
 				} catch (InterruptedException localInterruptedException) {
@@ -172,6 +173,7 @@ public class VACClientHandler extends IoHandlerAdapter {
 		try {
 			IoBuffer buffer = IoBuffer.wrap(o.serialize());
 			session.write(buffer);
+			PROCESS_LOG.INFO("vac client " + "send:" + o.toString());
 		} catch (Exception e) {
 			logger.error("do_write(IoSession, Header)", e);
 		}
@@ -189,6 +191,16 @@ public class VACClientHandler extends IoHandlerAdapter {
 	}
 
 	private void do_read(ByteBuffer bb, Header o) {
+		try {
+			o.unserialize(bb.duplicate());
+			PROCESS_LOG.INFO("vac client " + "recv:" + o.toString());
+		} catch (Exception e) {
+			logger.error("do_read(ByteBuffer, Header)", e);
+		}
+		log(o, false);
+	}
+
+	private void do_readHead(ByteBuffer bb, Header o) {
 		try {
 			o.unserialize(bb.duplicate());
 		} catch (Exception e) {

@@ -4,6 +4,7 @@ import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.MT_SMMessage;
 import com.zbensoft.mmsmp.common.ra.common.queue.messagehandler.AbstractMessageHandler;
 import com.zbensoft.mmsmp.common.ra.vas.commons.tcp.IServerHandler;
+import com.zbensoft.mmsmp.sms.ra.log.SMS_LOG;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -35,18 +36,18 @@ public class ReceiveMTSmsHandler implements IServerHandler {
     public void onReceiveMsg(int arg0, Object arg1, Serializable arg2) {
         if (arg2 instanceof MT_SMMessage) {
             MT_SMMessage mtmsg = (MT_SMMessage)arg2;
-            logger.info("receive mt sms message from corebiz success......");
+            SMS_LOG.INFO("receive mt sms message from corebiz success......");
 
             try {
                 this.quence.getMtQuence().put(mtmsg);
-                logger.info("put mt sms message to mtquence seccess......");
+                SMS_LOG.INFO("put mt sms message to mtquence seccess......");
             } catch (InterruptedException var6) {
-                logger.info("put mt sms message to mtquence failed......");
+                SMS_LOG.INFO("put mt sms message to mtquence failed......");
                 var6.printStackTrace();
             }
         } else if (arg2 instanceof MO_SMMessage) {
             MO_SMMessage mtmsg = (MO_SMMessage)arg2;
-            logger.info("==========" + mtmsg.getSendAddress() + "   " + mtmsg.getSmsText() + "    " + mtmsg.getVasId());
+            SMS_LOG.INFO("==========" + mtmsg.getSendAddress() + "   " + mtmsg.getSmsText() + "    " + mtmsg.getVasId());
         }
 
     }

@@ -145,7 +145,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/helpDocument/title").permitAll()
                 .antMatchers("/helpDocument/getHtml").permitAll()
                 .antMatchers("/epayment/get_user_count").permitAll()
-                
+                .antMatchers("/corbiz/whiteList").permitAll()
+                .antMatchers("/corbiz/cpInfo").permitAll()
+                .antMatchers("/corbiz/userOrder").permitAll()
+                .antMatchers("/corbiz/getSpurlByVaspid").permitAll()
+                .antMatchers("/corbiz/requestacc").permitAll()
+                .antMatchers("/corbiz/getSysConfig").permitAll()
+                .antMatchers("/corbiz/getServiceIDbyProductid").permitAll()
+                .antMatchers("/corbiz/getSpReportUrlByServiceCode").permitAll()
+                .antMatchers("/corbiz/blackList").permitAll()
+                .antMatchers("/corbiz/spInfo").permitAll()
+                .antMatchers("/corbiz/productInfo").permitAll()
+                .antMatchers("/corbiz/productService").permitAll()
 
 				// .antMatchers("/**/**").permitAll()
 				// 除上面外的所有请求全部需要鉴权认证

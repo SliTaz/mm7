@@ -42,6 +42,18 @@ App.factory('SpAccessService', ['$http', '$q', function($http, $q){
 						}
 				);
 	},
+	fetchProvince: function() {
+		return $http.get(apiUrl +"/provinceCity")
+		.then(
+				function(response){
+					return response.data;
+				}, 
+				function(errResponse){
+					handleAjaxError(errResponse);
+					return $q.reject(errResponse);
+				}
+		);
+},
 		    updateAlarmInfo: function(alarmInfo, id){
 					return $http.put(apiUrl +"/spAccess/"+id, alarmInfo)
 							.then(

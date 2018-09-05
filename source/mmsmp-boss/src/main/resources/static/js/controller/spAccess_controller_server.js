@@ -47,7 +47,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		DTColumnBuilder.newColumn('companyName').withTitle($translate('spInfo.companyName')).notSortable(),
 		DTColumnBuilder.newColumn('spAccessNumber').withTitle($translate('spInfo.spAccessNumber')).notSortable(),
 		DTColumnBuilder.newColumn('spAccessNumberExtend').withTitle($translate('spInfo.spAccessNumberExtend')).notSortable(),
-		DTColumnBuilder.newColumn('spCity').withTitle($translate('spInfo.spCity')).notSortable().notVisible(),
+		DTColumnBuilder.newColumn('provinceCityName').withTitle($translate('spInfo.spCity')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('isTrust').withTitle($translate('spInfo.isTrust')).notSortable().renderWith(statusType).notVisible(),
 		DTColumnBuilder.newColumn('spOrderNotifyUrl').withTitle($translate('spInfo.spOrderNotifyUrl')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('orderKey').withTitle($translate('spInfo.orderKey')).notSortable().notVisible(),
@@ -66,6 +66,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	vm.selData = selData;
 	selData();
 	vm.spInfoData = [];
+	vm.provinceData=[];
 	//表头start
 	tableHandle();
 	//表头end
@@ -110,8 +111,26 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		}, function(errResponse) {
 			console.error('Error while fetching fetchAllCoupons');
 		});
+		SpAccessService.fetchProvince().then(function(d) {
+			vm.provinceList = d.body;
+			for (var i = 0; i < vm.provinceList.length; i++) {
+				if(vm.provinceList[i].parentProvinceCityId!="-1"){
+					vm.provinceData.push(vm.provinceList[i]);
+				}
+			}
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
 	}
-	
+	function selectDevice(){
+		//解决 select2在模态框使用，模糊输入框无效
+		$("#spCity").select2();
+		$("#myModal").attr("tabindex","");
+		//解决selec2在火狐模太框中输入框不能输入start
+		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
+		};
+		//解决selec2在火狐模太框中输入框不能输入end
+	}
 	function statusType(data, type, full, meta){
 		if(data=='0'){
 			return $translate.instant('common.no');
@@ -125,6 +144,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		//解决 select2在模态框使用，模糊输入框无效
 		$("#spInfoId").select2();
 		$("#spInfoIds").select2();
+		$("#spCity").select2();
 		$("#myModal").attr("tabindex","");
 		//解决selec2在火狐模太框中输入框不能输入start
 		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
@@ -139,6 +159,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		selectDevice();
 		$("#spInfoId").val("").select2();
 		$("#spInfoIds").val("").select2();
+		$("#spCity").val("").select2();
 		vm.modelTitle = $translate.instant('spAccess.add');
 		vm.readonlyID = false;
 		vm.disabledID = false;
@@ -164,6 +185,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		selectDevice();
 		reloadData();
 		$("#spInfoId").val(bean.spInfoId).select2();
+		$("#spCity").val(bean.spCity).select2();
 		vm.modelTitle = $translate.instant('spAccess.edit');
 		vm.readonlyID = true;
 		vm.disabledID = true;

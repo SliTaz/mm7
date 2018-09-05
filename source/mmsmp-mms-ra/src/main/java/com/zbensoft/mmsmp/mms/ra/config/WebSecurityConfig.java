@@ -17,6 +17,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.headers().httpStrictTransportSecurity();
 		httpSecurity.headers().xssProtection();
 		httpSecurity.headers().cacheControl();
+		
+		httpSecurity.csrf().disable();//关闭csrf
 
 	}
 }

@@ -18,9 +18,10 @@
 		<module>mmsmp-common-ra</module>
 		<module>mmsmp-corebiz</module>
 		<module>mmsmp-sms-jar</module>
-        	<module>mmsmp-sgip-gateway-ra-simulator</module>
 		<module>mmsmp-vac-ra-simulator</module>
 		<module>mmsmp-sp-ra-simulator</module>
+		<module>mmsmp-mms-ra-simulator</module>
+		<module>mmsmp-ownbiz-ra</module>
 	</modules>
 	<groupId>com.zbensoft</groupId>
 	<artifactId>mmsmp</artifactId>

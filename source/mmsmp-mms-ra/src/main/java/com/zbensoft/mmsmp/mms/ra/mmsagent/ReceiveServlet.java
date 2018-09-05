@@ -17,31 +17,47 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+@MultipartConfig(location="D:\\logs\\mmsmp", fileSizeThreshold=1024*1024, maxFileSize=1024*1024*5, maxRequestSize=1024*1024*5*5)
+@WebServlet(urlPatterns = "/Receiver")//MM7ReceiveServlet
 public class ReceiveServlet extends MM7ReceiveServlet {
 	static final Logger logger = Logger.getLogger(ReceiveServlet.class);
 	HttpRequest mo_req;
 	MessageRouter messageRouter;
+	
+	
+	//自动注入spring boot默认的上传配置
+	@Autowired
+	private MultipartConfigElement multipartConfigElement;
 
 	public void init() throws ServletException {
+		logger.info("into ReceiveServlet(MM7ReceiveServlet) init method");
 		this.Config = new MM7Config("mm7Config");
 		//this.messageRouter = ((MessageRouter) WebApplicationContextUtils.getWebApplicationContext(getServletContext()).getBean("messageRouter"));
 		this.messageRouter = ApplicationListener.getMessageRouter();
 	}
 
 	protected void service(HttpServletRequest req, HttpServletResponse rsp) throws IOException, ServletException {
+		logger.info("into ReceiveServlet(MM7ReceiveServlet) service method");
 		this.mo_req = new HttpRequest(req);
 		super.service(this.mo_req, rsp);
 	}
 
 	public MM7VASPRes doDeliver(MM7DeliverReq req) {
+		logger.info("into ReceiveServlet(MM7ReceiveServlet) doDeliver method");
+		
 		List tos = req.getTo();
 		String to = (tos != null) && (tos.size() > 0) ? (String) tos.get(0) : "";
 		String gmsgid = MO_MMDeliverSPMessage.generateUUID("MMSMO");
@@ -137,6 +153,8 @@ public class ReceiveServlet extends MM7ReceiveServlet {
 	}
 
 	public MM7VASPRes doDeliveryReport(MM7DeliveryReportReq request) {
+		logger.info("into ReceiveServlet(MM7ReceiveServlet) doDeliveryReport method");
+		
 		String gmsgid = MO_ReportMessage.generateUUID("MMSMR");
 
 		StringBuilder sb = new StringBuilder("mmsagent<- mmsc one mmsmr message");
@@ -176,5 +194,10 @@ public class ReceiveServlet extends MM7ReceiveServlet {
 		mm7DeliveryReportRes.setTransactionID(request.getTransactionID());
 
 		return mm7DeliveryReportRes;
+	}
+	
+	
+	public void setMessageRouter(MessageRouter messageRouter){
+		this.messageRouter=messageRouter;
 	}
 }

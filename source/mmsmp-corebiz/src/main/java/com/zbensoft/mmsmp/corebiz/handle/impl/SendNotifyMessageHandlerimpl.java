@@ -7,13 +7,6 @@
  import org.apache.log4j.Logger;
  
  
- 
- 
- 
- 
- 
- 
- 
  public class SendNotifyMessageHandlerimpl
  {
    static final Logger logger = Logger.getLogger(SendNotifyMessageHandlerimpl.class);

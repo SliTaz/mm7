@@ -310,7 +310,7 @@ text-align: center;font-size: 1.2em;"translate="common.loading"></div>
 										            <option ng-repeat="x in ctrl.areaCodeData1" value="{{x.areaCode}}" ng-bind="x.areaCode"></option>
 						                          </select> -->
 						                          <input type="text" class="form-control" id="areaCode1" name="areaCode1" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
-															placeholder="{{'mmsmp.mobileSegment.Id' |translate }}" ng-model="ctrl.bean.areaCode"  ng-maxlength="32"  required>
+															placeholder="{{'mmsmp.mobileSegment.areaCode' |translate }}" ng-model="ctrl.bean.areaCode"  ng-maxlength="32"  required>
 															<div ng-show="addEditForm.areaCode1.$error.required" style="color:red" translate="mmsmp.mobileSegment.areaCode.notEmpty">
 	                                                         </div> 
 	                                                         <div ng-show=" addEditForm.areaCode1.$error.maxlength" style="color:red" translate="mmsmp.mobileSegment.areaCode.length">

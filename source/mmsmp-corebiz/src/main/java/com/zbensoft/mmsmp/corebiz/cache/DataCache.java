@@ -1,5 +1,20 @@
  package com.zbensoft.mmsmp.corebiz.cache;
  
+ import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.log4j.Logger;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.zbensoft.mmsmp.common.ra.common.db.entity.CpInfo;
+import com.zbensoft.mmsmp.common.ra.common.db.entity.ProductService;
  import com.zbensoft.mmsmp.common.ra.common.db.entity.SysParameters;
  import com.zbensoft.mmsmp.common.ra.common.db.entity.UserBlackWhiteList;
  import com.zbensoft.mmsmp.common.ra.common.db.entity.UserOrder;
@@ -19,9 +34,17 @@
  import java.util.HashSet;
  import java.util.List;
  import java.util.Map;
- import java.util.Set;
+import java.util.Random;
+import java.util.Set;
  import java.util.concurrent.ConcurrentHashMap;
  import org.apache.log4j.Logger;
+import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
  
  
  
@@ -52,6 +75,8 @@
    private Map<String, String> sysParams = new ConcurrentHashMap();
    
    private Map<String, UserBlackWhiteList> whiteUser = new ConcurrentHashMap();
+   
+   private Map<String, CpInfo> cpInfoUser = new ConcurrentHashMap();
    
    private Map<String, Vasservice> productInfoByOrderText = new ConcurrentHashMap();
    private Map<String, Vasservice> productInfoByCancelText = new ConcurrentHashMap();
@@ -122,33 +147,32 @@
      this.thirdOrder = new HashSet(300000);
    }
    
-   public String getVasidsByOwner(String spNumber)
+   public String getVasidsByOwner(String vasId)
    {
-     if (!this.VasidsByOwner.containsKey(spNumber))
+     if (!this.VasidsByOwner.containsKey(vasId))
      {
  
- 
-       String vaspid = this.daoUtil.getSmsDAO().getSpIdByVasId(spNumber);
+    	 //TODO 测试待修改
+    	 //String vaspid = "vaspid001"+vasId; this.daoUtil.getSmsDAO().getSpIdByVasId(spNumber);
+    	 String vaspid = "vaspid001"+HttpRequestHelper.getSpIdByVasId(vasId);
        
        if (this.ownerSpInfoBySpid.get(vaspid) != null)
        {
-         String vasid = this.daoUtil.getSmsDAO().getVasIDsByVaspID(vaspid, spNumber);
-         
-         if (vasid != null)
-         {
-           this.VasidsByOwner.put(vasid, vasid);
-         }
+    	   //完成修改
+         //String vasid = "vaspid001"+spNumber;this.daoUtil.getSmsDAO().getVasIDsByVaspID(vaspid, spNumber);
+           this.VasidsByOwner.put(vasId, vasId);
        }
      }
      
-     return (String)this.VasidsByOwner.get(spNumber);
+     return (String)this.VasidsByOwner.get(vasId);//get(spNumber);
    }
    
    public boolean isExistOrderRelation(String charge, String uniqueid)
    {
      if (!this.ownerOrderRelations.containsKey(charge))
      {
-       UserOrder userOrder = this.daoUtil.getSmsDAO().getUserOrder(charge, uniqueid);
+//       UserOrder userOrder = this.daoUtil.getSmsDAO().getUserOrder(charge, uniqueid);
+    	 UserOrder userOrder = HttpRequestHelper.getUserOrder(charge ,uniqueid);
        if (userOrder != null) {
          this.ownerOrderRelations.put(charge, uniqueid);
          return true;
@@ -178,7 +202,8 @@
      
      if (!this.spurlByVASPID.containsKey(key))
      {
-       value = this.daoUtil.getSmsDAO().getSpurlByVaspid(key);
+//       value = this.daoUtil.getSmsDAO().getSpurlByVaspid(key);
+    	 value = HttpRequestHelper.getSpurlByVaspid(vaspid);
        if ((value != null) && (!value.equals(""))) {
          this.spurlByVASPID.put(key, value);
        }
@@ -199,7 +224,8 @@
      
      if (!this.spurlByProductid.containsKey(key))
      {
-       value = this.daoUtil.getMm7dao().getSpReportUrlByServiceCode(spProductid);
+//       value = this.daoUtil.getMm7dao().getSpReportUrlByServiceCode(spProductid);
+    	 value = HttpRequestHelper.getSpReportUrlByServiceCode(spProductid);
        if ((value != null) && (!value.equals(""))) {
          this.spurlByProductid.put(key, value);
        }
@@ -208,9 +234,25 @@
      return (String)this.spurlByProductid.get(key);
    }
    
- 
- 
- 
+   Map<String, ProductService> requestAccId = new ConcurrentHashMap();
+   
+   public ProductService requestacc(String onDemandAccess)
+   {
+     String value = null;
+     String key = onDemandAccess;
+     
+     if (!this.requestAccId.containsKey(key))
+     {
+//       value = this.daoUtil.getMm7dao().getSpReportUrlByServiceCode(spProductid);
+    	 ProductService productService = HttpRequestHelper.requestacc(onDemandAccess);
+       if ((productService != null) && (!productService.equals(""))) {
+         this.requestAccId.put(key, productService);
+       }
+     }
+     
+     return this.requestAccId.get(key);
+   }
+   
  
    Map<String, String> uniqueidByProductids = new ConcurrentHashMap();
    
@@ -221,8 +263,9 @@
      
      if (!this.uniqueidByProductids.containsKey(key))
      {
-       value = this.daoUtil.getMm7dao().getServuniqueIdbySpproductid(spProductid);
-       if ((value != null) && (!value.equals(""))) {
+//       value = this.daoUtil.getMm7dao().getServuniqueIdbySpproductid(spProductid);
+    	 value = HttpRequestHelper.getServuniqueIdbySpproductid(spProductid);
+       if ((value != null) &&(!value.equals(""))) {
          this.uniqueidByProductids.put(key, value);
        }
      }
@@ -244,10 +287,12 @@
      
      if (!this.serviceIdByProductids.containsKey(key))
      {
-       value = this.daoUtil.getMm7dao().getServiceIDbyProductid(key);
-       this.serviceIdByProductids.put(key, value);
+//       value = this.daoUtil.getMm7dao().getServiceIDbyProductid(key);
+       value = HttpRequestHelper.getServiceIDbyProductid(key);
+       if ((value != null) &&(!value.equals(""))) {
+           this.serviceIdByProductids.put(key, value);
+         }
      }
-     
      return (String)this.serviceIdByProductids.get(key);
    }
    
@@ -264,7 +309,8 @@
      
      if (!this.mmsmtLimitByServiceids.containsKey(key))
      {
-       value = this.daoUtil.getMm7dao().getMTLimitNumber(key);
+    	//TODO 数据库调用，待修改
+       value = "1000";//this.daoUtil.getMm7dao().getMTLimitNumber(key);
        if ((value != null) && (!value.equals(""))) {
          this.mmsmtLimitByServiceids.put(key, value);
        }
@@ -372,7 +418,7 @@
      refreshSysParmas();
      refreshWhiteList();
      refreshOwnSpInfo();
-     
+     refreshBlackList();
      refreshCPSpVasservice();
      refreshThirdOrder();
      
@@ -394,12 +440,12 @@
    }
    
  
- 
+   
+
  
    public void refreshSpInfo()
    {
-     List<Vasp> spList = this.daoUtil.getSmsDAO().findSpInfo();
-     
+     List<Vasp> spList = HttpRequestHelper.getSpInfo();
  
      Vasp spInfo = null;
      Map<String, Vasp> spInfoBySpid = new HashMap();
@@ -456,7 +502,7 @@
  
    public void refreshProductInfo()
    {
-     List<Vasservice> servList = this.daoUtil.getBusinessManageDAO().findNormalStatus();
+     List<Vasservice> servList = HttpRequestHelper.getNormalStatus();
      Vasservice productInfo = null;
      Map<String, Vasservice> productInfoById = new HashMap();
      
@@ -547,7 +593,11 @@
    public void refreshSysParmas()
    {
      Map<String, String> sysParams = new HashMap();
-     List<SysParameters> sysParamsList = this.daoUtil.getBusinessManageDAO().findAllSysParams();
+//     List<SysParameters> sysParamsList = this.daoUtil.getBusinessManageDAO().findAllSysParams();
+     List<SysParameters> sysParamsList = HttpRequestHelper.getSysConfig();
+     for (SysParameters sysParameters : sysParamsList) {
+		System.out.println(sysParameters.getValue());
+	}
      SysParameters sysParam = null;
      log.info("refresh system parameters\n");
      for (int i = 0; i < sysParamsList.size(); i++) {
@@ -560,14 +610,9 @@
    
  
  
- 
- 
- 
    public void refreshWhiteList()
    {
-     this.whiteMap = this.daoUtil.getSmsDAO().getWhiteList();
-     
-     List<UserBlackWhiteList> userList = this.daoUtil.getBusinessManageDAO().findWhiteUserInfo();
+     List<UserBlackWhiteList> userList = HttpRequestHelper.getWhiteList();
      UserBlackWhiteList user = null;
      Map<String, UserBlackWhiteList> whiteUser = new HashMap();
      for (int i = 0; i < userList.size(); i++) {
@@ -577,10 +622,35 @@
      this.whiteUser = whiteUser;
    }
    
- 
- 
- 
- 
+   
+   
+   public void refreshCpInfo()
+   {
+     List<CpInfo> cpInfoList = HttpRequestHelper.getCpInfo();
+     CpInfo cpInfo = null;
+     Map<String, CpInfo> cpInfoUser = new HashMap();
+     for (int i = 0; i < cpInfoList.size(); i++) {
+    	 cpInfo = (CpInfo)cpInfoList.get(i);
+    	 cpInfoUser.put("" + cpInfo.getCpid(), cpInfo);
+     }
+     this.cpInfoUser = cpInfoUser;
+   }
+   
+   public void refreshBlackList()
+   {
+	   List<UserBlackWhiteList> userList = HttpRequestHelper.getBlackList();
+	   for (UserBlackWhiteList userBlackWhiteList : userList) {
+		   System.out.println(userBlackWhiteList.getCellphoneNumber());
+	   }
+	   UserBlackWhiteList user = null;
+	   Map<String, UserBlackWhiteList> whiteUser = new HashMap();
+	   for (int i = 0; i < userList.size(); i++) {
+		   user = (UserBlackWhiteList)userList.get(i);
+		   whiteUser.put(user.getProductId() + user.getCellphoneNumber(), user);
+	   }
+	   this.whiteUser = whiteUser;
+   }
+   
  
    public Vasp getSpInfoBySpid(String spid)
    {
@@ -881,7 +951,33 @@
  
  
  
- 
+	   public void init() {
+		   Vasservice vasservice = new Vasservice();
+		   vasservice.setUniqueid((int)(Math.random()*100));
+		   VasserviceReserveInfo vasserviceReserveInfo=new VasserviceReserveInfo();
+		   vasserviceReserveInfo.setSpProductid("vaspid0013010012345");
+		   vasservice.setVasserviceReserveInfo(vasserviceReserveInfo);
+		   vasservice.setServicedesc("201230123");
+		   vasservice.setVasid("3010012345");
+		   vasservice.setServicename("test");
+		   vasservice.setVaspid("vaspid0013010012345");
+		   vasservice.setOndemandfee(129.23);
+		   this.productInfoByMoDemand=new ConcurrentHashMap<>();
+		   this.productInfoByMoDemand.put("dianbo0013010012345", vasservice);
+//		   Vasp vasp=new Vasp();
+//		   vasp.setUniqueid((int)(Math.random()*100));
+//		   vasp.setVaspid("vaspid0013010012345");
+//		   this.ownerSpInfoBySpid=new ConcurrentHashMap<>();
+//		   this.ownerSpInfoBySpid.put("vaspid0013010012345", vasp);
+		   
+		   this.VasidsByOwner.put("3010012345", "3010012345");
+		   this.spurlByProductid.put("pro10001", "http://192.168.1.116:29095/SPServerServlet");
+		   this.uniqueidByProductids.put("pro10001", (int)(Math.random()*100)+"");
+		   this.serviceIdByProductids.put("pro10001",vasservice.getVasid()+"#"+vasservice.getVaspid());
+		   this.sysParams.put("MT_ORDER_QUOTA", "5");
+		   this.sysParams.put("MT_ONDEMAND_QUOTA", "5");
+		   
+	   }
  
  
  

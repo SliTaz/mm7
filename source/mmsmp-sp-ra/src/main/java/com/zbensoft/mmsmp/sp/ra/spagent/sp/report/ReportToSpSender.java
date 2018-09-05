@@ -87,7 +87,7 @@ public class ReportToSpSender {
 
 	public static void main(String[] args) {
 		MO_ReportMessage morpt = new MO_ReportMessage();
-		morpt.setReportUrl("http://10.199.201.70:8086/spservlet");
+		morpt.setReportUrl("http://localhost:29095/SPServerServlet");
 		morpt.setContent("qqqqqqqqqqq");
 		ReportToSpSender sender = new ReportToSpSender();
 		sender.sendReportToSp(morpt);

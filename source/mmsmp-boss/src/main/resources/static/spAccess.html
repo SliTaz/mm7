@@ -266,12 +266,10 @@
 													<label for="spCity"
 														class="col-sm-4 control-label control-label-zb" translate="spInfo.spCity"></label>
 													<div class="col-sm-7">
-														<input type="text" class="form-control" id="spCity" name="spCity" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
-															placeholder="{{'spInfo.spCity'   | translate }}" ng-model="ctrl.bean.spCity" ng-maxlength="32" >
-														 <div ng-show="addEditForm.spCity.$error.maxlength" style="color:red" translate="spInfo.spCity.length">
-                                                         </div>
-                                                         <div ng-show="addEditForm.spCity.$error.pattern" style="color:red" translate="common.illegalChar">
-									                     </div>
+									                      <select class="form-control" id="spCity"  name="spCity" style="width:100%;" ng-model="ctrl.bean.spCity" >
+					                                       <option value="" translate="common.choose"></option>
+					                                         <option ng-repeat="x in ctrl.provinceData" value="{{x.provinceCityId}}" ng-bind="x.provinceCityName"></option>
+		                                                </select> 
 													</div>
 												</div>
 											</div>

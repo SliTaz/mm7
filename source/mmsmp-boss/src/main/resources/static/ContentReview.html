@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title></title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico">
+<!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="lib/datepicker/datepicker3.css">
+<link rel="stylesheet" href="lib/datetimepicker/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="css/zben.css">
+<link rel="stylesheet" href="lib/select2/dist/css/select2.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/jquery/jQuery.resizeEnd.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/datepicker/bootstrap-datepicker.js"></script>
+<script src="lib/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="lib/daterangepicker/moment.min.js"></script>
+<script src="lib/select2/dist/js/select2.js"></script>
+<script src="js/zben.js"></script>
+<script src="js/controller/contentReview_controller_server.js"></script>
+<script src="js/service/contentReview_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="contentInfoModule"
+	id="content-wrapper" ng-controller="ServerSideCtrl as ctrl">
+
+<div class="wrapper">
+
+
+	<!-- 头部和左侧 开始 -->
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+	<div id="content-wrapper" class="content-wrapper">
+		<section class="content-header" id="content_section">
+				<h1 translate="common.contentReview"></h1>
+				<ol class="breadcrumb">
+				<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
+					<li class="active" translate="common.contentInfoM"></li>
+				</ol>
+		</section>
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="box box-primary collapsed-box">
+						<form class="form-horizontal" ng-submit="ctrl.reloadData()"
+							name="searchForm">
+						<div class="box-search-info">
+								<div class="box-header with-border">
+									<div class="row">
+										<div class="col-sm-8 pull-left">
+											<!-- <button type="button"
+												class="btn btn-primary btn-sm table-tool-left" id="btn-add"
+												data-toggle="modal" data-target="#myModal"
+												ng-click="ctrl.addInit()" translate="common.add"></button> -->
+										</div>
+										<div class="col-sm-4 pull-right">
+											<button type="button"
+												class="btn btn-info btn-sm table-tool-right" id="queryBtn"
+												data-widget="collapse" data-toggle="tooltip" title="">
+												<i class="fa  fa-angle-double-down" translate="common.expand.query">&nbsp;</i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- end box-search-info -->
+							<div class="box-body" style="display: none">
+								<div class="row">
+									<div class="form-group col-sm-6">
+										<label for="contentInfoId"
+											class="col-sm-4 control-label control-label-zb" translate="contentInfo.contentName"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" ng-model="ctrl.beanSer.contentName"
+												placeholder="{{'contentInfo.contentName'   | translate }}">
+										</div>
+									</div>
+									<div class="form-group col-sm-6">
+										<label for="productInfoId"
+											class="col-sm-4 control-label control-label-zb" translate="contentInfo.productInfoId"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" ng-model="ctrl.beanSer.productInfoId"
+												placeholder="{{'contentInfo.productInfoId'   | translate }}">
+										</div>
+									</div>
+	
+									</div>
+	
+								<div class="row">
+									<div class="form-group col-sm-6">
+										<label for="cpInfoId"
+											class="col-sm-4 control-label control-label-zb" translate="contentInfo.cpInfo"></label>
+										<div class="col-sm-7">
+											<select class="form-control"  id="cpInfo" ng-model="ctrl.beanSer.cpInfoId" ng-click="ctrl.selectDevice()"  style="width:100%">
+						                        <option value="" translate="common.choose"></option>
+						                      	<option ng-repeat="x in ctrl.cpInfoData" value="{{x.cpInfoId}}" ng-bind="x.cpName"></option>
+						                    </select>
+											<!-- <input type="text" class="form-control" ng-model="ctrl.beanSer.cpInfoId"
+												placeholder="{{'contentInfo.cpInfoId'   | translate }}"> -->
+										</div>
+									</div>
+									
+									<div class="form-group col-sm-6">
+										<label for="status"
+											class="col-sm-4 control-label control-label-zb" translate="contentInfo.status"></label>
+										<div class="col-sm-7">
+                                           <select class="form-control"  placeholder="{{'contentInfo.status' | translate }}"
+											ng-model="ctrl.beanSer.status">
+												<option value="1" translate="contentInfo.contentReview"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-sm-6">
+										<label for="startTimeStart"
+											class="col-sm-4 control-label control-label-zb" translate="contentInfo.createTimeStart"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="createTimeStart" autocomplete="off" name="createTimeStart"
+												placeholder="{{'contentInfo.createTimeStart'   | translate }}" ng-model="ctrl.beanSer.createTimeStart" date-format>
+										</div>
+									</div>
+									
+									<div class="form-group col-sm-6">
+										<label for="startTimeEnd"
+											class="col-sm-4 control-label control-label-zb" translate="contentInfo.createTimeEnd"></label>
+										<div class="col-sm-7">
+                                           <input type="text" class="form-control" id="createTimeEnd" autocomplete="off" name="createTimeEnd"
+												placeholder="{{'contentInfo.createTimeEnd'   | translate }}" ng-model="ctrl.beanSer.createTimeEnd" date-format>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-block btn-info btn-sm"
+										style="float: right; width: 75px;" id="bth-searchDate" translate="search"></button>
+									</div>
+								</div>
+							</div>
+							<!-- end box-body -->
+
+						</form>
+					</div>
+
+
+					<!-- table start -->
+					<div class="box box-primary" id="example">
+						<div class="box-body">
+							<table datatable="" id="table_id" dt-options="ctrl.dtOptions"
+								dt-columns="ctrl.dtColumns" dt-instance="ctrl.dtInstance"
+								class="row-border hover">
+							</table>
+						</div>
+						<!-- /.box-body -->
+						<div id="loadDiv"  style="position: absolute;top: 50%; left: 50%;width: 100%; height: 40px;margin-left: -50%;
+                            margin-top: -25px;padding-top: 20px;text-align: center;font-size: 1.2em;"translate="common.loading"></div>
+					</div>
+					<!-- table end -->
+				</div>
+			</div>
+		</section>
+
+
+
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<form class="form-horizontal" ng-submit="ctrl.submit()"
+				name="addEditForm">
+				<div class="modal-dialog">
+					<div class="modal-content" style="padding: 3px;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel" ng-model="ctrl.modelTitle"><span ng-bind="ctrl.modelTitle"></span></h4>
+                                <!-- 校验start -->
+								<div ng-include="'html/tips.html'"></div>
+								<!-- 校验end -->
+						</div>
+						<div class="box box-primary">
+							<div class="row">
+								<div class="col-xs-12">
+									<section class="content-header" id="content_section"></section>
+									<section class="content">
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productInfoId"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.contentName"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="contentName" name="contentName" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-disabled="true"
+															placeholder="{{'contentInfo.contentName'   | translate }}" ng-model="ctrl.bean.contentName" ng-maxlength="128" required>
+														<div ng-show="addEditForm.contentName.$error.required" style="color:red" translate="contentInfo.contentName.required">
+                                                         </div>
+														 <div ng-show="addEditForm.contentName.$error.maxlength" style="color:red" translate="contentInfo.contentName.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.contentName.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+																			
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productInfoId"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.productInfoId"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="productInfoId" name="productInfoId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-disabled="true"
+															placeholder="{{'contentInfo.productInfoId'   | translate }}" ng-model="ctrl.bean.productInfoId" ng-maxlength="32" required>
+														<div ng-show="addEditForm.productInfoId.$error.required" style="color:red" translate="contentInfo.productInfoId.required">
+                                                         </div>
+														 <div ng-show="addEditForm.productInfoId.$error.maxlength" style="color:red" translate="contentInfo.productInfoId.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.productInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentCode"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.cpInfo"></label>
+													<div class="col-sm-7">
+														<select class="form-control"  id="cpInfo2" name="cpInfo2" ng-model="ctrl.bean.cpInfoId"  style="width:100%" ng-disabled="true" required>
+						                                          <option value="" translate="common.choose"></option>
+						                                          <option ng-repeat="x in ctrl.cpInfoData" value="{{x.cpInfoId}}" ng-bind="x.cpName"></option>
+						                                   </select>
+														 <div ng-show="addEditForm.cpInfo2.$error.required" style="color:red" translate="contentInfo.cpInfoId.required">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentCode"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.contentCode"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="contentCode" name="contentCode" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-disabled="true"
+															placeholder="{{'contentInfo.contentCode'   | translate }}" ng-model="ctrl.bean.contentCode" ng-maxlength="32" required>
+														<div ng-show="addEditForm.contentCode.$error.required" style="color:red" translate="contentInfo.contentCode.required">
+                                                         </div>
+														 <div ng-show="addEditForm.contentCode.$error.maxlength" style="color:red" translate="contentInfo.contentCode.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.contentCode.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="author"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.author"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="author" name="author" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-disabled="true"
+															placeholder="{{'contentInfo.author'   | translate }}" ng-model="ctrl.bean.author"
+															 ng-maxlength="32">
+														 <div ng-show="addEditForm.author.$error.maxlength" style="color:red" translate="contentInfo.author.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.author.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentType"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.contentType"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="contentType" name="contentType" placeholder="{{'contentInfo.contentType' | translate }}" ng-model="ctrl.bean.contentType" required>
+													   		 <option value="" translate="common.choose"></option>
+													   		 <option value="0" translate="userServiceSend.MMS"></option>
+													   		 <option value="1" translate="common.image"></option>
+													   		 <option value="2" translate="contentInfo.ring"></option>
+													   		 <option value="3" translate="contentInfo.video"></option>
+													   		 <option value="4" translate="contentInfo.text"></option>
+													   		 <option value="7" translate="contentInfo.colorE"></option>
+													    </select>
+													     <div ng-show="addEditForm.contentType.$error.required" style="color:red" translate="contentInfo.contentType.required">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="keyWord"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.keyWord"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="keyWord" name="keyWord" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'contentInfo.keyWord'   | translate }}" ng-model="ctrl.bean.keyWord"
+															 ng-maxlength="128">
+														 <div ng-show="addEditForm.keyWord.$error.maxlength" style="color:red" translate="contentInfo.keyWord.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.keyWord.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="isRealtime"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.isRealtime"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="isRealtime" name="isRealtime"  placeholder="{{'contentInfo.isRealtime' | translate }}" ng-model="ctrl.bean.isRealtime">
+													   		 <option value="" translate="common.choose"></option>
+													   		 <option value="1" translate="common.ok"></option>
+													   		 <option value="2" translate="common.no"></option>
+													    </select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="isApplyDelete"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.isApplyDelete"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="isApplyDelete" name="isApplyDelete" placeholder="{{'contentInfo.isApplyDelete' | translate }}" ng-model="ctrl.bean.isApplyDelete">
+													   		 <option value="" translate="common.choose"></option>
+													   		 <option value="1" translate="common.ok"></option>
+													   		 <option value="2" translate="common.no"></option>
+													    </select>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userStartTime"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.startTime"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="startTime" autocomplete="off" name="startTime"
+															placeholder="{{'contentInfo.startTime'   | translate }}" ng-model="ctrl.bean.startTime" date-format>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userStartTime"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.endTime"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="endTime" autocomplete="off" name="endTime"
+															placeholder="{{'contentInfo.endTime'   | translate }}" ng-model="ctrl.bean.endTime" date-format>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="keyWord"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.singer"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="singer" name="singer" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-disabled="true"
+															placeholder="{{'contentInfo.singer'   | translate }}" ng-model="ctrl.bean.singer"
+															 ng-maxlength="64">
+														 <div ng-show="addEditForm.singer.$error.maxlength" style="color:red" translate="contentInfo.singer.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.singer.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="keyWord"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.featureStr"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="featureStr" name="featureStr" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'contentInfo.featureStr'   | translate }}" ng-model="ctrl.bean.featureStr"
+															 ng-maxlength="32">
+														 <div ng-show="addEditForm.featureStr.$error.maxlength" style="color:red" translate="contentInfo.featureStr.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.featureStr.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="keyWord"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.aduitUser"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="aduitUser" name="aduitUser" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-disabled="true"
+															placeholder="{{'contentInfo.aduitUser'   | translate }}" ng-model="ctrl.bean.aduitUser"
+															 ng-maxlength="32">
+														 <div ng-show="addEditForm.aduitUser.$error.maxlength" style="color:red" translate="contentInfo.aduitUser.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.aduitUser.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="keyWord"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.versionId"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="versionId" name="versionId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'contentInfo.versionId'   | translate }}" ng-model="ctrl.bean.versionId"
+															 ng-maxlength="32">
+														 <div ng-show="addEditForm.versionId.$error.maxlength" style="color:red" translate="contentInfo.versionId.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.versionId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="isApplyDelete"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.isSend"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="isSend" name="isSend" placeholder="{{'contentInfo.isSend' | translate }}" ng-model="ctrl.bean.isSend" required>
+													   		 <option value="" translate="common.choose"></option>
+													   		 <option value="0" translate="contentInfo.unsent"></option>
+													   		 <option value="1" translate="contentInfo.sended"></option>
+													   		 <option value="2" translate="contentInfo.sending"></option>
+													    </select>
+													    <div ng-show="addEditForm.isSend.$error.required" style="color:red" translate="contentInfo.isSend.required">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="keyWord"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.setSendTimeUser"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="setSendTimeUser" name="setSendTimeUser" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'contentInfo.setSendTimeUser'   | translate }}" ng-model="ctrl.bean.setSendTimeUser"
+															 ng-maxlength="32">
+														 <div ng-show="addEditForm.setSendTimeUser.$error.maxlength" style="color:red" translate="contentInfo.setSendTimeUser.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.setSendTimeUser.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="keyWord"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.adSendId"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="adSendId" name="adSendId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'contentInfo.adSendId'   | translate }}" ng-model="ctrl.bean.adSendId"
+															 ng-maxlength="32">
+														 <div ng-show="addEditForm.adSendId.$error.maxlength" style="color:red" translate="contentInfo.adSendId.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.adSendId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentRemark"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.contentRemark"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="contentRemark" name="contentRemark" 
+															placeholder="{{'contentInfo.contentRemark'   | translate }}" ng-model="ctrl.bean.contentRemark" ng-maxlength="1000" ></textarea>
+														 <div ng-show="addEditForm.contentRemark.$error.maxlength" style="color:red" translate="contentInfo.contentRemark.length">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+											<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentRemark"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.contentPath"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="contentPath" name="contentPath" 
+															placeholder="{{'contentInfo.contentPath'   | translate }}" ng-model="ctrl.bean.contentPath" ng-maxlength="1000" ></textarea>
+														 <div ng-show="addEditForm.contentPath.$error.maxlength" style="color:red" translate="contentInfo.contentPath.length">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentRemark"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.realtimeContentUrl"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="realtimeContentUrl" name="realtimeContentUrl"
+															placeholder="{{'contentInfo.realtimeContentUrl'   | translate }}" ng-model="ctrl.bean.realtimeContentUrl" ng-maxlength="1000" ></textarea>
+														 <div ng-show="addEditForm.realtimeContentUrl.$error.maxlength" style="color:red" translate="contentInfo.realtimeContentUrl.length">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+											<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentRemark"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.rejectReason"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="rejectReason" name="rejectReason" 
+															placeholder="{{'contentInfo.rejectReason'   | translate }}" ng-model="ctrl.bean.rejectReason" ng-maxlength="1000" ></textarea>
+														 <div ng-show="addEditForm.rejectReason.$error.maxlength" style="color:red" translate="contentInfo.rejectReason.length">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentRemark"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.webPic"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="webPic" name="webPic" 
+															placeholder="{{'contentInfo.webPic'   | translate }}" ng-model="ctrl.bean.webPic" ng-maxlength="1000" ></textarea>
+														 <div ng-show="addEditForm.webPic.$error.maxlength" style="color:red" translate="contentInfo.webPic.length">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="contentRemark"
+														class="col-sm-4 control-label control-label-zb" translate="contentInfo.smsText"></label>
+													<div class="col-sm-7">
+														<textarea type="text" class="form-control" id="smsText" name="smsText" 
+															placeholder="{{'contentInfo.smsText'   | translate }}" ng-model="ctrl.bean.smsText" ng-maxlength="1000" ></textarea>
+														 <div ng-show="addEditForm.smsText.$error.maxlength" style="color:red" translate="contentInfo.smsText.length">
+                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+						<!-- end box box-primary -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" translate="common.cancel"></button>
+							<button type="submit" class="btn btn-primary" ng-disabled="addEditForm.$invalid" translate="common.save"></button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+			</form>
+			<!-- /.modal -->
+		</div>
+
+	</div>
+</div>
+</body>
+
+</html>

@@ -24,7 +24,7 @@ public class MessageProcessor {
 		mosms.setVasId("1065556500101");
 		mosms.setSmsText("#123");
 		mosms.setLinkId("123456");
-		mosms.setNotirySPURL("127.0.0.1:29095");//发给sp的模拟器。sp的模拟器的ip和端口号
+		mosms.setNotirySPURL("127.0.0.1:39095");//发给sp的模拟器。sp的模拟器的ip和端口号
 
 		mosms.setSequence_Number_1(Integer.valueOf(111));
 		mosms.setSequence_Number_2(Integer.valueOf(222));

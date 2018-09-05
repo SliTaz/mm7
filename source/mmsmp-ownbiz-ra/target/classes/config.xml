@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<!-- 通用配置参数 -->
+	<CommonConfig>
+		<!-- 内部通讯webservice地址  业务处理 -->
+		<uniBusinessUrl>http://localhost:8002/UniBusiness</uniBusinessUrl>
+        <!-- spId -->
+		<vaspId>91444</vaspId>
+		<!-- 彩信存放路径 -->
+		<contentFilePath>/files/data/content/</contentFilePath>
+		
+		<!-- 彩信编码 -->
+		<mmsEncoding>binary</mmsEncoding>	
+	</CommonConfig>
+	<MM7Config>
+		<authenticationMode>0</authenticationMode>
+		<userName>zxme</userName>
+		<password>zxme</password>
+		<maxMessageSize>4000000</maxMessageSize>
+		<logPath>/tmp/vas_log</logPath>
+		<logLevel>0</logLevel>
+		<charset>UTF-8</charset>
+		<mmscURL>/corebiz/mm7Receive</mmscURL>
+			<!-- 配置corebiz地址 -->
+		<mmscIP>10.199.201.71:8003</mmscIP>
+		<mmscID>900001</mmscID>
+		<useSSL>true</useSSL>
+		<!-- 配置ownbiz地址 -->
+		<listenIP>10.199.201.69</listenIP>
+		<listenPort>8085</listenPort>
+		<backLog>50</backLog>
+		<timeOut>90000</timeOut>
+		<reSendCount>1</reSendCount>
+		<logNum>100</logNum>
+		<logInterval>120</logInterval>
+		<logSize>1000</logSize>
+		<!-- ConnConfig -->
+		<keepAlive>on</keepAlive>
+		<maxKeepAliveRequests>5</maxKeepAliveRequests>
+		<serverMaxKeepAlive>5</serverMaxKeepAlive>
+		<minKeepAliveRequests>1</minKeepAliveRequests>
+		<scanInterval>500</scanInterval>
+		<keepAliveTimeout>3000</keepAliveTimeout>
+		<step>1</step>
+	</MM7Config>
+</Config>

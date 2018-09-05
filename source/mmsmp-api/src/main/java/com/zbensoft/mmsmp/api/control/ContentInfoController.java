@@ -216,6 +216,7 @@ public class ContentInfoController {
 		currentContentInfo.setLastAuditTime(contentInfo.getLastAuditTime());
 		currentContentInfo.setSetSendTimeUser(contentInfo.getSetSendTimeUser());
 		currentContentInfo.setAdSendId(contentInfo.getAdSendId());
+		currentContentInfo.setAduitUser(contentInfo.getAduitUser());
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
 			for (ObjectError error : list) {

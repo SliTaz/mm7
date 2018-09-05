@@ -1,9 +1,11 @@
 package com.zbensoft.mmsmp.mms.ra.mmsagent;
 
+import com.cmcc.mm7.vasp.message.MM7DeliveryReportReq;
 import com.zbensoft.mmsmp.common.ra.MM7.sp.SubmitResp;
 import com.zbensoft.mmsmp.common.ra.common.message.MT_MMHttpSPMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.MT_MMMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.MT_ReportMessage;
+import com.zbensoft.mmsmp.common.ra.common.message.MT_SPMMHttpMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.SubmitReq;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -20,7 +22,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
 import java.util.concurrent.TimeUnit;
+
+import javax.servlet.ServletException;
+
 import org.apache.log4j.Logger;
+import org.springframework.boot.SpringApplication;
 
 public class Mm7ClientProxy {
 	static final Logger logger = Logger.getLogger(Mm7ClientProxy.class);
@@ -28,11 +34,50 @@ public class Mm7ClientProxy {
 			new ArrayBlockingQueue(1000), new ThreadPoolExecutor.CallerRunsPolicy());
 	MessageRouter messageRouter;
 	String mmsmcUrl;
+	
+	public static void main(String[] args) throws Exception {
+		Mm7ClientProxy mm7ClientProxy=ApplicationListener.getMm7ClientProxy();
+		
+		String mms = "--==SimpleTeam=df4f8c96af4d3e7f9247fd6e973507f3==Content-ID: <SimpleTeam88025833>Content-Type: text/xml; charset=\"utf8\"Content-Transfer-Encoding: 8bit<?xml version=\"1.0\" encoding=\"utf-8\"?><env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"><env:Header><mm7:TransactionID xmlns:mm7=\"http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-0\" env:mustUnderstand=\"1\">60567875009767375926</mm7:TransactionID></env:Header><env:Body><DeliverReq xmlns=\"http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-0\"><MM7Version>6.3.0</MM7Version><SenderIdentification><VASPID>888888</VASPID><VASID>33333</VASID><SenderAddress>10658888</SenderAddress></SenderIdentification><Recipients><To><Number>3333</Number></To></Recipients><ServiceCode>33333</ServiceCode><LinkedID>343243243</LinkedID><TimeStamp>2011-01-20T11:57:10+08:00</TimeStamp><Priority>Normal</Priority><Subject>3333</Subject><Sender>3333</Sender></DeliverReq></env:Body></env:Envelope>--==SimpleTeam=df4f8c96af4d3e7f9247fd6e973507f3==Content-Type: multipart/mixed;\tboundary=\"==SimpleTeam=7c0c6a737d106855b0e7ef0bf7ba482f==\"--==SimpleTeam=7c0c6a737d106855b0e7ef0bf7ba482f==Content-ID: <SimpleTeam.txt>Content-Type: text/plain; charset=\"utf-8\"Content-Transfer-Encoding: base64MzMzMw==--==SimpleTeam=7c0c6a737d106855b0e7ef0bf7ba482f==Content-ID: <SimpleTeam.gif>Content-Type: image/gifContent-Transfer-Encoding: base64R0lGODlheAA3ANUAAABmmZkAAABNdABSe73P2EGGqQAAAGScuL/AwQBDZCVoif///0B5lQA9W3+is0wySwBmmABhkgBklo+PjwBYhL/X4wBejdHi6nMaJgBVgAAlOH+uxgBJbQBikwBcikByjABGaShcdRBunY+4zUBtgwBllwBahwBgj+/19yguMqHB0QANE8/f5hBmkAAzTTCDqwAGCQA/XzB9pAAaJhBWeQAtQwATHRBJZVB9lGB/jzpAX4YNE48GCn+TnTo7WRBghyH5BAAAAAAALAAAAAB4ADcAAAb/QIBwh0YIy30W6UjuENKQqiHkJFUTScYwpiMaoIAnR3k+Uo6yk6ZMpSedoEpTekaVJDwlE2oAAw2sCxW4";
+
+		while (mms.getBytes().length < 51200) {
+			mms = mms + "h0YIy30W6UjuENKQqiHkJFUTScYwpiMaoIAnR3k+Uo6yk6ZMpSedoEpTekaVJDwlE2oAAw2sCxW4";
+		}
+		mms = mms
+				+ "vCUu+xAEADs=--==SimpleTeam=7c0c6a737d106855b0e7ef0bf7ba482f==----==SimpleTeam=df4f8c96af4d3e7f9247fd6e973507f3==--";
+		
+		MT_MMHttpSPMessage mt = new MT_MMHttpSPMessage();
+		mt.setGlobalMessageid(MT_SPMMHttpMessage.generateUUID("MMSMT"));
+		mt.setGlobalCreateTime(mt.getGlobalCreateTime());
+		mt.setGlobalMessageTime(System.currentTimeMillis());
+		mt.setContentType("text/xml;charset=\"UTF-8\"");
+		mt.setContent_Transfer_Encoding("utf-8");
+		mt.setAuthorization("auth");
+		mt.setSOAPAction("soap");
+		mt.setMM7APIVersion("2.0");
+		mt.setMime_Version("7.0");
+		mt.setContentByte(mms.getBytes());
+		mt.setMessageid("43c04a1e7fd74595807525ffb01836e4");
+		
+		mm7ClientProxy.submit(mt);
+		
+//		SubmitResp rsp=new SubmitResp();
+//		//String retStr="<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"><env:Header><mm7:TransactionID xmlns:mm7=\"http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-0\" env:mustUnderstand=\"1\"></mm7:TransactionID></env:Header><env:Body><DeliveryReportReq xmlns=\"http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-0\"><MM7Version>6.3.0</MM7Version><Sender><Number></Number></Sender><Recipient><Number></Number></Recipient><TimeStamp></TimeStamp><MMSRelayServerID>600003</MMSRelayServerID><MessageID></MessageID><StatusCode>1000</StatusCode><StatusText>test111</StatusText></DeliveryReportReq></env:Body></env:Envelope>";
+//		String retStr="<?xml version=\"1.0\" encoding=\"UTF-8\"?><SubmitRsp><StatusCode>1000</StatusCode><StatusText>test</StatusText></SubmitRsp>";
+//		rsp=rsp.parser(retStr);
+//		String statusCode = rsp.getStatusCode();
+//		String statusText = rsp.getStatusText();
+//		System.out.println("statusCode:"+statusCode+";statusText:"+statusText);
+	}
+
 
 	public void submit(MT_MMMessage message) {
 	}
 
 	public void submit(MT_MMHttpSPMessage mms) {
+		logger.info("submit method ;mms:"+mms);
+		logger.info("mmsmcUrl:"+mmsmcUrl);
+		
 		HttpURLConnection httpURL = null;
 		InputStream input = null;
 		DataOutputStream dos = null;
@@ -53,7 +98,9 @@ public class Mm7ClientProxy {
 			httpURL.setRequestProperty("Mime-Version", mms.getMime_Version());
 			httpURL.setRequestProperty("Connection", "close");
 			httpURL.connect();
-
+			
+			logger.info("connect after");
+			
 			input = new ByteArrayInputStream(mms.getContentByte());
 			dos = new DataOutputStream(new BufferedOutputStream(httpURL.getOutputStream()));
 
@@ -65,6 +112,7 @@ public class Mm7ClientProxy {
 			dos.flush();
 
 			httpResponseCode = httpURL.getResponseCode();
+			logger.info("httpResponseCode:"+httpResponseCode);
 
 			if (httpResponseCode != 200) {
 				String statusCode = httpResponseCode+"";
@@ -89,6 +137,7 @@ public class Mm7ClientProxy {
 				logger.info(toMessage(mms, "failed", statusCode, statusText));
 			} else {
 				SubmitResp rsp = new SubmitResp();
+				
 				dis = new DataInputStream(new BufferedInputStream(httpURL.getInputStream()));
 
 				int len = dis.available();
@@ -102,7 +151,8 @@ public class Mm7ClientProxy {
 					submitResStr.append(new String(b, pos, len - pos));
 					pos += r;
 				}
-
+				
+				logger.info("ApplicationListener.getRunLevel():"+ApplicationListener.getRunLevel());
 				if (ApplicationListener.getRunLevel().equals("3")) {
 					logger.info("mmsagent<- mmsc mock one mmshr message");
 				} else {
@@ -150,7 +200,7 @@ public class Mm7ClientProxy {
 
 	public void doResponse(MT_MMHttpSPMessage mms, byte[] data, SubmitResp rsp) {
 		String retStr = new String(data);
-
+		logger.info("retStr:"+retStr);
 		if (retStr.indexOf("RSErrorRsp") < 0) {
 			rsp.parser(retStr);
 		} else {
@@ -159,7 +209,8 @@ public class Mm7ClientProxy {
 
 		String statusCode = rsp.getStatusCode();
 		String statusText = rsp.getStatusText();
-
+		
+		logger.info("statusCode:"+statusCode+";statusText:"+statusText);
 		int mmstatuscode = 0;
 		String reportStr;
 		if (statusCode.equals("1000")) {
@@ -184,9 +235,11 @@ public class Mm7ClientProxy {
 		his.setStatus(mmstatuscode+"");
 		his.setMsgType(statusCode);
 		his.setContent(reportStr);
-
+		
+		logger.info("send MT_ReportMessage;mms.getMessageid():"+mms.getMessageid()+";rsp.getMessageID():"+rsp.getMessageID());
+		
 		this.messageRouter.doRoute(his);
-
+		
 		logger.info(toMessage(mms, "success", statusCode, statusText));
 	}
 

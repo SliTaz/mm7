@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,8 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+
+@WebServlet(urlPatterns = "/CorbizeReceiveServlet")
 public class ReceiveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(ReceiveServlet.class);
@@ -34,6 +37,7 @@ public class ReceiveServlet extends HttpServlet {
 	}
 
 	protected void service(HttpServletRequest req, HttpServletResponse response) throws IOException, ServletException {
+		logger.info(" into ReceiveServlet(CorbizeReceiveServlet) service method");
 		try {
 			MT_MMHttpSPMessage mt = new MT_MMHttpSPMessage();
 

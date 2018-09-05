@@ -367,7 +367,7 @@
 		<spQuenceSize>10000</spQuenceSize>
 		<spServerIP>192.168.1.116</spServerIP>
 		<spServerPort>19095</spServerPort><!-- 接收corebiz发送的MO的消息的时候。作为服务端， -->
-		<spClientIP>192.168.1.15</spClientIP><!-- corebiz远程服务器 的ip -->
+		<spClientIP>192.168.1.16</spClientIP><!-- corebiz远程服务器 的ip -->
 		<spClientPort>19011</spClientPort><!-- corebiz远程服务器 的端口 -->
 		
 		<!-- wo agent-->

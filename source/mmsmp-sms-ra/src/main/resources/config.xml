@@ -354,7 +354,7 @@
 		<!-- 服务端地址 -->
 		<localHost>127.0.0.1</localHost>
 		<!-- 服务端端口 -->
-		<localPort>8801</localPort>
+		<localPort>8802</localPort>
 		<!--登陆用户名(最大为六位字符)-->
 		<login_name>10655565</login_name>
 		<!--登陆密码-->

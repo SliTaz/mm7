@@ -29,7 +29,18 @@ App.factory('SpInfoService', ['$http', '$q', function($http, $q){
 									}
 							);
 		    },
-		    
+	fetchProvince: function() {
+			return $http.get(apiUrl +"/provinceCity?parentProvinceCityId="+"-1")
+			.then(
+					function(response){
+						return response.data;
+					}, 
+					function(errResponse){
+						handleAjaxError(errResponse);
+						return $q.reject(errResponse);
+					}
+			);
+},
 		    updateAlarmInfo: function(alarmInfo, id){
 					return $http.put(apiUrl +"/spInfo/"+id, alarmInfo)
 							.then(

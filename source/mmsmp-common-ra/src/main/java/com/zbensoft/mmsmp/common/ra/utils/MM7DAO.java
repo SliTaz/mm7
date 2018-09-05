@@ -26,12 +26,41 @@ public class MM7DAO extends JdbcDaoSupport {
 		return service_code;
 	}
 	
-	public String getSpReportUrlByServiceCode(String messageid) {
-		return "getSpReportUrlByServiceCode";
+	public String getSpReportUrlByServiceCode(String serviceCode) {
+	    String sql = "select reportmessageurl from VASP_RESERVE_INFO where spid in (select t1.VASPID from vasservice t1 ,VASSERVICE_RESERVE_INFO t2 where t1.servicecode = t2.productid and t2.SP_PRODUCTID = ?)";
+	    
+	    logger.info(sql + ": " + serviceCode);
+	    
+	    List list = getJdbcTemplate().query(sql, new Object[] { serviceCode }, new RowMapper()
+	    {
+	      public Object mapRow(ResultSet rs, int index)
+	        throws SQLException
+	      {
+	        return rs.getString(1);
+	      }
+	    });
+	    if ((list != null) && (list.size() > 0)) {
+	      return (String)list.get(0);
+	    }
+	    return null;
 	}
 	
 	public String getMTLimitNumber(String messageid) {
-		return "getMTLimitNumber";
+	    String sql = "select v.CAPACITY_ID from vas v where v.serviceid=?";
+	    logger.info(sql);
+	    List results = getJdbcTemplate().query(sql, new Object[] { service_id }, new RowMapper()
+	    {
+	      public Object mapRow(ResultSet rs, int arg1)
+	        throws SQLException
+	      {
+	        return rs.getString(1);
+	      }
+	    });
+	    if ((results != null) && (results.size() > 0)) {
+	      return (String)results.get(0);
+	    }
+	    return null;
+	  }
 	}
 
 	public String getServiceIDbyProductid(String Sp_product_id) {
@@ -196,5 +225,10 @@ public class MM7DAO extends JdbcDaoSupport {
 			ServuniqueId = list.get(0).toString();
 		}
 		return ServuniqueId;
+	}
+
+	public boolean isFromIphoneOrder(String phone, String productid) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

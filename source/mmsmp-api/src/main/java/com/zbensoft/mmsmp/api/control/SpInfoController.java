@@ -27,8 +27,10 @@ import com.zbensoft.mmsmp.api.common.HttpRestStatusFactory;
 import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
 import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
+import com.zbensoft.mmsmp.api.service.api.ProvinceCityService;
 import com.zbensoft.mmsmp.api.service.api.SpAccessService;
 import com.zbensoft.mmsmp.api.service.api.SpInfoService;
+import com.zbensoft.mmsmp.db.domain.ProvinceCity;
 import com.zbensoft.mmsmp.db.domain.SpAccess;
 import com.zbensoft.mmsmp.db.domain.SpInfo;
 
@@ -40,6 +42,8 @@ public class SpInfoController {
 	SpInfoService spInfoService;
 	@Autowired
 	SpAccessService spAccessService;
+	@Autowired
+	ProvinceCityService provinceCityService;
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 
@@ -108,6 +112,10 @@ public class SpInfoController {
 			if (bankInfo != null) {
 				bean.setSpAccessNumber(bankInfo.getSpAccessNumber());
 				bean.setSpAccessNumberExtend(bankInfo.getSpAccessNumberExtend());
+			}
+			ProvinceCity provinceCity = provinceCityService.selectByPrimaryKey(bean.getProvince());
+			if (provinceCity != null) {
+				bean.setProvinceCityName(provinceCity.getProvinceCityName());
 			}
 			listNew.add(bean);
 		}

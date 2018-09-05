@@ -47,7 +47,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	vm.reloadData = reloadData;
 	vm.selectData = [];
 	vm.appData = [];
-	vm.dtOptions = DTOptionsBuilder.fromSource(getFromSource(apiUrl + '/userOrderHis')).withOption('createdRow', createdRow);
+	vm.dtOptions = DTOptionsBuilder.fromSource(getFromSource(apiUrl + '/userOrderHis?orderType=1')).withOption('createdRow', createdRow);
 
 	setDtOptionsServerSide(vm);
 	vm.dtColumns = [
@@ -61,7 +61,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			DTColumnBuilder.newColumn('orderType').withTitle($translate('userOrderHis.orderType')).notSortable().renderWith(orderTypeDetail),
 			DTColumnBuilder.newColumn('fee').withTitle($translate('userOrderHis.fee')).notSortable(),
 			DTColumnBuilder.newColumn('cancelRoute').withTitle($translate('userOrderHis.cancelRoute')).notSortable().notVisible().renderWith(cancelRouteDetail),
-			DTColumnBuilder.newColumn('featureStr').withTitle($translate('userOrderHis.featureStr')).notSortable(),
+			DTColumnBuilder.newColumn('featureStr').withTitle($translate('userOrderHis.featureStr')).notSortable().notVisible(),
+			DTColumnBuilder.newColumn('priority').withTitle($translate('userOrderHis.priority')).notSortable().renderWith(priorityDetail),
 			DTColumnBuilder.newColumn('status').withTitle($translate('userServiceSend.status')).notSortable().renderWith(statusDetail),
 			DTColumnBuilder.newColumn('version').withTitle($translate('userOrderHis.version')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn('notDisturbTime').withTitle($translate('userOrderHis.notDisturbTime')).notSortable().notVisible(),
@@ -69,7 +70,6 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			DTColumnBuilder.newColumn('orderTime').withTitle($translate('userOrderHis.orderTime')).notSortable().renderWith(timeRender),
 			DTColumnBuilder.newColumn('effTime').withTitle($translate('userOrderHis.effTime')).notSortable().notVisible().renderWith(timeRender),
 			DTColumnBuilder.newColumn('area').withTitle($translate('userOrderHis.area')).notSortable().notVisible(),
-			DTColumnBuilder.newColumn('priority').withTitle($translate('userOrderHis.priority')).notSortable().notVisible().renderWith(priorityDetail),
 			DTColumnBuilder.newColumn('lastBatchId').withTitle($translate('userOrderHis.lastBatchId')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn('isPackage').withTitle($translate('userOrderHis.isPackage')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn(null).withTitle($translate('Actions')).withOption('width', '15%').notSortable().renderWith(actionsHtml) ];
@@ -385,7 +385,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		vm.dtInstance.changeData(getFromSource(apiUrl
 				+ '/userOrderHis?userOrderHisId=' + getValueForSelect(userOrderHisId) + "&phoneNumber=" + getValueForSelect(phoneNumber) + "&orderTimeStart=" + getValueForSelect(orderTimeStart)
 				+ "&orderTimeEnd=" + getValueForSelect(orderTimeEnd) + "&spInfoId=" + getValueForSelect(spInfoId) + "&productInfoId=" + getValueForSelect(productInfoId)
-				+ "&status=" + getValueForSelect(status) + "&orderRoute=" + getValueForSelect(orderRoute) + "&orderType=" + getValueForSelect(orderType) + "&priority=" + getValueForSelect(priority)));
+				+ "&status=" + getValueForSelect(status) + "&orderRoute=" + getValueForSelect(orderRoute) +  getValueForSelect(1,"&orderType=") + "&priority=" + getValueForSelect(priority)));
 		var resetPaging = false;
 		vm.dtInstance.reloadData(callback, resetPaging);
 	}

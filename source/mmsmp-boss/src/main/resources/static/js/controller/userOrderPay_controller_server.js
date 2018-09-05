@@ -58,7 +58,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		DTColumnBuilder.newColumn('area').withTitle($translate('userInfo.area')).notSortable(),
 		DTColumnBuilder.newColumn('spInfoId').withTitle($translate('spInfo.spInfoId')).notSortable(),
 		DTColumnBuilder.newColumn('productInfoId').withTitle($translate('userInfo.productInfoId')).notSortable(),
-		DTColumnBuilder.newColumn('fee').withTitle($translate('userInfo.fee')).notSortable().renderWith(moneyFormat),
+		DTColumnBuilder.newColumn('fee').withTitle($translate('userInfo.fee')).notSortable(),
 		DTColumnBuilder.newColumn('chargePhoneNumber').withTitle($translate('userInfo.chargePhoneNumber')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('orderTime').withTitle($translate('userInfo.orderTime')).notSortable().notVisible().renderWith(timeRender),
 		DTColumnBuilder.newColumn('orderRoute').withTitle($translate('userInfo.orderRoute')).notSortable().renderWith(orderRoute),
@@ -248,7 +248,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}
 	function edit(bean) {
 		selectDevice();
-		bean.fee = outputmoney(bean.fee);
+		//bean.fee = outputmoney(bean.fee);
 		$("#spInfoId").val(bean.spInfoId).select2();
 		$("#phoneNumber").val(bean.phoneNumber).select2();
 		reloadData();
@@ -285,10 +285,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			vm.bean.orderTime = timeFormatNew(vm.bean.orderTime);
 			vm.bean.notDisturbTime = timeFormatNew(vm.bean.notDisturbTime);
 			vm.bean.effTime = timeFormatNew(vm.bean.effTime);
-			if(vm.bean.fee){
+			/*if(vm.bean.fee){
 				var fee=vm.bean.fee.replace(/\./g,"").replace(/,/g,".");
 				vm.bean.fee = fee;//转换为数据库double
-			}
+			}*/
 			UserOrderPayService.createAlarmInfo(vm.bean).then(onSubmitSuccess,
 					function(errResponse) {
  						handleAjaxError(errResponse);
@@ -299,10 +299,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			vm.bean.orderTime = timeFormatNew(vm.bean.orderTime);
 			vm.bean.notDisturbTime = timeFormatNew(vm.bean.notDisturbTime);
 			vm.bean.effTime = timeFormatNew(vm.bean.effTime);
-			if(vm.bean.fee){
+			/*if(vm.bean.fee){
 				var fee=vm.bean.fee.replace(/\./g,"").replace(/,/g,".");
 				vm.bean.fee = fee;//转换为数据库double
-			}
+			}*/
 			UserOrderPayService.updateAlarmInfo(vm.bean, vm.bean.userOrderPayId).then(onSubmitSuccess,
 					function(errResponse) {
  						handleAjaxError(errResponse);
@@ -312,9 +312,9 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}
 
 	function onSubmitSuccess(data){
-		if(data.body){
+		/*if(data.body){
 			vm.bean.fee = outputmoney(data.body.fee);
-		}
+		}*/
 		vm.statusCode=data.statusCode;
 		vm.statusMessage=data.statusMessage;
 		reloadData();

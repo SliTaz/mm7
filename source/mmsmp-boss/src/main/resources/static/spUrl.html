@@ -71,19 +71,9 @@
 <body class="hold-transition skin-blue sidebar-mini" ng-app="spUrlModule"
 	id="content-wrapper" ng-controller="ServerSideCtrl as ctrl">
 
-<div class="wrapper">
+<div>
 
-
-	<!-- 头部和左侧 开始 -->
-		<div>
-			<header class="main-header" ng-include="'html/top.html'">
-			</header>
-			
-			<aside class="main-sidebar" ng-include="'html/left.html'">
-			</aside>
-		</div>
-		
-	<div id="content-wrapper" class="content-wrapper">
+	<div id="content-wrapper">
 		<section class="content-header" id="content_section">
 				<h1 translate="common.spUrl"></h1>
 				<ol class="breadcrumb">
@@ -270,11 +260,11 @@
 														class="col-sm-4 control-label control-label-zb" translate="spInfo.hostPort"></label>
 													<div class="col-sm-7">
 														<input type="text" class="form-control" id="hostPort" name="hostPort" 
-															placeholder="{{'spInfo.hostPort'   | translate }}" ng-model="ctrl.bean.hostPort" ng-maxlength="32" ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/">
+															placeholder="{{'spInfo.hostPort'   | translate }}" ng-model="ctrl.bean.hostPort" ng-maxlength="32" />
 														 <div ng-show="addEditForm.hostPort.$error.maxlength" style="color:red" translate="spInfo.hostPort.length">
                                                          </div>
-                                                        <div ng-show="addEditForm.hostPort.$error.pattern" style="color:red" translate="common.ipaddr.format">
-									                     </div> 
+                                                        <!-- <div ng-show="addEditForm.hostPort.$error.pattern" style="color:red" translate="common.ipaddr.format">
+									                     </div>  -->
 													</div>
 												</div>
 											</div>

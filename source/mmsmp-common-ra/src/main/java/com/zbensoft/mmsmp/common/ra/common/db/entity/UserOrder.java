@@ -7,7 +7,7 @@
 /*     */   implements Serializable
 /*     */ {
 /*     */   private static final long serialVersionUID = 5129961608946565112L;
-/*     */   private UserOrderId id;
+/*     */   private String id;
 /*     */   private String chargeparty;
 /*     */   private Date orderdate;
 /*     */   private String ordermethod;
@@ -44,7 +44,7 @@
 /*     */   {
 /*     */   }
 /*     */ 
-/*     */   public UserOrder(UserOrderId id, String chargeparty, Date orderdate, String ordermethod)
+/*     */   public UserOrder(String id, String chargeparty, Date orderdate, String ordermethod)
 /*     */   {
 /*  62 */     this.id = id;
 /*  63 */     this.chargeparty = chargeparty;
@@ -52,7 +52,7 @@
 /*  65 */     this.ordermethod = ordermethod;
 /*     */   }
 /*     */ 
-/*     */   public UserOrder(UserOrderId id, String chargeparty, Date orderdate, String ordermethod, String feetype, Double fee, Integer orderhisid)
+/*     */   public UserOrder(String id, String chargeparty, Date orderdate, String ordermethod, String feetype, Double fee, Integer orderhisid)
 /*     */   {
 /*  71 */     this.id = id;
 /*  72 */     this.chargeparty = chargeparty;
@@ -63,12 +63,12 @@
 /*  77 */     this.orderhisid = orderhisid;
 /*     */   }
 /*     */ 
-/*     */   public UserOrderId getId()
+/*     */   public String getId()
 /*     */   {
 /*  83 */     return this.id;
 /*     */   }
 /*     */ 
-/*     */   public void setId(UserOrderId id) {
+/*     */   public void setId(String id) {
 /*  87 */     this.id = id;
 /*     */   }
 /*     */ 

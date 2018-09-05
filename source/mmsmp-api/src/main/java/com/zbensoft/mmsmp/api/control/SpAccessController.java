@@ -27,8 +27,10 @@ import com.zbensoft.mmsmp.api.common.HttpRestStatusFactory;
 import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
 import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
+import com.zbensoft.mmsmp.api.service.api.ProvinceCityService;
 import com.zbensoft.mmsmp.api.service.api.SpAccessService;
 import com.zbensoft.mmsmp.api.service.api.SpInfoService;
+import com.zbensoft.mmsmp.db.domain.ProvinceCity;
 import com.zbensoft.mmsmp.db.domain.SpAccess;
 import com.zbensoft.mmsmp.db.domain.SpInfo;
 
@@ -42,6 +44,8 @@ public class SpAccessController {
 	SpAccessService spAccessService;
 	@Autowired
 	SpInfoService spInfoService;
+	@Autowired
+	ProvinceCityService provinceCityService;
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 
@@ -89,6 +93,10 @@ public class SpAccessController {
 					bean.setCompanyCode(bankInfo.getCompanyCode());
 					bean.setCompanyName(bankInfo.getCompanyName());
 				}
+				ProvinceCity provinceCity = provinceCityService.selectByPrimaryKey(bean.getSpCity());
+				if (provinceCity != null) {
+					bean.setProvinceCityName(provinceCity.getProvinceCityName());
+				}
 				listNew.add(bean);
 			}
 
@@ -131,6 +139,10 @@ public class SpAccessController {
 						if (bankInfo != null) {
 							bean.setCompanyCode(bankInfo.getCompanyCode());
 							bean.setCompanyName(bankInfo.getCompanyName());
+						}
+						ProvinceCity provinceCity = provinceCityService.selectByPrimaryKey(bean.getSpCity());
+						if (provinceCity != null) {
+							bean.setProvinceCityName(provinceCity.getProvinceCityName());
 						}
 						listNew.add(bean);
 					}

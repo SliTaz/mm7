@@ -39,14 +39,14 @@
 	</bean>
 	
 	<bean id="minaClientProxy" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MinaClientProxy">
-		<property name="host" value="10.199.201.71"/>
-		<property name="port" value="8000"/>
+		<property name="host" value="192.168.1.16"/>
+		<property name="port" value="19011"/>
 	</bean>
 	
 <bean id="mm7ClientProxy" class="com.zbensoft.mmsmp.mms.ra.mmsagent.Mm7ClientProxy">
 		<property name="messageRouter" ref="messageRouter"/>
                  
-		<property name="mmsmcUrl" value="http://10.199.84.188:8899/vas"/> 
+		<property name="mmsmcUrl" value="http://localhost:29093/MMSServerServlet"/> 
                  
 
                 <!--property name="mmsmcUrl" value="http://10.199.201.69:8086/mmsagentmock/mmsc/ReceiveServlet"/-->	
@@ -91,7 +91,7 @@
         <property name="filters"> 
             <map> 
                 <entry key="codecFilter" value-ref="minaCodecFilter" />
-		<entry key="executor" value-ref="executorFilter" /> 
+				<entry key="executor" value-ref="executorFilter" /> 
             </map> 
         </property> 
     </bean> 
@@ -99,16 +99,14 @@
     <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer"> 
         <property name="customEditors"> 
             <map> 
-              <entry key="java.net.SocketAddress"> 
-                <bean class="org.apache.mina.integration.beans.InetSocketAddressEditor"/> 
-              </entry> 
+              <entry key="java.net.SocketAddress" value="org.apache.mina.integration.beans.InetSocketAddressEditor"/> 
             </map> 
         </property> 
     </bean>
     
     <bean id="minaSocketAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor"
         init-method="bind" destroy-method="unbind"> 
-        <property name="defaultLocalAddress" value=":8006" /> 
+        <property name="defaultLocalAddress" value=":19093" /> 
         <property name="handler" ref="minaServerHandler" /> 
         <property name="filterChainBuilder" ref="minaChainBuilder" /> 
     </bean> 

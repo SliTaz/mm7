@@ -10,6 +10,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 
 import com.zbensoft.mmsmp.vac.ra.aaa.Header;
+import com.zbensoft.mmsmp.vac.ra.log.PROCESS_LOG;
 import com.zbensoft.mmsmp.vac.ra.mina.listen.CheckMessageQuence;
 import com.zbensoft.mmsmp.vac.ra.mina.util.MessageProcessor;
 
@@ -57,6 +58,7 @@ public class VACSender {
 			if ((flag) && (session.isConnected())) {
 				IoBuffer buffer = IoBuffer.wrap(o.serialize());
 				session.write(buffer);
+				PROCESS_LOG.INFO("vac client " + "send:" + o.toString());
 				logger.info("send message to vac ,messageid is " + o.getSequenceId());
 			}
 		} catch (Exception e) {

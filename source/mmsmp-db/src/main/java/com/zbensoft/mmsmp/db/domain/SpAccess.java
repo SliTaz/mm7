@@ -117,6 +117,7 @@ public class SpAccess {
     
     private String companyCode;
     private String companyName;
+    private String provinceCityName;
     public String getSpInfoId() {
         return spInfoId;
     }
@@ -387,6 +388,14 @@ public class SpAccess {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	public String getProvinceCityName() {
+		return provinceCityName;
+	}
+
+	public void setProvinceCityName(String provinceCityName) {
+		this.provinceCityName = provinceCityName;
 	}
     
 }

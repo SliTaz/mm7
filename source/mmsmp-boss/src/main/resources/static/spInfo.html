@@ -105,6 +105,9 @@
 												class="btn btn-primary btn-sm table-tool-left" id="btn-add"
 												data-toggle="modal" data-target="#myModal"
 												ng-click="ctrl.addInit()" translate="common.add"></button>
+											<button type="button"
+												class="btn btn-primary btn-sm table-tool-left"
+												ng-click="ctrl.spUrl()" translate="common.spInfoM"></button>
 										</div>
 										<div class="col-sm-4 pull-right">
 											<button type="button"
@@ -272,11 +275,11 @@
 													<label for="businessTel"
 														class="col-sm-4 control-label control-label-zb" translate="spInfo.businessTel"></label>
 													<div class="col-sm-7">
-														<input type="text" class="form-control" id="businessTel" name="businessTel" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+														<input type="text" class="form-control" id="businessTel" name="businessTel" ng-pattern="/^\d+$/"
 															placeholder="{{'spInfo.businessTel'   | translate }}" ng-model="ctrl.bean.businessTel" ng-maxlength="32" >
 														 <div ng-show="addEditForm.businessTel.$error.maxlength" style="color:red" translate="spInfo.businessTel.length">
                                                          </div>
-                                                         <div ng-show="addEditForm.businessTel.$error.pattern" style="color:red" translate="common.illegalChar">
+                                                         <div ng-show="addEditForm.businessTel.$error.pattern" style="color:red" translate="common.digital">
 									                     </div>
 													</div>
 												</div>
@@ -368,12 +371,10 @@
 													<label for="province"
 														class="col-sm-4 control-label control-label-zb" translate="spInfo.province"></label>
 													<div class="col-sm-7">
-														<input type="text" class="form-control" id="province" name="province" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
-															placeholder="{{'spInfo.province'   | translate }}" ng-model="ctrl.bean.province" ng-maxlength="32" >
-														 <div ng-show="addEditForm.province.$error.maxlength" style="color:red" translate="spInfo.province.length">
-                                                         </div>
-                                                         <div ng-show="addEditForm.province.$error.pattern" style="color:red" translate="common.illegalChar">
-									                     </div>
+														 <select class="form-control" id="province"  name="province" style="width:100%;" ng-model="ctrl.bean.province" >
+					                                       <option value="" translate="common.choose"></option>
+					                                        <option ng-repeat="x in ctrl.provinceData" value="{{x.provinceCityId}}" ng-bind="x.provinceCityName"></option>
+		                                                </select> 
 													</div>
 												</div>
 											</div>

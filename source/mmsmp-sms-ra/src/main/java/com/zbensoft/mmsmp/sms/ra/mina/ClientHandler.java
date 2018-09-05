@@ -1,6 +1,7 @@
 package com.zbensoft.mmsmp.sms.ra.mina;
 
 import com.zbensoft.mmsmp.sms.ra.listener.ConnectManager;
+import com.zbensoft.mmsmp.sms.ra.log.SMS_LOG;
 import com.zbensoft.mmsmp.sms.ra.thread.ReceiveMessageThread;
 import org.apache.log4j.Logger;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -14,7 +15,7 @@ public class ClientHandler extends IoHandlerAdapter {
     }
 
     public void messageReceived(IoSession session, Object message) throws Exception {
-        logger.info("server return code : " + message);
+        SMS_LOG.INFO("server return code : " + message);
     }
 
     public void sessionOpened(IoSession session) {
@@ -24,7 +25,7 @@ public class ClientHandler extends IoHandlerAdapter {
 
     public void sessionClosed(IoSession session) {
         (new ConnectManager()).start();
-        logger.error("Close connection, start ConnectManager.", (Throwable)null);
+        SMS_LOG.ERROR("Close connection, start ConnectManager.", (Throwable)null);
     }
 
     public void sessionIdle(IoSession session, IdleStatus status) {
@@ -36,7 +37,7 @@ public class ClientHandler extends IoHandlerAdapter {
     }
 
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
-        logger.error(" smsclient exceptionCaught(IoSession, Throwable)", cause);
+        SMS_LOG.ERROR(" smsclient exceptionCaught(IoSession, Throwable)", cause);
         session.close();
     }
 }

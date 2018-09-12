@@ -8,8 +8,8 @@ import com.zbensoft.mmsmp.tools.war.util.WarUtils;
 
 public class WarModify {
 
-	private String path = "D:\\Wangchenyang\\Work\\package\\war\\";
-	private String TARGET_HOME = "D:\\Wangchenyang\\Work\\package\\e-payment\\";
+	private String path = "";
+	private String TARGET_HOME = "";
 
 	public void warmodify() {
 
@@ -19,17 +19,9 @@ public class WarModify {
 
 		Directory.deleteDir(new File(path + Conf.FOLDER_02_NAME + "\\api\\"));
 		WarUtils.unzip(path + Conf.FOLDER_02_NAME + "\\api.war", path + Conf.FOLDER_02_NAME + "\\api\\");
-		WarUtils.unzip(path + Conf.FOLDER_02_NAME + "\\webservice.war", path + Conf.FOLDER_02_NAME + "\\webservice\\");
 		WarUtils.unzip(path + Conf.FOLDER_02_NAME + "\\boss.war", path + Conf.FOLDER_02_NAME + "\\boss\\");
-		WarUtils.unzip(path + Conf.FOLDER_02_NAME + "\\consumer.war", path + Conf.FOLDER_02_NAME + "\\consumer\\");
-		WarUtils.unzip(path + Conf.FOLDER_02_NAME + "\\gov.war", path + Conf.FOLDER_02_NAME + "\\gov\\");
-		WarUtils.unzip(path + Conf.FOLDER_02_NAME + "\\merchant.war", path + Conf.FOLDER_02_NAME + "\\merchant\\");//main.war
-		WarUtils.unzip(path + Conf.FOLDER_02_NAME + "\\main.war", path + Conf.FOLDER_02_NAME + "\\main\\");
-		doapi("01", "api.war");
-		doapi("02", "api.war");
-		doapi("03", "api.war");
+		WarUtils.unzip(path + Conf.FOLDER_02_NAME + "\\corebiz.war", path + Conf.FOLDER_02_NAME + "\\corebiz\\");
 		doapi04("04","api.war");
-
 		doBoss();
 
 	}
@@ -38,19 +30,11 @@ public class WarModify {
 	private void copyToTmple() {
 		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\api.war");
 		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\boss.war");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\consumer.war");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\gov.war");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\merchant.war");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\webservice.war");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\main.war");
+		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\corebiz.war");
 
-		FileUtils.copyFile(TARGET_HOME + "e-payment-api\\target\\e-payment-api-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\api.war");
-		FileUtils.copyFile(TARGET_HOME + "e-payment-boss\\target\\e-payment-boss-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\boss.war");
-		FileUtils.copyFile(TARGET_HOME + "e-payment-consumer\\target\\e-payment-consumer-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\consumer.war");
-		FileUtils.copyFile(TARGET_HOME + "e-payment-government\\target\\e-payment-government-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\gov.war");
-		FileUtils.copyFile(TARGET_HOME + "e-payment-merchant\\target\\e-payment-merchant-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\merchant.war");
-		FileUtils.copyFile(TARGET_HOME + "e-payment-webservice\\target\\e-payment-webservice-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\webservice.war");
-		FileUtils.copyFile(TARGET_HOME + "e-payment-main\\target\\e-payment-main-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\main.war");
+		FileUtils.copyFile(TARGET_HOME + "mmsmp-api\\target\\mmsmp-api-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\api.war");
+		FileUtils.copyFile(TARGET_HOME + "mmsmp-boss\\target\\mmsmp-boss-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\boss.war");
+		FileUtils.copyFile(TARGET_HOME + "mmsmp-corebiz\\target\\mmsmp-corebiz-0.0.1-SNAPSHOT.war", path + Conf.FOLDER_02_NAME + "\\corebiz.war");
 
 	}
 
@@ -68,10 +52,7 @@ public class WarModify {
 		new File(warPath).mkdirs();
 
 		FileUtils.delFile(warPath + "api.war");
-		FileUtils.delFile(warPath + "cliente.war");
-		FileUtils.delFile(warPath + "atencion.war");
-		FileUtils.delFile(warPath + "vendedor.war");
-		FileUtils.delFile(warPath + "webservice.war");
+		FileUtils.delFile(warPath + "corebiz.war");
 
 		/******修改api******/
 		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\api\\WEB-INF\\classes\\application.properties");
@@ -84,19 +65,6 @@ public class WarModify {
 		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\api\\logback.xml", path + Conf.FOLDER_02_NAME + "\\api\\WEB-INF\\classes\\logback.xml");
 		WarUtils.zip(warPath + name, path + Conf.FOLDER_02_NAME + "\\api\\");
 
-		/******修改webservice******/
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\logback.xml");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\application.properties");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\encryption-server-keystore.jks");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\encryption-server-truststore.jks");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\server_signing.properties");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\webservice\\logback.xml", path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\logback.xml");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\webservice\\application.properties", path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\application.properties");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\webservice\\encryption-server-keystore.jks", path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\encryption-server-keystore.jks");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\webservice\\encryption-server-truststore.jks", path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\encryption-server-truststore.jks");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\webservice\\server_signing.properties", path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\server_signing.properties");
-		WarUtils.zip(warPath + "webservice.war", path + Conf.FOLDER_02_NAME + "\\webservice\\");
-		
 		/******修改boss******/
 		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\boss\\WEB-INF\\classes\\application.properties");
 		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\boss\\WEB-INF\\static\\js\\zben.js");
@@ -104,31 +72,24 @@ public class WarModify {
 		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\boss\\zben.js", path + Conf.FOLDER_02_NAME + "\\boss\\WEB-INF\\classes\\static\\js\\zben.js");
 		WarUtils.zip(warPath + "boss.war", path + Conf.FOLDER_02_NAME + "\\boss\\");
 		
-		/******修改consumer******/
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\consumer\\WEB-INF\\classes\\application.properties");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\consumer\\WEB-INF\\static\\js\\zben.js");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\consumer\\application.properties", path + Conf.FOLDER_02_NAME + "\\consumer\\WEB-INF\\classes\\application.properties");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\consumer\\zben.js", path + Conf.FOLDER_02_NAME + "\\consumer\\WEB-INF\\classes\\static\\js\\zben.js");
-		WarUtils.zip(warPath + "cliente.war", path + Conf.FOLDER_02_NAME + "\\consumer\\");
+		/******修改corebiz******/
+		//TODO
+		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\application.properties");
+		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext-cache.xml");
+		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext-queue.xml");
+		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext-service.xml");
+		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext-task.xml");
+		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext.xml");
+		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\log4j.properties");
+		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\corebiz\\application.properties", path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\application.properties");
+		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\corebiz\\applicationContext-cache.xml", path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext-cache.xml");
+		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\corebiz\\applicationContext-queue.xml", path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext-queue.xml");
+		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\corebiz\\applicationContext-service.xml", path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext-service.xml");
+		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\corebiz\\applicationContext-task.xml", path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext-task.xml");
+		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\corebiz\\applicationContext.xml", path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\applicationContext.xml");
+		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\corebiz\\log4j.properties", path + Conf.FOLDER_02_NAME + "\\corebiz\\WEB-INF\\classes\\log4j.properties");
+		WarUtils.zip(warPath + "corebiz.war", path + Conf.FOLDER_02_NAME + "\\corebiz\\");
 		
-		/******修改gov******/
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\gov\\WEB-INF\\classes\\application.properties");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\gov\\WEB-INF\\static\\js\\zben.js");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\gov\\application.properties", path + Conf.FOLDER_02_NAME + "\\gov\\WEB-INF\\classes\\application.properties");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\gov\\zben.js", path + Conf.FOLDER_02_NAME + "\\gov\\WEB-INF\\classes\\static\\js\\zben.js");
-		WarUtils.zip(warPath + "atencion.war", path + Conf.FOLDER_02_NAME + "\\gov\\");
-		
-		/******修改merchant******/
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\merchant\\WEB-INF\\classes\\application.properties");
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\merchant\\WEB-INF\\static\\js\\zben.js");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\merchant\\application.properties", path + Conf.FOLDER_02_NAME + "\\merchant\\WEB-INF\\classes\\application.properties");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\merchant\\zben.js", path + Conf.FOLDER_02_NAME + "\\merchant\\WEB-INF\\classes\\static\\js\\zben.js");
-		WarUtils.zip(warPath + "vendedor.war", path + Conf.FOLDER_02_NAME + "\\merchant\\");
-
-		/******修改main******/
-		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\main\\WEB-INF\\static\\js\\zben.js");
-		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\main\\zben.js", path + Conf.FOLDER_02_NAME + "\\main\\WEB-INF\\classes\\static\\js\\zben.js");
-		WarUtils.zip(warPath + "ROOT.war", path + Conf.FOLDER_02_NAME + "\\main\\");
 	}
 
 
@@ -158,11 +119,5 @@ public class WarModify {
 		FileUtils.delFile(path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\logback.xml");
 		FileUtils.copyFile(path + Conf.FOLDER_01_NAME + "\\" + fold + "\\webservice\\logback.xml", path + Conf.FOLDER_02_NAME + "\\webservice\\WEB-INF\\classes\\logback.xml");
 
-		WarUtils.zip(warPath + "webservice.war", path + Conf.FOLDER_02_NAME + "\\webservice\\");
-
-		FileUtils.copyFile(path + Conf.FOLDER_02_NAME + "\\consumer.war", warPath + "cliente.war");
-		FileUtils.copyFile(path + Conf.FOLDER_02_NAME + "\\gov.war", warPath + "atencion.war");
-		FileUtils.copyFile(path + Conf.FOLDER_02_NAME + "\\merchant.war", warPath + "vendedor.war");
-		FileUtils.copyFile(path + Conf.FOLDER_02_NAME + "\\main.war", warPath + "ROOT.war");
 	}
 }

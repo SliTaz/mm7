@@ -67,6 +67,24 @@ public class ReceiveWrapper extends HttpServletRequestWrapper {
 			public int read() throws IOException {
 				return bais.read();
 			}
+
+			@Override
+			public boolean isFinished() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean isReady() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void setReadListener(ReadListener listener) {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 	}
 }

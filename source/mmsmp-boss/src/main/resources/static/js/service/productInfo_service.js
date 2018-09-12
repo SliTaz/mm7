@@ -3,9 +3,9 @@
 App.factory('productInfoService', ['$http', '$q', function($http, $q){
 
 	return {
-		
-			searchAllProductInfo: function() {
-					return $http.get(apiUrl +"/productInfo")
+		    
+			searchAllSpInfo: function() {
+					return $http.get(apiUrl +"/spInfo")
 							.then(
 									function(response){
 										return response.data;
@@ -16,6 +16,30 @@ App.factory('productInfoService', ['$http', '$q', function($http, $q){
 									}
 							);
 			},
+			  enable: function(id){
+					return $http.put(apiUrl +"/productInfo/enable/"+id)
+					.then(
+							function(response){
+								return response.data;
+							}, 
+							function(errResponse){
+								handleAjaxError(errResponse);
+								return $q.reject(errResponse);
+							}
+					);
+			 },
+			searchAllProductInfo: function() {
+				return $http.get(apiUrl +"/productInfo")
+						.then(
+								function(response){
+									return response.data;
+								}, 
+								function(errResponse){
+									handleAjaxError(errResponse);
+									return $q.reject(errResponse);
+								}
+						);
+		},
 		    createProductInfo: function(productInfo){
 					return $http.post(apiUrl +"/productInfo", productInfo)
 							.then(

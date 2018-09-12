@@ -1,25 +1,12 @@
 package com.zbensoft.mmsmp.corebiz.handle;
 
-import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
-import com.zbensoft.mmsmp.common.ra.common.message.CheckRequest;
-import com.zbensoft.mmsmp.common.ra.common.message.CheckResponse;
-import com.zbensoft.mmsmp.common.ra.common.message.MO_MMDeliverSPMessage;
-import com.zbensoft.mmsmp.common.ra.common.message.MO_ReportMessage;
-import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
-import com.zbensoft.mmsmp.common.ra.common.message.MT_ReportMessage;
-import com.zbensoft.mmsmp.common.ra.common.message.MT_SPMMHttpMessage;
-import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest;
-import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyResponse;
-import com.zbensoft.mmsmp.common.ra.common.message.SendNotificationMessage;
-import com.zbensoft.mmsmp.common.ra.common.message.WOCheckRequest;
-import com.zbensoft.mmsmp.common.ra.common.message.WOCheckResponse;
+import com.zbensoft.mmsmp.common.ra.common.message.*;
 import com.zbensoft.mmsmp.corebiz.handle.impl.MmsBusinessHandlerImpl;
 import com.zbensoft.mmsmp.corebiz.handle.impl.ProxyPayBusinessHandlerImpl;
 import com.zbensoft.mmsmp.corebiz.handle.impl.SendNotifyMessageHandlerimpl;
 import com.zbensoft.mmsmp.corebiz.handle.impl.SmsBusinessHandlerImpl;
 import com.zbensoft.mmsmp.corebiz.handle.impl.UniBusinessHandlerImpl;
 import com.zbensoft.mmsmp.corebiz.message.OrderRelationMessage;
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
 import org.apache.log4j.Logger;
 
 public class BusinessMessageHandler implements IMessageHandler {

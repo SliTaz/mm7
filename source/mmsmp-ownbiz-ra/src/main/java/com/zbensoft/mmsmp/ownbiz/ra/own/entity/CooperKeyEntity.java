@@ -5,7 +5,7 @@ package com.zbensoft.mmsmp.ownbiz.ra.own.entity;
 import java.io.Serializable;
 
 public class CooperKeyEntity implements Serializable {
-    private int keyId;
+    private String  keyId;
     private String cooperId;
     private String cooperName;
     private String cooperKey;
@@ -21,11 +21,11 @@ public class CooperKeyEntity implements Serializable {
     public CooperKeyEntity() {
     }
 
-    public int getKeyId() {
+    public String getKeyId() {
         return this.keyId;
     }
 
-    public void setKeyId(int keyId) {
+    public void setKeyId(String keyId) {
         this.keyId = keyId;
     }
 

@@ -27,8 +27,12 @@ import com.zbensoft.mmsmp.api.common.HttpRestStatusFactory;
 import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
 import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
+import com.zbensoft.mmsmp.api.service.api.ProductInfoService;
+import com.zbensoft.mmsmp.api.service.api.ProvinceCityService;
 import com.zbensoft.mmsmp.api.service.api.SpInfoService;
 import com.zbensoft.mmsmp.api.service.api.UserOrderHisService;
+import com.zbensoft.mmsmp.db.domain.ProductInfo;
+import com.zbensoft.mmsmp.db.domain.ProvinceCity;
 import com.zbensoft.mmsmp.db.domain.SpInfo;
 import com.zbensoft.mmsmp.db.domain.UserOrderHis;
 
@@ -41,6 +45,10 @@ public class UserOrderHisController {
 	UserOrderHisService userOrderHisService;
 	@Autowired
 	SpInfoService spInfoService;
+	@Autowired
+	ProvinceCityService provinceCityService;
+	@Autowired
+	ProductInfoService productInfoService;
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 	
@@ -55,7 +63,7 @@ public class UserOrderHisController {
 			@RequestParam(required = false) Integer status,@RequestParam(required = false) String version,
 			@RequestParam(required = false) String notDisturbTime,@RequestParam(required = false) String transactionId,
 			@RequestParam(required = false) String area,@RequestParam(required = false) Integer priority,
-			@RequestParam(required = false) String lastBatchId,@RequestParam(required = false) Integer isPackage,
+			@RequestParam(required = false) String lastBatchId,@RequestParam(required = false) Integer isPackage,@RequestParam(required = false) Integer notifySpFlag,
 			@RequestParam(required = false) String orderTimeStart,@RequestParam(required = false) String orderTimeEnd,
 			@RequestParam(required = false) String start,@RequestParam(required = false) String length) {
 		UserOrderHis userOrderHis = new UserOrderHis();
@@ -79,6 +87,7 @@ public class UserOrderHisController {
 		userOrderHis.setIsPackage(isPackage);
 		userOrderHis.setOrderTimeStart(orderTimeStart);
 		userOrderHis.setOrderTimeEnd(orderTimeEnd);
+		userOrderHis.setNotifySpFlag(notifySpFlag);
 		int count = userOrderHisService.count(userOrderHis);
 		if (count == 0) {
 			return new ResponseRestEntity<List<UserOrderHis>>(new ArrayList<UserOrderHis>(), HttpRestStatus.NOT_FOUND);
@@ -107,6 +116,14 @@ public class UserOrderHisController {
 			SpInfo spInfo = spInfoService.selectByPrimaryKey(bean.getSpInfoId());
 			if(spInfo != null){
 				bean.setCompanyName(spInfo.getCompanyName());
+			}
+			ProvinceCity provinceCity = provinceCityService.selectByPrimaryKey(bean.getArea());
+			if(provinceCity != null){
+				bean.setProvinceCityName(provinceCity.getProvinceCityName());
+			}
+			ProductInfo productInfo = productInfoService.selectByPrimaryKey(bean.getProductInfoId());
+			if(productInfo != null){
+				bean.setProductName(productInfo.getProductName());
 			}
 			listNew.add(bean);
 		}
@@ -174,6 +191,7 @@ public class UserOrderHisController {
 		currentUserOrderHis.setEffTime(userOrderHis.getEffTime());
 		currentUserOrderHis.setCancelTime(userOrderHis.getCancelTime());
 		currentUserOrderHis.setOrderTime(userOrderHis.getOrderTime());
+		currentUserOrderHis.setNotifySpFlag(userOrderHis.getNotifySpFlag());
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
 			for (ObjectError error : list) {
@@ -217,6 +235,7 @@ public class UserOrderHisController {
 		currentUserOrderHis.setEffTime(userOrderHis.getEffTime());
 		currentUserOrderHis.setCancelTime(userOrderHis.getCancelTime());
 		currentUserOrderHis.setOrderTime(userOrderHis.getOrderTime());
+		currentUserOrderHis.setNotifySpFlag(userOrderHis.getNotifySpFlag());
 		//修改日志
 		userOrderHisService.updateByPrimaryKeySelective(currentUserOrderHis);
 		CommonLogImpl.insertLog(CommonLogImpl.OPERTYPE_UPDATE, currentUserOrderHis,CommonLogImpl.CUSTOMER_MANAGE);

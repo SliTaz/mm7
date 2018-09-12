@@ -57,4 +57,8 @@ public interface SpInfoService {
     List<SpInfo> getSpInfo(SpInfo record);
 
 	int count(SpInfo record);
+	
+	List<SpInfo> selectAll();
+	
+	List<SpInfo> getSpInfoByCompanyCode(String productInfoId);
 }

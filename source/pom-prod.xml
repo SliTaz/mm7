@@ -8,7 +8,8 @@
 		<module>mmsmp-api</module>
 		<module>mmsmp-db</module>
 		<module>mmsmp-boss</module>
-		<module>mmsmp-interface</module>
+		<module>mmsmp-common-ra</module>
+		<module>mmsmp-corebiz</module>
 	</modules>
 	<groupId>com.zbensoft</groupId>
 	<artifactId>mmsmp</artifactId>

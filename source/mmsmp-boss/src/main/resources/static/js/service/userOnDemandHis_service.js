@@ -118,6 +118,18 @@ App.factory('UserOrderHisService', ['$http', '$q', function($http, $q){
 								}
 						);
 			},
+			selProductInfo: function() {
+				return $http.get(apiUrl +"/productInfo")
+						.then(
+								function(response){
+									return response.data;
+								}, 
+								function(errResponse){
+									handleAjaxError(errResponse);
+									return $q.reject(errResponse);
+								}
+						);
+			},
 		
 	};
 

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="GBK" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+           default-lazy-init="true" default-autowire="byName">
+	
+
+	 <!-- 前置接收路由队列(高) -->
+	<bean id="receiveHeightLevelQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>
+	
+	<!-- 前置接收路由队列(高) -->
+	<bean id="receiveHeightLevelExtendQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>
+	
+	
+	<!-- 前置接收路由队列(中) -->
+	<bean id="receiveCommonLevelQueue" class="com.zbensoft.mmsmp.corebiz.util.ProxyQueue">
+		<constructor-arg index="0">
+                    <value>/logs/mmsmp/corebiz_queue</value>
+                </constructor-arg>
+	        <constructor-arg index="1">
+                    <value>receiveCommonLevelQueue</value>
+                </constructor-arg>
+	</bean>
+	<!--
+        <bean id="receiveCommonLevelQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="20000"/>
+	</bean>
+        -->
+	<!-- 前置接收路由队列(低) -->
+	<bean id="receiveLowerLevelQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="20000"/>
+	</bean>
+	
+	 <!-- 前置接收路由队列(代支付专用队列) -->
+	<bean id="receiveProxyPayQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>    
+	
+	<!-- 后置转发目的队列(smsAgent) -->
+	<bean id="dispatchSmsAgentQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>
+	
+	<!-- 后置转发目的队列(mmsAgent) -->
+	<bean id="dispatchMmsAgentQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="10000"/>
+	</bean>
+	
+	<!-- 后置转发目的队列(vacAgent) -->
+	<bean id="dispatchVacAgentQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>
+	
+	<!-- 后置转发队列(spAgent) -->
+	<bean id="dispatchSpAgentQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>
+	
+	<!-- 后置转发队列(woAgent) -->
+	<bean id="dispatchWoAgentQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>
+	
+	<!-- 后置转发队列代支付(ownService) -->
+	<bean id="dispatchOwnServiceQueue" class="com.zbensoft.mmsmp.corebiz.util.MyLinkedBlockingQueue">
+		<constructor-arg value="5000"/>
+	</bean>
+	
+	
+	<!-- 接收路由策略(key=className,value=queueName)-->
+	<bean id="receiveMessageRoutePolocy" class="java.util.concurrent.ConcurrentHashMap">
+		<constructor-arg> 
+			<map>  
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.CheckResponse" value-ref="receiveHeightLevelQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.WOCheckResponse" value-ref="receiveHeightLevelQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyResponse" value-ref="receiveHeightLevelQueue"/>
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_MMDeliverSPMessage" value-ref="receiveCommonLevelQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_SPMMHttpMessage" value-ref="receiveCommonLevelQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage" value-ref="receiveCommonLevelQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.corebiz.message.OrderRelationMessage" value-ref="receiveCommonLevelQueue"/>
+        	 
+    		
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_ReportMessage" value-ref="receiveLowerLevelQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_ReportMessage" value-ref="receiveLowerLevelQueue"/>
+        	 <!-- 管理门户（彩信测试、短信测试）、个人门户获取验证码 所用-->
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.SendNotificationMessage" value-ref="receiveLowerLevelQueue"/>
+	 		<!-- ownservice 代支付消息对象 -->
+        	 <entry key="com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage" value-ref="receiveProxyPayQueue"/>
+        	 
+        	</map> 
+    	</constructor-arg>  
+	</bean>
+	
+	<!-- 接收路由策略(key=className,value=queueName)-->
+	<bean id="receiveMessageRouteExtend" class="java.util.concurrent.ConcurrentHashMap">
+		<constructor-arg> 
+			<map> 
+			 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage" value-ref="receiveHeightLevelExtendQueue"/> 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.CheckResponse" value-ref="receiveHeightLevelExtendQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyResponse" value-ref="receiveHeightLevelExtendQueue"/>
+        	 
+        	</map> 
+    	</constructor-arg>  
+	</bean>
+	
+	<!-- 接收消息来源(key=className,value=agentName)-->
+	<bean id="receiveMessageRouteClient" class="java.util.concurrent.ConcurrentHashMap">
+		<constructor-arg> 
+			<map>  
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.CheckResponse" value="vacagent"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.WOCheckResponse" value="woagent"/>
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyResponse" value="spagent"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_SPMMHttpMessage" value="spagent"/>
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_MMDeliverSPMessage" value="mmsagent"/>
+        	  <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_ReportMessage" value="mmsagent"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_ReportMessage" value="mmsagent"/>
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage" value="smsagent"/>
+        	 
+        	 <entry key="com.zbensoft.mmsmp.corebiz.message.OrderRelationMessage" value="portal"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.SendNotificationMessage" value="admin"/>
+    		 <entry key="com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage" value="ownservice"/>
+    		 
+        	</map> 
+    	</constructor-arg>  
+	</bean>
+	
+	<!-- 转发路由策略(key=className,value=queueName)-->
+	<bean id="transferMessageRoutePolocy" class="java.util.concurrent.ConcurrentHashMap">
+		<constructor-arg> 
+			<map>  
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.CheckRequest" value-ref="dispatchVacAgentQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.WOCheckRequest" value-ref="dispatchWoAgentQueue"/>
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_MMDeliverSPMessage" value-ref="dispatchSpAgentQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_ReportMessage" value-ref="dispatchSpAgentQueue"/>
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_MMHttpSPMessage" value-ref="dispatchMmsAgentQueue"/>
+        	 
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_SMMessage" value-ref="dispatchSmsAgentQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest" value-ref="dispatchSpAgentQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage" value-ref="dispatchSpAgentQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage" value-ref="dispatchOwnServiceQueue"/>
+        	  
+    		</map> 
+    	</constructor-arg>  
+	</bean>
+	
+	<!-- 接收路由器-->
+	<bean id="receiveMessageRouter" class="com.zbensoft.mmsmp.corebiz.route.ReceiveRouter">
+		<property name="policyMap" ref="receiveMessageRoutePolocy"/>
+		<property name="clientMap" ref="receiveMessageRouteClient"/>
+		<property name="extendMap" ref="receiveMessageRouteExtend"/>
+	</bean>
+	
+	<!-- 中转路由器-->
+	<bean id="businessMessageRouter" class="com.zbensoft.mmsmp.corebiz.route.BusinessRouter">
+		<property name="policyMap" ref="transferMessageRoutePolocy"/> 
+	</bean>
+	
+	<!-- 转发路由器-->
+	<!-- 
+	<bean id="dispatchMessageRouter" class="com.zbensoft.mmsmp.corebiz.route.DispatchRouter">
+		<property name="policyMap" ref="dispatchMessageRoutePolocy"/> 
+	</bean>
+	 -->
+	<!-- 消息接收处理-->
+	<bean id="receiveMessageMinaHandler" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaServerHandler">
+		<property name="messageRouter" ref="receiveMessageRouter"/> 
+	</bean>
+	
+	<!-- 消息业务处理-->
+	<bean id="businessMessageHandler" class="com.zbensoft.mmsmp.corebiz.handle.BusinessMessageHandler">
+		<property name="smsHandler" ref="smsBusinessHandlerImpl"/>
+		<property name="mmsHandler" ref="mmsBusinessHandlerImpl"/>
+		<property name="uniHandler" ref="uniBusinessHandlerImpl"/>
+		<property name="senHanderler" ref="sendNotifyMessageHandlerimpl"/>
+		<property name="ppayHandler" ref="proxyPayBusinessHandlerImpl"/>
+	</bean>
+	
+	<!-- 短息相关处理-->
+	<bean id="smsBusinessHandlerImpl" class="com.zbensoft.mmsmp.corebiz.handle.impl.SmsBusinessHandlerImpl">
+		<property name="messageRouter" ref="businessMessageRouter"/>
+		<!-- <property name="daoUtil" ref="daoUtil"/> -->
+		<property name="dataCache" ref="dataCache"/>
+		<property name="dataMap" ref="smsDataMemory"/>
+	</bean>
+	
+	
+	
+	<!-- 彩信相关处理-->
+	<bean id="mmsBusinessHandlerImpl" class="com.zbensoft.mmsmp.corebiz.handle.impl.MmsBusinessHandlerImpl">
+		<property name="messageRouter" ref="businessMessageRouter"/>
+		<!-- <property name="daoUtil" ref="daoUtil"/> -->
+		<property name="dataCache" ref="dataCache"/>
+		<property name="dataMap" ref="mmsDataMemory"/>
+		<property name="commonMap" ref="commonDataMemory"/>
+        <property name="mmsDBListener" ref="mmsDBListener"/>
+		<property name="mmsUpdateListener" ref="MmsUpdateListener"></property>
+		<property name="mmsReportDataMap" ref="mmsReportDataMemory" />
+	</bean>
+	
+	<!-- WebService相关处理-->
+	<bean id="uniBusinessHandlerImpl" class="com.zbensoft.mmsmp.corebiz.handle.impl.UniBusinessHandlerImpl">
+		<property name="messageRouter" ref="businessMessageRouter"/>
+		<!-- <property name="daoUtil" ref="daoUtil"/> -->
+		<property name="dataCache" ref="dataCache"/>
+		<property name="dataMap" ref="uniDataMemory"/>
+		<property name="commonMap" ref="commonDataMemory"/>
+	</bean>
+	
+	<!-- 代支付消息接受 处理-->
+	<bean id="proxyPayBusinessHandlerImpl" class="com.zbensoft.mmsmp.corebiz.handle.impl.ProxyPayBusinessHandlerImpl">
+		<property name="messageRouter" ref="businessMessageRouter"/>
+	</bean>
+	
+	<!-- 管理门户（短信测试）、个人门户获取验证码 所用-->
+	<bean id="sendNotifyMessageHandlerimpl" class="com.zbensoft.mmsmp.corebiz.handle.impl.SendNotifyMessageHandlerimpl">
+		<property name="messageRouter" ref="businessMessageRouter"/>
+	</bean>
+	
+	<bean id="handleHelperExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" destroy-method="shutdown">
+ 		<property name="corePoolSize" value="10" />
+ 		<property name="maxPoolSize" value="50" />
+ 		<property name="queueCapacity" value="20" />
+ 		<property name="keepAliveSeconds" value="1" />
+ 		<property name="rejectedExecutionHandler">
+ 			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+ 		</property>
+	</bean>
+	
+	<!-- 接收处理队列监听(高) -->
+	<bean id="receiveHeightQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="receiveHeightLevelQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler" ref="businessMessageHandler"/>
+		<property name="info" value="receive height queue(base)"/>
+	</bean>
+	
+	<!-- 接收处理队列监听(高) -->
+	<bean id="receiveHeightExtendQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="receiveHeightLevelExtendQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler" ref="businessMessageHandler"/>
+		<property name="info" value="receive height queue(extend)"/>
+	</bean>
+	
+	<!-- 接收处理队列监听(中) -->
+	<bean id="receiveCommonQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="receiveCommonLevelQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler" ref="businessMessageHandler"/>
+		<property name="info" value="receive common queue"/>
+	</bean>
+	
+	<!-- 接收处理队列监听(低) -->
+	<bean id="receiveLowerQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="receiveLowerLevelQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler" ref="businessMessageHandler"/>
+		<property name="info" value="receive lower queue"/>
+	</bean>
+	
+	<!-- 接收代支付队列监听 -->
+	<bean id="receiveProxyPayQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="receiveProxyPayQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler" ref="businessMessageHandler"/>
+		<property name="info" value="receive ownbiz proxy pay queue"/>
+	</bean>
+	
+	
+	<!-- 转发目的队列监听(smsAgent Queue) -->
+	<bean id="smsAgentQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="dispatchSmsAgentQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler">
+			<bean class="com.zbensoft.mmsmp.corebiz.handle.DispatchMessageHandler">
+				<property name="minaClientProxy" ref="smsAgentClient"/>
+			</bean>
+		</property>
+		<property name="info" value="dispatch smsagent queue"/>
+	</bean>
+	
+	<!-- 转发目的队列监听(mmsAgent Queue) -->
+	<bean id="mmsAgentQueueListener0" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="dispatchMmsAgentQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler">
+			<bean class="com.zbensoft.mmsmp.corebiz.handle.DispatchMessageHandler">
+				<property name="minaClientProxy" ref="mmsAgentClient0"/>
+			</bean>
+		</property>
+		<property name="info" value="dispatch mmsagent queue0"/>
+	</bean>
+	
+        <bean id="mmsAgentQueueListener1" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="dispatchMmsAgentQueue"/>
+		<property name="number" value="5"/>
+		<property name="idle" value="50"/>
+		<property name="handler">
+			<bean class="com.zbensoft.mmsmp.corebiz.handle.DispatchMessageHandler">
+				<property name="minaClientProxy" ref="mmsAgentClient1"/>
+			</bean>
+		</property>
+		<property name="info" value="dispatch mmsagent queue1"/>
+	</bean>
+	<!-- 转发目的队列监听(vacAgent Queue) -->
+	<bean id="vacAgentQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="dispatchVacAgentQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler">
+			<bean class="com.zbensoft.mmsmp.corebiz.handle.DispatchMessageHandler">
+				<property name="minaClientProxy" ref="vacAgentClient"/>
+			</bean>
+		</property>
+		<property name="info" value="dispatch vacagent queue"/>
+	</bean>
+	
+	<!-- 转发目的队列监听(spAgent Queue) -->
+	<bean id="spAgentQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="dispatchSpAgentQueue"/>
+		<property name="number" value="5"/>
+		<property name="idle" value="50"/>
+		<property name="handler">
+			<bean class="com.zbensoft.mmsmp.corebiz.handle.SPDispatchMessageHandler">
+				<property name="minaClientProxy" ref="spAgentClient"/>
+				<property name="ownerClientProxy" ref="ownbizClient"/>
+				<property name="dataCache" ref="dataCache"/>
+			</bean>
+		</property>
+		<property name="info" value="dispatch spagent queue"/>
+	</bean>
+	
+	
+	<!-- 转发目的队列监听(woAgent Queue) -->
+	<bean id="woAgentQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="dispatchWoAgentQueue"/>
+		<property name="number" value="3"/>
+		<property name="idle" value="50"/>
+		<property name="handler">
+			<bean class="com.zbensoft.mmsmp.corebiz.handle.DispatchMessageHandler">
+				<property name="minaClientProxy" ref="woAgentClient"/>
+			</bean>
+		</property>
+		<property name="info" value="dispatch woagent queue"/>
+	</bean>
+	
+	<!-- 转发目的队列监听(woAgent Queue) -->
+	<bean id="ownServiceQueueListener" class="com.zbensoft.mmsmp.corebiz.message.MessageListener" init-method="start" destroy-method="stop">
+		<property name="handleHelper" ref="handleHelperExecutor"/>
+		<property name="queue" ref="dispatchOwnServiceQueue"/>
+		<property name="number" value="5"/>
+		<property name="idle" value="50"/>
+		<property name="handler">
+			<bean class="com.zbensoft.mmsmp.corebiz.handle.DispatchMessageHandler">
+				<property name="minaClientProxy" ref="ownbizClient"/>
+			</bean>
+		</property>
+		<property name="info" value="dispatch ownbiz queue"/>
+	</bean>
+	
+	<bean id="mmsDBListener" class="com.zbensoft.mmsmp.corebiz.message.MmsDBListener" init-method="start" destroy-method="shutdown">
+		<property name="number" value="5"/>
+		<property name="queueSize" value="10000"/>
+		<!-- <property name="smsDAO" ref="smsDAO"/> -->
+		<property name="idle" value="100"/>
+		<property name="info" value="mmsmt db queue"/>
+	</bean>
+		
+	<bean id="MmsUpdateListener" class="com.zbensoft.mmsmp.corebiz.message.MmsUpdateListener" init-method="start" destroy-method="shutdown">
+		<property name="number" value="1"/>
+		<property name="cacheTime" value="120"/>
+		<!-- <property name="smsDAO" ref="smsDAO"/> -->
+		<property name="idle" value="100"/>
+		<property name="info" value="mmsmt update queue"/>
+	</bean>
+</beans>

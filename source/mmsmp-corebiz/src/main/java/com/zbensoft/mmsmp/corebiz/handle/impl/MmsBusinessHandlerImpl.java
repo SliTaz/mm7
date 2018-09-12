@@ -24,6 +24,7 @@ import com.zbensoft.mmsmp.common.ra.common.message.WOCheckRequest;
 import com.zbensoft.mmsmp.common.ra.common.message.WOCheckResponse;
 import com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto;
 import com.zbensoft.mmsmp.common.ra.send.util.XmlElementReplace;
+import com.zbensoft.mmsmp.common.ra.vas.sjb.data.DemandDto;
 import com.zbensoft.mmsmp.corebiz.cache.DataCache;
 import com.zbensoft.mmsmp.corebiz.dao.DaoUtil;
 import com.zbensoft.mmsmp.corebiz.message.MT_MMHttpSPMessage_Report;
@@ -34,8 +35,8 @@ import com.zbensoft.mmsmp.corebiz.message.MmsUserMessage;
 import com.zbensoft.mmsmp.corebiz.route.IMessageRouter;
 import com.zbensoft.mmsmp.corebiz.service.mm7.SubmitReq;
 import com.zbensoft.mmsmp.corebiz.service.mm7.SubmitResp;
+import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
 import com.zbensoft.mmsmp.corebiz.util.StringUtil;
-import com.zbensoft.mmsmp.vas.sjb.data.DemandDto;
 
 public class MmsBusinessHandlerImpl {
 	static final Logger logger = Logger.getLogger(MmsBusinessHandlerImpl.class);
@@ -48,7 +49,7 @@ public class MmsBusinessHandlerImpl {
 
 	IMessageRouter messageRouter;
 
-	DaoUtil daoUtil;
+//	DaoUtil daoUtil;
 
 	DataCache dataCache;
 	ConcurrentHashMap<String, AbstractMessage> dataMap;
@@ -274,9 +275,9 @@ public class MmsBusinessHandlerImpl {
 
 		try {
 			long btime = System.currentTimeMillis();
-			//TODO MO_ReportMessage 入库更新
+			//TODO MO_ReportMessage 入库更新;Already processed;edit
 			//this.daoUtil.getDemandDao().updateSpMMSSendRecord("5", reqid, mmscode);
-
+            HttpRequestHelper.updateSpMMSSendRecord("5", reqid, mmscode);
 			logger.info("mmsmr save mr history success[gmsgid:" + gmsgid + ",reqid:" + reqid + "mmsCode:" + mmscode
 					+ ",exectime:" + (System.currentTimeMillis() - btime) + "]");
 		} catch (Exception ex) {
@@ -364,8 +365,8 @@ public class MmsBusinessHandlerImpl {
 			user.setVaspId(value[5]);
 			user.setProductId(value[6]);
 			user.setSendAddress(sendAdress);
-			// TODO 插入用户信息
-//			 daoUtil.getSmsDAO().insertPauseUser(user);
+			// TODO 插入用户信息;Already processed;pending 临时表，没有表结构
+//			daoUtil.getSmsDAO().insertPauseUser(user);
 			logger.info((new StringBuilder("mmsmt save paused user[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",productid:").append(products[0]).append(",contentid:")
 					.append(user.getContentId()).append("]").toString());
@@ -448,9 +449,9 @@ public class MmsBusinessHandlerImpl {
 		mt.setUniqueid(uniqueid);
 		try {
 			if (productSize == 2) {
-				//TODO 数据库调用，待修改
-//				daoUtil.getSmsDAO().saveUserZSMTRecord(phone, charge, submit.getTransactionID(), vaspid, zsuniqueid,
-//						msg.getMessageid(), products[1]);
+				//TODO 数据库调用，待修改;Already processed;edit
+//				daoUtil.getSmsDAO().saveUserZSMTRecord(phone, charge, submit.getTransactionID(), vaspid, zsuniqueid,msg.getMessageid(), products[1]);
+				HttpRequestHelper.saveUserZSMTRecord(phone, charge, submit.getTransactionID(), vaspid, zsuniqueid,msg.getMessageid(), products[1]);
 			} else {
 				MmsHistoryMessage mmsHM = new MmsHistoryMessage();
 				mmsHM.setGlobalMessageId(msg.getGlobalMessageid());
@@ -573,20 +574,20 @@ public class MmsBusinessHandlerImpl {
 					.append(quota).append("]").toString());
 			return;
 		}
-		//TODO 去掉业务能里限制校验
-//		String capacity = dataCache.getMmsmtLimitByServiceid(serviceid);
-//		if (capacity != null && "2".equals(capacity))
-//		{
-//			logger.info((new StringBuilder("mmsmt service beyond number limited [gmsgid:")).append(gmsgid)
-//					.append(",phone:").append(phone).append(",productid:").append(productid).append(",serviceid:")
-//					.append(serviceid).append("]").toString());
-//			String str = StringUtil.getReportString(
-//					(new StringBuilder(String.valueOf((new Random()).nextInt(0x186a0)))).toString(), "10655565", phone,
-//					StringUtil.getTime0800(), messageid, 11007, "MT MMS COUNT BEYOND LIMIT");
-//			mr.setContent(str);
-//			messageRouter.doRouter(mr);
-//			return;
-//		}
+		//TODO 去掉业务能里限制校验;Already processed;is ok
+		String capacity = dataCache.getMmsmtLimitByServiceid(serviceid);
+		if (capacity != null && "2".equals(capacity))
+		{
+			logger.info((new StringBuilder("mmsmt service beyond number limited [gmsgid:")).append(gmsgid)
+					.append(",phone:").append(phone).append(",productid:").append(productid).append(",serviceid:")
+					.append(serviceid).append("]").toString());
+			String str = StringUtil.getReportString(
+					(new StringBuilder(String.valueOf((new Random()).nextInt(0x186a0)))).toString(), "10655565", phone,
+					StringUtil.getTime0800(), messageid, 11007, "MT MMS COUNT BEYOND LIMIT");
+			mr.setContent(str);
+			messageRouter.doRouter(mr);
+			return;
+		}
 		switch (mmsmtType) {
 	
 		case 0: // '\0'
@@ -617,7 +618,11 @@ public class MmsBusinessHandlerImpl {
 			break;
 
 		case 1: // '\001'
-			boolean isIphone = daoUtil.getMm7dao().isFromIphoneOrder(phone, productid);
+			//TODO iphone 特殊处理;Already processed;is ok
+			boolean isIphone = false;
+//			isIphone=daoUtil.getMm7dao().isFromIphoneOrder(phone, productid);
+			logger.info("isIphone:"+isIphone);
+			
 			if (isIphone) {
 				logger.info((new StringBuilder("mmsmt on order wo auth(needn't) request[gmsgid:")).append(gmsgid)
 						.append(",phone:").append(phone).append(",productid:").append(productid).append("]")
@@ -853,8 +858,9 @@ public class MmsBusinessHandlerImpl {
 							phone1, StringUtil.getTime0800(), mmsmt.getMessageid(), rspCode1, "Auth Failed");
 					mmsmr.setContent(str);
 					messageRouter.doRouter(mmsmr);
-					daoUtil.getSmsDAO().updateMmsGrsCode("4", messageid,
-							(new StringBuilder(String.valueOf(rspCode1))).toString());
+					//TODO 数据库更新修改;Already processed;edit
+//					daoUtil.getSmsDAO().updateMmsGrsCode("4", messageid,(new StringBuilder(String.valueOf(rspCode1))).toString());
+					HttpRequestHelper.updateMmsGrsCode("4", messageid,(new StringBuilder(String.valueOf(rspCode1))).toString());
 					recycleMessage(gmsgid);
 				}
 				break;
@@ -876,8 +882,9 @@ public class MmsBusinessHandlerImpl {
 							phone1, StringUtil.getTime0800(), messageid, 11201, "OrderRelation Doesn't Exist");
 					mmsmr.setContent(str);
 					messageRouter.doRouter(mmsmr);
-					daoUtil.getSmsDAO().updateMmsGrsCode("4", messageid,
-							(new StringBuilder(String.valueOf(rspCode1))).toString());
+					//TODO 数据库更新修改;Already processed;edit
+//					daoUtil.getSmsDAO().updateMmsGrsCode("4", messageid,(new StringBuilder(String.valueOf(rspCode1))).toString());
+					HttpRequestHelper.updateMmsGrsCode("4", messageid,(new StringBuilder(String.valueOf(rspCode1))).toString());
 					recycleMessage(gmsgid);
 				} else {
 					logger.info((new StringBuilder("mmsmt on order vac auth(7) response failure[gmsgid:"))
@@ -888,8 +895,9 @@ public class MmsBusinessHandlerImpl {
 							phone1, StringUtil.getTime0800(), messageid, 1005, "Auth Failed");
 					mmsmr.setContent(str);
 					messageRouter.doRouter(mmsmr);
-					daoUtil.getSmsDAO().updateMmsGrsCode("4", messageid,
-							(new StringBuilder(String.valueOf(rspCode1))).toString());
+					//TODO 数据库更新修改;Already processed;edit
+//					daoUtil.getSmsDAO().updateMmsGrsCode("4", messageid,(new StringBuilder(String.valueOf(rspCode1))).toString());
+					HttpRequestHelper.updateMmsGrsCode("4", messageid,(new StringBuilder(String.valueOf(rspCode1))).toString());
 					recycleMessage(gmsgid);
 				}
 				break;
@@ -941,8 +949,8 @@ public class MmsBusinessHandlerImpl {
 			sendto = sendto.replace("[", "");
 			sendto = sendto.replace("]", "");
 			int isCorrect = Integer.parseInt(sCorrect);
-
-			this.daoUtil.getLogDao().saveMoMMSMsg(msg, sendto, Integer.valueOf(isCorrect));
+			//TODO 保存MO MMS 消息
+//			this.daoUtil.getLogDao().saveMoMMSMsg(msg, sendto, Integer.valueOf(isCorrect));
 
 			logger.info("mmsmo save mo history success[gmsgid:" + mmsmo.getGlobalMessageid() + ",phone:"
 					+ mmsmo.getSender() + ",exectime:" + (System.currentTimeMillis() - btime) + "]");
@@ -990,9 +998,9 @@ public class MmsBusinessHandlerImpl {
 		this.messageRouter = messageRouter;
 	}
 
-	public void setDaoUtil(DaoUtil daoUtil) {
-		this.daoUtil = daoUtil;
-	}
+//	public void setDaoUtil(DaoUtil daoUtil) {
+//		this.daoUtil = daoUtil;
+//	}
 
 	public void setDataCache(DataCache dataCache) {
 		this.dataCache = dataCache;

@@ -57,4 +57,6 @@ public interface SystemConfigMapper {
 	List<SystemConfig> selectByApplicationServerCode(String applicationServerCode);
 	List<SystemConfig> selectPage(SystemConfig record);
 	int count(SystemConfig systemConfig);
+	
+	SystemConfig selectBycode(String code);
 }

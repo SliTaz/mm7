@@ -28,6 +28,7 @@ public class DataCacheJob extends Job {
     public static List<VaspEnitiy> OWN_SP = new ArrayList();
 
     public DataCacheJob() {
+
     }
 
     public void doHandler() {

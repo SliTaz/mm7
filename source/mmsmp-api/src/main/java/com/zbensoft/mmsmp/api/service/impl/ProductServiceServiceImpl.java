@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zbensoft.mmsmp.api.service.api.ProductServiceService;
-import com.zbensoft.mmsmp.db.domain.ProductInfo;
 import com.zbensoft.mmsmp.db.domain.ProductService;
 import com.zbensoft.mmsmp.db.mapper.ProductServiceMapper;
 
@@ -79,5 +78,25 @@ public class ProductServiceServiceImpl implements ProductServiceService{
 		// TODO Auto-generated method stub
 		return productServiceMapper.getProductInfo(productInfo);
 	}
+
+	@Override
+	public List<ProductService> getSpProductId(String cpAccessId) {
+		// TODO Auto-generated method stub
+		return productServiceMapper.getSpProductId(cpAccessId);
+	}
+
+	@Override
+	public ProductService getVasServiceRelation(ProductService record) {
+		// TODO Auto-generated method stub
+		return productServiceMapper.getVasServiceRelation(record);
+	}
+
+	@Override
+	public int queryContentCount(ProductService record) {
+		// TODO Auto-generated method stub
+		return productServiceMapper.queryContentCount(record);
+	}
+
+
 
 }

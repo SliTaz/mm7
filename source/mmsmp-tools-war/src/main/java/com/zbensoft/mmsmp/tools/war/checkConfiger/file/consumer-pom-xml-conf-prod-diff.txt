@@ -1,8 +1,0 @@
-<!-- 		<dependency> <--> 		<dependency>
-		</dependency> --> <--> 		</dependency> 
-		<dependency> <--> 		<!--<dependency>
-		</dependency> <--> 		</dependency>-->
-     <!--<resources> <-->      <resources>
-        </resources>--> <-->         </resources>
-		<!-- 使用内部tomcat直接运行 打包需要增加 Start <--> 		<!-- 使用内部tomcat直接运行 打包需要增加 Start-->
-	       	使用内部tomcat直接运行 打包需要增加 End--> <--> 	       	<!-- 使用内部tomcat直接运行 打包需要增加 End-->

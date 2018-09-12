@@ -72,4 +72,17 @@ public class ProductInfoServiceImpl implements ProductInfoService{
 		return productInfoMapper.count(record);
 	}
 
+	@Override
+	public ProductInfo getVasSpCpInfo(ProductInfo record) {
+		// TODO Auto-generated method stub
+		return productInfoMapper.getVasSpCpInfo(record);
+	}
+
+	@Override
+	public List<ProductInfo> getAllVasServiceRelation() {
+		// TODO Auto-generated method stub
+		return productInfoMapper.getAllVasServiceRelation();
+	}
+
+
 }

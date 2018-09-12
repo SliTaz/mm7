@@ -188,7 +188,7 @@ function onSubmitSuccess(data){
 		
 		var provinceCityId = vm.beanSer.provinceCityId;
 		var provinceCityName = encodeURI(encodeURI(vm.beanSer.provinceCityName));
-		var parentProvinceCityId="";
+		var parentProvinceCityId="-1";
 	
 		
 		vm.dtInstance.changeData(getFromSource(apiUrl + '/province?provinceCityId=' + getValueForSelect(provinceCityId)+

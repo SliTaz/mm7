@@ -2,20 +2,21 @@
 
 package com.zbensoft.mmsmp.ownbiz.ra.own.server;
 
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
+import com.alibaba.fastjson.JSON;
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
 import com.zbensoft.mmsmp.ownbiz.ra.own.cache.DataCache;
 import com.zbensoft.mmsmp.ownbiz.ra.own.dao.CooperKeyDao;
 import com.zbensoft.mmsmp.ownbiz.ra.own.dao.ProxyPayMessageDao;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.CooperKeyEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.queue.MessageQuene;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.*;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@WebServlet(urlPatterns = "/billing/getVerificationCode")
 public class SendValidateCodeServlet extends HttpServlet {
     private static final long serialVersionUID = 1961985726725819129L;
     private static final Log log = LogFactory.getLog(SendValidateCodeServlet.class);
@@ -64,7 +67,7 @@ public class SendValidateCodeServlet extends HttpServlet {
                 log.error(AppContants.RETURN_CODE_DATA_NULL_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",Content=" + strContent + ")");
                 returnMap.put("returnCode", AppContants.RETURN_CODE_DATA_NULL);
                 returnMap.put("returnDesc", AppContants.RETURN_CODE_DATA_NULL_DESC);
-                strResult = JSONObject.fromObject(returnMap).toString();
+                strResult =  JSON.toJSONString(returnMap);
                 writer.write(strResult);
                 return;
             }
@@ -73,12 +76,13 @@ public class SendValidateCodeServlet extends HttpServlet {
                 log.error(AppContants.RETURN_CODE_MOBILE_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",Content=" + strContent + ")");
                 returnMap.put("returnCode", AppContants.RETURN_CODE_MOBILE_ERROR);
                 returnMap.put("returnDesc", AppContants.RETURN_CODE_MOBILE_ERROR_DESC);
-                strResult = JSONObject.fromObject(returnMap).toString();
+                strResult =  JSON.toJSONString(returnMap);
                 writer.write(strResult);
                 return;
             }
 
             CooperKeyEntity entity = DataCache.getCooperKey(strAccountId);
+
             String key = "";
             if (entity == null || StringUtils.isBlank(entity.getCooperKey())) {
                 entity = this.cooperKeyDao.getCooperKeyEntityByAccountId(strAccountId);
@@ -88,7 +92,7 @@ public class SendValidateCodeServlet extends HttpServlet {
                 log.error(AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",Content=" + strContent + ")");
                 returnMap.put("returnCode", AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL);
                 returnMap.put("returnDesc", AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL_DESC);
-                strResult = JSONObject.fromObject(returnMap).toString();
+                strResult =  JSON.toJSONString(returnMap);
                 writer.write(strResult);
                 return;
             }
@@ -99,7 +103,7 @@ public class SendValidateCodeServlet extends HttpServlet {
                 log.error(AppContants.RETURN_CODE_KEY_VALIDATE_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",Content=" + strContent + ")");
                 returnMap.put("returnCode", AppContants.RETURN_CODE_KEY_VALIDATE_ERROR);
                 returnMap.put("returnDesc", AppContants.RETURN_CODE_KEY_VALIDATE_ERROR_DESC);
-                strResult = JSONObject.fromObject(returnMap).toString();
+                strResult =  JSON.toJSONString(returnMap);
                 writer.write(strResult);
                 return;
             }
@@ -118,13 +122,17 @@ public class SendValidateCodeServlet extends HttpServlet {
             proxyPayMessage.setFeeType("9");
             proxyPayMessage.setStatus("9");
             proxyPayMessage.setSourceType(1);
+            proxyPayMessage.setUserType("");
             proxyPayMessage.setCooperKey(key);
+            proxyPayMessage.setCooperId(entity.getKeyId());
             proxyPayMessage.setNotifyURL(entity.getNotifyUrl());
             proxyPayMessage.setPayRequestTime(System.currentTimeMillis());
             this.proxyPayMessageDao.insert(proxyPayMessage);
             log.info("接收成功,生成消息ID(" + messageId + ")提交corebiz进行验证码(" + validateCode + ")处理");
             this.messageQuene.addProxyPayMap(messageId, proxyPayMessage);
             String smsTextTemplate = (String)DataCache.get("OWN_VALIDCODE_SMS");
+            //测试
+            returnMap.put("validateCode", proxyPayMessage.getSmsText());
             proxyPayMessage.setSmsText(smsTextTemplate.replace("{0}", proxyPayMessage.getSmsText()));
             log.info("send sms msg =" + proxyPayMessage.getSmsText());
             proxyPayMessage.setFeeType("9");
@@ -132,13 +140,13 @@ public class SendValidateCodeServlet extends HttpServlet {
             returnMap.put("returnCode", AppContants.RETURN_CODE_SUCCESS);
             returnMap.put("returnDesc", AppContants.RETURN_CODE_SUCCESS_DESC);
             returnMap.put("messageId", messageId);
-            strResult = JSONObject.fromObject(returnMap).toString();
+            strResult =  JSON.toJSONString(returnMap);
             writer.write(strResult);
         } catch (Exception var20) {
             log.error(var20.getMessage(), var20);
             returnMap.put("returnCode", AppContants.RETURN_CODE_UNEXPECT_ERROR);
             returnMap.put("returnDesc", AppContants.RETURN_CODE_UNEXPECT_ERROR_DESC);
-            strResult = JSONObject.fromObject(returnMap).toString();
+            strResult =  JSON.toJSONString(returnMap);
             writer.write(strResult);
         } finally {
             writer.close();

@@ -26,11 +26,16 @@ import org.slf4j.LoggerFactory;
 import com.zbensoft.license.read.ReadImpl;
 import com.zbensoft.mmsmp.api.alarm.AlarmMangerFactory;
 import com.zbensoft.mmsmp.api.alarm.util.MailUtil;
+import com.zbensoft.mmsmp.api.factory.BlackWhiteListConfigFactory;
 import com.zbensoft.mmsmp.api.factory.MobileSegmentConfigFactory;
 import com.zbensoft.mmsmp.api.factory.ProvinceCityConfigFactory;
 import com.zbensoft.mmsmp.common.config.SystemConfigKey;
 
 public class CommonFun {
+	
+	
+	public static int ORDER_INT=1;//订购
+	public static int DIANBO_INT=2;//点播
 
 	private static final Logger log = LoggerFactory.getLogger(CommonFun.class);
 
@@ -259,6 +264,7 @@ public class CommonFun {
 		AlarmMangerFactory.getInstance().loadConfig();
 		ProvinceCityConfigFactory.getInstance().loadConfig();
 		MobileSegmentConfigFactory.getInstance().loadConfig();
+		BlackWhiteListConfigFactory.getInstance().loadConfig();
 
 	}
 
@@ -267,6 +273,7 @@ public class CommonFun {
 		AlarmMangerFactory.getInstance().loadConfig();
 		ProvinceCityConfigFactory.getInstance().loadConfig();
 		MobileSegmentConfigFactory.getInstance().loadConfig();
+		BlackWhiteListConfigFactory.getInstance().loadConfig();
 	}
 
 	/**

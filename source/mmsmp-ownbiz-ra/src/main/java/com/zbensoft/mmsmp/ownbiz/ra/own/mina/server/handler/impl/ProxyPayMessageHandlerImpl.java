@@ -2,10 +2,9 @@
 
 package com.zbensoft.mmsmp.ownbiz.ra.own.mina.server.handler.impl;
 
-import org.apache.commons.lang.StringUtils;
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
 import org.apache.log4j.Logger;
 
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
 import com.zbensoft.mmsmp.ownbiz.ra.own.cache.DataCache;
 import com.zbensoft.mmsmp.ownbiz.ra.own.dao.CooperKeyDao;
 import com.zbensoft.mmsmp.ownbiz.ra.own.dao.ProxyPayMessageDao;
@@ -18,6 +17,7 @@ import com.zbensoft.mmsmp.ownbiz.ra.own.entity.VaspEnitiy;
 import com.zbensoft.mmsmp.ownbiz.ra.own.queue.MessageQuene;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.HttpUtil;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.ValidateMessageUtil;
+import org.apache.commons.lang3.StringUtils;
 
 public class ProxyPayMessageHandlerImpl {
     private static final Logger log = Logger.getLogger(ProxyPayMessageHandlerImpl.class);
@@ -35,7 +35,7 @@ public class ProxyPayMessageHandlerImpl {
             if (this.messageQuene == null) {
                 this.messageQuene = MessageQuene.getInstance();
             }
-
+            
             if (proxyPayMessage == null || StringUtils.isBlank(proxyPayMessage.getGlobalMessageid())) {
                 log.error("proxyPayMessage is error ");
                 return;
@@ -49,7 +49,6 @@ public class ProxyPayMessageHandlerImpl {
             }
 
             if (proxyPayMessage == null) {
-                ;
             }
 
             this.proxyPayMessageDao.update(proxyPayMessage);
@@ -70,6 +69,7 @@ public class ProxyPayMessageHandlerImpl {
                 uope.setServiceUniqueid(vsr.getVasserviceUniqueId());
                 uope.setSpId(vsr.getSpId());
                 uope.setFee(vsr.getOrderFee());
+                uope.setKeyId(proxyPayMessage.getCooperId());
                 if (proxyPayMessage.getFeeType().equals("1")) {
                     this.getProxyPayMessageDao().insertUserOrderPay(uope);
                 } else if (proxyPayMessage.getFeeType().equals("2")) {
@@ -103,6 +103,7 @@ public class ProxyPayMessageHandlerImpl {
                     userOrder.setOrderMethod("6");
                     userOrder.setServiceUniqueId("" + vsr.getVasserviceUniqueId());
                     userOrder.setSpOrderId("");
+                    userOrder.setSpInfoId(vsr.getSpId());
                     this.userOrderDao.insertUserOrderHis(userOrder);
                 } else if ("1".equals(proxyPayMessage.getFeeType())) {
                     smsTextTemplate = (String)DataCache.get("OWN_CHARGE_ORDER_NOTIRY");
@@ -127,6 +128,7 @@ public class ProxyPayMessageHandlerImpl {
                     userOrder.setOrderMethod("6");
                     userOrder.setServiceUniqueId("" + vsr.getVasserviceUniqueId());
                     userOrder.setSpOrderId("");
+                    userOrder.setSpInfoId(vsr.getSpId());
                     long hisID = this.userOrderDao.insertUserOrderHis(userOrder);
                     this.userOrderDao.insertUserOrder(userOrder, hisID);
                 } else if ("2".equals(proxyPayMessage.getFeeType())) {

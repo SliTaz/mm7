@@ -56,4 +56,6 @@ public interface UserRecvService {
     List<UserRecv> selectPage(UserRecv record);
     
     int count(UserRecv record);
+
+	UserRecv getLatestMoOrderMsgText(UserRecv userRecv);
 }

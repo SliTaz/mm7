@@ -2,7 +2,6 @@ package com.zbensoft.mmsmp.db.mapper;
 
 import java.util.List;
 
-import com.zbensoft.mmsmp.db.domain.UserInfo;
 import com.zbensoft.mmsmp.db.domain.UserOrderPay;
 
 public interface UserOrderPayMapper {
@@ -57,4 +56,7 @@ public interface UserOrderPayMapper {
     List<UserOrderPay> selectPage(UserOrderPay record);
 
 	int count(UserOrderPay record);
+	void deleteByPnPi(UserOrderPay userOrderPay);
+
+	UserOrderPay selectByPhoneNumberAndProductInfoId(UserOrderPay userOrderPay);
 }

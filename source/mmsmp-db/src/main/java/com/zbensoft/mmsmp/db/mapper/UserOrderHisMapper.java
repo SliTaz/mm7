@@ -56,4 +56,6 @@ public interface UserOrderHisMapper {
     List<UserOrderHis> selectPage(UserOrderHis record);
     
     int count(UserOrderHis record);
+    
+    UserOrderHis selectByPhoneAndProductId(UserOrderHis record);
 }

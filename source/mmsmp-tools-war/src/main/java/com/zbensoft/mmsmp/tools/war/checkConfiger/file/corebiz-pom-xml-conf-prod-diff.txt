@@ -1,0 +1,10 @@
+        </resources>--> <-->         </resources>
+		<dependency> <--> 		<!--<dependency>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId> <--> 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency> <--> 		</dependency>-->
+		<!-- <dependency> <--> 		<dependency>
+		</dependency> --> <--> 		</dependency>
+		<dependency> <--> 		<!--<dependency>
+		</dependency> <--> 		</dependency> -->
+		 <--> 
+	<build><!-- <--> 	<build>

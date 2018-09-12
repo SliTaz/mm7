@@ -3,11 +3,11 @@
 package com.zbensoft.mmsmp.ownbiz.ra.own.dao;
 
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.UserOrderEntity;
+import com.zbensoft.mmsmp.ownbiz.ra.own.util.HttpHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class UserOrderDao extends JdbcDaoSupport {
+public class UserOrderDao implements Dao {
     private static final Log log = LogFactory.getLog(SystemParamDao.class);
 
     public UserOrderDao() {
@@ -26,7 +26,8 @@ public class UserOrderDao extends JdbcDaoSupport {
 //            log.error(var6.getMessage(), var6);
 //            return false;
 //        }
-        return true;
+    	
+        return HttpHelper.isExistOrderRelation(cellPhoneNumber,serviceUniqueid);
     }
 
     public long insertUserOrderHis(UserOrderEntity userOrder) {
@@ -41,7 +42,7 @@ public class UserOrderDao extends JdbcDaoSupport {
 //            log.error(var6.getMessage(), var6);
 //        }
 
-        return 0L;
+        return HttpHelper.insertUserOrderHis(userOrder);
     }
 
     public long insertUserOrder(UserOrderEntity userOrder, long hisID) {
@@ -53,10 +54,10 @@ public class UserOrderDao extends JdbcDaoSupport {
 //            log.error(var5.getMessage(), var5);
 //        }
 
-        return 0L;
+        return HttpHelper.insertUserOrder(userOrder,hisID) ;
     }
 
-    public void deleteUserOrder(String userPhone, long serviceUniqueID) {
+    public void deleteUserOrder(String userPhone, String serviceUniqueID) {
 //        String sql = "select ORDERHISID from user_order t where t.CELLPHONENUMBER=? and t.SERVICEUNIQUEID=? fetch first 1 rows only ";
 //
 //        try {
@@ -73,6 +74,6 @@ public class UserOrderDao extends JdbcDaoSupport {
 //        } catch (Exception var8) {
 //            log.error(var8.getMessage(), var8);
 //        }
-
+    	HttpHelper.deleteUserOrder(userPhone,serviceUniqueID);
     }
 }

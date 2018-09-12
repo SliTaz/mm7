@@ -56,4 +56,9 @@ public interface ProductInfoMapper {
     List<ProductInfo> selectPage(ProductInfo record);
     
     int count(ProductInfo record);
+    
+    ProductInfo getVasSpCpInfo(ProductInfo record);
+    
+    List<ProductInfo> getAllVasServiceRelation();
+    
 }

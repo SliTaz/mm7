@@ -17,8 +17,10 @@ public class TestBeanThread extends Thread {
 			
 			while (true) {
 				DataCache dataCache = SpringBeanUtil.getBean(DataCache.class);
-				dataCache.init();
-				Thread.sleep(300000);
+//				dataCache.init();
+				dataCache.refreshSysParmas();
+				dataCache.refreshProductInfo();
+				Thread.sleep(30000);
 //				IMessageRouter messageRouter = SpringBeanUtil.getBean(BusinessRouter.class);
 //				SmsBusinessHandlerImpl smsBusinessHandlerImpl = SpringBeanUtil.getBean(SmsBusinessHandlerImpl.class);
 //				System.out.println("Send Test info to VAC");

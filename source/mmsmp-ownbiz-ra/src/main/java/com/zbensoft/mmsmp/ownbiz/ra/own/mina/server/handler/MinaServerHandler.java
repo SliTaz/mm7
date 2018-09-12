@@ -5,7 +5,7 @@ package com.zbensoft.mmsmp.ownbiz.ra.own.mina.server.handler;
 import com.zbensoft.mmsmp.common.ra.common.message.MO_ReportMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest;
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
 import com.zbensoft.mmsmp.ownbiz.ra.own.cache.DataCache;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.VasServiceRelationEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.mina.thread.ReportThread;

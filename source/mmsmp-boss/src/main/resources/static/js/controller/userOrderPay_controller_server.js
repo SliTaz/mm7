@@ -44,8 +44,11 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
     //列的状态start
     vm.columnStatusData=[];
     vm.spInfoData = [];
+    vm.provinceData=[];
+    vm.areaData=[];
     vm.selData = selData;
 	selData();
+	$(".areas").hide();
     //列的状态end
     vm.dtOptions = DTOptionsBuilder.fromSource(getFromSource(apiUrl + '/userOrderPay')).withOption(
 			'createdRow', createdRow);
@@ -55,9 +58,9 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		DTColumnBuilder.newColumn('priority').withTitle($translate('userInfo.priority')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('userOrderPayId').withTitle($translate('userInfo.userOrderPayId')).notSortable(),
 		DTColumnBuilder.newColumn('phoneNumber').withTitle($translate('userInfo.phoneNumber')).notSortable(),
-		DTColumnBuilder.newColumn('area').withTitle($translate('userInfo.area')).notSortable(),
+		DTColumnBuilder.newColumn('provinceCityName').withTitle($translate('userInfo.area')).notSortable(),
 		DTColumnBuilder.newColumn('spInfoId').withTitle($translate('spInfo.spInfoId')).notSortable(),
-		DTColumnBuilder.newColumn('productInfoId').withTitle($translate('userInfo.productInfoId')).notSortable(),
+		DTColumnBuilder.newColumn('productName').withTitle($translate('userOrderHis.productName')).notSortable(),
 		DTColumnBuilder.newColumn('fee').withTitle($translate('userInfo.fee')).notSortable(),
 		DTColumnBuilder.newColumn('chargePhoneNumber').withTitle($translate('userInfo.chargePhoneNumber')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('orderTime').withTitle($translate('userInfo.orderTime')).notSortable().notVisible().renderWith(timeRender),
@@ -115,6 +118,16 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		}, function(errResponse) {
 			console.error('Error while fetching fetchAllCoupons');
 		});
+		UserOrderPayService.fetchProvince().then(function(d) {
+			vm.provinceData = d.body;
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
+		UserOrderPayService.selProductInfo().then(function(d) {
+	        vm.productInfoData = d.body;
+       }, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
 	}
 	function timeRender(data, type, full, meta) {
 		if(data==null||data==''){
@@ -141,6 +154,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		$("#spInfoIds").select2();
 		$("#phoneNumber").select2();
 		$("#phoneNumbers").select2();
+		$("#province").select2();
+		$("#productInfoId").select2();
+		$("#area").select2();
+		$("#areas").select2();
 		$("#myModal").attr("tabindex","");
 		//解决selec2在火狐模太框中输入框不能输入start
 		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
@@ -151,7 +168,20 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	$("#queryBtn").click(function(){
 		selectDevice();
 	})
-	
+	//用户区域选择
+	 $("#area").change(function(){
+		var area=$("#area").val();
+			if(area!=""){
+				$(".areas").show();
+				UserOrderPayService.selectArea(area).then(function(d) {
+					vm.areaData = d.body;
+				}, function(errResponse) {
+					console.error('Error while fetching fetchAllCoupons');
+				});
+			}else{
+				$(".areas").hide();
+			}
+  });
 	function statusType(data, type, full, meta){
 		if(data=='0'){
 			return $translate.instant('common.order');
@@ -200,10 +230,13 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	
 	function addInit() {
 		selectDevice();
+		$(".areas").hide();
 		$("#spInfoId").val("").select2();
 		$("#spInfoIds").val("").select2();
 		$("#phoneNumber").val("").select2();
 		$("#phoneNumbers").val("").select2();
+		$("#area").val("").select2();
+		$("#productInfoId2").val('').select2();
 		vm.modelTitle = $translate.instant('userOrderPay.add');
 		vm.readonlyID = false;
 		vm.disabledID = false;
@@ -248,9 +281,18 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}
 	function edit(bean) {
 		selectDevice();
+		$(".areas").show();
+		UserOrderPayService.selectArea(bean.parentProvinceCityId).then(function(d) {
+			vm.areaData = d.body;
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
 		//bean.fee = outputmoney(bean.fee);
 		$("#spInfoId").val(bean.spInfoId).select2();
 		$("#phoneNumber").val(bean.phoneNumber).select2();
+		$("#areas").val(bean.area).select2();
+		$("#area").val(bean.parentProvinceCityId).select2();
+		$("#productInfoId2").val(bean.productInfoId).select2();
 		reloadData();
 		vm.modelTitle = $translate.instant('userOrderPay.edit');
 		vm.readonlyID = true;

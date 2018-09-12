@@ -6,7 +6,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OrderRelationRequest", propOrder = { "oldProduceID", "orderType", "productID", "spCode", "status", "userPhone", "userType", "aaaURL", "serviceId", "feeType", "woInfo" })
+@XmlType(name = "OrderRelationRequest", propOrder = { "oldProduceID", "orderType", "productID", "spCode", "status",
+		"userPhone", "chargeparty", "userType", "aaaURL", "serviceId", "feeType", "woInfo", "serviceName", "fee",
+		"peroid" })
 public class OrderRelationRequest extends CommonRequest {
 
 	@XmlElement(required = true, nillable = true)
@@ -22,7 +24,8 @@ public class OrderRelationRequest extends CommonRequest {
 
 	@XmlElement(required = true, nillable = true)
 	protected String userPhone;
-
+	@XmlElement(required = true, nillable = true)
+	protected String chargeparty;
 	@XmlElement(required = true, nillable = true)
 	protected int userType;
 
@@ -37,6 +40,36 @@ public class OrderRelationRequest extends CommonRequest {
 
 	@XmlElement(required = true, nillable = true)
 	protected String woInfo;
+	@XmlElement(required = true, nillable = true)
+	protected String serviceName;
+	@XmlElement(required = true, nillable = true)
+	protected int fee;
+	@XmlElement(required = true, nillable = true)
+	protected int peroid;
+
+	public int getPeroid() {
+		return this.peroid;
+	}
+
+	public void setPeroid(int peroid) {
+		this.peroid = peroid;
+	}
+
+	public String getServiceName() {
+		return this.serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public int getFee() {
+		return this.fee;
+	}
+
+	public void setFee(int fee) {
+		this.fee = fee;
+	}
 
 	public String getWoInfo() {
 		return this.woInfo;
@@ -118,6 +151,14 @@ public class OrderRelationRequest extends CommonRequest {
 		this.userPhone = value;
 	}
 
+	public String getChargeparty() {
+		return this.chargeparty;
+	}
+
+	public void setChargeparty(String chargeparty) {
+		this.chargeparty = chargeparty;
+	}
+
 	public int getUserType() {
 		return this.userType;
 	}
@@ -135,6 +176,8 @@ public class OrderRelationRequest extends CommonRequest {
 		sb.append(" spCode=").append(this.spCode);
 		sb.append(" status=").append(this.status);
 		sb.append(" userPhone=").append(this.userPhone);
+		sb.append(" chargeparty=").append(this.chargeparty);
+		sb.append(" peroid=").append(this.peroid);
 		sb.append(" userType=").append(this.userType);
 		sb.append(" ]");
 		return sb.toString();

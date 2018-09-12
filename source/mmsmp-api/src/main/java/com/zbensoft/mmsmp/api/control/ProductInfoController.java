@@ -1,6 +1,5 @@
 package com.zbensoft.mmsmp.api.control;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.github.pagehelper.PageHelper;
-import com.zbensoft.mmsmp.api.common.CommonLogImpl;
 import com.zbensoft.mmsmp.api.common.HttpRestStatus;
 import com.zbensoft.mmsmp.api.common.HttpRestStatusFactory;
 import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
@@ -33,7 +31,6 @@ import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
 import com.zbensoft.mmsmp.api.service.api.ProductInfoService;
 import com.zbensoft.mmsmp.db.domain.ProductInfo;
-import com.zbensoft.mmsmp.db.domain.ProvinceCity;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -202,7 +199,7 @@ public class ProductInfoController {
 	
 		return new ResponseRestEntity<ProductInfo>(currentProductInfo, HttpRestStatus.OK,localeMessageSourceService.getMessage("common.update.ok.message"));
 	}
-//	@PreAuthorize("hasRole('R_PC_E')")
+	@PreAuthorize("hasRole('R_PC_E')")
 	@ApiOperation(value = "Delete ProductInfo", notes = "")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseRestEntity<ProductInfo> deleteUserClap(@PathVariable("id") String id) {
@@ -214,5 +211,24 @@ public class ProductInfoController {
 	
 		productInfoService.deleteByPrimaryKey(id);
 		return new ResponseRestEntity<ProductInfo>(HttpRestStatus.NO_CONTENT);
+	}
+//	@PreAuthorize("hasRole('R_CHANNEL_E')")
+	@ApiOperation(value = "changeclassification", notes = "")
+	@RequestMapping(value = "/enable/{id}", method = RequestMethod.PUT)
+	public ResponseRestEntity<ProductInfo> enableChangeclassification(@PathVariable("id") String id) {
+		ProductInfo currentProductInfo = productInfoService.selectByPrimaryKey(id);
+		if (currentProductInfo == null) {
+			return new ResponseRestEntity<ProductInfo>(HttpRestStatus.NOT_FOUND);
+		}
+		if(currentProductInfo.getClassification().equals("1"))
+		{
+			currentProductInfo.setClassification("2");
+			
+		}else if(currentProductInfo.getClassification().equals("2"))
+		{
+			currentProductInfo.setClassification("1");
+		}
+		productInfoService.updateByPrimaryKeySelective(currentProductInfo);
+		return new ResponseRestEntity<ProductInfo>(currentProductInfo, HttpRestStatus.OK);
 	}
 }

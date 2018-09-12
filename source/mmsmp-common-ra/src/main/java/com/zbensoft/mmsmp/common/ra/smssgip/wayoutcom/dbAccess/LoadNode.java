@@ -18,7 +18,7 @@ public class LoadNode {
         String nodeName = null;
         String className = null;
         String timeoutJump = null;
-        int timeout_seconds = false;
+        int timeout_seconds;
         String needTrigger = null;
         String exception_node = null;
         String content = null;
@@ -34,7 +34,7 @@ public class LoadNode {
                 nodeName = rs.getString(1);
                 className = rs.getString(2);
                 timeoutJump = rs.getString(3);
-                int timeout_seconds = rs.getInt(4);
+                timeout_seconds = rs.getInt(4);
                 needTrigger = rs.getString(5).toLowerCase();
                 exception_node = rs.getString(6);
                 content = rs.getString(7);

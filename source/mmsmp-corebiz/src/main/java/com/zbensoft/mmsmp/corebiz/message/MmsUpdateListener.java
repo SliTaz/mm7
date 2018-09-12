@@ -1,7 +1,9 @@
  package com.zbensoft.mmsmp.corebiz.message;
  
  import com.zbensoft.mmsmp.corebiz.dao.SmsDAO;
- import java.util.Date;
+import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
+
+import java.util.Date;
  import java.util.concurrent.ArrayBlockingQueue;
  import java.util.concurrent.BlockingQueue;
  import java.util.concurrent.ExecutorService;
@@ -18,7 +20,7 @@
    BlockingQueue<MmsHistoryMessage> mmsUpdate = new ArrayBlockingQueue(100000);
    
    ExecutorService execor;
-   SmsDAO smsDAO;
+//   SmsDAO smsDAO;
    String info;
    String name;
    int idle = 10;
@@ -82,8 +84,10 @@
              
              if ((mhm != null) && (System.currentTimeMillis() - mhm.getReceiveDate().getTime() < MmsUpdateListener.this.cacheTime * 60 * 1000))
              {
-            	 //TODO updateGatewaySRecord() 
-               int result = 1;//MmsUpdateListener.this.smsDAO.updateGatewaySRecord(mhm.getStatus(), mhm.getMessageId(), mhm.getReqId(), mhm.getMmsGreCode());
+            	 //TODO updateGatewaySRecord() ;edit
+               int result = 1;
+//               MmsUpdateListener.this.smsDAO.updateGatewaySRecord(mhm.getStatus(), mhm.getMessageId(), mhm.getReqId(), mhm.getMmsGreCode());
+               HttpRequestHelper.updateGatewaySRecord(mhm.getStatus(), mhm.getMessageId(), mhm.getReqId());
                if (result <= 0) {
                  MmsUpdateListener.this.mmsUpdate.put(mhm);
                  MmsUpdateListener.logger.info(" update fail ! ");
@@ -113,10 +117,10 @@
    }
    
  
-   public void setSmsDAO(SmsDAO smsDAO)
-   {
-     this.smsDAO = smsDAO;
-   }
+//   public void setSmsDAO(SmsDAO smsDAO)
+//   {
+//     this.smsDAO = smsDAO;
+//   }
    
    public void setInfo(String info)
    {

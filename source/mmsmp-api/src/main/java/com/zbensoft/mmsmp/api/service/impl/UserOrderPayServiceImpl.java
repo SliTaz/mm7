@@ -52,4 +52,14 @@ public class UserOrderPayServiceImpl implements UserOrderPayService {
 		return userOrderPayMapper.count(record);
 	}
 
+	@Override
+	public void deleteByPnPi(UserOrderPay userOrderPay) {
+		userOrderPayMapper.deleteByPnPi(userOrderPay);		
+	}
+
+	@Override
+	public UserOrderPay selectByPhoneNumberAndProductInfoId(UserOrderPay userOrderPay) {
+		return userOrderPayMapper.selectByPhoneNumberAndProductInfoId(userOrderPay);
+	}
+
 }

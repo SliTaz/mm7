@@ -5,12 +5,14 @@ import java.io.Serializable;
 public class UserOrderPayEntity implements Serializable {
     private String globalMessageid;
     private String cellPhonenum;
-    private long serviceUniqueid;
+    private String serviceUniqueid;
     private String feeType;
     private double fee;
     private int status;
     private String spId;
     private String orderTime;
+
+    private String  keyId;
 
     public UserOrderPayEntity() {
     }
@@ -31,11 +33,11 @@ public class UserOrderPayEntity implements Serializable {
         this.cellPhonenum = cellPhonenum;
     }
 
-    public long getServiceUniqueid() {
+    public String getServiceUniqueid() {
         return this.serviceUniqueid;
     }
 
-    public void setServiceUniqueid(long serviceUniqueid) {
+    public void setServiceUniqueid(String serviceUniqueid) {
         this.serviceUniqueid = serviceUniqueid;
     }
 
@@ -77,5 +79,13 @@ public class UserOrderPayEntity implements Serializable {
 
     public void setOrderTime(String orderTime) {
         this.orderTime = orderTime;
+    }
+
+    public String getKeyId() {
+        return keyId;
+    }
+
+    public void setKeyId(String keyId) {
+        this.keyId = keyId;
     }
 }

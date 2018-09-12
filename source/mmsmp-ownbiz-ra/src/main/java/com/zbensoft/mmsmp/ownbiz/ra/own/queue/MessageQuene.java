@@ -1,10 +1,10 @@
 package com.zbensoft.mmsmp.ownbiz.ra.own.queue;
 
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
+import com.zbensoft.mmsmp.ownbiz.ra.own.dao.Dao;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.AppContants;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -15,7 +15,7 @@ public class MessageQuene {
     public static MessageQuene messageQuene;
     private LinkedBlockingQueue<AbstractMessage> requestQuence = null;
     private LinkedBlockingQueue<AbstractMessage> resultQuence = null;
-    private ConcurrentHashMap<String, JdbcDaoSupport> daoMap = new ConcurrentHashMap();
+    private ConcurrentHashMap<String, Dao> daoMap = new ConcurrentHashMap();
     private ConcurrentHashMap<String, ProxyPayMessage> proxyPayMap = new ConcurrentHashMap();
     private ConcurrentHashMap<String, Long> payTimeControlMap = new ConcurrentHashMap();
 
@@ -72,7 +72,7 @@ public class MessageQuene {
         }
     }
 
-    public void addDaoMap(String key, JdbcDaoSupport dao) {
+    public void addDaoMap(String key, Dao dao) {
         ConcurrentHashMap var3 = this.daoMap;
         synchronized(this.daoMap) {
             if (dao != null && key != null) {
@@ -83,13 +83,13 @@ public class MessageQuene {
         }
     }
 
-    public JdbcDaoSupport getDao(String key) {
+    public Dao getDao(String key) {
         ConcurrentHashMap var2 = this.daoMap;
         synchronized(this.daoMap) {
             if (key == null) {
                 return null;
             } else {
-                return this.daoMap.containsKey(key) ? (JdbcDaoSupport)this.daoMap.get(key) : null;
+                return this.daoMap.containsKey(key) ? (Dao)this.daoMap.get(key) : null;
             }
         }
     }
@@ -181,11 +181,11 @@ public class MessageQuene {
         this.resultQuence = resultQuence;
     }
 
-    public ConcurrentHashMap<String, JdbcDaoSupport> getDaoMap() {
+    public ConcurrentHashMap<String, Dao> getDaoMap() {
         return this.daoMap;
     }
 
-    public void setDaoMap(ConcurrentHashMap<String, JdbcDaoSupport> daoMap) {
+    public void setDaoMap(ConcurrentHashMap<String, Dao> daoMap) {
         this.daoMap = daoMap;
     }
 

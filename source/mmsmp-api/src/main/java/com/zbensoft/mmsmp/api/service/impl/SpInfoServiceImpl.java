@@ -58,4 +58,16 @@ public class SpInfoServiceImpl implements SpInfoService {
 		return spInfoMapper.getSpInfo(record);
 	}
 
+	@Override
+	public List<SpInfo> selectAll() {
+		// TODO Auto-generated method stub
+		return spInfoMapper.selectAll();
+	}
+
+	@Override
+	public List<SpInfo> getSpInfoByCompanyCode(String productInfoId) {
+		// TODO Auto-generated method stub
+		return spInfoMapper.getSpInfoByCompanyCode(productInfoId);
+	}
+
 }

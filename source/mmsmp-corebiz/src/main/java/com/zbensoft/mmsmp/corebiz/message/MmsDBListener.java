@@ -1,7 +1,9 @@
  package com.zbensoft.mmsmp.corebiz.message;
  
  import com.zbensoft.mmsmp.corebiz.dao.SmsDAO;
- import java.util.ArrayList;
+import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
+
+import java.util.ArrayList;
  import java.util.concurrent.ArrayBlockingQueue;
  import java.util.concurrent.BlockingQueue;
  import java.util.concurrent.ExecutorService;
@@ -19,7 +21,7 @@
    BlockingQueue<MmsHistoryMessage>[] queues;
    
    ExecutorService execor;
-   SmsDAO smsDAO;
+//   SmsDAO smsDAO;
    String info;
    String name;
    int idle = 50;
@@ -122,7 +124,9 @@
            {
              ArrayList list = new ArrayList();
              this.queue.drainTo(list, 100);
-             MmsDBListener.this.smsDAO.batchInsertMTRecords(list);
+             //TODO 数据库插入待修改;edit
+//             MmsDBListener.this.smsDAO.batchInsertMTRecords(list);
+             HttpRequestHelper.batchInsertMTRecords(list);
            }
            else
            {
@@ -172,10 +176,10 @@
      return len;
    }
    
-   public void setSmsDAO(SmsDAO smsDAO)
-   {
-     this.smsDAO = smsDAO;
-   }
+//   public void setSmsDAO(SmsDAO smsDAO)
+//   {
+//     this.smsDAO = smsDAO;
+//   }
    
    public void setInfo(String info)
    {

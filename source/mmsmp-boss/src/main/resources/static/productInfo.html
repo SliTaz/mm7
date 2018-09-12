@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title>mmsmp</title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico"><!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="lib/select2/dist/css/select2.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="lib/datepicker/datepicker3.css">
+<link rel="stylesheet" href="lib/datetimepicker/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="css/zben.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/jquery/jQuery.resizeEnd.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script src="lib/select2/dist/js/select2.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/datepicker/bootstrap-datepicker.js"></script>
+<script src="lib/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="lib/daterangepicker/moment.min.js"></script>
+<script src="js/zben.js"></script>
+<script src="js/controller/productInfo_controller.js"></script>
+<script src="js/service/productInfo_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="productInfoModule"
+	id="content-wrapper" ng-controller="ServerSideCtrl as ctrl">
+	<div class="wrapper">
+
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+	<div id="content-wrapper" class="content-wrapper">
+			<section class="content-header" id="content_section">
+			<h1 style="height: 19px" translate="common.productInfo"></h1>
+					<ol class="breadcrumb">
+						<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
+						<li class="active" translate="common.productInfo"></li>
+					</ol>
+			</section>
+			<section class="content">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="box box-primary collapsed-box">
+							<form class="form-horizontal" ng-submit="ctrl.reloadData()"
+								name="searchForm">
+								<div class="box-search-info">
+									<div class="box-header with-border">
+										<div class="row">
+											<div class="col-sm-8 pull-left">
+												<button type="button"
+													class="btn btn-primary btn-sm table-tool-left" id="btn-add"
+													data-toggle="modal" data-target="#myModal"
+													ng-click="ctrl.addInit()" translate="common.add"></button>
+											</div>
+											<div class="col-sm-4 pull-right">
+                                     <button type="button"	class="btn btn-info btn-sm table-tool-right"
+                                     data-widget="collapse" data-toggle="tooltip" id="queryBtn" title="">
+	                                         <i class="fa  fa-angle-double-down" translate="common.expand.query">&nbsp;</i>
+                                      </button>
+										</div>
+										</div>
+									</div>
+								</div>
+								<!-- table start -->
+					           <div class="box-body" style="display: none">
+								<div class="row">
+												<div class="form-group col-sm-6">
+													<label for="productInfoId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.id"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" ng-model="ctrl.beanSer.productInfoId"
+															placeholder="{{'mmsmp.productInfo.id' | translate }}">
+													</div>
+												</div>
+										<div class="form-group col-sm-6">
+													<label for="productName"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.productName"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" ng-model="ctrl.beanSer.productName"
+															placeholder="{{'mmsmp.productInfo.productName' | translate }}">
+													</div>
+									   </div>
+								</div>
+								
+								<div class="row">
+								<div class="form-group col-sm-6">
+													<label for="status"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.status"></label>
+													<div class="col-sm-7">
+													<select class="form-control" id="status" autocomplete="off"  ng-model="ctrl.beanSer.status" style="width:100%">
+										            <option value="" translate="common.choose"></option>
+										            <option value="1" translate="mmsmp.productInfo.apply"></option>
+										            <option value="2" translate="mmsmp.productInfo.common"></option>
+										            <option value="3" translate="mmsmp.productInfo.pause"></option>
+										            <option value="4" translate="mmsmp.productInfo.logout"></option>
+										            <option value="5" translate="mmsmp.productInfo.preLogout"></option>      
+						                          </select>
+												</div>
+									</div>
+									<div class="form-group col-sm-6">
+													<label for="cpAccessId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.cpAccessId"></label>
+													<div class="col-sm-7">
+													<input type="text" class="form-control" ng-model="ctrl.beanSer.cpAccessId"
+															placeholder="{{'mmsmp.productInfo.cpAccessId' | translate }}">
+												</div>
+									</div>
+
+					           </div>
+								<div class="row">
+								<div class="form-group col-sm-6">
+													<label for="priority"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.priority"></label>
+													<div class="col-sm-7">
+													<input type="text" class="form-control" ng-model="ctrl.beanSer.priority"
+															placeholder="{{'mmsmp.productInfo.priority' | translate }}">
+												</div>
+									</div>
+									<div class="form-group col-sm-6">
+													<label for="orderType"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.orderType"></label>
+													<div class="col-sm-7">
+													<select class="form-control"  autocomplete="off"  ng-model="ctrl.beanSer.orderType" style="width:100%">
+										            <option value="" translate="common.choose"></option>
+										            <option value="1" translate="mmsmp.productInfo.orderByMonth"></option>
+										            <option value="2" translate="mmsmp.productInfo.orderByTimes"></option>
+						                          </select>
+												</div>
+									</div>
+
+					           </div>
+									
+								<div class="row">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-block btn-info btn-sm"
+											style="float: right; width: 75px;" id="bth-searchDate" translate="search"></button>
+                                      </div>
+									</div>
+							      </div>
+							<!-- end box-body -->
+						</form>
+					</div>
+
+					<!-- table start -->
+					<div class="box box-primary" id="example">
+						<div class="box-body">
+							<table datatable="" id="table_id" dt-options="ctrl.dtOptions"
+								dt-columns="ctrl.dtColumns" dt-instance="ctrl.dtInstance"
+								class="row-border hover">
+							</table>
+						</div>
+						<!-- /.box-body -->
+						<div id="loadDiv"  style="position: absolute;top: 50%; left: 50%;width: 100%; height: 40px;margin-left: -50%;margin-top: -25px;padding-top: 20px;
+text-align: center;font-size: 1.2em;"translate="common.loading"></div>
+						
+					</div>
+					<!-- table end -->
+				</div>
+			</div>
+		</section>
+
+
+
+		<!-- ģ̬��Modal�� -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<form class="form-horizontal" ng-submit="ctrl.submit()"
+				name="addEditForm">
+				<div class="modal-dialog">
+					<div class="modal-content" style="padding: 3px;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel" ng-model="ctrl.modelTitle"><span ng-bind="ctrl.modelTitle"></span></h4>
+							<!-- У��start -->
+								<div ng-include="'html/tips.html'"></div>
+								<!-- У��end -->
+						</div>
+                	   <!-- <input type="hidden" ng-model="ctrl.bean.roleId" /> -->
+						<div class="box box-primary">
+							<div class="row">
+								<div class="col-xs-12">
+									<section class="content-header" id="content_section"></section>
+									<section class="content">
+										
+											<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productInfoId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.id"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="productInfoId" name="productInfoId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.id' |translate }}" ng-model="ctrl.bean.productInfoId" autocomplete="off" ng-maxlength="32" ng-disabled="ctrl.readonlyID" required>
+															<div ng-show="addEditForm.productInfoId.$error.required" style="color:red" translate="mmsmp.productInfo.id.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.productInfoId.$error.maxlength" style="color:red" translate="mmsmp.productInfo.id.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.productInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										   </div>
+										    <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="companyCode"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.companyCode"></label>
+													<div class="col-sm-7">
+															<select class="form-control" id="companyCode"  name="companyCode" autocomplete="off"  ng-model="ctrl.bean.companyCode" style="width:100%" required>
+										                       <option value="" translate="common.choose"></option>
+										                       <option ng-repeat="x in ctrl.companyCoreData" value="{{x.companyCode}}" ng-bind="x.companyCode"></option>
+						                                     </select>
+															<div ng-show="addEditForm.companyCode.$error.required" style="color:red" translate="mmsmp.companyCode.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.companyCode.$error.maxlength" style="color:red" translate="mmsmp.companyCode.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.companyCode.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										   </div>
+										   <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="companyName"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.companyName"></label>
+													<div class="col-sm-7">															
+						                                     <input type="text" class="form-control" id="companyName" name="companyName"  ng-disabled="ctrl.companyNameFlag"
+															placeholder="{{'mmsmp.productInfo.companyName' |translate }}" ng-model="ctrl.bean.companyName" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.companyCode.$error.required" style="color:red" translate="mmsmp.productInfo.companyName.notEmpty">
+	                                                         </div> 
+													</div>
+												</div>
+											</div>
+										   </div>
+										   <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="cpAccessId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.cpAccessId"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="cpAccessId" name="cpAccessId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.cpAccessId' |translate }}" ng-model="ctrl.bean.cpAccessId" autocomplete="off" ng-maxlength="32" required>
+															<div ng-show="addEditForm.cpAccessId.$error.required" style="color:red" translate="mmsmp.productInfo.cpAccessId.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.cpAccessId.$error.maxlength" style="color:red" translate="mmsmp.productInfo.cpAccessId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.cpAccessId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										   </div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="cpAccessIdExtend"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.cpAccessIdExtend"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="cpAccessIdExtend" name="cpAccessIdExtend" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.cpAccessIdExtend' |translate }}" ng-model="ctrl.bean.cpAccessIdExtend" autocomplete="off" ng-maxlength="32" required>
+															<div ng-show="addEditForm.cpAccessIdExtend.$error.required" style="color:red" translate="mmsmp.productInfo.cpAccessIdExtend.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.cpAccessIdExtend.$error.maxlength" style="color:red" translate="mmsmp.productInfo.cpAccessIdExtend.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.cpAccessIdExtend.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										   </div>
+										   <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productName"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.productName"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="productName" name="productName" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.productName' |translate }}" ng-model="ctrl.bean.productName" autocomplete="off" ng-maxlength="64" required>											                
+															<div ng-show="addEditForm.productName.$error.required" style="color:red" translate="mmsmp.productInfo.productName.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.productName.$error.maxlength" style="color:red" translate="mmsmp.productInfo.productName.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.productName.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										   </div>
+										   <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productOrderId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.productOrderId"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="productOrderId" name="productOrderId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.productOrderId' |translate }}" ng-model="ctrl.bean.productOrderId" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.productOrderId.$error.required" style="color:red" translate="mmsmp.productInfo.productOrderId.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.productOrderId.$error.maxlength" style="color:red" translate="mmsmp.productInfo.productOrderId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.productOrderId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										   </div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="orderType"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.orderType"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="orderType" name="orderType"autocomplete="off"  ng-model="ctrl.bean.orderType" style="width:100%" required>
+										                 <option value="" translate="common.choose"></option>
+										                 <option value="1" translate="mmsmp.productInfo.orderByMonth"></option>
+										                 <option value="2" translate="mmsmp.productInfo.orderByTimes"></option>
+						                                </select>
+															<div ng-show="addEditForm.orderType.$error.required" style="color:red" translate="mmsmp.productInfo.orderType.notEmpty">
+	                                                         </div> 
+	                                          
+	                                                         <div ng-show="addEditForm.orderType.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="status"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.status"></label>
+													<div class="col-sm-7">
+												      <select class="form-control" id="status" name="status"autocomplete="off"  ng-model="ctrl.bean.status" style="width:100%" required>
+										               <option value="" translate="common.choose"></option>
+										               <option value="1" translate="mmsmp.productInfo.apply"></option>
+										               <option value="2" translate="mmsmp.productInfo.common"></option>
+										               <option value="3" translate="mmsmp.productInfo.pause"></option>
+										               <option value="4" translate="mmsmp.productInfo.logout"></option>
+										               <option value="5" translate="mmsmp.productInfo.preLogout"></option>      
+						                              </select>
+															<div ng-show="addEditForm.status.$error.required" style="color:red" translate="mmsmp.productInfo.status.notEmpty">
+	                                                        </div>            
+	                                                         <div ng-show="addEditForm.parentProvinceCityId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="runStatus"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.runStatus"></label>
+													<div class="col-sm-7">
+												      <select class="form-control" id="runStatus" name="runStatus" autocomplete="off"  ng-model="ctrl.bean.runStatus" style="width:100%" required>
+										               <option value="" translate="common.choose"></option>
+										               <option value="1" translate="mmsmp.productInfo.up"></option>
+										               <option value="2" translate="mmsmp.productInfo.down"></option>
+										               <option value="3" translate="mmsmp.productInfo.upAndDown"></option>
+										               <option value="4" translate="mmsmp.productInfo.stop"></option>
+										             
+						                              </select>
+															<div ng-show="addEditForm.runStatus.$error.required" style="color:red" translate="mmsmp.productInfo.runStatus.notEmpty">
+	                                                        </div>            
+	                                                      
+													</div>
+												</div>
+											</div>
+										</div>	
+<!-- 								        <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="createTime"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.createTime"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="createTime" autocomplete="off" name="createTime"
+												            placeholder="{{'mmsmp.productInfo.createTime'| translate }}" ng-model="ctrl.bean.createTime" date-format required>
+															<div ng-show="addEditForm.createTime.$error.required" style="color:red" translate="mmsmp.productInfo.createTime.notEmpty">
+	                                                         </div>
+									                     </div>
+													</div>
+												</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="updateTime"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.updateTime"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="updateTime" autocomplete="off" name="updateTime"
+												            placeholder="{{'mmsmp.productInfo.updateTime'| translate }}" ng-model="ctrl.bean.updateTime" date-format required>
+															<div ng-show="addEditForm.updateTime.$error.required" style="color:red" translate="mmsmp.productInfo.updateTime.notEmpty">
+	                                                         </div>
+									                     </div>
+													</div>
+												</div>
+										</div>	 -->
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="remark"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.remark"></label>
+													<div class="col-sm-7">
+	                                               <textarea type="text" class="form-control" id="remark" name="remark" 
+															placeholder="{{'mmsmp.productInfo.remark' |translate }}" ng-model="ctrl.bean.remark"  ng-maxlength="1000" ></textarea>
+	                                                         <div ng-show=" addEditForm.remark.$error.maxlength" style="color:red" translate="mmsmp.productInfo.remark.remark.length">
+	                                                         </div>
+	                                                        
+													</div>
+												</div>
+											</div>
+										</div>		
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="orderFee"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.orderFee"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="orderFee" name="orderFee" 
+															placeholder="{{'mmsmp.productInfo.orderFee' |translate }}" ng-model="ctrl.bean.orderFee" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.orderFee.$error.required" style="color:red" translate="mmsmp.productInfo.orderFee.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show="addEditForm.orderFee.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+									   </div>
+									   <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="onDemandFee"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.onDemandFee"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="onDemandFee" name="onDemandFee" 
+															placeholder="{{'mmsmp.productInfo.onDemandFee' |translate }}" ng-model="ctrl.bean.onDemandFee" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.onDemandFee.$error.required" style="color:red" translate="mmsmp.productInfo.onDemandFee.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show="addEditForm.onDemandFee.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+									   </div>		
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="onDemandRemark"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.onDemandRemark"></label>
+													<div class="col-sm-7">
+	                                               <textarea type="text" class="form-control" id="onDemandRemark" name="onDemandRemark" 
+															placeholder="{{'mmsmp.productInfo.onDemandRemark' |translate }}" ng-model="ctrl.bean.onDemandRemark"  ng-maxlength="1000" ></textarea>
+	                                                         <div ng-show=" addEditForm.onDemandRemark.$error.maxlength" style="color:red" translate="mmsmp.productInfo.remark.remark.length">
+	                                                         </div>
+	                                                         
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="feeRemark"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.feeRemark"></label>
+													<div class="col-sm-7">
+	                                               <textarea type="text" class="form-control" id="feeRemark" name="feeRemark" 
+															placeholder="{{'mmsmp.productInfo.feeRemark' |translate }}" ng-model="ctrl.bean.feeRemark"  ng-maxlength="1000" ></textarea>
+	                                                         <div ng-show=" addEditForm.feeRemark.$error.maxlength" style="color:red" translate="mmsmp.productInfo.remark.remark.length">
+	                                                         </div>
+	                                                       
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="sendContentMode"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.sendContentMode"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="sendContentMode" name="sendContentMode"
+															ng-model="ctrl.bean.sendContentMode" >
+														    <option value="" translate="common.choose"></option>
+														    <option value="1" translate="mmsmp.productInfo.getNewest"></option> 
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="sendMode"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.sendMode"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="sendMode" name="sendMode" autocomplete="off"  ng-model="ctrl.bean.sendMode" style="width:100%" >
+										                 <option value="" translate="common.choose"></option>
+										                 <option value="1" translate="mmsmp.productInfo.sendByNo"></option> 
+										                 <option value="2" translate="mmsmp.productInfo.sendByDay"></option>
+										                 <option value="3" translate="mmsmp.productInfo.sendByWeek"></option>       
+						                                </select>	
+						                                <div ng-show="addEditForm.sendMode.$error.required" style="color:red" translate="mmsmp.productInfo.sendMode.notEmpty">
+	                                                         </div>														                                        	                                            
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="isDefault"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.isDefault"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="isDefault" name="isDefault" autocomplete="off"  ng-model="ctrl.bean.isDefault" style="width:100%" >
+										                 <option value="" translate="common.choose"></option>
+										                 <option value="1" translate="common.ok"></option> 
+										                 <option value="2" translate="common.no"></option>									 
+						                                </select>	
+						                                <div ng-show="addEditForm.sendMode.$error.required" style="color:red" translate="mmsmp.productInfo.isDefault.notEmpty">
+	                                                         </div>														                                        	                                            
+													</div>
+												</div>
+											</div>
+										</div>		
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="keyWorld"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.keyWorld"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="keyWorld" name="keyWorld" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.keyWorld' |translate }}" ng-model="ctrl.bean.keyWorld" autocomplete="off" ng-maxlength="64" >
+															<div ng-show="addEditForm.keyWorld.$error.required" style="color:red" translate="mmsmp.productInfo.keyWorld.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.keyWorld.$error.maxlength" style="color:red" translate="mmsmp.productInfo.keyWorld.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.keyWorld.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										   </div>	
+										   <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="classification"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.classification"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="classification" name="classification" autocomplete="off"  ng-model="ctrl.bean.classification" style="width:100%" required>
+										                 <option value="" translate="common.choose"></option>
+										                 <option value="1" translate="mmsmp.productInfo.classification.start"></option> 
+										                 <option value="2" translate="mmsmp.productInfo.classification.stop"></option>									 
+						                                </select>	
+						                                <div ng-show="addEditForm.classification.$error.required" style="color:red" translate="mmsmp.productInfo.classification.notEmpty">
+	                                                         </div>														                                        	                                            
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="orderCommand"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.orderCommand"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="orderCommand" name="orderCommand" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.orderCommand' |translate }}" ng-model="ctrl.bean.orderCommand" autocomplete="off" ng-maxlength="64" >
+															<div ng-show="addEditForm.orderCommand.$error.required" style="color:red" translate="mmsmp.productInfo.orderCommand.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.orderCommand.$error.maxlength" style="color:red" translate="mmsmp.productInfo.orderCommand.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.orderCommand.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										  </div>
+										  <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="webPicUrl"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.webPicUrl"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="webPicUrl" name="webPicUrl" 
+															placeholder="{{'mmsmp.productInfo.webPicUrl' |translate }}" ng-model="ctrl.bean.webPicUrl" autocomplete="off" ng-maxlength="256" >
+														
+	                                                         <div ng-show=" addEditForm.webPicUrl.$error.maxlength" style="color:red" translate="mmsmp.productInfo.webPicUrl.length">
+	                                                         </div>
+	                                                      
+													</div>
+												</div>
+											</div>
+										  </div>	
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="wapPicUrl"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.wapPicUrl"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="wapPicUrl" name="wapPicUrl" 
+															placeholder="{{'mmsmp.productInfo.wabPicUrl' |translate }}" ng-model="ctrl.bean.wapPicUrl" autocomplete="off" ng-maxlength="256" >
+															
+	                                                         <div ng-show=" addEditForm.wapPicUrl.$error.maxlength" style="color:red" translate="mmsmp.productInfo.wapPicUrl.length">
+	                                                         </div>
+	                                                         
+													</div>
+												</div>
+											</div>
+										  </div>
+										  <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="onDemandCommand"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.onDemandCommand"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="onDemandCommand" name="onDemandCommand" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.onDemandCommand' |translate }}" ng-model="ctrl.bean.onDemandCommand" autocomplete="off" ng-maxlength="64" >
+															<div ng-show="addEditForm.onDemandCommand.$error.required" style="color:red" translate="mmsmp.productInfo.onDemandCommand.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.onDemandCommand.$error.maxlength" style="color:red" translate="mmsmp.productInfo.onDemandCommand.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.onDemandCommand.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										  <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productSource"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.productSource"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="productSource" name="productSource" autocomplete="off"  ng-model="ctrl.bean.productSource" style="width:100%" >
+										                 <option value="" translate="common.choose"></option>
+										                 <option value="1" translate="mmsmp.productInfo.localService"></option> 
+										                 <option value="2" translate="mmsmp.productInfo.nationalService"></option>									 
+						                                </select>	
+						                                <div ng-show="addEditForm.productSource.$error.required" style="color:red" translate="mmsmp.productInfo.productSource.notEmpty">
+	                                                         </div>														                                        	                                            
+													</div>
+												</div>
+											</div>
+										</div>
+										  <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productOnDemandId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.productOnDemandId"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="productOnDemandId" name="productOnDemandId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.productOnDemandId' |translate }}" ng-model="ctrl.bean.productOnDemandId" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.productOnDemandId.$error.required" style="color:red" translate="mmsmp.productInfo.productOnDemandId.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.productOnDemandId.$error.maxlength" style="color:red" translate="mmsmp.productInfo.productOnDemandId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.productOnDemandId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										  <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="bookmanName"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.bookmanName"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="bookmanName" name="bookmanName" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.bookmanName' |translate }}" ng-model="ctrl.bean.bookmanName" autocomplete="off" ng-maxlength="64" >
+															<div ng-show="addEditForm.bookmanName.$error.required" style="color:red" translate="mmsmp.productInfo.bookmanName.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.bookmanName.$error.maxlength" style="color:red" translate="mmsmp.productInfo.bookmanName.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.bookmanName.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productType"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.productType"></label>
+													<div class="col-sm-7">
+												      <select class="form-control" id="productType" name="productType" autocomplete="off"  ng-model="ctrl.bean.productType" style="width:100%" >
+										               <option value="" translate="common.choose"></option>
+										               <option value="1" translate="mmsmp.productInfo.m"></option>
+										               <option value="2" translate="mmsmp.productInfo.s"></option>
+										               <option value="3" translate="mmsmp.productInfo.e"></option>
+										               <option value="4" translate="mmsmp.productInfo.c"></option>
+										               <option value="5" translate="mmsmp.productInfo.p"></option>   
+										               <option value="6" translate="mmsmp.productInfo.w"></option>
+										               <option value="7" translate="mmsmp.productInfo.d"></option>        
+						                              </select>
+															<div ng-show="addEditForm.productType.$error.required" style="color:red" translate="mmsmp.productInfo.productType.notEmpty">
+	                                                        </div>            
+	                                                         <div ng-show="addEditForm.parentProvinceCityId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="cooperationProportion"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.cooperationProportion"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="cooperationProportion" name="cooperationProportion" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.cooperationProportion' |translate }}" ng-model="ctrl.bean.cooperationProportion" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.cooperationProportion.$error.required" style="color:red" translate="mmsmp.productInfo.cooperationProportion.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.cooperationProportion.$error.maxlength" style="color:red" translate="mmsmp.productInfo.cooperationProportion.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.cooperationProportion.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="composeTimeinterval"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.composeTimeinterval"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="composeTimeinterval" name="composeTimeinterval" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.composeTimeinterval' |translate }}" ng-model="ctrl.bean.composeTimeinterval" autocomplete="off" ng-maxlength="64" >
+															<div ng-show="addEditForm.composeTimeinterval.$error.required" style="color:red" translate="mmsmp.productInfo.composeTimeinterval.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.composeTimeinterval.$error.maxlength" style="color:red" translate="mmsmp.productInfo.composeTimeinterval.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.composeTimeinterval.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="auditTimeinterval"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.auditTimeinterval"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="auditTimeinterval" name="auditTimeinterval" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.auditTimeinterval' |translate }}" ng-model="ctrl.bean.auditTimeinterval" autocomplete="off" ng-maxlength="64" >
+															<div ng-show="addEditForm.auditTimeinterval.$error.required" style="color:red" translate="mmsmp.productInfo.auditTimeinterval.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.auditTimeinterval.$error.maxlength" style="color:red" translate="mmsmp.productInfo.auditTimeinterval.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.auditTimeinterval.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="proofTimeinterval"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.proofTimeinterval"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="proofTimeinterval" name="proofTimeinterval" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.proofTimeinterval' |translate }}" ng-model="ctrl.bean.proofTimeinterval" autocomplete="off" ng-maxlength="64" >
+															<div ng-show="addEditForm.proofTimeinterval.$error.required" style="color:red" translate="mmsmp.productInfo.proofTimeinterval.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.proofTimeinterval.$error.maxlength" style="color:red" translate="mmsmp.productInfo.proofTimeinterval.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.proofTimeinterval.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="proAuditTimeinterval"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.proAuditTimeinterval"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="proAuditTimeinterval" name="proAuditTimeinterval" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.proAuditTimeinterval' |translate }}" ng-model="ctrl.bean.proAuditTimeinterval" autocomplete="off" ng-maxlength="64" >
+															<div ng-show="addEditForm.proAuditTimeinterval.$error.required" style="color:red" translate="mmsmp.productInfo.proAuditTimeinterval.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.proAuditTimeinterval.$error.maxlength" style="color:red" translate="mmsmp.productInfo.proAuditTimeinterval.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.proAuditTimeinterval.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="auditUser"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.auditUser"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="auditUser" name="auditUser" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.auditUser' |translate }}" ng-model="ctrl.bean.auditUser" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.auditUser.$error.required" style="color:red" translate="mmsmp.productInfo.auditUser.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.auditUser.$error.maxlength" style="color:red" translate="mmsmp.productInfo.auditUser.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.auditUser.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="auditRemark"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.auditRemark"></label>
+													<div class="col-sm-7">
+	                                               <textarea type="text" class="form-control" id="auditRemark" name="auditRemark" 
+															placeholder="{{'mmsmp.productInfo.auditRemark' |translate }}" ng-model="ctrl.bean.auditRemark"  ng-maxlength="1000" ></textarea>
+	                                                         <div ng-show=" addEditForm.auditRemark.$error.maxlength" style="color:red" translate="mmsmp.productInfo.remark.remark.length">
+	                                                         </div>
+	                                                     
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="productRemark"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.productRemark"></label>
+													<div class="col-sm-7">
+	                                               <textarea type="text" class="form-control" id="productRemark" name="productRemark" 
+															placeholder="{{'mmsmp.productInfo.productRemark' |translate }}" ng-model="ctrl.bean.productRemark"  ng-maxlength="1000" ></textarea>
+	                                                         <div ng-show=" addEditForm.productRemark.$error.maxlength" style="color:red" translate="mmsmp.productInfo.confirmPrompt.length">
+	                                                         </div>
+	                                                
+													</div>
+												</div>
+											</div>
+										</div>	
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="operationId"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.operationId"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="operationId" name="operationId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+															placeholder="{{'mmsmp.productInfo.operationId' |translate }}" ng-model="ctrl.bean.operationId" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.operationId.$error.required" style="color:red" translate="mmsmp.productInfo.operationId.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.operationId.$error.maxlength" style="color:red" translate="mmsmp.productInfo.operationId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.operationId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="isPackage"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.isPackage"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="isPackage" name="isPackage" autocomplete="off"  ng-model="ctrl.bean.isPackage" style="width:100%" >
+										                 <option value="" translate="common.choose"></option>
+										                 <option value="1" translate="mmsmp.productInfo.yes"></option> 
+										                 <option value="0" translate="mmsmp.productInfo.no"></option>									 
+						                                </select>	
+						                                <div ng-show="addEditForm.isPackage.$error.required" style="color:red" translate="mmsmp.productInfo.isPackage.notEmpty">
+	                                                         </div>														                                        	                                            
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="priority"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.priority"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="priority" name="priority" ng-pattern="/^\d+$/"
+															placeholder="{{'mmsmp.productInfo.priority' |translate }}" ng-model="ctrl.bean.priority" autocomplete="off" ng-maxlength="32" required>
+															<div ng-show="addEditForm.priority.$error.required" style="color:red" translate="mmsmp.productInfo.priority.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.priority.$error.maxlength" style="color:red" translate="mmsmp.productInfo.priority.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.priority.$error.pattern" style="color:red" translate="common.digital">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="dealStatus"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.dealStatus"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="dealStatus" name="dealStatus" autocomplete="off"  ng-model="ctrl.bean.dealStatus" style="width:100%" >
+										                 <option value="" translate="common.choose"></option>
+										                 <option value="0" translate="mmsmp.productInfo.notDeal"></option> 
+										                 <option value="1" translate="mmsmp.productInfo.preDeal"></option>
+										                 <option value="2" translate="mmsmp.productInfo.Dealing"></option>									 
+						                                </select>	
+						                                <div ng-show="addEditForm.dealStatus.$error.required" style="color:red" translate="mmsmp.productInfo.dealStatus.notEmpty">
+	                                                         </div>														                                        	                                            
+													</div>
+												</div>
+											</div>
+										</div>
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="applyTime"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.applyTime"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="applyTime" name="applyTime"autocomplete="off" name="applyTime"
+												            placeholder="{{'mmsmp.productInfo.applyTime'| translate }}" ng-model="ctrl.bean.applyTime" date-format >
+															<div ng-show="addEditForm.applyTime.$error.required" style="color:red" translate="mmsmp.productInfo.applyTime.notEmpty">
+	                                                         </div>
+									                     </div>
+													</div>
+												</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="queueNum"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.queueNum"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="queueNum" name="queueNum" ng-pattern="/^\d+$/"
+															placeholder="{{'mmsmp.productInfo.queueNum' |translate }}" ng-model="ctrl.bean.queueNum" autocomplete="off" ng-maxlength="32" >
+															<div ng-show="addEditForm.queueNum.$error.required" style="color:red" translate="mmsmp.productInfo.queueNum.notEmpty">
+	                                                         </div> 
+	                                                         <div ng-show=" addEditForm.queueNum.$error.maxlength" style="color:red" translate="mmsmp.productInfo.queueNum.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.queueNum.$error.pattern" style="color:red" translate="common.digital">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>	
+										 <div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="isPresent"
+														class="col-sm-4 control-label control-label-zb" translate="mmsmp.productInfo.isPresent"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="isPresent" name="isPresent" autocomplete="off"  ng-model="ctrl.bean.isPresent" style="width:100%" >
+										                 <option value="" translate="common.choose"></option>
+										                 <option value="1" translate="mmsmp.productInfo.present"></option> 
+										                 <option value="0" translate="mmsmp.productInfo.noPresent"></option>									 
+						                                </select>	
+						                                <div ng-show="addEditForm.isPresent.$error.required" style="color:red" translate="mmsmp.productInfo.isPresent.notEmpty">
+	                                                         </div>														                                        	                                            
+													</div>
+												</div>
+											</div>
+										</div>
+								</section>
+								</div>
+							</div>
+						</div>
+						<!-- end box box-primary -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" translate="common.cancel"></button>
+							<button type="submit" class="btn btn-primary" ng-disabled="addEditForm.$invalid"  translate="common.save"> </button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				</form>
+			</div>
+			
+			<!-- /.modal -->
+</div>
+
+	</div>
+</body>
+
+</html>

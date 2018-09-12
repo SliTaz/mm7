@@ -16,6 +16,18 @@ App.factory('UserOrderService', ['$http', '$q', function($http, $q){
 									}
 							);
 			},
+			selectArea: function(area) {
+				return $http.get(apiUrl +"/provinceCity?parentProvinceCityId="+area)
+				.then(
+						function(response){
+							return response.data;
+						}, 
+						function(errResponse){
+							handleAjaxError(errResponse);
+							return $q.reject(errResponse);
+						}
+				);
+			},
 		    
 		    createAlarmInfo: function(alarmInfo){
 					return $http.post(apiUrl +"/userOrder", alarmInfo)
@@ -41,19 +53,43 @@ App.factory('UserOrderService', ['$http', '$q', function($http, $q){
 						}
 				);
 	},
-	fetchUserInfo: function() {
-		return $http.get(apiUrl +"/userInfo")
-		.then(
-				function(response){
-					return response.data;
-				}, 
-				function(errResponse){
-					handleAjaxError(errResponse);
-					return $q.reject(errResponse);
-				}
-		);
-	},
-		    updateAlarmInfo: function(UserOrder, id){
+                 	selProductInfo: function() {
+                 		return $http.get(apiUrl +"/productInfo")
+                 				.then(
+                 						function(response){
+                 							return response.data;
+                 						}, 
+                 						function(errResponse){
+                 							handleAjaxError(errResponse);
+                 							return $q.reject(errResponse);
+                 						}
+                 				);
+                 	},
+                 	fetchProvince: function() {
+                 		return $http.get(apiUrl +"/province")
+                 		.then(
+                 				function(response){
+                 					return response.data;
+                 				}, 
+                 				function(errResponse){
+                 					handleAjaxError(errResponse);
+                 					return $q.reject(errResponse);
+                 				}
+                 		);
+                 },
+             	fetchUserInfo: function() {
+             		return $http.get(apiUrl +"/userInfo")
+             		.then(
+             				function(response){
+             					return response.data;
+             				}, 
+             				function(errResponse){
+             					handleAjaxError(errResponse);
+             					return $q.reject(errResponse);
+             				}
+             		);
+             	},
+   		    updateAlarmInfo: function(UserOrder, id){
 					return $http.put(apiUrl +"/userOrder/"+id, UserOrder)
 							.then(
 									function(response){

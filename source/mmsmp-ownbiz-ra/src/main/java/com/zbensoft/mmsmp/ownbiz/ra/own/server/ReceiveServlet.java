@@ -9,8 +9,11 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import java.util.Enumeration;
 
+
+@WebServlet(urlPatterns = "/billing/mm7Receive")
 public class ReceiveServlet extends MM7ReceiveServlet {
     static final Logger logger = Logger.getLogger(ReceiveServlet.class);
     static final String mm7ConfigFile = "./mm7Config.xml";

@@ -29,7 +29,9 @@ import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
 import com.zbensoft.mmsmp.api.common.MessageDef;
 import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
+import com.zbensoft.mmsmp.api.service.api.ProvinceCityService;
 import com.zbensoft.mmsmp.api.service.api.UserInfoService;
+import com.zbensoft.mmsmp.db.domain.ProvinceCity;
 import com.zbensoft.mmsmp.db.domain.UserInfo;
 
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +40,8 @@ import io.swagger.annotations.ApiOperation;
 public class UserInfoController {
 	@Autowired
 	UserInfoService userInfoService;
-	
+	@Autowired
+	ProvinceCityService provinceCityService;
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 
@@ -81,7 +84,19 @@ public class UserInfoController {
 		if (list == null || list.isEmpty()) {
 			return new ResponseRestEntity<List<UserInfo>>(new ArrayList<UserInfo>(), HttpRestStatus.NOT_FOUND);
 		}
-	    return new ResponseRestEntity<List<UserInfo>>(list, HttpRestStatus.OK,count,count);
+		List<UserInfo> listNew = new ArrayList<UserInfo>();
+		for (UserInfo bean : list) {
+			ProvinceCity provinceCity = provinceCityService.selectByPrimaryKey(bean.getProvince());
+			ProvinceCity provinceCityNew = provinceCityService.selectByPrimaryKey(bean.getCity());
+			if (provinceCity != null) {
+				bean.setParentProvinceCityName(provinceCity.getProvinceCityName());
+			}
+			if (provinceCityNew != null) {
+				bean.setProvinceCityName(provinceCityNew.getProvinceCityName());
+			}
+			listNew.add(bean);
+		}
+	    return new ResponseRestEntity<List<UserInfo>>(listNew, HttpRestStatus.OK,count,count);
 	}
 
 	//查询通知

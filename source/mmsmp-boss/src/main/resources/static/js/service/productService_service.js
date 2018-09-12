@@ -16,6 +16,18 @@ App.factory('productServiceService', ['$http', '$q', function($http, $q){
 									}
 							);
 			},
+			searchAllProvinceCitys: function() {
+				return $http.get(apiUrl +"/provinceCity")
+						.then(
+								function(response){
+									return response.data;
+								}, 
+								function(errResponse){
+									handleAjaxError(errResponse);
+									return $q.reject(errResponse);
+								}
+						);
+		},
 			searchAllProductInfo: function() {
 				return $http.get(apiUrl +"/productInfo")
 						.then(
@@ -55,7 +67,7 @@ App.factory('productServiceService', ['$http', '$q', function($http, $q){
 			},
 		
 			deleteProductService: function(id){
-					return $http['delete'](apiUrl +"/productInfo/"+id)
+					return $http['delete'](apiUrl +"/productService/"+id)
 							.then(
 									function(response){
 										return response.data;

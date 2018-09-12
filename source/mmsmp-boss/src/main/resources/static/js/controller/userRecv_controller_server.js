@@ -160,6 +160,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			console.error('Error while fetching spInfo');
 		}
 		);
+		
 	}
 	
 	//下拉框中输入框
@@ -210,7 +211,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			UserRecvService.createUserRecv(vm.bean).then(
 					onSubmitSuccess, function(errResponse) {
 						handleAjaxError(errResponse);
-						console.error('Error while creating GovUser.');
+						console.error('Error while creating userRecv.');
 					});
 			vm.reset();
 		} else {
@@ -218,7 +219,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			UserRecvService.updateUserRecv(vm.bean,vm.bean.userRecvId).then(onSubmitSuccess,
 					function(errResponse) {
 						handleAjaxError(errResponse);
-						console.error('Error while updating GovUser.');
+						console.error('Error while updating userRecv.');
 					});
 		}
 	}

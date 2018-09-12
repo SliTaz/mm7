@@ -2,14 +2,16 @@
 
 package com.zbensoft.mmsmp.ownbiz.ra.own.server;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.AppContants;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.DESUtil;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.HttpUtil;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +21,8 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@WebServlet(urlPatterns = "/billing/getMobile")
 public class MoblieCodeServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(MoblieCodeServlet.class);
     private String strurl = null;
@@ -90,7 +94,7 @@ public class MoblieCodeServlet extends HttpServlet {
         returnMap.put("returnCode", returnCode);
         returnMap.put("returnDesc", returnDesc);
         returnMap.put("mobile", desMobile == null ? mobile : desMobile);
-        String strResult = JSONObject.fromObject(returnMap).toString();
+        String strResult = JSON.toJSONString(returnMap);
         logger.info(String.format("%s,结果码returnCode = %d,结果描述returnDesc = %s ，获得手机号 mobile = %s，返回结果%s", operStr, returnCode, returnDesc, mobile, strResult));
         return strResult;
     }

@@ -953,11 +953,11 @@ function handleAjaxError(xhr, textStatus, error) {
 	} else if (xhr.status == 500) {
 		alert(i18n("common.error"));
 	} else if (xhr.status == 401) {
-//		timeOutCount ++;
-//		if(timeOutCount == 1){
-//			alert(i18n("common.pleaseLogin"));
-//		}
-//		window.location = "/";
+		timeOutCount ++;
+		if(timeOutCount == 1){
+			alert(i18n("common.pleaseLogin"));
+		}
+		window.location = "/";
 	}
 }
 //密码提示

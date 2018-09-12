@@ -1,8 +1,0 @@
-		<!-- <dependency> <--> 		 <dependency>
-		</dependency> --> <--> 		</dependency> 
-		<dependency> <--> 		<!-- <dependency>
-		</dependency> <--> 		</dependency>-->
-     <!--<resources> <-->      <resources>
-        </resources>--> <-->         </resources>
-				<!-- <executions> <--> 				<executions>
-               </executions> --> <-->                </executions>

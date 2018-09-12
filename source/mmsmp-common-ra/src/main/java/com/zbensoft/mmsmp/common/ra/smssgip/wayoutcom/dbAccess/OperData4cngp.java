@@ -215,7 +215,7 @@ public class OperData4cngp {
                     break label93;
                 }
 
-                var10 = list;
+                var10 = (ArrayList) list;
             } catch (Exception var13) {
                 this.LogHandler.error(var13.getMessage());
                 break label93;
@@ -267,7 +267,7 @@ public class OperData4cngp {
                     break label93;
                 }
 
-                var10 = list;
+                var10 = (ArrayList) list;
             } catch (Exception var13) {
                 this.LogHandler.error(var13.getMessage());
                 break label93;

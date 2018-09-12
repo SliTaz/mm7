@@ -81,6 +81,8 @@ public class UserRecv {
     private String recvTimeStart;
     
     private String recvTimeEnd;
+    
+    private String spAccessNumber;
     public String getUserRecvId() {
         return userRecvId;
     }
@@ -255,5 +257,13 @@ public class UserRecv {
 
 	public void setRecvTimeEnd(String recvTimeEnd) {
 		this.recvTimeEnd = recvTimeEnd;
+	}
+
+	public String getSpAccessNumber() {
+		return spAccessNumber;
+	}
+
+	public void setSpAccessNumber(String spAccessNumber) {
+		this.spAccessNumber = spAccessNumber;
 	}
 }

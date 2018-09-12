@@ -4,9 +4,10 @@ package com.zbensoft.mmsmp.ownbiz.ra.own.dao;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class SystemParamDao extends JdbcDaoSupport {
+import com.zbensoft.mmsmp.ownbiz.ra.own.util.HttpHelper;
+
+public class SystemParamDao implements Dao{
     private static final Log log = LogFactory.getLog(SystemParamDao.class);
 
     public SystemParamDao() {
@@ -25,6 +26,6 @@ public class SystemParamDao extends JdbcDaoSupport {
 //            log.error(var4.getMessage(), var4);
 //            return null;
 //        }
-        return null;
+        return HttpHelper.getSystemParamBykey(key);
     }
 }

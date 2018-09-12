@@ -1,5 +1,7 @@
 package com.zbensoft.mmsmp.common.ra.smssgip.proxy.sm7.sm7api;
 
+import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.common.TypeConvert;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 

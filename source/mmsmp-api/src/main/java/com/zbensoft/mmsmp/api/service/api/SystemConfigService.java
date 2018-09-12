@@ -59,4 +59,6 @@ public interface SystemConfigService {
 	List<SystemConfig> selectPage(SystemConfig record);
 	int count(SystemConfig systemConfig);
 	boolean isExist(SystemConfig systemConfig);
+	
+	SystemConfig selectBycode(String code);
 }

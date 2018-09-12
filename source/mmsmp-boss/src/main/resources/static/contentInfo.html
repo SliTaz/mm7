@@ -131,8 +131,10 @@
 										<label for="productInfoId"
 											class="col-sm-4 control-label control-label-zb" translate="contentInfo.productInfoId"></label>
 										<div class="col-sm-7">
-											<input type="text" class="form-control" ng-model="ctrl.beanSer.productInfoId"
-												placeholder="{{'contentInfo.productInfoId'   | translate }}">
+											<select class="form-control" id="productInfoId" ng-model="ctrl.beanSer.productInfoId" style="width:100%">
+												<option value="" translate="common.choose"></option>
+												<option ng-repeat="x in ctrl.productInfoData" value="{{x.productInfoId}}" ng-bind="x.productName"></option>
+											</select>
 										</div>
 									</div>
 	
@@ -265,14 +267,12 @@
 													<label for="productInfoId"
 														class="col-sm-4 control-label control-label-zb" translate="contentInfo.productInfoId"></label>
 													<div class="col-sm-7">
-														<input type="text" class="form-control" id="productInfoId" name="productInfoId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
-															placeholder="{{'contentInfo.productInfoId'   | translate }}" ng-model="ctrl.bean.productInfoId" ng-maxlength="32" required>
-														<div ng-show="addEditForm.productInfoId.$error.required" style="color:red" translate="contentInfo.productInfoId.required">
+														<select class="form-control" id="productInfoId2" name="productInfoId2" ng-model="ctrl.bean.productInfoId" style="width:100%" required>
+															<option value="" translate="common.choose"></option>
+															<option ng-repeat="x in ctrl.productInfoData" value="{{x.productInfoId}}" ng-bind="x.productName"></option>
+														</select>
+														<div ng-show="addEditForm.productInfoId2.$error.required" style="color:red" translate="contentInfo.productInfoId.required">
                                                          </div>
-														 <div ng-show="addEditForm.productInfoId.$error.maxlength" style="color:red" translate="contentInfo.productInfoId.length">
-                                                         </div>
-                                                         <div ng-show="addEditForm.productInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
-									                     </div>
 													</div>
 												</div>
 											</div>

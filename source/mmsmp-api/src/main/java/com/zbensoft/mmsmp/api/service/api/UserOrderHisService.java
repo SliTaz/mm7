@@ -56,4 +56,6 @@ public interface UserOrderHisService {
     List<UserOrderHis> selectPage(UserOrderHis record);
     
     int count(UserOrderHis record);
+    
+    UserOrderHis selectByPhoneAndProductId(UserOrderHis record);
 }

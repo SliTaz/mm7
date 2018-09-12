@@ -38,43 +38,37 @@ public class WarMake {
 
 		String projectPath = Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME;
 		FileUtils.delFile(projectPath + "\\pom.xml");
-		FileUtils.delFile(projectPath + "\\e-payment-api\\pom.xml");
-		FileUtils.delFile(projectPath + "\\e-payment-boss\\pom.xml");
-		FileUtils.delFile(projectPath + "\\e-payment-consumer\\pom.xml");
-		FileUtils.delFile(projectPath + "\\e-payment-government\\pom.xml");
-		FileUtils.delFile(projectPath + "\\e-payment-merchant\\pom.xml");
-		FileUtils.delFile(projectPath + "\\e-payment-webservice\\pom.xml");
+		FileUtils.delFile(projectPath + "\\mmsmp-api\\pom.xml");
+		FileUtils.delFile(projectPath + "\\mmsmp-boss\\pom.xml");
+		FileUtils.delFile(projectPath + "\\mmsmp-corebiz\\pom.xml");
 
 		FileUtils.copyFile(projectPath + "\\pom-prod.xml", projectPath + "\\pom.xml");
-		FileUtils.copyFile(projectPath + "\\e-payment-api\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\e-payment-api\\pom.xml");
-		FileUtils.copyFile(projectPath + "\\e-payment-boss\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\e-payment-boss\\pom.xml");
-		FileUtils.copyFile(projectPath + "\\e-payment-consumer\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\e-payment-consumer\\pom.xml");
-		FileUtils.copyFile(projectPath + "\\e-payment-government\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\e-payment-government\\pom.xml");
-		FileUtils.copyFile(projectPath + "\\e-payment-merchant\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\e-payment-merchant\\pom.xml");
-		FileUtils.copyFile(projectPath + "\\e-payment-webservice\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\e-payment-webservice\\pom.xml");
+		FileUtils.copyFile(projectPath + "\\mmsmp-api\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-api\\pom.xml");
+		FileUtils.copyFile(projectPath + "\\mmsmp-boss\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-boss\\pom.xml");
+		FileUtils.copyFile(projectPath + "\\mmsmp-corebiz\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-corebiz\\pom.xml");
 
 		System.out.println("复制现网配置");
-		runScript("cmd /c xcopy " + projectPath + "\\e-payment-tools-war\\src\\main\\resources\\conf" + " " + Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_01_NAME + " /e");
+		runScript("cmd /c xcopy " + projectPath + "\\mmsmp-tools-war\\src\\main\\resources\\conf" + " " + Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_01_NAME + " /e");
 		System.out.println("复制现网配置结束");
 
-		// while (new File(projectPath + "\\e-payment-tools").exists()) {
+		// while (new File(projectPath + "\\mmsmp-tools").exists()) {
 		// System.out.println("删除目录");
-		// runScript("cmd /c rd/s/q " + projectPath + "\\e-payment-tools");
+		// runScript("cmd /c rd/s/q " + projectPath + "\\mmsmp-tools");
 		// System.out.println("删除结束");
 		// }
 		//
-		// while (new File(projectPath + "\\e-payment-tools-war").exists()) {
+		// while (new File(projectPath + "\\mmsmp-tools-war").exists()) {
 		// System.out.println("删除目录");
-		// runScript("cmd /c rd/s/q " + projectPath + "\\e-payment-tools-war");
+		// runScript("cmd /c rd/s/q " + projectPath + "\\mmsmp-tools-war");
 		// System.out.println("删除结束");
 		// }
 		System.out.println("js混淆关闭");
 		
 		//modify by yp
-		System.out.println("js混淆开始");
-		JsMake a = new JsMake();
-		a.doMake();
-		System.out.println("js混淆结束");
+//		System.out.println("js混淆开始");
+//		JsMake a = new JsMake();
+//		a.doMake();
+//		System.out.println("js混淆结束");
 
 		runScript("cmd /c " + Conf.CAMMAD_PATH + " && cd " + projectPath + "&& mvn clean package -D maven.test.skip=true -P prod -e");
 
@@ -84,7 +78,7 @@ public class WarMake {
 		System.out.println("修改为现网配置war包结束");
 		
 		//modify by yp
-		a.printErrorList();
+//		a.printErrorList();
 	}
 
 	public static void runScript(String cmd) {

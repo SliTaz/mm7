@@ -200,11 +200,20 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 				console.error('Error while fetching spInfo');
 			}
 		);
+		
+		ContentInfoService.selProductInfo().then(function(d) {
+	        vm.productInfoData = d.body;
+       },
+		function(errResponse){
+			console.error('Error while fetching productInfo');
+		}
+		);
 	}
 	
 	function selectDevice(){
 		//解决 select2在模态框使用，模糊输入框无效
 		$("#cpInfo").select2();
+		$("#productInfoId").select2();
 		$("#myModal").attr("tabindex","");
 		//解决selec2在火狐模太框中输入框不能输入start
 		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
@@ -220,6 +229,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	function addInit() {
 		selectDevice();
 		$("#cpInfo2").val("").select2();
+		$("#productInfoId2").val("").select2();
 		vm.modelTitle = $translate.instant('contentInfo.add');
 		vm.bean = {};
 		vm.readonlyID = false;
@@ -231,14 +241,15 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		reloadData();
 		selectDevice();
 		$("#cpInfo2").val(bean.cpInfoId).select2();
+		$("#productInfoId2").val(bean.productInfoId).select2();
 		$("#rejectReasonHide").show();
 		vm.modelTitle = $translate.instant('contentInfo.edit');
 		vm.bean = bean;
 		vm.readonlyID = true;
 		vm.bean.status = vm.bean.status + "";
 		vm.bean.contentType = vm.bean.contentType + "";
-		vm.bean.isRealtime = vm.bean.isRealtime + "";
-		vm.bean.isApplyDelete = vm.bean.isApplyDelete + "";
+		vm.bean.isRealtime = (vm.bean.isRealtime==null?"":vm.bean.isRealtime+"");
+		vm.bean.isApplyDelete = (vm.bean.isApplyDelete==null?"":vm.bean.isApplyDelete+"");
 		vm.bean.isSend = vm.bean.isSend + "";
 		vm.statusCode="";
 		vm.statusMessage="";
@@ -247,6 +258,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	function submit() {
 		if (!vm.readonlyID) {
 			$.fn.dataTable.ext.errMode = 'none';
+			if(vm.bean.startTime >= vm.bean.endTime){
+				alert($translate.instant('contentInfo.createTimeRange'));
+				return;
+			}
 			vm.bean.startTime = timeFormatNew(vm.bean.startTime);
 			vm.bean.endTime = timeFormatNew(vm.bean.endTime);
 			vm.bean.author = vm.ltuserName;
@@ -257,6 +272,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 					});
 			vm.reset();
 		} else {
+			if(vm.bean.startTime >= vm.bean.endTime){
+				alert($translate.instant('contentInfo.createTimeRange'));
+				return;
+			}
 			vm.bean.startTime = timeFormatNew(vm.bean.startTime);
 			vm.bean.endTime = timeFormatNew(vm.bean.endTime); 
 			ContentInfoService.updateContentInfo(vm.bean, vm.bean.contentInfoId).then(onSubmitSuccess,

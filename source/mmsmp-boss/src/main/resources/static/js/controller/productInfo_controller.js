@@ -37,6 +37,9 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	var vm = this;
 	vm.modelTitle = "";
 	vm.readonlyID = false;
+	vm.companyNameFlag=true;
+	vm.companyCoreData="";
+
 	vm.beanSer = {};
     vm.columnStatusData=[];
 	vm.reloadData = reloadData;
@@ -45,15 +48,16 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	setDtOptionsServerSide(vm);
 	vm.dtColumns = [
 			DTColumnBuilder.newColumn('productInfoId').withTitle($translate('mmsmp.productInfo.productInfoId')).notSortable(),
+			DTColumnBuilder.newColumn('productName').withTitle($translate('mmsmp.productInfo.productName')).notSortable(),
 			DTColumnBuilder.newColumn('companyCode').withTitle($translate('mmsmp.productInfo.companyCode')).notSortable(),
 			DTColumnBuilder.newColumn('companyName').withTitle($translate('mmsmp.productInfo.companyName')).notVisible().notSortable(),
 			
+			DTColumnBuilder.newColumn('productType').withTitle($translate('mmsmp.productInfo.productType')).notSortable().renderWith(productTypeHtml),
+			DTColumnBuilder.newColumn('orderType').withTitle($translate('mmsmp.productInfo.orderType')).notSortable().renderWith(orderTypeHtml),
 			DTColumnBuilder.newColumn('cpAccessId').withTitle($translate('mmsmp.productInfo.cpAccessId')).notSortable(),
 			DTColumnBuilder.newColumn('cpAccessIdExtend').withTitle($translate('mmsmp.productInfo.cpAccessIdExtend')).notVisible().notSortable(),
-			DTColumnBuilder.newColumn('productName').withTitle($translate('mmsmp.productInfo.productName')).notVisible().notSortable(),
 			
 			DTColumnBuilder.newColumn('productOrderId').withTitle($translate('mmsmp.productInfo.productOrderId')).notVisible().notSortable(),
-			DTColumnBuilder.newColumn('orderType').withTitle($translate('mmsmp.productInfo.orderType')).notSortable().renderWith(orderTypeHtml),
 			DTColumnBuilder.newColumn('status').withTitle($translate('mmsmp.productInfo.status')).notSortable().renderWith(statusHtml),
 			
 			DTColumnBuilder.newColumn('runStatus').withTitle($translate('mmsmp.productInfo.runStatus')).notSortable().renderWith(runStatusHtml),
@@ -73,7 +77,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			DTColumnBuilder.newColumn('keyWorld').withTitle($translate('mmsmp.productInfo.keyWorld')).notVisible().notSortable(),
 			
 			DTColumnBuilder.newColumn('classification').withTitle($translate('mmsmp.productInfo.classification')).notVisible().notSortable().renderWith(classificationHtml),
-			DTColumnBuilder.newColumn('orderCommand').withTitle($translate('mmsmp.productInfo.orderCommand')).notVisible().notSortable(),
+			DTColumnBuilder.newColumn('orderCommand').withTitle($translate('mmsmp.productInfo.orderCommand')).notSortable(),
 			DTColumnBuilder.newColumn('webPicUrl').withTitle($translate('mmsmp.productInfo.webPicUrl')).notVisible().notSortable(),
 			
 			DTColumnBuilder.newColumn('wapPicUrl').withTitle($translate('mmsmp.productInfo.wapPicUrl')).notVisible().notSortable(),
@@ -82,7 +86,6 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			
 			DTColumnBuilder.newColumn('productOnDemandId').withTitle($translate('mmsmp.productInfo.productOnDemandId')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('bookmanName').withTitle($translate('mmsmp.productInfo.bookmanName')).notVisible().notSortable(),
-			DTColumnBuilder.newColumn('productType').withTitle($translate('mmsmp.productInfo.productType')).notVisible().notSortable().renderWith(productTypeHtml),
 			
 			DTColumnBuilder.newColumn('cooperationProportion').withTitle($translate('mmsmp.productInfo.cooperationProportion')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('composeTimeinterval').withTitle($translate('mmsmp.productInfo.composeTimeinterval')).notVisible().notSortable(),
@@ -92,27 +95,30 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			DTColumnBuilder.newColumn('proofTimeinterval').withTitle($translate('mmsmp.productInfo.proofTimeinterval')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('proAuditTimeinterval').withTitle($translate('mmsmp.productInfo.proAuditTimeinterval')).notVisible().notSortable(),
 			
-			DTColumnBuilder.newColumn('auditUser').withTitle($translate('mmmsmp.productInfo.auditUser')).notVisible().notSortable(),
+			DTColumnBuilder.newColumn('auditUser').withTitle($translate('mmsmp.productInfo.auditUser')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('auditRemark').withTitle($translate('mmsmp.productInfo.auditRemark')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('productRemark').withTitle($translate('mmsmp.productInfo.productRemark')).notVisible().notSortable(),
 			
 			DTColumnBuilder.newColumn('operationId').withTitle($translate('mmsmp.productInfo.operationId')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('isPackage').withTitle($translate('mmsmp.productInfo.isPackage')).notVisible().notSortable().renderWith(isPackageHtml),
-			DTColumnBuilder.newColumn('priority').withTitle($translate('mmsmp.productInfo.priority')).notVisible().notSortable(),
+			DTColumnBuilder.newColumn('priority').withTitle($translate('mmsmp.productInfo.priority')).notSortable(),
 			
             DTColumnBuilder.newColumn('dealStatus').withTitle($translate('mmsmp.productInfo.dealStatus')).notVisible().notSortable().renderWith(dealStatusHtml),
 			
 			DTColumnBuilder.newColumn('applyTime').withTitle($translate('mmsmp.productInfo.applyTime')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('queueNum').withTitle($translate('mmsmp.productInfo.queueNum')).notVisible().notSortable(),
-			DTColumnBuilder.newColumn('isPresent').withTitle($translate('mmsmp.productInfo.isPresent')).notSortable().renderWith(isPresentHtml),
+			DTColumnBuilder.newColumn('isPresent').withTitle($translate('mmsmp.productInfo.isPresent')).notVisible().notSortable().renderWith(isPresentHtml),
 			
 			DTColumnBuilder.newColumn(null).withTitle($translate('Actions')).notSortable()
 			.renderWith(actionsHtml) ];
 	vm.addInit = addInit;
 	vm.edit = edit;
 	vm.submit = submit;
-	vm.deleteBean = deleteBean;
-
+	vm.deleteBean=deleteBean;
+	vm.selData = selData;
+	selData();
+	vm.activate =activate;
+	vm.inactivate = inactivate;
     vm.success_color="green";
     vm.error_color="red";
   //表头start
@@ -130,9 +136,9 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}
 	function orderTypeHtml(data, type, full, meta)
 	{  if(data=='1'){
-		return '<span>'+$translate.instant('mmsmp.productInfo.classification.start')+'</span>';
+		return '<span>'+$translate.instant('mmsmp.productInfo.orderByMonth')+'</span>';
 	}else if(data=='2'){
-		return '<span>'+$translate.instant('mmsmp.productInfo.classification.stop')+'</span>';
+		return '<span>'+$translate.instant('mmsmp.productInfo.orderByTimes')+'</span>';
 	}else{
 		return '';
 	}
@@ -252,7 +258,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}else if(data=='5'){
 		return '<span>'+$translate.instant('mmsmp.productInfo.p')+'</span>';
 	}else if(data=='6'){
-		return '<span>'+$translate.instant('mmmsmp.productInfo.w')+'</span>';
+		return '<span>'+$translate.instant('mmsmp.productInfo.w')+'</span>';
 	}else if(data=='7'){
 		return '<span>'+$translate.instant('mmsmp.productInfo.d')+'</span>';
 	}else{
@@ -270,9 +276,22 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}
 		
 	}
+	function changeDataForHTML(){
+		//alert("changeDataForHTML");
+		$scope.$applyAsync();//当在angular的上下文之外修改了界面绑定的数据时，需要调用该函数，让页面的值进行改变。
+	}
 	//超长备注处理end
 	function actionsHtml(data, type, full, meta) {
 		vm.beans[data.productInfoId] = data;
+		if(data.classification==1)
+		{  
+			var classificationButton='<button class="btn bg-maroon" title="'+$translate.instant('common.inactivate')+'"   ng-click="ctrl.inactivate(ctrl.beans[\''+data.productInfoId+'\'])"> <i class="fa  fa-times-circle"></i> </button>';
+		}else
+		{ 
+			var classificationButton='<button class="btn btn-success" title="'+$translate.instant('common.activate')+'"  ng-click="ctrl.activate(ctrl.beans[\''+data.productInfoId+'\'])"> <i class="fa fa-check-circle"></i> </button>';
+			
+		}
+		changeDataForHTML();
 		return '<button class="btn btn-warning" data-toggle="modal" data-target="#myModal" title="'+$translate.instant('common.edit')+'" ng-click="ctrl.edit(ctrl.beans[\''
 				+ data.productInfoId
 				+ '\'])">'
@@ -282,39 +301,119 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 				+ data.productInfoId
 				+ '\'])">'
 				+ '   <i class="fa fa-trash-o"></i>'
-				+ '</button>&nbsp;'
-                '</div>'
+		        + '</button>&nbsp;'
+                +
+                classificationButton
+              
+                +'</div>'
+
 
 	}
-//	function selectBank(){
-//		$("#parentProvinceCityId1").select2();
-//		$("#parentProvinceCityId").select2();
-//		$("#myModal").attr("tabindex","");
-//		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
-//		};
-//		//解决selec2在火狐模太框中输入框不能输入end
-//	}
+	   function activate(bean) {
+			
+			BootstrapDialog.show({
+				title : $translate.instant('common.activate'),
+				message : $translate.instant('common.activate.message'),
+				buttons : [ {
+					label : $translate.instant('common.yes'),
+					cssClass : 'btn btn-danger model-tool-right',
+					action : function(dialogItself) {
+						productInfoService.enable(bean.productInfoId).then(reloadData,
+						function(errResponse) {
+								handleAjaxError(errResponse);
+							console.error('Error while activating GovUser.');
+						});
+						dialogItself.close();
+					}
 
+				}, {
+					label :  $translate.instant('common.cancel'),
+					cssClass : 'btn btn-default model-tool-left',
+					action : function(dialogItself) {
+						dialogItself.close();
+					}
+				} ]
+			});
+			
+		}
+
+
+			function inactivate(bean) {
+				
+				BootstrapDialog.show({
+					title : $translate.instant('common.inactivate'),
+					message : $translate.instant('common.inactivate.message'),
+					buttons : [ {
+						label : $translate.instant('common.yes'),
+						cssClass : 'btn btn-danger model-tool-right',
+						action : function(dialogItself) {
+							productInfoService.enable(bean.productInfoId).then(reloadData,
+							function(errResponse) {
+								handleAjaxError(errResponse);
+								console.error('Error while inactivating GovUser.');
+							});
+							dialogItself.close();
+						}
+			
+					}, {
+						label :  $translate.instant('common.cancel'),
+						cssClass : 'btn btn-default model-tool-left',
+						action : function(dialogItself) {
+							dialogItself.close();
+						}
+					} ]
+				});
+				
+			}
+	function selectBank(){
+		$("#companyCode").select2();
+		$("#companyName").select2();
+		$("#myModal").attr("tabindex","");
+		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
+		};
+		//解决selec2在火狐模太框中输入框不能输入end
+          }
+	$("#companyCode").change(function(){
+	     //要触发的事件
+		changeData();
+	    });
+	function changeData()
+	{
+		if($('#companyCode option:selected').val()=='')
+		{ 
+			$('#companyName').val("");
+		}
+		else
+		{  
+		      var temp =$('#companyCode option:selected').val(); 
+			vm.companyNameData = vm.companyCoreData.filter(function (e) { return e.companyCode ==temp;});
+			$('#companyName').val(vm.companyNameData[0].companyName);
+//			$("#cityId1").disabled=true;
+		
+		}
+	}
 	function addInit() {
 		vm.bean = {};
-//		selData();
+		selData();
+		changeData();
 //		vm.ProvinceCityData1=vm.ProvinceCityData;
-//		selectBank();
+		selectBank();
 		vm.modelTitle = $translate.instant('common.productInfo.add');
-		vm.readonlyID = false;
+		
 		vm.statusCode="";
 		vm.statusMessage="";
 	}
-//	function selData(){
-//		ProvinceCityService.searchAllProvinces().then(function(d){
-//			vm.ProvinceCityData = d.body;
-//			
-//		},
-//				function(errResponse) {
-//						handleAjaxError(errResponse);
-//					console.error('Error while updating Menu.');
-//				});
-//	}
+	function selData(){
+		productInfoService.searchAllSpInfo().then(function(d){
+			vm.companyCoreData = d.body;	
+			vm.companyNameData=d.body;
+		},
+				function(errResponse) {
+						handleAjaxError(errResponse);
+					console.error('Error while updating Menu.');
+				});	
+		
+	}
 	$("#queryBtn").click(function(){
 //		selectBank();
 	})
@@ -332,25 +431,28 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	function edit(bean) {
 //		selData();
 //		selectBank()
-		
+		changeData();
+		vm.bean = bean;								
+		$("#companyCode").val(vm.bean.companyCode).select2();
+		changeData();
+	
 		reloadData();
 		vm.modelTitle = $translate.instant('common.productInfo.edit');
 		vm.readonlyID = true;
-		vm.bean = bean;	
-		
-		vm.bean.orderType = vm.bean.orderType+"";
-		vm.bean.status = vm.bean.status+"";
-		vm.bean.runStatus = vm.bean.runStatus+"";
-		vm.bean.sendContentMode = vm.bean.sendContentMode+"";
-		vm.bean.sendMode = vm.bean.sendMode+"";
-		vm.bean.isDefault = vm.bean.isDefault+"";
-		vm.bean.classification = vm.bean.classification+"";
-		vm.bean.productSource = vm.bean.productSource+"";
-		vm.bean.productType = vm.bean.productType+"";
-		vm.bean.isPackage = vm.bean.isPackage+"";
-		vm.bean.isPresent = vm.bean.isPresent+"";
-		vm.bean.dealStatus = vm.bean.dealStatus+"";
-		
+		vm.bean.orderType = (vm.bean.orderType==null?"":vm.bean.orderType)+"";
+		vm.bean.status = (vm.bean.status==null?"":vm.bean.status)+"";
+		vm.bean.runStatus = (vm.bean.runStatus==null?"":vm.bean.runStatus)+"";
+		vm.bean.sendContentMode = (vm.bean.sendContentMode==null?"":vm.bean.sendContentMode)  +   "";		
+		vm.bean.sendMode = (vm.bean.sendMode==null?"":vm.bean.sendMode)+"";
+		vm.bean.isDefault = (vm.bean.isDefault==null?"":vm.bean.isDefault)+"";
+		vm.bean.classification = (vm.bean.classification==null?"":vm.bean.classification)+"";
+		vm.bean.productSource =(vm.bean.productSource==null?"":vm.bean.productSource)+"";
+		vm.bean.productType = (vm.bean.productType==null?"":vm.bean.productType)+"";
+		vm.bean.isPackage = (vm.bean.isPackage==null?"":vm.bean.isPackage)+"";
+		vm.bean.isPresent = (vm.bean.isPresent==null?"":vm.bean.isPresent)+"";
+		vm.bean.dealStatus =(vm.bean.dealStatus==null?"":vm.bean.dealStatus)+"";
+
+		vm.bean.companyCore=(vm.bean.companyCore==null?"":vm.bean.companyCore)+"";
 		vm.statusCode="";
 		vm.statusMessage="";
 	}

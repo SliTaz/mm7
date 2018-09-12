@@ -75,7 +75,6 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		DTColumnBuilder.newColumn('isRealtime').withTitle($translate('contentInfo.isRealtime')).notSortable().renderWith(isRealtimeDetail).notVisible(),
 		DTColumnBuilder.newColumn('realtimeContentUrl').withTitle($translate('contentInfo.realtimeContentUrl')).notSortable().notVisible().renderWith(remarkDetail),
 		DTColumnBuilder.newColumn('contentRemark').withTitle($translate('contentInfo.contentRemark')).notSortable().notVisible().renderWith(remarkDetail),
-		DTColumnBuilder.newColumn('rejectReason').withTitle($translate('contentInfo.rejectReason')).notSortable().notVisible().renderWith(remarkDetail),
 		DTColumnBuilder.newColumn('isApplyDelete').withTitle($translate('contentInfo.isApplyDelete')).notSortable().notVisible().renderWith(isRealtimeDetail),
 		DTColumnBuilder.newColumn('webPic').withTitle($translate('contentInfo.webPic')).notSortable().notVisible().renderWith(remarkDetail),
 		DTColumnBuilder.newColumn('startTime').withTitle($translate('contentInfo.startTime')).renderWith(timeRender).notSortable().notVisible(),
@@ -94,6 +93,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	vm.edit = edit;
 	vm.submit = submit;
 	vm.deleteBean = deleteBean;
+	vm.submitBean = submitBean;
+	vm.revokeBean = revokeBean;
 	vm.statusType = statusType;
 	vm.selData = selData;
 	selData();
@@ -105,16 +106,35 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	
 	function actionsHtml(data, type, full, meta) {
 		vm.beans[data.contentInfoId] = data;
-		return '<button class="btn btn-warning" data-toggle="modal" data-target="#myModal" title="'+$translate.instant('common.edit')+'" ng-click="ctrl.edit(ctrl.beans[\''
+		var actionsHtml_html = '<button class="btn btn-warning"  ng-if = "'+ data.status +' == 0" data-toggle="modal" data-target="#myModal" title="'+$translate.instant('common.edit')+'" ng-click="ctrl.edit(ctrl.beans[\''
 				+ data.contentInfoId
 				+ '\'])">'
 				+ '   <i class="fa fa-edit"></i>'
+				+ '</button>'
+				+'<button class="btn btn-warning" ng-if = "'+ data.status +' != 0" ng-disabled="true" title="'+$translate.instant('common.edit')+'" >'
+				+ '   <i class="fa fa-edit"></i>'
 				+ '</button>&nbsp;'
-				+ '<button class="btn btn-danger" title="'+$translate.instant('common.delete')+'" ng-click="ctrl.deleteBean(ctrl.beans[\''
+				+ '<button class="btn btn-danger" ng-disabled="'+data.status+' != 0" title="'+$translate.instant('common.delete')+'" ng-click="ctrl.deleteBean(ctrl.beans[\''
 				+ data.contentInfoId
 				+ '\'])">'
 				+ '   <i class="fa fa-trash-o"></i>'
-				+ '</button>';
+				+ '</button>&nbsp;'
+				+ '<div class="btn-group">'
+				+ '<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">'
+				+ ' <span class="caret"></span>'
+		        +'</button>'
+		        + '<ul class="dropdown-menu" style="padding:0px;margin-left:-110px;min-width:10px">'
+		     	+ '<li><button class="btn btn-success" style="width:150px"  ng-disabled="'+data.status+' != 0" ng-click="ctrl.submitBean(ctrl.beans[\''+data.contentInfoId+'\'])">'+$translate.instant('common.submit')+'</button></li>'
+				+ '<li><button class="btn bg-maroon" style="width:150px"  ng-disabled="'+data.status+' == 0" ng-click="ctrl.revokeBean(ctrl.beans[\''+data.contentInfoId+'\'])">'+$translate.instant('common.revoke')+'</button></li>'
+		        + '</ul>'
+		        + '</div>';
+				$(".dataTables_scrollBody").attr("style","position:relative;max-height:100%;width:100%");
+				changeDataForHTML();//通过调用该函数。让拼装的html代码生效
+				return actionsHtml_html;
+	}
+	function changeDataForHTML(){
+		//alert("changeDataForHTML");
+		$scope.$applyAsync();//当在angular的上下文之外修改了界面绑定的数据时，需要调用该函数，让页面的值进行改变。
 	}
 	function timeRender(data, type, full, meta) {
 		if(data==null||data==''){
@@ -200,11 +220,21 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 				console.error('Error while fetching spInfo');
 			}
 		);
+		
+		ContentInfoService.selProductInfo().then(function(d) {
+	        vm.productInfoData = d.body;
+       },
+		function(errResponse){
+			console.error('Error while fetching productInfo');
+		}
+		);
+		
 	}
 	
 	function selectDevice(){
 		//解决 select2在模态框使用，模糊输入框无效
 		$("#cpInfo").select2();
+		$("#productInfoId").select2();
 		$("#myModal").attr("tabindex","");
 		//解决selec2在火狐模太框中输入框不能输入start
 		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
@@ -220,6 +250,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	function addInit() {
 		selectDevice();
 		$("#cpInfo2").val("").select2();
+		$("#productInfoId2").val("").select2();
+		$("#rejectHide").hide();
 		vm.modelTitle = $translate.instant('contentInfo.add');
 		vm.bean = {};
 		vm.readonlyID = false;
@@ -230,13 +262,15 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		reloadData();
 		selectDevice();
 		$("#cpInfo2").val(bean.cpInfoId).select2();
+		$("#productInfoId2").val(bean.productInfoId).select2();
+		$("#rejectHide").show();
 		vm.modelTitle = $translate.instant('contentInfo.edit');
 		vm.bean = bean;
 		vm.readonlyID = true;
 		vm.bean.status = vm.bean.status + "";
 		vm.bean.contentType = vm.bean.contentType + "";
-		vm.bean.isRealtime = vm.bean.isRealtime + "";
-		vm.bean.isApplyDelete = vm.bean.isApplyDelete + "";
+		vm.bean.isRealtime = (vm.bean.isRealtime==null?"":vm.bean.isRealtime+"");
+		vm.bean.isApplyDelete = (vm.bean.isApplyDelete==null?"":vm.bean.isApplyDelete+"");
 		vm.bean.isSend = vm.bean.isSend + "";
 		vm.statusCode="";
 		vm.statusMessage="";
@@ -247,6 +281,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			$.fn.dataTable.ext.errMode = 'none';
 			vm.bean.startTime = timeFormatNew(vm.bean.startTime);
 			vm.bean.endTime = timeFormatNew(vm.bean.endTime);
+			vm.bean.status = '0';
 			ContentInfoService.createContentInfo(vm.bean).then(onSubmitSuccess,
 					function(errResponse) {
  						handleAjaxError(errResponse);
@@ -256,6 +291,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		} else {
 			vm.bean.startTime = timeFormatNew(vm.bean.startTime);
 			vm.bean.endTime = timeFormatNew(vm.bean.endTime); 
+			vm.bean.status = '0';
 			ContentInfoService.updateContentInfo(vm.bean, vm.bean.contentInfoId).then(onSubmitSuccess,
 					function(errResponse) {
  						handleAjaxError(errResponse);
@@ -283,6 +319,65 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 					function(errResponse) {
  						handleAjaxError(errResponse);
 						console.error('Error while updating AlarmInfo.');
+					});
+					dialogItself.close();
+				}
+
+			}, {
+				label : $translate.instant('common.cancel'),
+				cssClass : 'btn btn-default model-tool-left',
+				action : function(dialogItself) {
+					dialogItself.close();
+				}
+			} ]
+		});
+		
+	}
+	
+	function submitBean(bean) {
+		console.log(bean)
+		BootstrapDialog.show({
+			title : $translate.instant('common.submit'),
+			message : $translate.instant('common.submit.message'),
+			buttons : [ {
+				label : $translate.instant('common.yes'),
+				cssClass : 'btn btn-danger model-tool-right',
+				action : function(dialogItself) {
+					bean.status = '1';
+					bean.rejectReason = null;//提交后，驳回原因重置为null
+					ContentInfoService.updateContentInfo(bean, bean.contentInfoId).then(reloadData,
+					function(errResponse) {
+ 						handleAjaxError(errResponse);
+						console.error('Error while submit contentMade.');
+					});
+					dialogItself.close();
+				}
+
+			}, {
+				label : $translate.instant('common.cancel'),
+				cssClass : 'btn btn-default model-tool-left',
+				action : function(dialogItself) {
+					dialogItself.close();
+				}
+			} ]
+		});
+		
+	}
+	
+	function revokeBean(bean) {
+		console.log(bean)
+		BootstrapDialog.show({
+			title : $translate.instant('common.revoke'),
+			message : $translate.instant('common.revoke.message'),
+			buttons : [ {
+				label : $translate.instant('common.yes'),
+				cssClass : 'btn btn-danger model-tool-right',
+				action : function(dialogItself) {
+					bean.status = '0';
+					ContentInfoService.updateContentInfo(bean, bean.contentInfoId).then(reloadData,
+					function(errResponse) {http://www.fontawesome.com.cn/icon/reply
+ 						handleAjaxError(errResponse);
+						console.error('Error while revoke contentMade.');
 					});
 					dialogItself.close();
 				}
@@ -370,7 +465,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		}
 		var createTimeStart = timeFormatNew(vm.beanSer.createTimeStart);
 		var createTimeEnd = timeFormatNew(vm.beanSer.createTimeEnd);
-		vm.dtInstance.changeData(getFromSource(apiUrl + '/contentInfo?contentName=' + getValueForSelect(contentName) + "&productInfoId="+ getValueForSelect(productInfoId) +  getValueForSelect(status,"&status=")
+		vm.dtInstance.changeData(getFromSource(apiUrl + '/contentInfo?contentName=' + getValueForSelect(contentName) + "&productInfoId="+ getValueForSelect(productInfoId)
 				+ "&cpInfoId="+ getValueForSelect(cpInfoId) + "&createTimeStart="+ getValueForSelect(createTimeStart) + "&createTimeEnd="+ getValueForSelect(createTimeEnd)));
 		var resetPaging = false;
 		vm.dtInstance.reloadData(callback, resetPaging);

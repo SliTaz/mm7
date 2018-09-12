@@ -10,20 +10,20 @@
  
  public class OrderRelationUpdateNotifyRequest extends AbstractMessage
  {
-   private String recordSequenceId;
-   private Integer userIdType;
-   private String userId;
-   private String serviceType;
-   private String spId;
-   private String productId;
-   private Integer updateType;
-   private String updateTime;
-   private String updateDesc;
-   private String linkId;
-   private String content;
-   private String effectiveDate;
-   private String expireDate;
-   private String time_stamp;
+   private String recordSequenceId;	//流水号
+   private Integer userIdType;		//用户类型
+   private String userId;			//用户编号
+   private String serviceType;		//
+   private String spId;				//sp编号
+   private String productId;		//产品比那好
+   private Integer updateType;		//更新类型
+   private String updateTime;		//更新时间
+   private String updateDesc;		//更新描述
+   private String linkId;			
+   private String content;			//内容
+   private String effectiveDate;	//生效时间
+   private String expireDate;		//失效时间
+   private String time_stamp;	
    private String encodeStr;
    private String notifySPURL;
    private Object __equalsCalc = null;

@@ -52,7 +52,9 @@ public class OrderRelationClient {
 	}
 
 	public static void main(String[] args) {
-		String url = "http://220.194.63.139:8080/axis/services/SyncNotifySP_bjlt";
+//		String url = "http://220.194.63.139:8080/axis/services/SyncNotifySP_bjlt";
+//		String url = "http://localhost/mmsmpspsimulator/services/SyncNotifySP";
+		String url = "http://localhost:29095/services/SyncNotifySP";
 
 		OrderRelationUpdateNotifyRequest orderRelationUpdateNotifyRequest = new OrderRelationUpdateNotifyRequest();
 		orderRelationUpdateNotifyRequest.setRecordSequenceId("123456789123456789");
@@ -71,7 +73,7 @@ public class OrderRelationClient {
 		orderRelationUpdateNotifyRequest.setUserId("15811313734");
 		orderRelationUpdateNotifyRequest.setUserIdType(Integer.valueOf(1));
 
-		OrderRelationUpdateNotifyResponse res = notifySp(url, orderRelationUpdateNotifyRequest);
+		OrderRelationUpdateNotifyResponse res = notifySp(orderRelationUpdateNotifyRequest,url);
 		if (res != null) {
 			logger.info("result : " + res.getResultCode());
 		}

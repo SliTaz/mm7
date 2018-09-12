@@ -50,7 +50,7 @@ public class ProvinceManagerController {
 		@RequestParam(required = false) String start,@RequestParam(required = false) String length) {
 
 		ProvinceCity provinceCity = new ProvinceCity();
-		provinceCity.setParentProvinceCityId("");
+		provinceCity.setParentProvinceCityId("-1");
 	
 		    if(provinceCityName!=null)
 		    {
@@ -108,7 +108,7 @@ public class ProvinceManagerController {
 
 			return new ResponseRestEntity<Void>(HttpRestStatusFactory.createStatus(list), HttpRestStatusFactory.createStatusMessage(list));
 		}
-		if(provinceCity.getProvinceCityId().equals(""))
+		if(provinceCity.getProvinceCityId().equals("-1"))
 		{
 			return new ResponseRestEntity<Void>(HttpRestStatus.PROVINCECITYNAME_ILLEGA_EXIST);
 		}
@@ -125,7 +125,7 @@ public class ProvinceManagerController {
 	    if((isExistList!=null && isExistList.size()>0)){
 			return new ResponseRestEntity<Void>(HttpRestStatus.PROVINCECITYNAME_IS_EXIST);
 	    }
-	    provinceCity.setParentProvinceCityId("");
+	    provinceCity.setParentProvinceCityId("-1");
 	    provinceCityService.insert(provinceCity);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/province/{id}").buildAndExpand(provinceCity.getParentProvinceCityId()).toUri());
@@ -139,7 +139,7 @@ public class ProvinceManagerController {
 		if (currentProvinceCity == null) {
 			return new ResponseRestEntity<ProvinceCity>(HttpRestStatus.NOT_FOUND);
 		}	
-		if(!bean.getParentProvinceCityId().equals(""))
+		if(!bean.getParentProvinceCityId().equals("-1"))
 		{
 			
 				return new ResponseRestEntity<ProvinceCity>(HttpRestStatus.NOT_FOUND);	
@@ -154,7 +154,7 @@ public class ProvinceManagerController {
 	    		 return new ResponseRestEntity<ProvinceCity>(HttpRestStatus.PROVINCECITYNAME_IS_EXIST);
 	    	 }
 	    }
-		currentProvinceCity.setParentProvinceCityId("");
+		currentProvinceCity.setParentProvinceCityId("-1");
 		currentProvinceCity.setProvinceCityId(bean.getProvinceCityId());
 		currentProvinceCity.setProvinceCityName(bean.getProvinceCityName());		
 		provinceCityService.updateByPrimaryKey(currentProvinceCity);

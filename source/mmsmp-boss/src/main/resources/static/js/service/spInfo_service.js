@@ -30,7 +30,7 @@ App.factory('SpInfoService', ['$http', '$q', function($http, $q){
 							);
 		    },
 	fetchProvince: function() {
-			return $http.get(apiUrl +"/provinceCity?parentProvinceCityId="+"-1")
+			return $http.get(apiUrl +"/province")
 			.then(
 					function(response){
 						return response.data;

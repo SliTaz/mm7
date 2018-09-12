@@ -174,21 +174,22 @@ public class MobileDataStore {
 					if (valueArray[i].getMobileValue() > value) {
 						break;
 					}
+
+					if (i < this.dataSize[index]) {
+						System.arraycopy(valueArray, i, valueArray, i + 1, this.dataSize[index] - i);
+						valueArray[i] = mobileObj;
+						valueArray[i].setMobileValue(value);
+						this.dataSize[index] += 1;
+					} else {
+						valueArray[this.dataSize[index]] = mobileObj;
+						int tmp254_252 = index;
+						int[] tmp254_249 = this.dataSize;
+						int tmp256_255 = tmp254_249[tmp254_252];
+						tmp254_249[tmp254_252] = (tmp256_255 + 1);
+						valueArray[tmp256_255].setMobileValue(value);
+					}
+					this.mobileCount += 1;
 				}
-				if (i < this.dataSize[index]) {
-					System.arraycopy(valueArray, i, valueArray, i + 1, this.dataSize[index] - i);
-					valueArray[i] = mobileObj;
-					valueArray[i].setMobileValue(value);
-					this.dataSize[index] += 1;
-				} else {
-					valueArray[this.dataSize[index]] = mobileObj;
-					int tmp254_252 = index;
-					int[] tmp254_249 = this.dataSize;
-					int tmp256_255 = tmp254_249[tmp254_252];
-					tmp254_249[tmp254_252] = (tmp256_255 + 1);
-					valueArray[tmp256_255].setMobileValue(value);
-				}
-				this.mobileCount += 1;
 				return;
 			}
 

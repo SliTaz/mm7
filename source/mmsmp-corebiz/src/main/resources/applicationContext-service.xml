@@ -74,20 +74,20 @@
      -->
 	<!-- smsAgent message mina client -->
     <bean id="smsAgentClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
-		<property name="host" value="192.168.1.16"/>
-		<property name="port" value="8005"/>
+		<property name="host" value="127.0.0.1"/>
+		<property name="port" value="19031"/>
 		<property name="info" value="corebiz-> smsagent"/>
 	</bean>
 	
 	<!-- mmsAgent message mina client -->
 	<bean id="mmsAgentClient0" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
-		<property name="host" value="192.168.1.116"/>
+		<property name="host" value="127.0.0.1"/>
 		<property name="port" value="19093"/>
 		<property name="info" value="corebiz--> mmsagent[133-0-8006]"/>
 	</bean>
 	
 	<bean id="mmsAgentClient1" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
-		<property name="host" value="192.168.1.116"/>
+		<property name="host" value="127.0.0.1"/>
 		<property name="port" value="19093"/>
 		<property name="info" value="corebiz--> mmsagent[133-1-8106]"/>
 	</bean>
@@ -106,15 +106,15 @@
 	-->
 	<!-- spAgent message mina client -->
 	<bean id="spAgentClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
-		<property name="host" value="192.168.1.116"/>
+		<property name="host" value="127.0.0.1"/>
 		<property name="port" value="19095"/>
 		<property name="info" value="corebiz-> spagent"/>
 	</bean>
 	
 	<!-- vacAgent message mina client -->
 	<bean id="vacAgentClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
-		<property name="host" value="192.168.1.16"/>
-		<property name="port" value="8008"/>
+		<property name="host" value="127.0.0.1"/>
+		<property name="port" value="19021"/>
 		<property name="info" value="corebiz-> vacagent"/>
 	</bean>
 	
@@ -128,7 +128,7 @@
 	<!-- ownbiz message mina client -->
 	<bean id="ownbizClient" class="com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy" scope="prototype">
 		<property name="host" value="127.0.0.1"/>
-		<property name="port" value="8013"/>
+		<property name="port" value="19041"/>
 		<property name="info" value="corebiz-> ownbiz"/>
 	</bean>
 	

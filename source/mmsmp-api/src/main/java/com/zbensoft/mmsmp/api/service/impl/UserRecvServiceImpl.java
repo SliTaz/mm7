@@ -60,4 +60,15 @@ public class UserRecvServiceImpl implements UserRecvService{
 		return userRecvMapper.count(record);
 	}
 
+	@Override
+	public UserRecv getLatestMoOrderMsgText(UserRecv userRecv) {
+		List<UserRecv> userRecvLists=userRecvMapper.getLatestMoOrderMsgText(userRecv);
+		if(userRecvLists!=null&&userRecvLists.size()>1){
+			return userRecvLists.get(1);
+		}else{
+			return null;
+		}
+		
+	}
+
 }

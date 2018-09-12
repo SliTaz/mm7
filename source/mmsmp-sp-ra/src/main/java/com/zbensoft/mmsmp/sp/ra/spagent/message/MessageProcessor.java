@@ -90,6 +90,7 @@ public class MessageProcessor {
 
 	public static void dealOrderRelation(com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest order) {
 		String notifyurl = order.getNotifySPURL();
+		logger.info("notifyurl:"+notifyurl);
 		com.zbensoft.mmsmp.sp.ra.spagent.sp.ws.OrderRelationUpdateNotifyRequest orderRequest = new com.zbensoft.mmsmp.sp.ra.spagent.sp.ws.OrderRelationUpdateNotifyRequest();
 		OrderRelationCopy.copyRequest(order, orderRequest);
 		com.zbensoft.mmsmp.sp.ra.spagent.sp.ws.OrderRelationUpdateNotifyResponse orderResponse = OrderRelationClient

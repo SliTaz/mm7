@@ -29,7 +29,30 @@ App.factory('UserInfoService', ['$http', '$q', function($http, $q){
 									}
 							);
 		    },
-		    
+		    fetchProvince: function() {
+				return $http.get(apiUrl +"/province")
+				.then(
+						function(response){
+							return response.data;
+						}, 
+						function(errResponse){
+							handleAjaxError(errResponse);
+							return $q.reject(errResponse);
+						}
+				);
+	},
+	fetchProvinces: function(province) {
+		return $http.get(apiUrl +"/provinceCity?parentProvinceCityId="+province)
+		.then(
+				function(response){
+					return response.data;
+				}, 
+				function(errResponse){
+					handleAjaxError(errResponse);
+					return $q.reject(errResponse);
+				}
+		);
+},
 		    updateAlarmInfo: function(alarmInfo, id){
 					return $http.put(apiUrl +"/userInfo/"+id, alarmInfo)
 							.then(

@@ -123,18 +123,18 @@
 					<div class="row">
 						<div class="form-group col-sm-6">
 									<label for="cpInfoId"
-										class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpName"></label>
+										class="col-sm-4 control-label control-label-zb" translate="cooperKey.cooperName"></label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.cpName"
-											placeholder="{{'cpInfo.cpName' | translate }}">
+										<input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.cooperName"
+											placeholder="{{'cooperKey.cooperName' | translate }}">
 									</div>
 								</div>
 								<div class="form-group col-sm-6">
 									<label for="spInfoId"
-										class="col-sm-4 control-label control-label-zb" translate="cpInfo.accessId"></label>
+										class="col-sm-4 control-label control-label-zb" translate="cooperKey.keyId"></label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.cpInfoId"
-											placeholder="{{'cpInfo.accessId' | translate }}">
+										<input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.keyId"
+											placeholder="{{'cooperKey.keyId' | translate }}">
 									</div>
 								</div>
 								</div>
@@ -188,57 +188,19 @@
 									<div class="col-xs-12">
 										<section class="content-header" id="content_section"></section>
 										<section class="content">
-											<input type="hidden" ng-model="ctrl.bean.userId" />
-
-										<!-- <div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpInfoId"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="cpInfoId" id="cpInfoId" autocomplete="off"  ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-maxlength="32" ng-model="ctrl.bean.cpInfoId" 
-															placeholder="{{'cpInfo.cpInfoId'   | translate }}" required>
-															<div ng-show="addEditForm.cpInfoId.$error.required" style="color:red" translate="consumerGasCoupon.couponId.required">
-	                                                         </div> 
-	                                                         <div ng-show=" addEditForm.cpInfoId.$error.maxlength" style="color:red" translate="caption_account.name.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.cpInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div> -->
 										<div class="row">
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.spInfo"></label>
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.keyId"></label>
 													<div class="col-sm-7">
-														<select class="form-control"  id="spInfo2"  ng-model="ctrl.bean.spInfoId"  style="width:100%" required>
-						                                          <option value="" translate="common.choose"></option>
-						                                          <option ng-repeat="x in ctrl.spInfoData" value="{{x.spInfoId}}" ng-bind="x.companyName"></option>
-						                                   </select>
-													 <!--  <input type="text" class="form-control" name="spInfoId" id="spInfoId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.spInfoId" 
-															placeholder="{{'cpInfo.spInfoId'   | translate }}" required> -->
-																<div ng-show="addEditForm.spInfoId.$error.required" style="color:red" translate="cpInfo.spInfoId.required">
+													  <input type="text" class="form-control" name="keyId" id="keyId" ng-disabled="ctrl.disabled" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="50" ng-model="ctrl.bean.keyId" 
+															placeholder="{{'cooperKey.keyId'   | translate }}" required>
+																<div ng-show="addEditForm.keyId.$error.required" style="color:red" translate="cooperKey.keyId.required">
 	                                                         </div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpName"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="cpName" id="cpName" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="64" ng-model="ctrl.bean.cpName" 
-															placeholder="{{'cpInfo.cpName'   | translate }}" required>
-																<div ng-show="addEditForm.cpName.$error.required" style="color:red" translate="cpInfo.cpName.required">
-	                                                         </div> 
-	                                                          <div ng-show="addEditForm.cpName.$error.maxlength" style="color:red" translate="cpInfo.cpName.length">
+	                                                          <div ng-show="addEditForm.keyId.$error.maxlength" style="color:red" translate="cooperKey.keyId.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.cpName.$error.pattern" style="color:red" translate="common.illegalChar">
+	                                                         <div ng-show="addEditForm.keyId.$error.pattern" style="color:red" translate="common.illegalChar">
 									                         </div>
 													</div>
 												</div>
@@ -248,15 +210,34 @@
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpAddr"></label>
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.cooperId"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="cpAddr" id="cpAddr" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="128" ng-model="ctrl.bean.cpAddr" 
-															placeholder="{{'cpInfo.cpAddr'   | translate }}">
-																<!-- <div ng-show="addEditForm.cpAddr.$error.required" style="color:red" translate="cpInfo.cpAddr.required">
-	                                                         </div>  -->
-	                                                          <div ng-show="addEditForm.cpAddr.$error.maxlength" style="color:red" translate="cpInfo.cpAddr.length">
+													  <input type="text" class="form-control" name="cooperId" id="cooperId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="50" ng-model="ctrl.bean.cooperId" 
+															placeholder="{{'cooperKey.cooperId'   | translate }}" required>
+																<div ng-show="addEditForm.cooperId.$error.required" style="color:red" translate="cooperKey.cooperId.required">
+	                                                         </div> 
+	                                                          <div ng-show="addEditForm.cooperId.$error.maxlength" style="color:red" translate="cooperKey.cooperId.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.cpAddr.$error.pattern" style="color:red" translate="common.illegalChar">
+	                                                         <div ng-show="addEditForm.cooperId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.cooperName"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="cooperName" id="cooperName" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="100" ng-model="ctrl.bean.cooperName" 
+															placeholder="{{'cooperKey.cooperName'   | translate }}" required>
+																<div ng-show="addEditForm.cooperName.$error.required" style="color:red" translate="cooperKey.cooperName.required">
+	                                                         </div> 
+	                                                          <div ng-show="addEditForm.cooperName.$error.maxlength" style="color:red" translate="cooperKey.cooperName.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.cooperName.$error.pattern" style="color:red" translate="common.illegalChar">
 									                         </div>
 													</div>
 												</div>
@@ -266,15 +247,15 @@
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.legalPerson"></label>
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.cooperKey"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="legalPerson" id="legalPerson" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" autocomplete="off" ng-model="ctrl.bean.legalPerson" 
-															placeholder="{{'cpInfo.legalPerson'   | translate }}" required>
-																<div ng-show="addEditForm.legalPerson.$error.required" style="color:red" translate="cpInfo.legalPerson.required">
+													  <input type="text" class="form-control" name="cooperKey" id="cooperKey" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.cooperKey" 
+															placeholder="{{'cooperKey.cooperKey'   | translate }}" required>
+																<div ng-show="addEditForm.cooperKey.$error.required" style="color:red" translate="cooperKey.cooperKey.required">
 	                                                         </div> 
-	                                                         <div ng-show=" addEditForm.legalPerson.$error.maxlength" style="color:red" translate="cpInfo.legalPerson.length">
+	                                                          <div ng-show="addEditForm.cooperKey.$error.maxlength" style="color:red" translate="cooperKey.cooperKey.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.legalPerson.$error.pattern" style="color:red" translate="common.illegalChar">
+	                                                         <div ng-show="addEditForm.cooperKey.$error.pattern" style="color:red" translate="common.illegalChar">
 									                         </div>
 													</div>
 												</div>
@@ -284,16 +265,16 @@
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.bankName"></label>
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.ips"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="bankName" id="bankName" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" ng-maxlength="64" autocomplete="off" ng-model="ctrl.bean.bankName" 
-															placeholder="{{'cpInfo.bankName'   | translate }}" required>
-																<div ng-show="addEditForm.bankName.$error.required" style="color:red" translate="cpInfo.bankName.required">
+													  <input type="text" class="form-control" name="ips" id="ips" autocomplete="off" ng-maxlength="100" ng-model="ctrl.bean.ips" 
+															placeholder="{{'cooperKey.ips'   | translate }}" required>
+																 <div ng-show="addEditForm.ips.$error.required" style="color:red" translate="cooperKey.ips.required">
 	                                                         </div> 
-	                                                          <div ng-show=" addEditForm.bankName.$error.maxlength" style="color:red" translate="cpInfo.bankName.length">
+	                                                          <div ng-show="addEditForm.ips.$error.maxlength" style="color:red" translate="cooperKey.ips.length">
 	                                                         </div>
-	                                                         <div ng-show="addEditForm.bankName.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
+	                                                         <!-- <div ng-show="addEditForm.ips.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div> -->
 													</div>
 												</div>
 											</div>
@@ -302,366 +283,15 @@
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.webAddr"></label>
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.notifyUrl"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="webAddr" id="webAddr"  ng-maxlength="32" autocomplete="off" ng-model="ctrl.bean.webAddr" 
-															placeholder="{{'cpInfo.webAddr'   | translate }}" required>
-																<div ng-show="addEditForm.webAddr.$error.required" style="color:red" translate="cpInfo.webAddr.required">
+													  <input type="text" class="form-control" name="notifyUrl" id="notifyUrl" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="100" ng-model="ctrl.bean.notifyUrl" 
+															placeholder="{{'cooperKey.notifyUrl'   | translate }}" required>
+																<div ng-show="addEditForm.notifyUrl.$error.required" style="color:red" translate="cooperKey.notifyUrl.required">
 	                                                         </div> 
-	                                                           <div ng-show=" addEditForm.bankName.$error.maxlength" style="color:red" translate="cpInfo.webAddr.length">
+	                                                         <div ng-show=" addEditForm.notifyUrl.$error.maxlength" style="color:red" translate="cooperKey.notifyUrl.length">
 	                                                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.bankAccount"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="bankAccount" autocomplete="off" id="bankAccount" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32"ng-model="ctrl.bean.bankAccount" 
-															placeholder="{{'cpInfo.bankAccount'   | translate }}" required>
-																<div ng-show="addEditForm.bankAccount.$error.required" style="color:red" translate="cpInfo.bankAccount.required">
-	                                                         </div> 
-	                                                           <div ng-show=" addEditForm.bankAccount.$error.maxlength" style="color:red" translate="cpInfo.bankAccount.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.bankAccount.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.faxNo"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="faxNo" id="faxNo" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.faxNo" 
-															placeholder="{{'cpInfo.faxNo'   | translate }}">
-																<!-- <div ng-show="addEditForm.faxNo.$error.required" style="color:red" translate="cpInfo.faxNo.required">
-	                                                         </div>  -->
-	                                                        <div ng-show=" addEditForm.faxNo.$error.maxlength" style="color:red" translate="cpInfo.faxNo.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.faxNo.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>  
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.businessPerson"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="businessPerson" autocomplete="off" id="businessPerson" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="64" ng-model="ctrl.bean.businessPerson" 
-															placeholder="{{'cpInfo.businessPerson'   | translate }}" required>
-																<div ng-show="addEditForm.businessPerson.$error.required" style="color:red" translate="cpInfo.businessPerson.required">
-	                                                         </div> 
-	                                                         <div ng-show=" addEditForm.businessPerson.$error.maxlength" style="color:red" translate="cpInfo.businessPerson.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.businessPerson.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>  
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.businessTel"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="businessTel" autocomplete="off" id="businessTel"  ng-maxlength="32" ng-model="ctrl.bean.businessTel" 
-															placeholder="{{'cpInfo.businessTel'   | translate }}" >
-																<!-- <div ng-show="addEditForm.businessTel.$error.required" style="color:red" translate="cpInfo.businessTel.required">
-	                                                         </div>  -->
-	                                                         <div ng-show=" addEditForm.businessTel.$error.maxlength" style="color:red" translate="cpInfo.businessTel.length">
-	                                                         </div>
-	                                                        <!--  <div ng-show="addEditForm.businessTel.$error.pattern" style="color:red" translate="common.tel.error">
-									                         </div>   -->
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.businessMobile"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="businessMobile" autocomplete="off" id="businessMobile" ng-maxlength="32" ng-model="ctrl.bean.businessMobile" 
-															placeholder="{{'cpInfo.businessMobile'   | translate }}" >
-																<!-- <div ng-show="addEditForm.businessMobile.$error.required" style="color:red" translate="cpInfo.businessMobile.required">
-	                                                         </div>  -->
-	                                                         <div ng-show=" addEditForm.businessMobile.$error.maxlength" style="color:red" translate="cpInfo.businessMobile.length">
-	                                                         </div>
-	                                                         <!-- <div ng-show="addEditForm.businessMobile.$error.pattern" style="color:red" translate="common.phone.error">
-									                         </div>   -->
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.businessEmail"></label>
-													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="businessEmail" autocomplete="off" id="businessEmail" ng-pattern="/^(?!.*[~!$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.businessEmail" 
-															placeholder="{{'cpInfo.businessEmail'   | translate }} ">
-															<!-- <div ng-show="addEditForm.businessEmail.$error.required" style="color:red" translate="cpInfo.businessEmail.required">
-	                                                         </div>  -->
-	                                                       <div ng-show="addEditForm.businessEmail.$error.email" style="color:red" translate="common.email.error">
-	                                                         </div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.customerPerson"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="customerPerson" autocomplete="off" id="customerPerson" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="64" ng-model="ctrl.bean.customerPerson" 
-															placeholder="{{'cpInfo.customerPerson'   | translate }}" required>
-																<div ng-show="addEditForm.customerPerson.$error.required" style="color:red" translate="cpInfo.customerPerson.required">
-	                                                         </div> 
-	                                                          <div ng-show=" addEditForm.customerPerson.$error.maxlength" style="color:red" translate="cpInfo.customerPerson.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.customerPerson.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>  
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.customerTel"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="customerTel" autocomplete="off" id="customerTel"  ng-maxlength="32" ng-model="ctrl.bean.customerTel" 
-															placeholder="{{'cpInfo.customerTel'   | translate }}">
-															<!-- <div ng-show="addEditForm.customerTel.$error.required" style="color:red" translate="cpInfo.customerTel.required">
-	                                                         </div>  -->
-	                                                        <div ng-show=" addEditForm.customerTel.$error.maxlength" style="color:red" translate="cpInfo.customerTel.length">
-	                                                         </div>
-	                                                        <!--  <div ng-show="addEditForm.customerTel.$error.pattern" style="color:red" translate="common.tel.error">
-									                         </div>  --> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.customerMobile"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="customerMobile" autocomplete="off" id="customerMobile"  ng-maxlength="32" ng-model="ctrl.bean.customerMobile" 
-															placeholder="{{'cpInfo.customerMobile'   | translate }}">
-																<!-- <div ng-show="addEditForm.customerMobile.$error.required" style="color:red" translate="cpInfo.customerMobile.required">
-	                                                         </div>  -->
-	                                                         <div ng-show=" addEditForm.customerMobile.$error.maxlength" style="color:red" translate="cpInfo.customerMobile.length">
-	                                                         </div>
-	                                                        <!--  <div ng-show="addEditForm.customerMobile.$error.pattern" style="color:red" translate="common.phone.error">
-									                         </div>   -->
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.customerEmail"></label>
-													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="customerEmail" autocomplete="off" id="customerEmail"  ng-maxlength="32" ng-model="ctrl.bean.customerEmail" 
-															placeholder="{{'cpInfo.customerEmail'   | translate }} ">
-																<!-- <div ng-show="addEditForm.customerEmail.$error.required" style="color:red" translate="cpInfo.customerEmail.required">
-	                                                         </div>  -->
-	                                                       <div ng-show="addEditForm.customerEmail.$error.email" style="color:red" translate="common.email.error">
-	                                                         </div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="user.status"></label>
-													<div class="col-sm-7">
-													<select class="form-control" id="status" name="status" placeholder="{{'user.status' | translate }}" 
-													ng-model="ctrl.bean.status" required>
-													    <option value="" translate="common.choose"></option>
-		                                                <option value="0" translate="common.apply"></option>
-													    <option value="1" translate="common.ordinary"></option>
-													    <option value="2" translate="common.pause"></option>
-													    <option value="3" translate="cpInfo.logout"></option>
-													    <option value="4" translate="cpInfo.applyReject"></option>
-													</select>
-													<div ng-show="addEditForm.status.$error.required" style="color:red" translate="app.status.required">
-	                                                         </div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.isEnable"></label>
-													<div class="col-sm-7">
-													<select class="form-control" id="isEnable" name="isEnable" placeholder="{{'cpInfo.isEnable' | translate }}" 
-													ng-model="ctrl.bean.isEnable" required>
-													    <option value="" translate="common.choose"></option>
-		                                                <option value="1" translate="common.activate"></option>
-													    <option value="2" translate="common.inactivate"></option>
-													</select>
-													<div ng-show="addEditForm.isEnable.$error.required" style="color:red" translate="cpInfo.isEnable.required">
-	                                         	</div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.registerEmail"></label>
-													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="registerEmail" autocomplete="off" id="registerEmail"  ng-maxlength="32" ng-model="ctrl.bean.registerEmail" 
-															placeholder="{{'cpInfo.registerEmail'   | translate }} " required>
-																<div ng-show="addEditForm.registerEmail.$error.required" style="color:red" translate="cpInfo.registerEmail.required">
-	                                                         </div> 
-	                                                       <div ng-show="addEditForm.registerEmail.$error.email" style="color:red" translate="common.email.error">
-	                                                         </div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpCode"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="cpCode" id="cpCode" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.cpCode" 
-															placeholder="{{'cpInfo.cpCode'   | translate }}" required> 
-																<div ng-show="addEditForm.cpCode.$error.required" style="color:red" translate="cpInfo.cpCode.required">
-	                                                         </div> 
-	                                                        <div ng-show=" addEditForm.cpCode.$error.maxlength" style="color:red" translate="cpInfo.cpCode.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.cpCode.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>     
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.rejectReason"></label>
-													<div class="col-sm-7">
-														<textarea type="text" class="form-control" id="rejectReason" name="rejectReason"
-															placeholder="{{'cpInfo.rejectReason' |translate }}" ng-model="ctrl.bean.rejectReason"  ng-maxlength="1000"></textarea>
-	                                                         <div ng-show=" addEditForm.rejectReason.$error.maxlength" style="color:red" translate="cpInfo.rejectReason.length">
-	                                                          </div>
-	                                                         <div ng-show="addEditForm.rejectReason.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.tecPerson"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="tecPerson" id="tecPerson" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="64" ng-model="ctrl.bean.tecPerson" 
-															placeholder="{{'cpInfo.tecPerson'   | translate }}" required>
-																<div ng-show="addEditForm.tecPerson.$error.required" style="color:red" translate="cpInfo.tecPerson.required">
-	                                                         </div> 
-	                                                        <div ng-show=" addEditForm.tecPerson.$error.maxlength" style="color:red" translate="cpInfo.tecPerson.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.tecPerson.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>   
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.tecTel"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="tecTel" id="tecTel" autocomplete="off"   ng-maxlength="32" ng-model="ctrl.bean.tecTel" 
-															placeholder="{{'cpInfo.tecTel'   | translate }}">
-																<!-- <div ng-show="addEditForm.tecTel.$error.required" style="color:red" translate="cpInfo.tecTel.required">
-	                                                         </div> -->
-	                                                         <div ng-show=" addEditForm.tecTel.$error.maxlength" style="color:red" translate="cpInfo.tecTel.length">
-	                                                         </div>
-	                                                        <!--  <div ng-show="addEditForm.tecTel.$error.pattern" style="color:red" translate="common.tel.error">
-									                         </div>    -->
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.tecMobile"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="tecMobile" autocomplete="off" id="tecMobile"  ng-maxlength="32" ng-model="ctrl.bean.tecMobile" 
-															placeholder="{{'cpInfo.tecMobile'   | translate }}">
-																<!-- <div ng-show="addEditForm.tecMobile.$error.required" style="color:red" translate="cpInfo.businessTel.required">
-	                                                         </div>  -->
-	                                                         <div ng-show=" addEditForm.tecMobile.$error.maxlength" style="color:red" translate="cpInfo.tecMobile.length">
-	                                                         </div>
-	                                                         <!-- <div ng-show="addEditForm.tecMobile.$error.pattern" style="color:red" translate="common.phone.error">
-									                         </div>   -->
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.tecEmail"></label>
-													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="tecEmail" autocomplete="off" id="tecEmail"  ng-maxlength="32" ng-model="ctrl.bean.tecEmail" 
-															placeholder="{{'cpInfo.tecEmail'   | translate }} ">
-																<!-- <div ng-show="addEditForm.tecEmail.$error.required" style="color:red" translate="cpInfo.registerEmail.required">
-	                                                         </div>  -->
-	                                                       <div ng-show="addEditForm.tecEmail.$error.email" style="color:red" translate="common.email.error">
-	                                                         </div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.financePerson"></label>
-													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="financePerson" id="financePerson" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="64" ng-model="ctrl.bean.financePerson" 
-															placeholder="{{'cpInfo.financePerson'   | translate }}" required>
-																<div ng-show="addEditForm.financePerson.$error.required" style="color:red" translate="cpInfo.financePerson.required">
-	                                                         </div> 
-	                                                         <div ng-show=" addEditForm.financePerson.$error.maxlength" style="color:red" translate="cpInfo.financePerson.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.financePerson.$error.pattern" style="color:red" translate="common.illegalChar">
+	                                                         <div ng-show="addEditForm.notifyUrl.$error.pattern" style="color:red" translate="common.illegalChar">
 									                         </div>   
 													</div>
 												</div>
@@ -672,16 +302,14 @@
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.financeTel"></label>
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.serviceTel"></label>
 													<div class="col-sm-7">
-														<input type="text" class="form-control" id="financeTel"name="financeTel" 
-															placeholder="{{'cpInfo.financeTel' |translate }}" ng-model="ctrl.bean.financeTel" autocomplete="off"  ng-maxlength="32">
-																<!-- <div ng-show="addEditForm.financeTel.$error.required" style="color:red" translate="cpInfo.financeTel.required">
-	                                                         </div>  -->
-	                                                         <div ng-show=" addEditForm.financeTel.$error.maxlength" style="color:red" translate="cpInfo.financeTel.length">
+														<input type="text" class="form-control" id="serviceTel"name="serviceTel" 
+															placeholder="{{'cooperKey.serviceTel' |translate }}" ng-model="ctrl.bean.serviceTel" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{0,20}$/" autocomplete="off"  ng-maxlength="20">
+	                                                         <div ng-show=" addEditForm.serviceTel.$error.maxlength" style="color:red" translate="cooperKey.serviceTel.length">
 	                                                         </div>
-	                                                        <!--  <div ng-show="addEditForm.financeTel.$error.pattern" style="color:red" translate="common.tel.error">
-									                         </div>  -->
+	                                                          <div ng-show="addEditForm.serviceTel.$error.pattern" style="color:red" translate="common.tel.error">
+									                         </div>  
 													</div>
 												</div>
 											</div>
@@ -690,193 +318,33 @@
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.financeMobile"></label>
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.appName"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="financeMobile" autocomplete="off" id="financeMobile"  ng-maxlength="32" ng-model="ctrl.bean.financeMobile" 
-															placeholder="{{'cpInfo.financeMobile'   | translate }}">
-																<!-- <div ng-show="addEditForm.financeMobile.$error.required" style="color:red" translate="cpInfo.businessTel.required">
+														<input type="text" class="form-control" id="appName" name="appName" ng-maxlength="100"
+															placeholder="{{'cooperKey.appName' |translate }}" ng-model="ctrl.bean.appName" autocomplete="off">
+																<!-- <div ng-show="addEditForm.appName.$error.required" style="color:red" translate="cpInfo.cpAccessUrl.required">
 	                                                         </div>  -->
-	                                                         <div ng-show=" addEditForm.financeMobile.$error.maxlength" style="color:red" translate="cpInfo.financeMobile.length">
-	                                                         </div>
-	                                                        <!--  <div ng-show="addEditForm.financeMobile.$error.pattern" style="color:red" translate="common.phone.error">
-									                         </div>   -->
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.financeEmail"></label>
-													<div class="col-sm-7">
-													  <input type="email" class="form-control" name="financeEmail" autocomplete="off" id="financeEmail" ng-maxlength="32" ng-model="ctrl.bean.financeEmail" 
-															placeholder="{{'cpInfo.financeEmail'   | translate }} ">
-																<!-- <div ng-show="addEditForm.financeEmail.$error.required" style="color:red" translate="cpInfo.registerEmail.required">
-	                                                         </div>  -->
-	                                                       <div ng-show="addEditForm.financeEmail.$error.email" style="color:red" translate="common.email.error">
-	                                                         </div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userStartTime"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.auditTime"></label>
-													<div class="col-sm-7">
-														<input type="text" class="form-control" id="auditTime" autocomplete="off" name="auditTime"
-															placeholder="{{'cpInfo.auditTime'   | translate }}" ng-model="ctrl.bean.auditTime" date-format>
-															<!-- <div ng-show="addEditForm.auditTime.$error.required" style="color:red" translate="cpInfo.auditTime.notEmpty">
-	                                                         </div> -->
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpLogo"></label>
-													<div class="col-sm-7">
-														<input type="text" class="form-control" id="cpLogo" name="cpLogo" 
-															placeholder="{{'cpInfo.cpLogo' |translate }}" ng-model="ctrl.bean.cpLogo" autocomplete="off" ng-maxlength="256">
-																<!-- <div ng-show="addEditForm.cpLogo.$error.required" style="color:red" translate="cpInfo.cpLogo.required">
-	                                                         </div> -->
-	                                                          <div ng-show=" addEditForm.cpLogo.$error.maxlength" style="color:red" translate="cpInfo.cpLogo.length">
-	                                                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpRemark"></label>
-													<div class="col-sm-7">
-														<textarea type="text" class="form-control" id="cpRemark" name="cpRemark" 
-															placeholder="{{'cpInfo.cpRemark' |translate }}" ng-model="ctrl.bean.cpRemark"  ng-maxlength="256"></textarea>
-	                                                         <div ng-show=" addEditForm.cpRemark.$error.maxlength" style="color:red" translate="cpInfo.cpRemark.length">
-	                                                          </div>
-	                                                         <div ng-show="addEditForm.cpRemark.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpType"></label>
-													<div class="col-sm-7">
-													<select class="form-control" id="cpType" name="cpType" placeholder="{{'cpInfo.cpType' | translate }}" 
-													ng-model="ctrl.bean.cpType" required>
-													    <option value="" translate="common.choose"></option>
-		                                                <option value="1" translate="cpInfo.selfOperatedCP"></option>
-													    <option value="2" translate="cpInfo.cooperationCP"></option>
-													</select>
-													<div ng-show="addEditForm.cpType.$error.required" style="color:red" translate="cpInfo.cpType.required">
-	                                         	</div> 
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.proportion"></label>
-													<div class="col-sm-7">
-														<input type="text" class="form-control" id="proportion" name="proportion" 
-															placeholder="{{'cpInfo.proportion' |translate }}" ng-model="ctrl.bean.proportion" ng-pattern="/^\d+(\.\d+)?$/" autocomplete="off" required>
-																<div ng-show="addEditForm.proportion.$error.required" style="color:red" translate="cpInfo.proportion.required">
-	                                                         </div> 
-	                                                         <div ng-show="addEditForm.proportion.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.aear"></label>
-													<div class="col-sm-7">
-														<input type="text" class="form-control" id="aear" name="aear" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32"
-															placeholder="{{'cpInfo.aear' |translate }}" ng-model="ctrl.bean.aear" autocomplete="off">
-																<!-- <div ng-show="addEditForm.aear.$error.required" style="color:red" translate="cpInfo.aear.required">
-	                                                         </div>  -->
-	                                                         <div ng-show=" addEditForm.aear.$error.maxlength" style="color:red" translate="cpInfo.aear.length">
-	                                                          </div>
-	                                                         <div ng-show="addEditForm.aear.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpAccessId"></label>
-													<div class="col-sm-7">
-														<input type="text" class="form-control" id="cpAccessId" name="cpAccessId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32"
-															placeholder="{{'cpInfo.cpAccessId' |translate }}" ng-model="ctrl.bean.cpAccessId" autocomplete="off" required>
-																<div ng-show="addEditForm.cpAccessId.$error.required" style="color:red" translate="cpInfo.cpAccessId.required">
-	                                                         </div> 
-	                                                         <div ng-show=" addEditForm.cpAccessId.$error.maxlength" style="color:red" translate="cpInfo.cpAccessId.length">
-	                                                          </div>
-	                                                         <div ng-show="addEditForm.cpAccessId.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpAccessIdExtend"></label>
-													<div class="col-sm-7">
-														<input type="text" class="form-control" id="cpAccessIdExtend" name="cpAccessIdExtend" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32"
-															placeholder="{{'cpInfo.cpAccessIdExtend' |translate }}" ng-model="ctrl.bean.cpAccessIdExtend" autocomplete="off" required>
-																<div ng-show="addEditForm.cpAccessIdExtend.$error.required" style="color:red" translate="cpInfo.cpAccessIdExtend.required">
-	                                                         </div>
-	                                                         <div ng-show=" addEditForm.cpAccessIdExtend.$error.maxlength" style="color:red" translate="cpInfo.cpAccessIdExtend.length">
-	                                                          </div>
-	                                                         <div ng-show="addEditForm.cpAccessIdExtend.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="form-group col-sm-12">
-													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="cpInfo.cpAccessUrl"></label>
-													<div class="col-sm-7">
-														<input type="text" class="form-control" id="cpAccessUrl" name="cpAccessUrl" ng-maxlength="512"
-															placeholder="{{'cpInfo.cpAccessUrl' |translate }}" ng-model="ctrl.bean.cpAccessUrl" autocomplete="off" required>
-																<div ng-show="addEditForm.cpAccessUrl.$error.required" style="color:red" translate="cpInfo.cpAccessUrl.required">
-	                                                         </div> 
-	                                                         <div ng-show=" addEditForm.cpAccessIdExtend.$error.maxlength" style="color:red" translate="cpInfo.cpAccessUrl.length">
+	                                                         <div ng-show=" addEditForm.appName.$error.maxlength" style="color:red" translate="cooperKey.appName.length">
 	                                                          </div>
 	                                                         
 													</div>
 												</div>
 											</div>
 										</div>
-										
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="cooperKey.remark"></label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control" id="remark"name="remark" 
+															placeholder="{{'cooperKey.remark' |translate }}" ng-model="ctrl.bean.remark" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" autocomplete="off"  ng-maxlength="50">
+	                                                         <div ng-show=" addEditForm.remark.$error.maxlength" style="color:red" translate="cooperKey.remark.length">
+	                                                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
 							</section>
 								</div>
 							</div>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     
-    <contextName>e-payment</contextName>
-   <property name="LOG_PATH" value="C:\\Wangchenyang\\log\\" />
+    <contextName>mmsmp</contextName>
+    <property name="LOG_PATH" value="C:\\Wangchenyang\\log\\mmsmp" />
     <!--设置系统日志目录-->
-    <property name="APPDIR" value="e-payment" />
+    <property name="APPDIR" value="mmsmp" />
      <!--设置CDR目录-->
-     <property name="CDR_PATH" value="C:\\Wangchenyang\\log\\cdr" />
+     <property name="CDR_PATH" value="C:\\Wangchenyang\\log\\mmsmp\\cdr" />
 
     <!-- 日志记录器，滚动记录 -->
     <appender name="FILEERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">

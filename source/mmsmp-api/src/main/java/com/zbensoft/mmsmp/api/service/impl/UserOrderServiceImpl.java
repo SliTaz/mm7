@@ -13,8 +13,8 @@ public class UserOrderServiceImpl implements UserOrderService {
 	@Autowired
 	UserOrderMapper  userOrderMapper;
 	@Override
-	public int deleteByPrimaryKey(String phoneNumber) {
-		return userOrderMapper.deleteByPrimaryKey(phoneNumber);
+	public int deleteByPrimaryKey(String userOrderId) {
+		return userOrderMapper.deleteByPrimaryKey(userOrderId);
 	}
 
 	@Override
@@ -28,8 +28,8 @@ public class UserOrderServiceImpl implements UserOrderService {
 	}
 
 	@Override
-	public UserOrder selectByPrimaryKey(String phoneNumber) {
-		return userOrderMapper.selectByPrimaryKey(phoneNumber);
+	public UserOrder selectByPrimaryKey(String userOrderId) {
+		return userOrderMapper.selectByPrimaryKey(userOrderId);
 	}
 
 	@Override
@@ -50,6 +50,38 @@ public class UserOrderServiceImpl implements UserOrderService {
 	@Override
 	public int count(UserOrder record) {
 		return userOrderMapper.count(record);
+	}
+
+	@Override
+	public void delUserOrder(UserOrder userOrder) {
+		userOrderMapper.delUserOrder(userOrder);
+	}
+
+
+	@Override
+	public int selectOrderRelationBySpProductId(UserOrder userOrder) {
+		return userOrderMapper.selectOrderRelationBySpProductId(userOrder);
+	}
+
+	@Override
+	public UserOrder selectByPhoneNumber(String phoneNumber) {
+		return userOrderMapper.selectByPhoneNumber(phoneNumber);
+	}
+
+	@Override
+	public UserOrder selectOrderRelation(UserOrder userOrder) {
+		return userOrderMapper.selectOrderRelation(userOrder);
+	}
+
+	@Override
+	public void deleteByPhoneNumber(String phoneNumber) {
+		userOrderMapper.deleteByPhoneNumber(phoneNumber);
+	}
+
+	@Override
+	public List<UserOrder> getSpProductIds(String phoneNumber) {
+		
+		return userOrderMapper.getSpProductIds(phoneNumber);
 	}
 
 }

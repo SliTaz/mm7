@@ -6,7 +6,8 @@ import javax.xml.rpc.ServiceException;
 import junit.framework.AssertionFailedError;
 
 public class Test {
-	static String url = "http://220.194.63.139:8080/axis/services/SyncNotifySP_bjlt";
+//	static String url = "http://220.194.63.139:8080/axis/services/SyncNotifySP_bjlt";
+	static String url = "http://192.168.1.116/mmsmpspsimulator/services/SyncNotifySP";
 
 	public static void main(String[] args) throws Exception {
 		SyncNotifySPSoapBindingStub binding;

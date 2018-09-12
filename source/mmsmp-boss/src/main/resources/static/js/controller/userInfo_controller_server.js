@@ -36,8 +36,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		DTColumnBuilder.newColumn('phoneNumber').withTitle($translate('userInfo.phoneNumber')).notSortable(),
 		DTColumnBuilder.newColumn('chargePhoneNumber').withTitle($translate('userInfo.chargePhoneNumber')).notSortable(),
 		DTColumnBuilder.newColumn('terminalType').withTitle($translate('userInfo.terminalType')).notSortable().renderWith(terminalType),
-		DTColumnBuilder.newColumn('province').withTitle($translate('userInfo.province')).notSortable().notVisible(),
-		DTColumnBuilder.newColumn('city').withTitle($translate('userInfo.city')).notSortable().notVisible(),
+		DTColumnBuilder.newColumn('parentProvinceCityName').withTitle($translate('userInfo.province')).notSortable().notVisible(),
+		DTColumnBuilder.newColumn('provinceCityName').withTitle($translate('userInfo.city')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('createTime').withTitle($translate('user.createTime')).renderWith(timeRender).notSortable(),
 		DTColumnBuilder.newColumn('status').withTitle($translate('user.status')).renderWith(statusType).notSortable().notVisible(),
 		//DTColumnBuilder.newColumn('userPassword').withTitle($translate('userInfo.userPassword')).notSortable().notVisible(),
@@ -75,7 +75,17 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	//表头end
 	initltCommon(vm,localStorageService,topleftService);
 	$("#loadDiv").hide();
-	
+	vm.selData = selData;
+	selData();
+	vm.provinceData=[];
+	vm.provincesData=[];
+	function selData() {
+		UserInfoService.fetchProvince().then(function(d) {
+			vm.provinceData = d.body;
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
+	}
 	function actionsHtml(data, type, full, meta) {
 		vm.beans[data.phoneNumber] = data;
 		var actionsHtml_html='<button class="btn btn-warning" data-toggle="modal" data-target="#myModal" title="'+$translate.instant('common.edit')+'" ng-click="ctrl.edit(ctrl.beans[\''
@@ -101,7 +111,16 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		changeDataForHTML();//通过调用该函数。让拼装的html代码生效
 		return actionsHtml_html;
 	} 
-	
+	function selectDevice(){
+		//解决 select2在模态框使用，模糊输入框无效
+		$("#province").select2();
+		$("#city").select2();
+		$("#myModal").attr("tabindex","");
+		//解决selec2在火狐模太框中输入框不能输入start
+		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
+		};
+		//解决selec2在火狐模太框中输入框不能输入end
+	}
 	function changeDataForHTML(){
 		//alert("changeDataForHTML");
 		$scope.$applyAsync();//当在angular的上下文之外修改了界面绑定的数据时，需要调用该函数，让页面的值进行改变。
@@ -236,7 +255,23 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		}
 	}
 	
+	
+ $("#province").change(function(){
+	  var province=$("#province").val();
+		if(province!=""){
+			$("#city").attr("disabled", false);
+		UserInfoService.fetchProvinces(province).then(function(d) {
+			vm.provincesData = d.body;
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});	
+		}
+	 });
 	function addInit() {
+		selectDevice();
+		$("#city").attr("disabled", true);
+		$("#province").val("").select2();
+		$("#city").val("").select2();
 		vm.modelTitle = $translate.instant('userInfo.add');
 		vm.readonlyID = false;
 		vm.disabled = true;
@@ -286,7 +321,16 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		$("#pwd_div").show();
 	}
 	function edit(bean) {
+		selectDevice();
 		reloadData();
+		$("#city").attr("disabled", false);
+		$("#province").val(bean.province).select2();
+		UserInfoService.fetchProvinces(bean.province).then(function(d) {
+			vm.provincesData = d.body;
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
+		$("#city").val(bean.city).select2();
 		vm.modelTitle = $translate.instant('userInfo.edit');
 		vm.readonlyID = true;
 		vm.disabled = false;

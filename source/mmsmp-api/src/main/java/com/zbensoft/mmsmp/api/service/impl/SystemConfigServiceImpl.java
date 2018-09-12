@@ -66,4 +66,10 @@ public class SystemConfigServiceImpl implements SystemConfigService {
 		return selectByApplicationServerCode(systemConfig.getApplicationServerCode()) !=null;
 	}
 
+	@Override
+	public SystemConfig selectBycode(String code) {
+		// TODO Auto-generated method stub
+		return systemConfigMapper.selectBycode(code);
+	}
+
 }

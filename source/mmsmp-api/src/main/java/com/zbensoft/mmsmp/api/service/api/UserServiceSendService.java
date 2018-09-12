@@ -56,4 +56,7 @@ public interface UserServiceSendService {
     List<UserServiceSend> selectPage(UserServiceSend record);
     
     int count(UserServiceSend record);
+    UserServiceSend selectByMessageId(String messageId);
+
+	UserServiceSend selectByRequestId(String requestId);
 }

@@ -142,15 +142,16 @@
 									</div>
 	
 									<div class="row">
-									<div class="form-group col-sm-6">
-										<label for="productInfoId"
-											class="col-sm-4 control-label control-label-zb" translate="userInfo.productInfoId"></label>
-										<div class="col-sm-7">
-											<input type="text" class="form-control" ng-model="ctrl.beanSer.productInfoId"
-												placeholder="{{'userInfo.productInfoId'   | translate }}">
-										</div>
+										<div class="form-group col-sm-6">
+									<label for="spInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.productName"></label>
+									<div class="col-sm-7">
+		                                <select class="form-control" id="productInfoId" ng-model="ctrl.beanSer.productInfoId" style="width:100%">
+											<option value="" translate="common.choose"></option>
+											<option ng-repeat="x in ctrl.productInfoData" value="{{x.productInfoId}}" ng-bind="x.productName"></option>
+										</select>
 									</div>
-									
+								</div>
 									<div class="form-group col-sm-6">
 										<label for="status"
 											class="col-sm-4 control-label control-label-zb" translate="app.status"></label>
@@ -222,10 +223,28 @@
 										<div class="row">
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
+													<label for="userOrderId"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.userOrderId"></label>
+								                 	     <div class="col-sm-7">
+														<input type="text" class="form-control" id="userOrderId" name="userOrderId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/" required ng-readonly="ctrl.readonlyID" ng-disabled="ctrl.disabledID"
+															placeholder="{{'userInfo.userOrderId'   | translate }}" ng-model="ctrl.bean.userOrderId" ng-maxlength="32" >
+														 <div ng-show="addEditForm.userOrderId.$error.maxlength" style="color:red" translate="userInfo.userOrderId.length">
+                                                         </div>
+                                                         <div ng-show="addEditForm.userOrderId.$error.required" style="color:red" translate="userInfo.userOrderId.required">
+									                     </div>
+                                                         <div ng-show="addEditForm.userOrderId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
 													<label for="phoneNumber"
 														class="col-sm-4 control-label control-label-zb" translate="userInfo.phoneNumber"></label>
 													<div class="col-sm-7">
-								                 	      <select class="form-control" id="phoneNumber"  name="phoneNumber" style="width:100%;" ng-model="ctrl.bean.phoneNumber" ng-readonly="ctrl.readonlyID" ng-disabled="ctrl.disabledID" required>
+								                 	      <select class="form-control" id="phoneNumber"  name="phoneNumber" style="width:100%;" ng-model="ctrl.bean.phoneNumber"  required>
 					                                       <option value="" translate="common.choose"></option>
 					                                        <option ng-repeat="x in ctrl.phoneNumberData" value="{{x.phoneNumber}}" ng-bind="x.phoneNumber"></option>
 		                                                </select> 
@@ -267,18 +286,18 @@
 												</div>
 											</div>
 										</div> -->
-									<div class="row">
+								<div class="row">
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
-													<label for="productInfoId"
-														class="col-sm-4 control-label control-label-zb" translate="userInfo.productInfoId"></label>
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userOrderHis.productName"></label>
 													<div class="col-sm-7">
-														<input type="text" class="form-control" id="productInfoId" name="productInfoId" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
-															placeholder="{{'userInfo.productInfoId'   | translate }}" ng-model="ctrl.bean.productInfoId" required>
-														  <div ng-show="addEditForm.productInfoId.$error.required" style="color:red" translate="spInfo.productInfoId.required">
-                                                         </div>
-                                                         <div ng-show="addEditForm.productInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
-									                     </div>
+														 <select class="form-control" id="productInfoId2" name="productInfoId2" ng-model="ctrl.bean.productInfoId" style="width:100%" required>
+															<option value="" translate="common.choose"></option>
+															<option ng-repeat="x in ctrl.productInfoData" value="{{x.productInfoId}}" ng-bind="x.productName"></option>
+														</select>
+													<div ng-show="addEditForm.productInfoId2.$error.required" style="color:red" translate="userServiceSend.productInfoId.required">
+	                                              </div> 
 													</div>
 												</div>
 											</div>
@@ -443,17 +462,33 @@
 												</div>
 											</div>
 										</div>
-									<div class="row">
+									<div class="row area">
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="area"
 														class="col-sm-4 control-label control-label-zb" translate="userInfo.area"></label>
 													<div class="col-sm-7">
-														<input type="text" class="form-control" id="area" name="area" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
-															placeholder="{{'userInfo.area'   | translate }}" ng-model="ctrl.bean.area" ng-maxlength="64" >
-														 <div ng-show="addEditForm.area.$error.maxlength" style="color:red" translate="userInfo.area.length">
-                                                         </div>
-                                                         <div ng-show="addEditForm.area.$error.pattern" style="color:red" translate="common.illegalChar">
+														 <select class="form-control" id="area"  name="area" style="width:100%;" ng-model="ctrl.bean.parentProvinceCityId" required>
+					                                       <option value="" translate="common.choose"></option>
+					                                        <option ng-repeat="x in ctrl.provinceData" value="{{x.provinceCityId}}" ng-bind="x.provinceCityName"></option>
+		                                                </select>
+		                                                <div ng-show="addEditForm.area.$error.required" style="color:red" translate="userInfo.area.required">
+									                     </div> 
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="row areas" hidden="hidden">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="area"
+														class="col-sm-4 control-label control-label-zb" translate="common.ProvinceCity"></label>
+													<div class="col-sm-7">
+														 <select class="form-control" id="areas"  name="areas" style="width:100%;" ng-model="ctrl.bean.area" required>
+					                                       <option value="" translate="common.choose"></option>
+					                                        <option ng-repeat="x in ctrl.areaData" value="{{x.provinceCityId}}" ng-bind="x.provinceCityName"></option>
+		                                                </select> 
+		                                                <div ng-show="addEditForm.areas.$error.required" style="color:red" translate="mmsmp.provinceCity.name.notEmpty">
 									                     </div>
 													</div>
 												</div>
@@ -499,6 +534,20 @@
 													<div class="col-sm-7">
 														<select class="form-control" id="isPackage" name="isPackage" placeholder="{{'userInfo。isPackage' | translate }}" ng-model="ctrl.bean.isPackage"
 														 ng-options="obj.value as obj.text for obj in ctrl.isPackageData">
+													    <option value="" translate="common.choose"></option>
+													    </select>
+													</div>
+												</div>
+											</div>
+										</div>
+											<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="notifySpFlag"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.notifySpFlag"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="notifySpFlag" name="notifySpFlag" placeholder="{{'userInfo。notifySpFlag' | translate }}" ng-model="ctrl.bean.notifySpFlag"
+														 ng-options="obj.value as obj.text for obj in ctrl.notifySpFlagData">
 													    <option value="" translate="common.choose"></option>
 													    </select>
 													</div>

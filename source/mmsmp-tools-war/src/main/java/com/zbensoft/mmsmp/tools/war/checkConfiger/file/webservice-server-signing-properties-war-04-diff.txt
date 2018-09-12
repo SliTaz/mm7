@@ -1,2 +1,0 @@
-org.apache.ws.security.crypto.merlin.keystore.password=webservice911epay <--> org.apache.ws.security.crypto.merlin.keystore.password=webservice1116Zben
-org.apache.ws.security.crypto.merlin.truststore.password=webservice911epay <--> org.apache.ws.security.crypto.merlin.truststore.password=webservice1116Zben

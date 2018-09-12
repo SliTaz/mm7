@@ -4,15 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.zbensoft</groupId>
-    <artifactId>e-payment</artifactId>
+    <artifactId>mmsmp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>e-payment-government</artifactId>
-  <name>e-payment-government</name>
+  <artifactId>mmsmp-vac-ra</artifactId>
   <packaging>war</packaging>
+  <name>mmsmp-vac-ra</name>
   <url>http://maven.apache.org</url>
- 
-	<dependencies>
+  <dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -57,7 +56,22 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		
+		 <!-- MINA集成 -->
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+            <version>2.0.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-integration-spring</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+	  <dependency>
+		  <groupId>com.zbensoft</groupId>
+		  <artifactId>mmsmp-common-ra</artifactId>
+		  <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
 	</dependencies>
 	<build>
      <resources>
@@ -66,7 +80,6 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>conf/prod/*</exclude>
-                    <exclude>static/js/zben.js</exclude>
                     <exclude>application.properties</exclude>
                 </excludes>
             </resource>
@@ -77,13 +90,7 @@
                     <include>application.properties</include>
                 </includes>
             </resource>
-            <resource>
-                <directory>src/main/resources/conf/${environment}</directory>
-                <targetPath>static/js</targetPath>
-                <includes>
-                    <include>zben.js</include>
-                </includes>
-            </resource>
+           
         </resources>
 		<plugins>
 			<plugin>
@@ -103,6 +110,12 @@
 	       	<!-- 使用内部tomcat直接运行 打包需要增加 End-->
 				
 				</configuration>
+			</plugin>
+			
+			<plugin> 
+				<groupId>org.apache.felix</groupId> 
+				<artifactId>maven-bundle-plugin</artifactId> 
+				<extensions>true</extensions> 
 			</plugin>
 		</plugins>
 	</build>

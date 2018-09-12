@@ -20,9 +20,13 @@ import com.zbensoft.mmsmp.common.ra.common.db.entity.Vasp;
 import com.zbensoft.mmsmp.common.ra.common.db.entity.VaspReserveInfo;
 import com.zbensoft.mmsmp.common.ra.common.db.entity.Vasservice;
 import com.zbensoft.mmsmp.common.ra.common.db.entity.VasserviceReserveInfo;
+import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
+import com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto;
+import com.zbensoft.mmsmp.corebiz.message.MmsHistoryMessage;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -311,7 +315,7 @@ public class HttpRequestHelper {
 			 for(int i = 0; i < bodyArray.size(); i++){
 				 SysParameters sysParameters = new SysParameters();
 				 JSONObject message = bodyArray.getJSONObject(i);
-				 sysParameters.setName(message.getString("applicationServerCode") + message.getString("code"));
+				 sysParameters.setName(message.getString("code"));
 				 if(message.getString("value") == null || message.getString("value").equals("")){
 					 sysParameters.setValue(message.getString("defaultValue"));
 				 }else{
@@ -409,7 +413,7 @@ public class HttpRequestHelper {
 	     String value = null;
 	     if("OK".equals(statusCode)){
 	    	 JSONObject message = jsonObject.getJSONObject("body");
-	    	 value = message.getString("spOrderNotifyUrl");
+	    	 value = message.getString("reportMessageUrl");
 	     }
 	     return value;
 	}
@@ -487,7 +491,8 @@ public class HttpRequestHelper {
 				userBlackWhite.setOfficeaddress(message.getString("officeAddr"));
 				userBlackWhite.setProvince(message.getString("province"));
 				userBlackWhite.setStatus(message.getInteger("status").toString());
-				userBlackWhite.setUniqueid(Integer.parseInt(message.getString("spInfoId")));
+//				userBlackWhite.setUniqueid(Integer.parseInt(message.getString("spInfoId")));
+				userBlackWhite.setUniqueid((int)(Math.random()*100));
 				userBlackWhite.setUpdatedate(message.getString("updateTime"));
 				userBlackWhite.setVaspdesc(message.getString("remark"));
 				userBlackWhite.setVaspid(message.getString("companyCode"));
@@ -507,7 +512,10 @@ public class HttpRequestHelper {
 				//vaspReserveInfo.setSpid(message.getString("orderKey"));
 				vaspReserveInfo.setSpOrderUrl(spAccess.getString("spOrderNotifyUrl"));
 				//vaspReserveInfo.setSpPsedoFlag(message.getString("orderKey"));
-				vaspReserveInfo.setSynOrderFunc(Integer.parseInt(spAccess.getString("synOrderFunc")));
+				try {
+					vaspReserveInfo.setSynOrderFunc(Integer.parseInt(spAccess.getString("synOrderFunc")));
+				} catch (Exception e) {
+				}
 				
 				userBlackWhite.setVaspReserveInfo(vaspReserveInfo);
 				userList.add(userBlackWhite);
@@ -584,8 +592,10 @@ public class HttpRequestHelper {
 		    	 productService.setVasid(message.getString("cpAccessId"));
 		    	 productService.setVaspid(message.getString("companyCode"));
 		    	 productService.setViewpic(message.getString("webPicUrl"));
-		    	 VasserviceReserveInfo productInfos=new VasserviceReserveInfo();
-		    	 productInfos.setConfirm(messages.getInteger("isConfirm"));
+		    	 VasserviceReserveInfo vasserviceReserveInfo=new VasserviceReserveInfo();
+		    	 vasserviceReserveInfo.setConfirm(messages.getInteger("isConfirm"));
+		    	 vasserviceReserveInfo.setSpProductid(messages.getString("spProductId"));
+		    	 productService.setVasserviceReserveInfo(vasserviceReserveInfo);
 		    	 vasservice.add(productService);
 			}
 		}
@@ -615,10 +625,614 @@ public class HttpRequestHelper {
 	     String vaspid = null;
 	     String statusCode=jsonObject.getString("statusCode");
 	     if("OK".equals(statusCode)){
-	    	 JSONObject message = jsonObject.getJSONObject("body");
+//	    	 JSONObject message = jsonObject.getJSONObject("body");
+	    	 JSONObject message = jsonObject.getJSONArray("body").getJSONObject(0);//body is JSONArray
 	    	 vaspid = message.getString("companyCode");
 	     }
 	     return vaspid;
 	}
+	public static String getConfirmmsgByProductid(String spProductid) {
+		 RequestBody body = new FormBody.Builder().build();
+	     Request request = new Request.Builder()
+	             .url(apiUrl + "/corbiz/getConfirmmsgByProductid?spProductId=" + spProductid)
+	             .get()
+	             .build();
+	     OkHttpClient okHttp = new OkHttpClient();
+	     Call call = okHttp.newCall(request);
+	     Response response = null;
+	     try {
+	         response = call.execute();
+	     } catch (IOException e) {
+	         e.printStackTrace();
+	     }
+	    String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		 JSONObject jsonObject = JSONObject.parseObject(responseData);
+	     String statusCode=jsonObject.getString("statusCode");;
+	     String confirmPrompt = null;
+	     if("OK".equals(statusCode)){
+	    	 JSONObject message = jsonObject.getJSONObject("body");
+	    	 confirmPrompt = message.getString("confirmPrompt");
+	     }
+	     return confirmPrompt;
+	}
 
+	public static List<String> getProductId(String vasId) {
+		RequestBody body = new FormBody.Builder().build();
+		Request request = new Request.Builder()
+				.url(apiUrl + "/corbiz/getSpProductId?cpAccessId="+vasId)
+				.get()
+				.build();
+		OkHttpClient okHttp = new OkHttpClient();
+		Call call = okHttp.newCall(request);
+		Response response = null;
+		try {
+			response = call.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		JSONObject jsonObject = JSONObject.parseObject(responseData);
+		String statusCode=jsonObject.getString("statusCode");;
+		List<String> vasservice = new ArrayList<String>();
+		if("OK".equals(statusCode)){
+			JSONArray bodyArray = jsonObject.getJSONArray("body");
+			for(int i = 0; i < bodyArray.size(); i++){
+				 JSONObject message = bodyArray.getJSONObject(i);
+				 vasservice.add(message.getString("spProductId"));
+			}
+		}
+		return vasservice;
+	}
+
+	public static void delServiceOrderRelation(String sendAddress, String productInfoId) {
+		RequestBody body = new FormBody.Builder().build();
+		Request request = new Request.Builder()
+				.url(apiUrl + "/corbiz/delUserOrder/"+sendAddress+"/"+productInfoId)
+				.delete()
+				.build();
+		OkHttpClient okHttp = new OkHttpClient();
+		Call call = okHttp.newCall(request);
+		Response response = null;
+		try {
+			response = call.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+	}
+
+	public static UserOrder getOrderRelation(String phoneNumber, String spProductId) {
+		RequestBody body = new FormBody.Builder().build();
+		Request request = new Request.Builder()
+				.url(apiUrl + "/corbiz/selectUserOrder/"+phoneNumber+"/"+spProductId)
+				.get()
+				.build();
+		OkHttpClient okHttp = new OkHttpClient();
+		Call call = okHttp.newCall(request);
+		Response response = null;
+		try {
+			response = call.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+		JSONObject jsonObject = JSONObject.parseObject(responseData);
+		String statusCode=jsonObject.getString("statusCode");;
+		UserOrder userOrder = new UserOrder();
+		if("OK".equals(statusCode)){
+			JSONObject bodyArray = jsonObject.getJSONObject("body");
+				 userOrder.setId(bodyArray.getString("phoneNumber"));
+				 userOrder.setStatus(bodyArray.getInteger("status"));
+		}
+		return userOrder;
+	}
+
+	public static void delOrderRelation(String sendAddress, String vasId) {
+		RequestBody body = new FormBody.Builder().build();
+		Request request = new Request.Builder()
+				.url(apiUrl + "/corbiz/delUserOrder/"+sendAddress+"/"+vasId)
+				.delete()
+				.build();
+		OkHttpClient okHttp = new OkHttpClient();
+		Call call = okHttp.newCall(request);
+		Response response = null;
+		try {
+			response = call.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+		
+	}
+	//存储首次MO消息
+	public static void saveMoMsg(String smstext, String phoneNumber,String spNumber) {
+		 RequestBody body = new FormBody.Builder().add("messageContent", smstext).add("phoneNumber", phoneNumber).build();
+	     Request request = new Request.Builder()
+	             .url(apiUrl + "/corbiz/userRecv")
+	             .post(body)
+	             .build();
+	     
+	     OkHttpClient okHttp = new OkHttpClient();
+	     try {
+				Response response = okHttp.newCall(request).execute();
+				if (response.isSuccessful()) {
+					String json = response.body().string();
+					System.out.println(json);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public static String[] getLatestMoOrderMsgText(String phoneNumber,Long s ,String spAccessNumber) {
+		 RequestBody body = new FormBody.Builder().build();
+	     Request request = new Request.Builder()
+	             .url(apiUrl + "/corbiz/getLatestMoOrderMsgText?phoneNumber=" + phoneNumber)
+	             .get()
+	             .build();
+	     OkHttpClient okHttp = new OkHttpClient();
+	     Call call = okHttp.newCall(request);
+	     Response response = null;
+	     try {
+	         response = call.execute();
+	     } catch (IOException e) {
+	         e.printStackTrace();
+	     }
+	    String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		 JSONObject jsonObject = JSONObject.parseObject(responseData);
+	     String statusCode=jsonObject.getString("statusCode");;
+	     String[] smsText = new String[2];
+	     if("OK".equals(statusCode)){
+	    	 JSONObject message = jsonObject.getJSONObject("body");
+	    	 smsText[0] = message.getString("messageContent");
+	    	 smsText[1] = spAccessNumber;//message.getString("spAccessNumber");
+	     }
+	     return smsText;
+	}
+	//通过接入号查询企业信息
+	public static String[] getServiceNameByAcc(String cpAccessId) {
+		 RequestBody body = new FormBody.Builder().build();
+	     Request request = new Request.Builder()
+	             .url(apiUrl + "/corbiz/getServiceNameByAcc?cpAccessId=" + cpAccessId)
+	             .get()
+	             .build();
+	     OkHttpClient okHttp = new OkHttpClient();
+	     Call call = okHttp.newCall(request);
+	     Response response = null;
+	     try {
+	         response = call.execute();
+	     } catch (IOException e) {
+	         e.printStackTrace();
+	     }
+	    String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		 JSONObject jsonObject = JSONObject.parseObject(responseData);
+	     String statusCode=jsonObject.getString("statusCode");;
+	     String[] smsText = new String[2];
+	     if("OK".equals(statusCode)){
+	    	 JSONObject message = jsonObject.getJSONObject("body");
+	    	 smsText[0] = message.getString("companyCode");
+	    	 smsText[1] = message.getString("companyName");
+	     }
+	     return smsText;
+	}
+	//通过接入号查询业务信息
+	public static SmsSenderDto getVasSpCpInfo(String cpAccessId) {
+		 RequestBody body = new FormBody.Builder().build();
+	     Request request = new Request.Builder()
+	             .url(apiUrl + "/corbiz/getVasSpCpInfo?cpAccessId=" + cpAccessId)
+	             .get()
+	             .build();
+	     OkHttpClient okHttp = new OkHttpClient();
+	     Call call = okHttp.newCall(request);
+	     Response response = null;
+	     try {
+	         response = call.execute();
+	     } catch (IOException e) {
+	         e.printStackTrace();
+	     }
+	    String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		 JSONObject jsonObject = JSONObject.parseObject(responseData);
+	     String statusCode=jsonObject.getString("statusCode");;
+	     String[] smsText = new String[2];
+	     SmsSenderDto sms = new SmsSenderDto();
+	     if("OK".equals(statusCode)){
+	    	 JSONObject message = jsonObject.getJSONObject("body");
+	    	 sms.setVasid(message.getString("cpAccessId"));
+	    	 sms.setOrdercode(message.getString("orderCommand"));
+	    	 sms.setOndemandcode(message.getString("onDemandCommand"));
+	    	 sms.setServicename(message.getString("productName"));
+	    	 sms.setVaspid(message.getString("companyCode"));
+	    	 sms.setVaspname(message.getString("companyName"));
+	    	 JSONObject productService = message.getJSONObject("productService");
+	    	 sms.setSp_productid(productService.getString("spProductId"));
+	    	 sms.setServiceId(productService.getString("productInfoId"));
+	     }
+	     return sms;
+	}
+	
+	
+	public static void delAllOrderRelation(String phoneNumber) {
+		RequestBody body = new FormBody.Builder().build();
+		Request request = new Request.Builder()
+				.url(apiUrl + "/corbiz/delAllOrderRelation/"+phoneNumber)
+				.delete()
+				.build();
+		OkHttpClient okHttp = new OkHttpClient();
+		Call call = okHttp.newCall(request);
+		Response response = null;
+		try {
+			response = call.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+	}
+	
+	//通过接入号查询业务信息
+		public static String[] getAreaCodeByUserPhone(String phoneNumber) {
+			 RequestBody body = new FormBody.Builder().build();
+		     Request request = new Request.Builder()
+		             .url(apiUrl + "/corbiz/getAreaCodeByUserPhone?phoneNumber=" + phoneNumber)
+		             .get()
+		             .build();
+		     OkHttpClient okHttp = new OkHttpClient();
+		     Call call = okHttp.newCall(request);
+		     Response response = null;
+		     try {
+		         response = call.execute();
+		     } catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			 JSONObject jsonObject = JSONObject.parseObject(responseData);
+		     String statusCode=jsonObject.getString("statusCode");;
+		     String provinceCode = null;
+		     String cityCode = null;
+		     if("OK".equals(statusCode)){
+		    	 JSONObject message = jsonObject.getJSONObject("body");
+		    	 provinceCode = message.getString("province");
+		    	 cityCode = message.getString("city");
+		     }
+		     return new String[]{provinceCode,cityCode};
+		}
+		public static boolean saveDemandMessage(MO_SMMessage mms) {
+			MediaType mediaType = MediaType.parse("application/json");
+			JSONArray jsonArray = new JSONArray();
+			jsonArray.add(0,mms);
+			RequestBody body = RequestBody.create(mediaType,jsonArray.toString());
+		    Request request = new Request.Builder()
+		            .url(apiUrl + "/corbiz/saveDemandMessage")
+		            .post(body)
+		            .build();
+		    OkHttpClient okHttp = new OkHttpClient();
+		    Call call = okHttp.newCall(request);
+		    Response response = null;
+		    try {
+		        response = call.execute();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		   String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			 JSONObject jsonObject = JSONObject.parseObject(responseData);
+		     String statusCode=jsonObject.getString("statusCode");;
+		     if("CREATED".equals(statusCode)){
+		    	 return true;
+		     }	
+			return false;
+		}
+		
+		public static String getSmsSenderUrl(String spInfoId) {
+			 RequestBody body = new FormBody.Builder().build();
+			 Request request = new Request.Builder()
+			            .url(apiUrl + "/corbiz/getSmsSenderUrl?spInfoId="+spInfoId)
+			            .get()
+			            .build();
+		     OkHttpClient okHttp = new OkHttpClient();
+		     Call call = okHttp.newCall(request);
+		     Response response = null;
+		     try {
+		         response = call.execute();
+		     } catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			 JSONObject jsonObject = JSONObject.parseObject(responseData);
+		     String statusCode=jsonObject.getString("statusCode");;
+		     String[] str = new String[2];
+		     if("OK".equals(statusCode)){
+		    	 JSONObject message = jsonObject.getJSONObject("body");
+		    	 str[0] = message.getString("hostAddr");
+		    	 str[1] = message.getString("hostPort");
+		     }
+		     String url = str[0] + ":" + str[1];
+		     return url;
+		}
+
+		public static void updateMmsGrsCode(String status, String messageId, String string2) {
+			 RequestBody body = new FormBody.Builder().build();
+			 Request request = new Request.Builder()
+			            .url(apiUrl + "/corbiz/updateMmsGrsCode?messageId="+messageId+"&status="+status)
+			            .get()
+			            .build();
+		     OkHttpClient okHttp = new OkHttpClient();
+		     Call call = okHttp.newCall(request);
+		     Response response = null;
+		     try {
+		         response = call.execute();
+		     } catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		public static void saveUserZSMTRecord(String phoneNumber, String chargePhoneNumber, String contentInfoId, String vaspid,
+				String spInfoId, String messageId, String productInfoId) {
+			 RequestBody body = new FormBody.Builder().build();
+			 Request request = new Request.Builder()
+			            .url(apiUrl + "/corbiz/saveUserZSMTRecord?phoneNumber="+phoneNumber+"&chargePhoneNumber="
+			                    +chargePhoneNumber+"&contentInfoId="+contentInfoId+"&spInfoId="+spInfoId+"&productInfoId="+productInfoId+"&messageId="+messageId)
+			            .get()
+			            .build();
+		     OkHttpClient okHttp = new OkHttpClient();
+		     Call call = okHttp.newCall(request);
+		     Response response = null;
+		     try {
+		         response = call.execute();
+		     } catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		public static void updateSpMMSSendRecord(String status, String requestId, String mmscode) {
+			 RequestBody body = new FormBody.Builder().build();
+			 Request request = new Request.Builder()
+			            .url(apiUrl + "/corbiz/updateSpMMSSendRecord?status="+status+"&requestId="+requestId)
+			            .get()
+			            .build();
+		     OkHttpClient okHttp = new OkHttpClient();
+		     Call call = okHttp.newCall(request);
+		     Response response = null;
+		     try {
+		         response = call.execute();
+		     } catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		public static boolean batchInsertMTRecords(ArrayList list) {
+			MediaType mediaType = MediaType.parse("application/json");
+			JSONArray jsonArray = new JSONArray();
+			for(int i = 0; i < list.size();i++){
+				jsonArray.add(i, list.get(i));
+			}
+			RequestBody body = RequestBody.create(mediaType,jsonArray.toString());
+		    Request request = new Request.Builder()
+		            .url(apiUrl + "/corbiz/batchInsertMTRecords")
+		            .post(body)
+		            .build();
+		    OkHttpClient client = new OkHttpClient();
+		    Response response = null;
+		    try {
+		    	response = client.newCall(request).execute();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		    JSONObject jsonObject = JSONObject.parseObject(responseData);
+		     String statusCode=jsonObject.getString("statusCode");;
+		     if("CREATED".equals(statusCode)){
+		    	 return true;
+		     }	
+			return false;
+		}
+		
+		public static boolean updateGatewaySRecord(String status,String messageId,String reqId) {
+			 RequestBody body = new FormBody.Builder().build();
+		     Request request = new Request.Builder()
+		             .url(apiUrl + "/corbiz/updateGatewaySRecord?status=" + status +"&messageId="+messageId+"&reqId="+reqId)
+		             .get()
+		             .build();
+		     OkHttpClient okHttp = new OkHttpClient();
+		     Call call = okHttp.newCall(request);
+		     Response response = null;
+		     try {
+		         response = call.execute();
+		     } catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			JSONObject jsonObject = JSONObject.parseObject(responseData);
+		     String statusCode=jsonObject.getString("statusCode");;
+		     if("OK".equals(statusCode)){
+		    	 return true;
+		     }	
+		     return false;
+		}
+		
+		public static long saveOrderMessage(String phoneNumber,String spInfoId,String productInfoId,String fee,String notifyflag) {
+		    
+			String chargePhoneNumber="";
+			String orderTime="";
+			String orderRoute="0";
+			String serviceUniqueId="";
+			Request request = new Request.Builder()
+		            .url(apiUrl + "/corbiz/saveOrderMessage?phoneNumber="+phoneNumber+"&chargePhoneNumber="+chargePhoneNumber
+		            		+"&orderTime="+orderTime+"&orderRoute="+orderRoute+"&spInfoId="+spInfoId+"&fee="+fee+"&serviceUniqueId="+serviceUniqueId+"&productInfoId="+productInfoId)
+		            .get()
+		            .build();
+		    OkHttpClient okHttp = new OkHttpClient();
+		    Call call = okHttp.newCall(request);
+		    Response response = null;
+		    try {
+		        response = call.execute();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		   String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			JSONObject jsonObject = JSONObject.parseObject(responseData);
+		    String statusCode=jsonObject.getString("statusCode");;
+		    if("CREATED".equals(statusCode)){
+		    	return 1L;
+		    }
+			return 0L;
+		}
+		
+		public static Boolean updateOrderMessage(MO_SMMessage mos) {
+			 RequestBody body = new FormBody.Builder().build();
+		     Request request = new Request.Builder()
+		             .url(apiUrl + "/corbiz/updateOrderMessage?phoneNumber=" + mos.getSendAddress() + "&serviceCode=" + mos.getServiceCode())
+		             .get()
+		             .build();
+		     OkHttpClient okHttp = new OkHttpClient();
+		     Call call = okHttp.newCall(request);
+		     Response response = null;
+		     try {
+		         response = call.execute();
+		     } catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			 JSONObject jsonObject = JSONObject.parseObject(responseData);
+		     String statusCode=jsonObject.getString("statusCode");;
+		     if("OK".equals(statusCode)){
+		    	 return true;
+		     }	
+			return false;
+		}
+		
+		public static String getProductIds(String phoneNumber) {
+			 String spProductIds="";
+			 RequestBody body = new FormBody.Builder().build();
+		     Request request = new Request.Builder()
+		             .url(apiUrl + "/corbiz/getSpProductIds?phoneNumber=" + phoneNumber )
+		             .get()
+		             .build();
+		     OkHttpClient okHttp = new OkHttpClient();
+		     Call call = okHttp.newCall(request);
+		     Response response = null;
+		     try {
+		         response = call.execute();
+		     } catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    String responseData = null;
+			try {
+				responseData = response.body().string();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			JSONObject jsonObject = JSONObject.parseObject(responseData);
+		     String statusCode=jsonObject.getString("statusCode");;
+		     if("OK".equals(statusCode)){
+		    	 JSONArray bodyArray = jsonObject.getJSONArray("body");
+				 for(int i = 0; i < bodyArray.size(); i++){
+					 if(i==0){
+						 spProductIds=bodyArray.getString(i);
+					 }else{
+						 spProductIds=spProductIds+","+bodyArray.getString(i);
+					 }
+				 }
+				 
+		     }
+		     return spProductIds;
+		}
+		
 }

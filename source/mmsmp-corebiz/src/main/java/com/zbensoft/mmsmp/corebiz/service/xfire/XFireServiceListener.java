@@ -1,6 +1,6 @@
  package com.zbensoft.mmsmp.corebiz.service.xfire;
  
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.UniBusiness;
+ import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.UniBusiness;
  import org.apache.commons.logging.Log;
  import org.apache.commons.logging.LogFactory;
  import org.codehaus.xfire.XFire;

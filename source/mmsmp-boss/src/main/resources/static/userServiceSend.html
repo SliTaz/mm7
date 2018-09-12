@@ -142,8 +142,10 @@
 									<label for="spInfoId"
 										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.productName"></label>
 									<div class="col-sm-7">
-		                                 <input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.productInfoId"
-												placeholder="{{'userOrderHis.productName'   | translate }}">
+		                                <select class="form-control" id="productInfoId" ng-model="ctrl.beanSer.productInfoId" style="width:100%">
+											<option value="" translate="common.choose"></option>
+											<option ng-repeat="x in ctrl.productInfoData" value="{{x.productInfoId}}" ng-bind="x.productName"></option>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -255,16 +257,14 @@
 											<div class="col-xs-12">
 												<div class="form-group col-sm-12">
 													<label for="userId"
-														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.productInfoId"></label>
+														class="col-sm-4 control-label control-label-zb" translate="userOrderHis.productName"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="productInfoId" id="productInfoId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.productInfoId" 
-															placeholder="{{'userServiceSend.productInfoId'   | translate }}" required>
-																<div ng-show="addEditForm.productInfoId.$error.required" style="color:red" translate="userServiceSend.productInfoId.required">
-	                                                         </div> 
-	                                                          <div ng-show="addEditForm.productInfoId.$error.maxlength" style="color:red" translate="userServiceSend.productInfoId.length">
-	                                                         </div>
-	                                                         <div ng-show="addEditForm.productInfoId.$error.pattern" style="color:red" translate="common.illegalChar">
-									                         </div>
+														 <select class="form-control" id="productInfoId2" name="productInfoId2" ng-model="ctrl.bean.productInfoId" style="width:100%" required>
+															<option value="" translate="common.choose"></option>
+															<option ng-repeat="x in ctrl.productInfoData" value="{{x.productInfoId}}" ng-bind="x.productName"></option>
+														</select>
+													<div ng-show="addEditForm.productInfoId2.$error.required" style="color:red" translate="userServiceSend.productInfoId.required">
+	                                              </div> 
 													</div>
 												</div>
 											</div>
@@ -309,10 +309,12 @@
 													<label for="userId"
 														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.chargePhoneNumber"></label>
 													<div class="col-sm-7">
-													  <input type="text" class="form-control" name="chargePhoneNumber" id="chargePhoneNumber" autocomplete="off" ng-maxlength="32" ng-model="ctrl.bean.chargePhoneNumber" 
+													  <input type="text" class="form-control" name="chargePhoneNumber" id="chargePhoneNumber" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{0,32}$/" autocomplete="off" ng-maxlength="32" ng-model="ctrl.bean.chargePhoneNumber" 
 															placeholder="{{'userServiceSend.chargePhoneNumber'   | translate }}">
 	                                                          <div ng-show="addEditForm.chargePhoneNumber.$error.maxlength" style="color:red" translate="userServiceSend.chargePhoneNumber.length">
 	                                                         </div>
+	                                                         <div ng-show="addEditForm.chargePhoneNumber.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
 													</div>
 												</div>
 											</div>
@@ -434,6 +436,22 @@
 	                                                          <div ng-show="addEditForm.batchId.$error.maxlength" style="color:red" translate="userServiceSend.batchId.length">
 	                                                         </div>
 	                                                         <div ng-show="addEditForm.batchId.$error.pattern" style="color:red" translate="common.illegalChar">
+									                         </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="userId"
+														class="col-sm-4 control-label control-label-zb" translate="userServiceSend.messageId"></label>
+													<div class="col-sm-7">
+													  <input type="text" class="form-control" name="messageId" id="messageId" autocomplete="off" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"  ng-maxlength="32" ng-model="ctrl.bean.messageId" 
+															placeholder="{{'userServiceSend.messageId'   | translate }}">
+	                                                          <div ng-show="addEditForm.messageId.$error.maxlength" style="color:red" translate="userServiceSend.messageId.length">
+	                                                         </div>
+	                                                         <div ng-show="addEditForm.messageId.$error.pattern" style="color:red" translate="common.illegalChar">
 									                         </div>
 													</div>
 												</div>

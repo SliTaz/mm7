@@ -3,7 +3,8 @@
 package com.zbensoft.mmsmp.ownbiz.ra.own.mina.thread;
 
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
+
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
 import com.zbensoft.mmsmp.ownbiz.ra.own.queue.MessageQuene;
 import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IoSession;

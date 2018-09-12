@@ -57,4 +57,6 @@ public interface MobileSegmentService {
  List<MobileSegment> selectPage(MobileSegment record);
     
     int count(MobileSegment record);
+
+    List<MobileSegment> getCityIdBySegment(String segment);
 }

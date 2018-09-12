@@ -52,6 +52,7 @@ public class CommonLogImpl {
 	public final static Integer CUSTOMER_MANAGE = new Integer(7);
 	public final static Integer MANAGE_USER = new Integer(9);
 	public final static Integer TASK = new Integer(11);
+	public final static Integer STATISTICS = new Integer(12);
 	public final static Integer ALARM = new Integer(13);
 	public final static Integer SYSTEM_MANAGE = new Integer(16);
 
@@ -108,20 +109,24 @@ public class CommonLogImpl {
 	 * 获取系统当前用户
 	 */
 	private static String getPrincipal() {
-		String userName = null;
-		String id=null;
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if(principal!=null){
-			if (principal instanceof JwtUser) {
-				id=((JwtUser) principal).getId();
-				if(StringUtils.isNotEmpty(id)&&id.length()>1){
-					if(id.startsWith(MessageDef.NOTICE_VIEW_TYPE.GOV_STRING)||id.startsWith(MessageDef.NOTICE_VIEW_TYPE.SYS_STRING)){
-						userName = ((JwtUser) principal).getUsername();
+		try {
+			String userName = null;
+			String id=null;
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if(principal!=null){
+				if (principal instanceof JwtUser) {
+					id=((JwtUser) principal).getId();
+					if(StringUtils.isNotEmpty(id)&&id.length()>1){
+						if(id.startsWith(MessageDef.NOTICE_VIEW_TYPE.GOV_STRING)||id.startsWith(MessageDef.NOTICE_VIEW_TYPE.SYS_STRING)){
+							userName = ((JwtUser) principal).getUsername();
+						}
 					}
-				}
-			} 
+				} 
+			}
+			return userName;
+		} catch (Exception e) {
+			return "";
 		}
-		return userName;
 	}
 
 	// 将格式BankInfo 转换成Bank Info

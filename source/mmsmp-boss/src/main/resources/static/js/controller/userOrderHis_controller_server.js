@@ -52,26 +52,27 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	setDtOptionsServerSide(vm);
 	vm.dtColumns = [
 			DTColumnBuilder.newColumn('userOrderHisId').withTitle($translate('userOrderHis.userOrderHisId')).notSortable().notVisible(),
-			DTColumnBuilder.newColumn('phoneNumber').withTitle($translate('userRecv.phoneNumber')).notSortable().notVisible(),
-			DTColumnBuilder.newColumn('companyName').withTitle($translate('cpInfo.spInfo')).notSortable(),
-			DTColumnBuilder.newColumn('productInfoId').withTitle($translate('userServiceSend.productInfoId')).notSortable(),
+			DTColumnBuilder.newColumn('phoneNumber').withTitle($translate('userRecv.phoneNumber')).notSortable(),
+			DTColumnBuilder.newColumn('provinceCityName').withTitle($translate('userOrderHis.area')).notSortable(),
+			DTColumnBuilder.newColumn('spInfoId').withTitle($translate('userOrderHis.spName')).notSortable(),
+			DTColumnBuilder.newColumn('productName').withTitle($translate('userOrderHis.productName')).notSortable(),
 			DTColumnBuilder.newColumn('chargePhoneNumber').withTitle($translate('userServiceSend.chargePhoneNumber')).notSortable().notVisible(),
-			DTColumnBuilder.newColumn('cancelTime').withTitle($translate('userOrderHis.cancelTime')).notSortable().notVisible().renderWith(timeRender),
-			DTColumnBuilder.newColumn('orderRoute').withTitle($translate('userOrderHis.orderRoute')).notSortable().renderWith(orderRouteDetail),
-			DTColumnBuilder.newColumn('orderType').withTitle($translate('userOrderHis.orderType')).notSortable().renderWith(orderTypeDetail),
+			DTColumnBuilder.newColumn('orderRoute').withTitle($translate('userOrderHis.orderRoute')).notSortable().renderWith(orderRouteDetail).notVisible(),
+			DTColumnBuilder.newColumn('orderType').withTitle($translate('userOrderHis.orderType')).notSortable().renderWith(orderTypeDetail).notVisible(),
 			DTColumnBuilder.newColumn('fee').withTitle($translate('userOrderHis.fee')).notSortable(),
+			DTColumnBuilder.newColumn('orderTime').withTitle($translate('userOrderHis.orderTime')).notSortable().renderWith(timeRender),
+			DTColumnBuilder.newColumn('cancelTime').withTitle($translate('userOrderHis.cancelTime')).notSortable().renderWith(timeRender),
 			DTColumnBuilder.newColumn('cancelRoute').withTitle($translate('userOrderHis.cancelRoute')).notSortable().notVisible().renderWith(cancelRouteDetail),
 			DTColumnBuilder.newColumn('featureStr').withTitle($translate('userOrderHis.featureStr')).notSortable().notVisible(),
-			DTColumnBuilder.newColumn('priority').withTitle($translate('userOrderHis.priority')).notSortable().renderWith(priorityDetail),
-			DTColumnBuilder.newColumn('status').withTitle($translate('userServiceSend.status')).notSortable().renderWith(statusDetail),
+			DTColumnBuilder.newColumn('priority').withTitle($translate('userOrderHis.priority')).notSortable().renderWith(priorityDetail).notVisible(),
+			DTColumnBuilder.newColumn('status').withTitle($translate('userServiceSend.status')).notSortable().renderWith(statusDetail).notVisible(),
 			DTColumnBuilder.newColumn('version').withTitle($translate('userOrderHis.version')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn('notDisturbTime').withTitle($translate('userOrderHis.notDisturbTime')).notSortable().notVisible(),
-			DTColumnBuilder.newColumn('transactionId').withTitle($translate('userOrderHis.transactionId')).notSortable(),
-			DTColumnBuilder.newColumn('orderTime').withTitle($translate('userOrderHis.orderTime')).notSortable().renderWith(timeRender),
+			DTColumnBuilder.newColumn('transactionId').withTitle($translate('userOrderHis.transactionId')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn('effTime').withTitle($translate('userOrderHis.effTime')).notSortable().notVisible().renderWith(timeRender),
-			DTColumnBuilder.newColumn('area').withTitle($translate('userOrderHis.area')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn('lastBatchId').withTitle($translate('userOrderHis.lastBatchId')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn('isPackage').withTitle($translate('userOrderHis.isPackage')).notSortable().notVisible(),
+			DTColumnBuilder.newColumn('notifySpFlag').withTitle($translate('userInfo.notifySpFlag')).notSortable().renderWith(notifySpFlag).notVisible(),
 			DTColumnBuilder.newColumn(null).withTitle($translate('Actions')).withOption('width', '15%').notSortable().renderWith(actionsHtml) ];
 //	vm.addInit = addInit;
 //	vm.edit = edit;
@@ -94,7 +95,15 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			return '';
 		}
 	}
-
+	function notifySpFlag(data, type, full, meta){
+		if(data=='0'){
+			return $translate.instant('common.informed');
+		}else if(data=='1'){
+			return $translate.instant('common.notNotified');
+		}else{
+			return '';
+		}
+	}
 	function orderRouteDetail(data, type, full, meta) {
 		if (data == '1') {
 			return '<span translate="userServiceSend.SMS"></span>';
@@ -189,6 +198,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}
 	
 	function selData(){
+		
 		UserOrderHisService.selSpInfo().then(function(d) {
 	        vm.spInfoData = d.body;
        },
@@ -196,6 +206,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			console.error('Error while fetching spInfo');
 		}
 		);
+		
+		
 		UserOrderHisService.selUserInfo().then(function(d) {
 	        vm.userInfoData = d.body;
        },
@@ -203,12 +215,23 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			console.error('Error while fetching spInfo');
 		}
 		);
+		
+		
+		UserOrderHisService.selProductInfo().then(function(d) {
+	        vm.productInfoData = d.body;
+       },
+		function(errResponse){
+			console.error('Error while fetching productInfo');
+		}
+		);
+		
 	}
 	
 	//下拉框中输入框
 	function selectDevice(){
 		//解决 select2在模态框使用，模糊输入框无效
-		$("#phoneNumber").val('').select2();
+		$("#spInfo").val('').select2();
+		$("#productInfoId").val('').select2();
 		$("#myModal").attr("tabindex","");
 		//解决selec2在火狐模太框中输入框不能输入start
 		$.fn.modal.Constructor.prototype.enforceFocus = function () { 

@@ -25,10 +25,7 @@ import com.zbensoft.mmsmp.common.ra.common.db.entity.ProductService;
  import com.zbensoft.mmsmp.common.ra.common.db.entity.VasserviceReserveInfo;
  import com.zbensoft.mmsmp.corebiz.dao.DaoUtil;
  import com.zbensoft.mmsmp.corebiz.dao.SmsDAO;
- import com.zbensoft.mmsmp.common.ra.utils.MM7DAO;
- import com.zbensoft.mmsmp.vas.sjb.data.BusinessManageDAO;
- import com.zbensoft.mmsmp.vas.sjb.data.DemandDao;
- import com.zbensoft.mmsmp.vas.sjb.data.DemandDto;
+ import com.zbensoft.mmsmp.common.ra.vas.sjb.data.DemandDto;
  import java.util.ArrayList;
  import java.util.HashMap;
  import java.util.HashSet;
@@ -58,12 +55,12 @@ import okhttp3.Response;
  public class DataCache
  {
    private static final Logger log = Logger.getLogger(DataCache.class);
-   private DaoUtil daoUtil;
+//   private DaoUtil daoUtil;
    
-   public void setDaoUtil(DaoUtil daoUtil)
-   {
-     this.daoUtil = daoUtil;
-   }
+//   public void setDaoUtil(DaoUtil daoUtil)
+//   {
+//     this.daoUtil = daoUtil;
+//   }
    
  
    private Map<String, Vasp> spInfoBySpid = new ConcurrentHashMap();
@@ -111,10 +108,10 @@ import okhttp3.Response;
    public void setSmsSenderDtoMap(Map<String, com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto> smsSenderDtoMap) { this.SmsSenderDtoMap = smsSenderDtoMap; }
    
    public void refreshCPSpVasservice() {
-     List<com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto> SmsSenderDtoList = this.daoUtil.getSmsDAO().getCPSpVasserviceInfo();
-     for (int i = 0; i < SmsSenderDtoList.size(); i++) {
-       this.SmsSenderDtoMap.put(((com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto)SmsSenderDtoList.get(i)).getVasid(), (com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto)SmsSenderDtoList.get(i));
-     }
+//     List<com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto> SmsSenderDtoList = this.daoUtil.getSmsDAO().getCPSpVasserviceInfo();
+//     for (int i = 0; i < SmsSenderDtoList.size(); i++) {
+//       this.SmsSenderDtoMap.put(((com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto)SmsSenderDtoList.get(i)).getVasid(), (com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto)SmsSenderDtoList.get(i));
+//     }
    }
    
  
@@ -133,10 +130,10 @@ import okhttp3.Response;
    }
    
    public void refreshThirdOrder() {
-     long begin = System.currentTimeMillis();
-     this.thirdOrder = new HashSet(300000);
-     this.thirdOrder.addAll(this.daoUtil.getSmsDAO().getThirdOrder());
-     log.info("@load@ thirdOrder in :" + (System.currentTimeMillis() - begin) + " millisecond");
+//     long begin = System.currentTimeMillis();
+//     this.thirdOrder = new HashSet(300000);
+//     this.thirdOrder.addAll(this.daoUtil.getSmsDAO().getThirdOrder());
+//     log.info("@load@ thirdOrder in :" + (System.currentTimeMillis() - begin) + " millisecond");
    }
    
    public int getThridOrderCacheSize() {
@@ -152,14 +149,13 @@ import okhttp3.Response;
      if (!this.VasidsByOwner.containsKey(vasId))
      {
  
-    	 //TODO 测试待修改
+    	 
     	 //String vaspid = "vaspid001"+vasId; this.daoUtil.getSmsDAO().getSpIdByVasId(spNumber);
-    	 String vaspid = "vaspid001"+HttpRequestHelper.getSpIdByVasId(vasId);
+    	 String vaspid = HttpRequestHelper.getSpIdByVasId(vasId);
        
        if (this.ownerSpInfoBySpid.get(vaspid) != null)
        {
     	   //完成修改
-         //String vasid = "vaspid001"+spNumber;this.daoUtil.getSmsDAO().getVasIDsByVaspID(vaspid, spNumber);
            this.VasidsByOwner.put(vasId, vasId);
        }
      }
@@ -304,19 +300,23 @@ import okhttp3.Response;
    
    public String getMmsmtLimitByServiceid(String serviceid)
    {
-     String value = null;
-     String key = serviceid;
-     
-     if (!this.mmsmtLimitByServiceids.containsKey(key))
-     {
-    	//TODO 数据库调用，待修改
-       value = "1000";//this.daoUtil.getMm7dao().getMTLimitNumber(key);
-       if ((value != null) && (!value.equals(""))) {
-         this.mmsmtLimitByServiceids.put(key, value);
-       }
-     }
-     
-     return (String)this.mmsmtLimitByServiceids.get(key);
+//     String value = null;
+//     String key = serviceid;
+//     
+//     if (!this.mmsmtLimitByServiceids.containsKey(key))
+//     {
+//    	//TODO 数据库调用，待修改;Already processed;is ok
+//       value = "1000";
+//       value=this.daoUtil.getMm7dao().getMTLimitNumber(key);
+//       if ((value != null) && (!value.equals(""))) {
+//         this.mmsmtLimitByServiceids.put(key, value);
+//       }
+//     }
+//     
+//     return (String)this.mmsmtLimitByServiceids.get(key);
+	   
+	   //业务能力改为放到system_config中进行存储。
+	   return getSysParams("CAPACITY_ID");
    }
    
  
@@ -327,18 +327,19 @@ import okhttp3.Response;
    
    public DemandDto getDemandDtoBySendto(String sendto)
    {
-     DemandDto dto = null;
-     String key = sendto;
-     
-     if (!this.demandDtoBySendtos.containsKey(key))
-     {
-       dto = this.daoUtil.getDemandDao().getDemandDto(key);
-       if (dto != null) {
-         this.demandDtoBySendtos.put(key, dto);
-       }
-     }
-     
-     return (DemandDto)this.demandDtoBySendtos.get(key);
+	return null;
+//     DemandDto dto = null;
+//     String key = sendto;
+//     
+//     if (!this.demandDtoBySendtos.containsKey(key))
+//     {
+//       dto = this.daoUtil.getDemandDao().getDemandDto(key);
+//       if (dto != null) {
+//         this.demandDtoBySendtos.put(key, dto);
+//       }
+//     }
+//     
+//     return (DemandDto)this.demandDtoBySendtos.get(key);
    }
    
  
@@ -349,18 +350,20 @@ import okhttp3.Response;
    String errorMsgTemplate;
    
    public com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto getDianBoByNumber(String sendto) {
-	   com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto dto = null;
-     String key = sendto;
-     
-     if (!this.dianBoByNumbers.containsKey(key))
-     {
-       dto = this.daoUtil.getDemandDao().getDianBoByNumber(key);
-       if (dto != null) {
-         this.dianBoByNumbers.put(key, dto);
-       }
-     }
-     
-     return (com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto)this.dianBoByNumbers.get(key);
+	return null;
+//	   com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto dto = null;
+//     String key = sendto;
+//     
+//     if (!this.dianBoByNumbers.containsKey(key))
+//     {
+//       dto = this.daoUtil.getDemandDao().getDianBoByNumber(key);
+//       if (dto != null) {
+//         this.dianBoByNumbers.put(key, dto);
+//       }
+//     }
+//     
+//     return (com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto)this.dianBoByNumbers.get(key);
+	   
    }
    
  
@@ -370,11 +373,12 @@ import okhttp3.Response;
  
    public String queryErrorMsgTemplate()
    {
-     if (this.errorMsgTemplate == null)
-     {
-       this.errorMsgTemplate = this.daoUtil.getDemandDao().queryErrorMsgTemplate();
-     }
-     return this.errorMsgTemplate;
+	return errorMsgTemplate;
+//     if (this.errorMsgTemplate == null)
+//     {
+//       this.errorMsgTemplate = this.daoUtil.getDemandDao().queryErrorMsgTemplate();
+//     }
+//     return this.errorMsgTemplate;
    }
    
  
@@ -384,11 +388,12 @@ import okhttp3.Response;
  
    public String queryUpOndemandMessage()
    {
-     if (this.upOndemandMessage == null)
-     {
-       this.upOndemandMessage = this.daoUtil.getDemandDao().queryUpOndemandMessage();
-     }
-     return this.upOndemandMessage;
+	return errorMsgTemplate;
+//     if (this.upOndemandMessage == null)
+//     {
+//       this.upOndemandMessage = this.daoUtil.getDemandDao().queryUpOndemandMessage();
+//     }
+//     return this.upOndemandMessage;
    }
    
  
@@ -398,11 +403,12 @@ import okhttp3.Response;
  
    public String queryOndemandMessage()
    {
-     if (this.ondemandMessage == null)
-     {
-       this.ondemandMessage = this.daoUtil.getDemandDao().queryOndemandMessage();
-     }
-     return this.ondemandMessage;
+	return errorMsgTemplate;
+//     if (this.ondemandMessage == null)
+//     {
+//       this.ondemandMessage = this.daoUtil.getDemandDao().queryOndemandMessage();
+//     }
+//     return this.ondemandMessage;
    }
    
  
@@ -460,25 +466,25 @@ import okhttp3.Response;
  
    public void refreshOwnSpInfo()
    {
-     List<Vasp> ownSpList = this.daoUtil.getSmsDAO().findOwnSpInfo();
-     Vasp ownSpInfo = null;
-     
-     Map<String, Vasp> ownSpInfoBySpId = new HashMap();
-     
-     Map<String, String> ownSpReportUrl = new HashMap();
-     
-     for (int i = 0; i < ownSpList.size(); i++)
-     {
-       ownSpInfo = (Vasp)ownSpList.get(i);
-       ownSpInfoBySpId.put(ownSpInfo.getVaspid(), ownSpInfo);
-       
-       String reportUrl = ownSpInfo.getVaspReserveInfo().getReportmessageurl();
-       ownSpReportUrl.put(reportUrl, reportUrl);
-     }
-     
- 
-     this.ownerSpInfoBySpid = ownSpInfoBySpId;
-     this.ownerSpReportURL = ownSpReportUrl;
+//     List<Vasp> ownSpList = this.daoUtil.getSmsDAO().findOwnSpInfo();
+//     Vasp ownSpInfo = null;
+//     
+//     Map<String, Vasp> ownSpInfoBySpId = new HashMap();
+//     
+//     Map<String, String> ownSpReportUrl = new HashMap();
+//     
+//     for (int i = 0; i < ownSpList.size(); i++)
+//     {
+//       ownSpInfo = (Vasp)ownSpList.get(i);
+//       ownSpInfoBySpId.put(ownSpInfo.getVaspid(), ownSpInfo);
+//       
+//       String reportUrl = ownSpInfo.getVaspReserveInfo().getReportmessageurl();
+//       ownSpReportUrl.put(reportUrl, reportUrl);
+//     }
+//     
+// 
+//     this.ownerSpInfoBySpid = ownSpInfoBySpId;
+//     this.ownerSpReportURL = ownSpReportUrl;
    }
    
  
@@ -487,14 +493,14 @@ import okhttp3.Response;
  
    public void refreshVasInfo()
    {
-     List<Vas> vasList = this.daoUtil.getBusinessManageDAO().findVasInfo();
-     Vas vas = null;
-     Map<String, Vas> vasInfoById = new HashMap();
-     for (int i = 0; i < vasList.size(); i++) {
-       vas = (Vas)vasList.get(i);
-       vasInfoById.put(vas.getServiceId(), vas);
-     }
-     this.vasInfoById = vasInfoById;
+//     List<Vas> vasList = this.daoUtil.getBusinessManageDAO().findVasInfo();
+//     Vas vas = null;
+//     Map<String, Vas> vasInfoById = new HashMap();
+//     for (int i = 0; i < vasList.size(); i++) {
+//       vas = (Vas)vasList.get(i);
+//       vasInfoById.put(vas.getServiceId(), vas);
+//     }
+//     this.vasInfoById = vasInfoById;
    }
    
  
@@ -545,16 +551,19 @@ import okhttp3.Response;
          
          productInfoByMoCancel.put(productInfo.getCancelordercode() + productInfo.getVasserviceReserveInfo().getCancelacc(), productInfo);
          
-         if ((productInfo.getOrdercode().contains("#")) || (productInfo.getOrdercode().contains("*")))
-         {
-           orderTextList.add(productInfo.getOrdercode());
-           orderTextMap.put(productInfo.getVasid(), productInfo.getOrdercode());
+         try {
+			if ((productInfo.getOrdercode().contains("#")) || (productInfo.getOrdercode().contains("*")))
+			 {
+			   orderTextList.add(productInfo.getOrdercode());
+			   orderTextMap.put(productInfo.getVasid(), productInfo.getOrdercode());
  
-         }
-         else if ((productInfo.getCancelordercode().contains("#")) || (productInfo.getCancelordercode().contains("*")))
-         {
-           cancelTextList.add(productInfo.getCancelordercode());
-           cancelTextMap.put(productInfo.getVasid(), productInfo.getCancelordercode());
+			 }
+			 else if ((productInfo.getCancelordercode().contains("#")) || (productInfo.getCancelordercode().contains("*")))
+			 {
+			   cancelTextList.add(productInfo.getCancelordercode());
+			   cancelTextMap.put(productInfo.getVasid(), productInfo.getCancelordercode());
+			 }
+         } catch (Exception e) {
          }
        }
        else
@@ -634,6 +643,10 @@ import okhttp3.Response;
     	 cpInfoUser.put("" + cpInfo.getCpid(), cpInfo);
      }
      this.cpInfoUser = cpInfoUser;
+   }
+   
+   public CpInfo getCpInfoByCpid(String cpid){
+	   return this.cpInfoUser.get(cpid);
    }
    
    public void refreshBlackList()
@@ -831,11 +844,11 @@ import okhttp3.Response;
        for (int i = 0; i < this.orderTextList.size(); i++) {
          String ordertext = (String)this.orderTextList.get(i);
          if (moText.startsWith(ordertext.substring(0, ordertext.length() - 1)))
-         {
+         {// 模糊匹配，例如实际文本为order001, 如果用户输入order001232319389283 也可以匹配上
  
            String jieruhao = "";
            try {
-             jieruhao = moText.substring(moText.indexOf("10655565"));
+             jieruhao = moText.substring(moText.indexOf("10655565"));//不理解
            } catch (Exception e) {
              log.error("convert err : " + e.getMessage());
            }
@@ -951,7 +964,7 @@ import okhttp3.Response;
  
  
  
-	   public void init() {
+	   public void init() {//点播:dianbo001;订购(中途需要回复Y):order001;退订:0000
 		   Vasservice vasservice = new Vasservice();
 		   vasservice.setUniqueid((int)(Math.random()*100));
 		   VasserviceReserveInfo vasserviceReserveInfo=new VasserviceReserveInfo();
@@ -962,20 +975,40 @@ import okhttp3.Response;
 		   vasservice.setServicename("test");
 		   vasservice.setVaspid("vaspid0013010012345");
 		   vasservice.setOndemandfee(129.23);
+		   vasservice.setOrderfee(129.23);
+		   /**点播业务**/
 		   this.productInfoByMoDemand=new ConcurrentHashMap<>();
 		   this.productInfoByMoDemand.put("dianbo0013010012345", vasservice);
-//		   Vasp vasp=new Vasp();
-//		   vasp.setUniqueid((int)(Math.random()*100));
-//		   vasp.setVaspid("vaspid0013010012345");
-//		   this.ownerSpInfoBySpid=new ConcurrentHashMap<>();
-//		   this.ownerSpInfoBySpid.put("vaspid0013010012345", vasp);
+		   /**点播业务***/
+		   
+		   /**订购业务***/
+		   this.productInfoByMoOrder=new ConcurrentHashMap<>();
+		   this.productInfoByMoOrder.put("order0013010012345", vasservice);
+		   this.productInfoByOrderText.put("order0013010012345", vasservice);
+		   /**订购业务***/
+		   
+		   /**OwnerBiz**/
+		   Vasp vasp=new Vasp();
+		   vasp.setUniqueid((int)(Math.random()*100));
+		   vasp.setVaspid("vaspid0013010012345666");
+		   this.ownerSpInfoBySpid=new ConcurrentHashMap<>();
+		   this.ownerSpInfoBySpid.put("vaspid0013010012345666", vasp);
+		   /**OwnerBiz**/
 		   
 		   this.VasidsByOwner.put("3010012345", "3010012345");
-		   this.spurlByProductid.put("pro10001", "http://192.168.1.116:29095/SPServerServlet");
+		   this.spurlByProductid.put("pro10001", "http://192.168.1.116/mmsmpspsimulator/SPServerServlet");//sp地址指向
+		   this.spurlByVASPID.put("vaspid0013010012345","http://192.168.1.116/mmsmpspsimulator/services/SyncNotifySP");//订购时发送ws请求
 		   this.uniqueidByProductids.put("pro10001", (int)(Math.random()*100)+"");
 		   this.serviceIdByProductids.put("pro10001",vasservice.getVasid()+"#"+vasservice.getVaspid());
 		   this.sysParams.put("MT_ORDER_QUOTA", "5");
 		   this.sysParams.put("MT_ONDEMAND_QUOTA", "5");
+		   this.sysParams.put("ACC_NUMBER", "3010012345");//接入号
+		   this.sysParams.put("TAKE_ACC_NUMBER", "3010012345666");//take number 指定接入号，必须以接入号开头
+		   this.sysParams.put("UNIONVASPID", "vaspid0013010012345666");//给ownerBize 对应的SP接入号
+		   this.sysParams.put("COREBIZ_SEND_SECONDCONFIRM_MESSAGE", "订购产品ID:{0},价格:{1},订购产品名称:{2},商家联系电话：{3}");//发给用户的确认信息
+		   this.sysParams.put("CAPACITY_ID", "1000");//业务能力
+		   this.sysParams.put("UP_ONDEMAND_TIP", "{0}make{1}test{2}in{3}line");//点播提示信息
+		   this.sysParams.put("COREBIZ_SEND_ORDER_MESSAGE", "111{0}222{1}");//发送订购信息
 		   
 	   }
  

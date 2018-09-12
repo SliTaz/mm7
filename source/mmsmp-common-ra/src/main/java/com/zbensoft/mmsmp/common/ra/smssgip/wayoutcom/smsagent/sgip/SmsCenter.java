@@ -1,5 +1,6 @@
 package com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.smsagent.sgip;
 
+import com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.dbAccess.OperData;
 import org.apache.log4j.Logger;
 
 import java.net.InetSocketAddress;
@@ -25,9 +26,9 @@ public class SmsCenter {
     }
 
     private void loadCheckTask() {
-        int checkFreq = false;
+        int checkFreq ;
         Integer hm = (Integer)parameter.get("apps_Check_Freq");
-        int checkFreq = hm;
+         checkFreq = hm;
         Thread.currentThread().setPriority(6);
         (new Timer()).schedule(new TimerTask() {
             public void run() {

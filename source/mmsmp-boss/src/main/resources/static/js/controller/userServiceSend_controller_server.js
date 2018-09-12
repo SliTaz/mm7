@@ -76,6 +76,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			DTColumnBuilder.newColumn('sendType').withTitle($translate('userServiceSend.sendType')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn('mmsPath').withTitle($translate('userServiceSend.mmsPath')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn('batchId').withTitle($translate('userServiceSend.batchId')).notSortable().notVisible(),
+			DTColumnBuilder.newColumn('messageId').withTitle($translate('userServiceSend.messageId')).notSortable().notVisible(),
 			DTColumnBuilder.newColumn(null).withTitle($translate('Actions')).withOption('width', '15%').notSortable().renderWith(actionsHtml) ];
 	vm.addInit = addInit;
 	vm.edit = edit;
@@ -196,12 +197,21 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			console.error('Error while fetching spInfo');
 		}
 		);
+		
+		UserServiceSendService.selProductInfo().then(function(d) {
+	        vm.productInfoData = d.body;
+       },
+		function(errResponse){
+			console.error('Error while fetching productInfo');
+		}
+		);
 	}
 	
 	//下拉框中输入框
 	function selectDevice(){
 		//解决 select2在模态框使用，模糊输入框无效
 		$("#phoneNumber").val('').select2();
+		$("#productInfoId").val('').select2();
 		$("#myModal").attr("tabindex","");
 		//解决selec2在火狐模太框中输入框不能输入start
 		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
@@ -218,6 +228,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		vm.modelTitle = $translate.instant('userServiceSend.add');
 		$("#spInfo2").val('').select2();
 		$("#phoneNumber2").val('').select2();
+		$("#productInfoId2").val('').select2();
 		vm.readonlyID = false;
 		vm.disabled = false;
 		vm.bean = {};
@@ -231,6 +242,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		vm.modelTitle = $translate.instant('userServiceSend.edit');
 		$("#spInfo2").val(bean.spInfoId).select2();
 		$("#phoneNumber2").val(bean.phoneNumber).select2();
+		$("#productInfoId2").val(bean.productInfoId).select2();
 		vm.bean = bean;
 		vm.bean.serviceType = vm.bean.serviceType+"";
 		vm.bean.status = vm.bean.status+"";

@@ -16,7 +16,42 @@ App.factory('UserOrderPayService', ['$http', '$q', function($http, $q){
 									}
 							);
 			},
-		    
+			selectArea: function(area) {
+				return $http.get(apiUrl +"/provinceCity?parentProvinceCityId="+area)
+				.then(
+						function(response){
+							return response.data;
+						}, 
+						function(errResponse){
+							handleAjaxError(errResponse);
+							return $q.reject(errResponse);
+						}
+				);
+			},
+			fetchProvince: function() {
+				return $http.get(apiUrl +"/provinceCity?parentProvinceCityId="+"-1")
+				.then(
+						function(response){
+							return response.data;
+						}, 
+						function(errResponse){
+							handleAjaxError(errResponse);
+							return $q.reject(errResponse);
+						}
+				);
+		},
+		selProductInfo: function() {
+     		return $http.get(apiUrl +"/productInfo")
+     				.then(
+     						function(response){
+     							return response.data;
+     						}, 
+     						function(errResponse){
+     							handleAjaxError(errResponse);
+     							return $q.reject(errResponse);
+     						}
+     				);
+     	},
 		    createAlarmInfo: function(alarmInfo){
 					return $http.post(apiUrl +"/userOrderPay", alarmInfo)
 							.then(
@@ -29,30 +64,30 @@ App.factory('UserOrderPayService', ['$http', '$q', function($http, $q){
 									}
 							);
 		    },
-		    fetchSpInfo: function() {
-				return $http.get(apiUrl +"/spInfo")
-				.then(
-						function(response){
-							return response.data;
-						}, 
-						function(errResponse){
-							handleAjaxError(errResponse);
-							return $q.reject(errResponse);
-						}
-				);
-	},
-	fetchUserInfo: function() {
-		return $http.get(apiUrl +"/userInfo")
-		.then(
-				function(response){
-					return response.data;
-				}, 
-				function(errResponse){
-					handleAjaxError(errResponse);
-					return $q.reject(errResponse);
-				}
-		);
-	},
+      		    fetchSpInfo: function() {
+      				return $http.get(apiUrl +"/spInfo")
+      				.then(
+      						function(response){
+      							return response.data;
+      						}, 
+      						function(errResponse){
+      							handleAjaxError(errResponse);
+      							return $q.reject(errResponse);
+      						}
+      				);
+      	},
+          	fetchUserInfo: function() {
+          		return $http.get(apiUrl +"/userInfo")
+          		.then(
+          				function(response){
+          					return response.data;
+          				}, 
+          				function(errResponse){
+          					handleAjaxError(errResponse);
+          					return $q.reject(errResponse);
+          				}
+          		);
+          	},
 		    updateAlarmInfo: function(alarmInfo, id){
 					return $http.put(apiUrl +"/userOrderPay/"+id, alarmInfo)
 							.then(

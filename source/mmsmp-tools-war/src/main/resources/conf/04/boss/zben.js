@@ -1,10 +1,9 @@
 'use strict';
 
-var apiUrl = "http://www.zbensoft.com:8779/api";
-var helpDocAPI = "http://localhost:82";
+var apiUrl = "http://localhost:8080";
 var address=window.location.hostname;
 var tokenRequestHeaderKey = "Authorization";
-var platform = "boss" + "_";
+var platform = "mmsmpboss" + "_";
 var ZBappId = 1;
 var tokenKey = platform + "jwttoken";
 var ZBuserNameKey = platform + "ZBuserName";
@@ -63,7 +62,7 @@ if(naLan=='en'){
 $.ajaxSettings.async = false;
 $.getJSON(file,function(data){i18nData=data}); 
 //title的国际化
-$('title').text(i18nData["common.test"] + i18nData["common.bossTitle"]);
+$('title').text(i18nData["common.mmsmpTitle"]);
 
 $('#display_panel_names').text(i18nData["common.panel"]);
 $('#display_notice_names').text(i18nData["common.notice"]);

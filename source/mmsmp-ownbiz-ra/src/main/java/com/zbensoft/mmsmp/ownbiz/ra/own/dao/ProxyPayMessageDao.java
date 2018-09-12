@@ -2,19 +2,14 @@
 
 package com.zbensoft.mmsmp.ownbiz.ra.own.dao;
 
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.CooperKeyEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.UserOrderPayEntity;
+import com.zbensoft.mmsmp.ownbiz.ra.own.util.HttpHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-public class ProxyPayMessageDao extends JdbcDaoSupport {
+public class ProxyPayMessageDao implements Dao {
     private static final Log log = LogFactory.getLog(ProxyPayMessageDao.class);
 
     public ProxyPayMessageDao() {
@@ -27,7 +22,7 @@ public class ProxyPayMessageDao extends JdbcDaoSupport {
 //        } catch (Exception var3) {
 //            log.error(var3.getMessage(), var3);
 //        }
-
+            HttpHelper.insert(ppm);
     }
 
     public void insertUserOrderPay(UserOrderPayEntity entity) {
@@ -37,7 +32,7 @@ public class ProxyPayMessageDao extends JdbcDaoSupport {
 //        } catch (Exception var3) {
 //            log.error(var3.getMessage(), var3);
 //        }
-
+           HttpHelper.insertUserOrderPay(entity);
     }
 
     public void deleteUserOrderPay(UserOrderPayEntity entity) {
@@ -47,7 +42,7 @@ public class ProxyPayMessageDao extends JdbcDaoSupport {
 //        } catch (Exception var3) {
 //            log.error(var3.getMessage(), var3);
 //        }
-
+         HttpHelper.deleteUserOrderPay(entity);
     }
 
     public void update(ProxyPayMessage proxyPayMessage) {
@@ -155,6 +150,7 @@ public class ProxyPayMessageDao extends JdbcDaoSupport {
 //        destParam[param.length] = proxyPayMessage.getGlobalMessageid();
 //        System.arraycopy(param, 0, destParam, 0, param.length);
 //        this.getJdbcTemplate().update(sql, destParam);
+    	HttpHelper.update(proxyPayMessage);
     }
 
     public CooperKeyEntity getCooperKeyMessage(String messageId) {
@@ -175,7 +171,7 @@ public class ProxyPayMessageDao extends JdbcDaoSupport {
 //            log.error(var5.getMessage(), var5);
 //            return null;
 //        }
-        return null;
+        return HttpHelper.getCooperKeyMessage("1");
 
     }
 
@@ -201,52 +197,55 @@ public class ProxyPayMessageDao extends JdbcDaoSupport {
 //            return false;
 //        }
 
-        return true;
+        return HttpHelper.getProxyPayMessage(messageId, validateCode);
     }
 
     public ProxyPayMessage getProxyPayMessageById(String messageId) {
-        try {
-            String sql = "select mp.FEETYPE,mp.ACCOUNTID,mp.CPID,mp.PHONENUMBER,mp.PRODUCTID ,mp.SOURCE_TYPE,mp.GLOBALMESSAGEID,mck.COOPER_KEY,mck.NOTIFY_URL from MMSP_PROXYPAYMESSAGE mp,MMSP_COOPER_KEY mck where mp.ACCOUNTID=mck.COOPER_ID and mp.GLOBALMESSAGEID = ?";
-            log.info("sql:=  " + sql + "{" + messageId + "}");
-            ParameterizedRowMapper<ProxyPayMessage> rw = new ParameterizedRowMapper<ProxyPayMessage>() {
-                public ProxyPayMessage mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    ProxyPayMessage model = new ProxyPayMessage();
-                    model.setFeeType(rs.getString("FEETYPE"));
-                    model.setAccountId(rs.getString("ACCOUNTID"));
-                    model.setCpID(rs.getString("CPID"));
-                    model.setPhoneNumber(rs.getString("PHONENUMBER"));
-                    model.setProductId(rs.getString("PRODUCTID"));
-                    model.setGlobalMessageid("GLOBALMESSAGEID");
-                    model.setSourceType(rs.getInt("SOURCE_TYPE"));
-                    model.setCooperKey(rs.getString("COOPER_KEY"));
-                    model.setNotifyURL(rs.getString("NOTIFY_URL"));
-                    return model;
-                }
-            };
-            return (ProxyPayMessage)this.getJdbcTemplate().queryForObject(sql, new Object[]{messageId}, rw);
-        } catch (EmptyResultDataAccessException var4) {
-            return null;
-        } catch (Exception var5) {
-            log.error(var5.getMessage(), var5);
-            return null;
-        }
+//        try {
+//            String sql = "select mp.FEETYPE,mp.ACCOUNTID,mp.CPID,mp.PHONENUMBER,mp.PRODUCTID ,mp.SOURCE_TYPE,mp.GLOBALMESSAGEID,mck.COOPER_KEY,mck.NOTIFY_URL from MMSP_PROXYPAYMESSAGE mp,MMSP_COOPER_KEY mck where mp.ACCOUNTID=mck.COOPER_ID and mp.GLOBALMESSAGEID = ?";
+//            log.info("sql:=  " + sql + "{" + messageId + "}");
+//            ParameterizedRowMapper<ProxyPayMessage> rw = new ParameterizedRowMapper<ProxyPayMessage>() {
+//                public ProxyPayMessage mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                    ProxyPayMessage model = new ProxyPayMessage();
+//                    model.setFeeType(rs.getString("FEETYPE"));
+//                    model.setAccountId(rs.getString("ACCOUNTID"));
+//                    model.setCpID(rs.getString("CPID"));
+//                    model.setPhoneNumber(rs.getString("PHONENUMBER"));
+//                    model.setProductId(rs.getString("PRODUCTID"));
+//                    model.setGlobalMessageid("GLOBALMESSAGEID");
+//                    model.setSourceType(rs.getInt("SOURCE_TYPE"));
+//                    model.setCooperKey(rs.getString("COOPER_KEY"));
+//                    model.setNotifyURL(rs.getString("NOTIFY_URL"));
+//                    return model;
+//                }
+//            };
+//            return (ProxyPayMessage)this.getJdbcTemplate().queryForObject(sql, new Object[]{messageId}, rw);
+//        } catch (EmptyResultDataAccessException var4) {
+//            return null;
+//        } catch (Exception var5) {
+//            log.error(var5.getMessage(), var5);
+//            return null;
+//        }
+    	
+    	return HttpHelper.getProxyPayMessageById(messageId);
     }
 
     public String[] getServiceId(String sp_productId) {
-        try {
-            String sql = "select v.serviceid ,vs.SERVICENAME from vas v,vasservice vs,vasservice_reserve_info vri where vri.productid=vs.servicecode and v.vasid=vs.vasid and vri.SP_PRODUCTID = ?";
-            ParameterizedRowMapper<String[]> rm = new ParameterizedRowMapper<String[]>() {
-                public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    String[] obj = new String[]{rs.getString(1), rs.getString(2)};
-                    return obj;
-                }
-            };
-            return (String[])this.getJdbcTemplate().queryForObject(sql, new Object[]{sp_productId}, rm);
-        } catch (EmptyResultDataAccessException var4) {
-            return null;
-        } catch (Exception var5) {
-            log.error(var5.getMessage(), var5);
-            return null;
-        }
+//        try {
+//            String sql = "select v.serviceid ,vs.SERVICENAME from vas v,vasservice vs,vasservice_reserve_info vri where vri.productid=vs.servicecode and v.vasid=vs.vasid and vri.SP_PRODUCTID = ?";
+//            ParameterizedRowMapper<String[]> rm = new ParameterizedRowMapper<String[]>() {
+//                public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                    String[] obj = new String[]{rs.getString(1), rs.getString(2)};
+//                    return obj;
+//                }
+//            };
+//            return (String[])this.getJdbcTemplate().queryForObject(sql, new Object[]{sp_productId}, rm);
+//        } catch (EmptyResultDataAccessException var4) {
+//            return null;
+//        } catch (Exception var5) {
+//            log.error(var5.getMessage(), var5);
+//            return null;
+//        }
+        return null;
     }
 }

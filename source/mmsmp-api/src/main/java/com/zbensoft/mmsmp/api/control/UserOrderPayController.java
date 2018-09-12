@@ -27,7 +27,11 @@ import com.zbensoft.mmsmp.api.common.HttpRestStatusFactory;
 import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
 import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
+import com.zbensoft.mmsmp.api.service.api.ProductInfoService;
+import com.zbensoft.mmsmp.api.service.api.ProvinceCityService;
 import com.zbensoft.mmsmp.api.service.api.UserOrderPayService;
+import com.zbensoft.mmsmp.db.domain.ProductInfo;
+import com.zbensoft.mmsmp.db.domain.ProvinceCity;
 import com.zbensoft.mmsmp.db.domain.UserOrderPay;
 
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +40,10 @@ import io.swagger.annotations.ApiOperation;
 public class UserOrderPayController {
 	@Autowired
 	UserOrderPayService userOrderPayService;
-	
+	@Autowired
+	ProvinceCityService provinceCityService;
+	@Autowired
+	private ProductInfoService productInfoService;
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 
@@ -83,7 +90,24 @@ public class UserOrderPayController {
 		if (list == null || list.isEmpty()) {
 			return new ResponseRestEntity<List<UserOrderPay>>(new ArrayList<UserOrderPay>(), HttpRestStatus.NOT_FOUND);
 		}
-	    return new ResponseRestEntity<List<UserOrderPay>>(list, HttpRestStatus.OK,count,count);
+		List<UserOrderPay> listNew = new ArrayList<UserOrderPay>();
+		for (UserOrderPay bean : list) {
+			ProvinceCity provinceCity = provinceCityService.selectByPrimaryKey(bean.getArea());
+			ProvinceCity provinceCityNew = provinceCityService.selectByPrimaryKey(provinceCity.getParentProvinceCityId());
+			ProductInfo productInfo = productInfoService.selectByPrimaryKey(bean.getProductInfoId());
+			if (provinceCity != null) {
+				bean.setProvinceCityName(provinceCity.getProvinceCityName());
+				bean.setParentProvinceCityId(provinceCity.getParentProvinceCityId());
+			}
+			if (provinceCityNew != null) {
+				bean.setParentProvinceCityName(provinceCityNew.getProvinceCityName());
+			}
+			if (productInfo != null) {
+				bean.setProductName(productInfo.getProductName());
+			}
+			listNew.add(bean);
+		}
+	    return new ResponseRestEntity<List<UserOrderPay>>(listNew, HttpRestStatus.OK,count,count);
 	}
 
 	//查询通知

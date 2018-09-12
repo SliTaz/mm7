@@ -56,7 +56,7 @@ public class UserServiceSendController {
 			@RequestParam(required = false) Integer status,@RequestParam(required = false) Integer serviceType,@RequestParam(required = false) Integer sendServiceType,
 			@RequestParam(required = false) String sendServiceRelId,@RequestParam(required = false) String errorInfo,@RequestParam(required = false) Integer sendType,
 			@RequestParam(required = false) String reportTimeStart,@RequestParam(required = false) String reportTimeEnd,@RequestParam(required = false) String mmsPath,
-			@RequestParam(required = false) String batchId,@RequestParam(required = false) String start,@RequestParam(required = false) String length) {
+			@RequestParam(required = false) String batchId,@RequestParam(required = false) String messageId,@RequestParam(required = false) String start,@RequestParam(required = false) String length) {
 		UserServiceSend userServiceSend = new UserServiceSend();
 		userServiceSend.setUserServiceSendId(userServiceSendId);
 		userServiceSend.setPhoneNumber(phoneNumber);
@@ -75,6 +75,8 @@ public class UserServiceSendController {
 		userServiceSend.setBatchId(batchId);
 		userServiceSend.setReportTimeStart(reportTimeStart);
 		userServiceSend.setReportTimeEnd(reportTimeEnd);
+		userServiceSend.setMessageId(messageId);
+		
 		int count = userServiceSendService.count(userServiceSend);
 		if (count == 0) {
 			return new ResponseRestEntity<List<UserServiceSend>>(new ArrayList<UserServiceSend>(), HttpRestStatus.NOT_FOUND);
@@ -167,6 +169,7 @@ public class UserServiceSendController {
 		currentUserServiceSend.setBatchId(userServiceSend.getBatchId());
 		currentUserServiceSend.setReportTime(userServiceSend.getReportTime());
 		currentUserServiceSend.setSendTime(userServiceSend.getSendTime());
+		currentUserServiceSend.setMessageId(userServiceSend.getMessageId());
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
 			for (ObjectError error : list) {
@@ -206,6 +209,7 @@ public class UserServiceSendController {
 		currentUserServiceSend.setBatchId(userServiceSend.getBatchId());
 		currentUserServiceSend.setReportTime(userServiceSend.getReportTime());
 		currentUserServiceSend.setSendTime(userServiceSend.getSendTime());
+		currentUserServiceSend.setMessageId(userServiceSend.getMessageId());
 		//修改日志
 		userServiceSendService.updateByPrimaryKeySelective(currentUserServiceSend);
 		CommonLogImpl.insertLog(CommonLogImpl.OPERTYPE_UPDATE, currentUserServiceSend,CommonLogImpl.CUSTOMER_MANAGE);

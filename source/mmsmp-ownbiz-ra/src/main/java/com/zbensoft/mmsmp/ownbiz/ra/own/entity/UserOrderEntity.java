@@ -12,6 +12,7 @@ public class UserOrderEntity {
     private String spOrderId = "";
     private String notifySpFlag = "";
     private String provinceCode = "";
+    private String spInfoId;
 
     public UserOrderEntity() {
     }
@@ -94,5 +95,13 @@ public class UserOrderEntity {
 
     public void setProvinceCode(String provinceCode) {
         this.provinceCode = provinceCode;
+    }
+
+    public String getSpInfoId() {
+        return spInfoId;
+    }
+
+    public void setSpInfoId(String spInfoId) {
+        this.spInfoId = spInfoId;
     }
 }

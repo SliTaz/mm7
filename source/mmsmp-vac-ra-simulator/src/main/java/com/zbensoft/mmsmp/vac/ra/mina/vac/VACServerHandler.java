@@ -1,12 +1,15 @@
 package com.zbensoft.mmsmp.vac.ra.mina.vac;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
+import com.zbensoft.mmsmp.common.ra.vac.aaa.message.Common;
 import com.zbensoft.mmsmp.vac.ra.aaa.Bind;
 import com.zbensoft.mmsmp.vac.ra.aaa.BindResp;
 import com.zbensoft.mmsmp.vac.ra.aaa.CheckPrice;
@@ -16,6 +19,7 @@ import com.zbensoft.mmsmp.vac.ra.aaa.CheckPriceResp;
 import com.zbensoft.mmsmp.vac.ra.aaa.Handset;
 import com.zbensoft.mmsmp.vac.ra.aaa.HandsetResp;
 import com.zbensoft.mmsmp.vac.ra.aaa.Header;
+import com.zbensoft.mmsmp.vac.ra.aaa.TLV;
 import com.zbensoft.mmsmp.vac.ra.aaa.Unbind;
 import com.zbensoft.mmsmp.vac.ra.aaa.UnbindResp;
 import com.zbensoft.mmsmp.vac.ra.util.PropertiesHelper;
@@ -27,6 +31,10 @@ public class VACServerHandler extends IoHandlerAdapter {
 	public static final int _T = PropertiesHelper.getVacAaaIdleT().intValue();
 	public static final int _N = PropertiesHelper.getVacAaaIdleN().intValue();
 	private long lastReceived = System.currentTimeMillis();
+	
+	
+	private static Map<String,String> orderRelationMap=new HashMap<String,String>();
+	
 	// private String threadname;
 	// private VACConnectManager connectManager = null;
 
@@ -115,7 +123,30 @@ public class VACServerHandler extends IoHandlerAdapter {
 			do_read(bb, checkPrice);
 			CheckPriceResp checkPriceResp = new CheckPriceResp();
 			checkPriceResp.setResult_Code(0);
+			if(checkPrice.getOperation_Type()==CheckPrice.ORDER_RELATION){
+				checkPriceResp.setResult_Code(1201);
+				
+				//增加判断 第一次为1201.第二次为1200
+				String phoneNumber=checkPrice.getOA();
+				logger.info("phoneNumber:"+phoneNumber);
+				boolean flag_contains=orderRelationMap.containsKey(phoneNumber);
+				if(!flag_contains){
+					checkPriceResp.setResult_Code(1201);
+					orderRelationMap.put(phoneNumber, "true");
+				}else{
+					checkPriceResp.setResult_Code(1200);
+					try {
+						orderRelationMap.remove(phoneNumber);
+					} catch (Exception e) {}
+				}
+				logger.info("Result_Code:"+checkPriceResp.getResult_Code());
+			}
+			
+			
+					
 			checkPriceResp.setSequenceId(checkPrice.getSequenceId());
+			checkPriceResp.setLinkID(new TLV(Common.TAG.LinkID, (short) 20, "2018tt123213443215"));
+			checkPriceResp.setNeedConfirm((byte) 1);
 			do_write(session, checkPriceResp);
 			break;
 		case Header.CMDID_CheckPriceConfirm:

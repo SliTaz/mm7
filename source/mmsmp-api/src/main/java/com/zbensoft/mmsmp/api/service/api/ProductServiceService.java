@@ -62,4 +62,7 @@ public interface ProductServiceService {
     ProductService getServiceIDbyProductid(ProductService record);
     
 	List<ProductService> getProductInfo(ProductService productInfo);
+	List<ProductService> getSpProductId(String cpAccessId);
+	ProductService getVasServiceRelation(ProductService record);
+	 int queryContentCount(ProductService record);
 }

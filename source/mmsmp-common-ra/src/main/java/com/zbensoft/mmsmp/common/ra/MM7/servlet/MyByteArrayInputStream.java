@@ -1,6 +1,8 @@
 package com.zbensoft.mmsmp.common.ra.MM7.servlet;
 
 import java.io.IOException;
+
+import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 
 public class MyByteArrayInputStream extends ServletInputStream {
@@ -74,5 +76,23 @@ public class MyByteArrayInputStream extends ServletInputStream {
 	}
 
 	public void close() throws IOException {
+	}
+
+	@Override
+	public boolean isFinished() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isReady() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setReadListener(ReadListener arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

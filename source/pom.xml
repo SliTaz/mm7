@@ -17,7 +17,6 @@
 		<module>mmsmp-unicom-ra</module>
 		<module>mmsmp-common-ra</module>
 		<module>mmsmp-corebiz</module>
-		<module>mmsmp-sms-jar</module>
 		<module>mmsmp-vac-ra-simulator</module>
 		<module>mmsmp-sp-ra-simulator</module>
 		<module>mmsmp-mms-ra-simulator</module>

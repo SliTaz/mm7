@@ -61,4 +61,10 @@ public class MobileSegmentImpl implements MobileSegmentService {
 		return mobileSegmentMapper.count(record);
 	}
 
+	@Override
+	public List<MobileSegment> getCityIdBySegment(String segment) {
+		// TODO Auto-generated method stub
+		return mobileSegmentMapper.getCityIdBySegment(segment);
+	}
+
 }

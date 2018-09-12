@@ -4,11 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.zbensoft</groupId>
-    <artifactId>e-payment</artifactId>
+    <artifactId>mmsmp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>e-payment-boss</artifactId>
-  <name>e-payment-boss</name>
+  <artifactId>mmsmp-boss</artifactId>
+  <name>mmsmp-boss</name>
   <packaging>war</packaging>
   <url>http://maven.apache.org</url>
 	<properties>

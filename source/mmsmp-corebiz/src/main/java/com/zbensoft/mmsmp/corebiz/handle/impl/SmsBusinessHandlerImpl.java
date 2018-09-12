@@ -1,8 +1,15 @@
 package com.zbensoft.mmsmp.corebiz.handle.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.log4j.Logger;
 import com.zbensoft.mmsmp.common.ra.common.db.entity.UserOrder;
 import com.zbensoft.mmsmp.common.ra.common.db.entity.Vasservice;
-import com.zbensoft.mmsmp.common.ra.common.db.entity.VasserviceReserveInfo;
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.CheckRequest;
 import com.zbensoft.mmsmp.common.ra.common.message.CheckResponse;
@@ -12,21 +19,12 @@ import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequ
 import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyResponse;
 import com.zbensoft.mmsmp.corebiz.cache.DataCache;
 import com.zbensoft.mmsmp.corebiz.dao.DaoUtil;
-import com.zbensoft.mmsmp.corebiz.dao.SmsDAO;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.EnumOptype;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.OperatorType;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.Utility;
 import com.zbensoft.mmsmp.corebiz.route.IMessageRouter;
-import com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDao;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
 
 /**
  *  短消息处理类
@@ -38,7 +36,7 @@ public class SmsBusinessHandlerImpl {
 
 	IMessageRouter messageRouter;
 
-	DaoUtil daoUtil;
+//	DaoUtil daoUtil;
 
 	DataCache dataCache;//系统变量 缓存
 
@@ -71,8 +69,8 @@ public class SmsBusinessHandlerImpl {
 
 			if (SMS_MO_MAPREDUCE.equals("ON")) {
 				if (("0000".equals(mosms.getSmsText())) && (spNumber.length() > SERVICE_NUMBER.length())) {
-
-					SmsSenderDto dto = this.daoUtil.getSmsDAO().getDto(spNumber);
+					//TODO
+					SmsSenderDto dto = new SmsSenderDto();//this.daoUtil.getSmsDAO().getDto(spNumber);
 
 					if (dto.getProducts().size() == 0) {
 						doHandleBranch(msg);
@@ -96,7 +94,8 @@ public class SmsBusinessHandlerImpl {
 					}
 
 				} else if ("00000".equals(mosms.getSmsText())) {//退订?
-					List<String[]> productcmds = this.daoUtil.getSmsDAO().getProduct00000(phoneNumber);
+					//TODO
+					List<String[]> productcmds = new ArrayList<>();//this.daoUtil.getSmsDAO().getProduct00000(phoneNumber);
 
 					if ((productcmds == null) || (productcmds.size() == 0)) {
 
@@ -361,7 +360,8 @@ public class SmsBusinessHandlerImpl {
 						String clientMsg = this.dataCache.getSysParams("COREBIZ_SEND_CLIENT_MESSAGE");
 						clientMsg = clientMsg.replace("{0}", getClientMessage(cresponse.getServerResult_code()));
 						clientMsg = clientMsg.replace("{1}", values[3]);
-						SmsSenderDto dto = this.daoUtil.getSmsDAO().getCPInfo(mosms.getVasId());
+						//TODO 获取CP Info;finish
+						SmsSenderDto dto = HttpRequestHelper.getVasSpCpInfo(mosms.getVasId());//this.daoUtil.getSmsDAO().getCPInfo(mosms.getVasId());
 						clientMsg = clientMsg.replace("{3}", dto.getVaspname());
 						clientMsg = clientMsg.replace("{4}",
 								dto.getBusinessphone() == null ? "" : dto.getBusinessphone());
@@ -469,7 +469,8 @@ public class SmsBusinessHandlerImpl {
 
 					if ((returncode == 0) && ("1".equals(notifyResponse.getOrderRequest().getUpdateType()))) {
 						MO_SMMessage mosms = (MO_SMMessage) this.dataMap.remove(notifyResponse.getGlobalMessageid());
-						this.daoUtil.getSmsDAO().updateOrderMessage(mosms);
+						//TODO 更新用户订单信息,edit
+						HttpRequestHelper.updateOrderMessage(mosms);
 					}
 
 				} catch (Exception e) {
@@ -549,12 +550,21 @@ public class SmsBusinessHandlerImpl {
 		notifyRequest.setUserIdType(Integer.valueOf(1));
 
 		try {
-			List<Vasservice> vasList = this.daoUtil.getSmsDAO().getVasservice(mosms.getSendAddress());
+			//TODO 更具手机号码查询所有业务;Already processed;is ok
+			List<Vasservice> vasList = new ArrayList<>();
+			Vasservice vasservice=new Vasservice();
+			vasservice.setVaspid("vaspid0013010012345");
+			vasservice.setServicecode("servicecode12333");
+			vasservice.setVasid("223dd");
+//			vasList.add(vasservice);
+			
+			vasList=HttpRequestHelper.getNormalStatus();//this.daoUtil.getSmsDAO().getVasservice(mosms.getSendAddress());
 
 			if (vasList != null) {
 				for (int i = 0; i < vasList.size(); i++) {
 					Vasservice vas = (Vasservice) vasList.get(i);
-					String notifyUrl = this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(vas.getVaspid());
+					
+					String notifyUrl = this.dataCache.getSpurlByVaspid((vas.getVaspid()));//this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(vas.getVaspid());
 					notifyRequest.setNotifySPURL(notifyUrl);
 					notifyRequest.setProductId(vas.getServicecode());
 					notifyRequest.setSpId(vas.getVaspid());
@@ -587,12 +597,14 @@ public class SmsBusinessHandlerImpl {
 		}
 
 		try {
-			String[] spidandvasname = this.daoUtil.getSmsDAO().getServiceNameByAcc(mosms.getVasId());
+			//TODO 通过接入号获取spId和sp名称;Already processed;is ok
+			String[] spidandvasname = {"vaspid0013010012345","testvsp"};
+			spidandvasname=HttpRequestHelper.getServiceNameByAcc(mosms.getVasId());//this.daoUtil.getSmsDAO().getServiceNameByAcc(mosms.getVasId());
 
 			String _msg = "退订成功！";
 			sendMTMsgToQuence(_msg, mosms.getSendAddress());
-
-			String notifyUrl = this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(spidandvasname[0]);
+			//TODO 通过spID 获取通知url;Already processed;is ok
+			String notifyUrl = this.dataCache.getSpurlByVaspid(spidandvasname[0]);// this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(spidandvasname[0]);
 
 			OrderRelationUpdateNotifyRequest notifyRequest = new OrderRelationUpdateNotifyRequest();
 			notifyRequest.setNotifySPURL(notifyUrl);
@@ -610,8 +622,11 @@ public class SmsBusinessHandlerImpl {
 			notifyRequest.setUpdateType(Integer.valueOf(2));
 			notifyRequest.setUserId(mosms.getSendAddress());
 			notifyRequest.setUserIdType(Integer.valueOf(1));
-
-			List<String> sp_productidList = this.daoUtil.getSmsDAO().getProductId(mosms.getVasId());
+			//TODO 通过接入号查询sp_productid;Already processed;is ok
+			List<String> sp_productidList = new ArrayList<>();
+//			sp_productidList.add("testsp_productid_001");
+			sp_productidList=HttpRequestHelper.getProductId(mosms.getVasId());//this.daoUtil.getSmsDAO().getProductId(mosms.getVasId());
+			
 			String products = null;
 			if (sp_productidList != null) {
 				for (int i = 0; i < sp_productidList.size(); i++) {
@@ -647,8 +662,8 @@ public class SmsBusinessHandlerImpl {
      
  
      String[] values = mosms.getServiceCode().split("#");
-     
-     UserOrder userOrder = this.daoUtil.getSmsSenderDao().getOrderRelation(mosms.getSendAddress(), values[5]);
+     //TODO 获取用户信息
+     UserOrder userOrder = new UserOrder();//this.daoUtil.getSmsSenderDao().getOrderRelation(mosms.getSendAddress(), values[5]);
      if (userOrder == null)
      {
        logger.info("smsmo cancel orderrelation not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:" + mosms.getSendAddress() + ",serviceuniqid:" + values[5] + "]");
@@ -662,15 +677,15 @@ public class SmsBusinessHandlerImpl {
      _msg = _msg.replace("{1}", String.valueOf(Double.parseDouble(values[4]) / 100.0D));
      
  
- 
-     SmsSenderDto dto = this.daoUtil.getSmsDAO().getCPInfo(mosms.getVasId());
+     //TODO 查询CpInfo;finish
+     SmsSenderDto dto = HttpRequestHelper.getVasSpCpInfo(mosms.getVasId());//this.daoUtil.getSmsDAO().getCPInfo(mosms.getVasId());
      _msg = _msg.replace("{2}", dto.getVaspname());
      _msg = _msg.replace("{3}", dto.getBusinessphone() == null ? "" : dto.getBusinessphone());
      
      sendMTMsgToQuence(_msg, mosms.getSendAddress());
      
- 
-     String notifyUrl = this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(values[0]);
+     //TODO 获取通知url;processing; is ok
+     String notifyUrl = HttpRequestHelper.getSpReportUrlByServiceCode(values[0]);//this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(values[0]);
      logger.info("smsmo notify sp orderrelation cancel normal request message [gmessage:" + messageid + ",userphone:" + mosms.getSendAddress() + ",notifyurl:" + notifyUrl + "]");
      
  
@@ -704,28 +719,54 @@ public class SmsBusinessHandlerImpl {
 	private void cancelOrderRaltion(MO_SMMessage mosms, int type) {
 		if (type == 1) {
 			String[] values = mosms.getServiceCode().split("#");
-			Vasservice service = this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(values[2]);
+			//TODO 获取服务;Already processed;is ok
+			Vasservice service = null;
+//			service=this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(values[2]);
+			
+			List<Vasservice> servList=HttpRequestHelper.getNormalStatus();
+			if(servList!=null&&servList.size()>0){
+				for(int i=0;i<servList.size();i++){
+					try {
+						if(servList.get(i).getVasserviceReserveInfo().getSpProductid().equals(values[2])){
+							service=servList.get(i);
+							break;
+						}
+					} catch (Exception e) {
+						
+					}
+				}
+			}
 
 			if (service == null) {
 				logger.info("smsmo cancel product not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
 						+ mosms.getSendAddress() + "]");
 			}
-
-			UserOrder userOrder = this.daoUtil.getSmsSenderDao().getOrderRelation(mosms.getSendAddress(), values[5]);
+			//TODO 查询订购关系;Already processed;is ok
+			UserOrder userOrder = null;
+			userOrder=HttpRequestHelper.getOrderRelation(mosms.getSendAddress(), values[5]);//this.daoUtil.getSmsSenderDao().getOrderRelation(mosms.getSendAddress(), values[5]);
 			if (userOrder == null) {
 				logger.info("smsmo cancel orderrelation not exist[gmessage:" + mosms.getGlobalMessageid()
 						+ ",userphone:" + mosms.getSendAddress() + "]");
 			} else {
-				this.daoUtil.getSmsSenderDao().delOrderRelation(mosms.getSendAddress(), values[5]);
+				//TODO 删除订购关系;Already processed;is ok
+//				this.daoUtil.getSmsSenderDao().delOrderRelation(mosms.getSendAddress(), values[5]);
+				HttpRequestHelper.delOrderRelation(mosms.getSendAddress(), values[5]);
 			}
 
 		} else if (type == 2) {
-
-			this.daoUtil.getSmsDAO().delServiceOrderRelation(mosms.getSendAddress(), mosms.getVasId());
+			
+			
+			String spProductId=mosms.getServiceCode().split("#")[2];
+			String productInfoId = HttpRequestHelper.getServuniqueIdbySpproductid(spProductId);
+			
+			//TODO 退订删除;Already processed;is ok
+//			this.daoUtil.getSmsDAO().delServiceOrderRelation(mosms.getSendAddress(), mosms.getVasId());
+			HttpRequestHelper.delServiceOrderRelation(mosms.getSendAddress(), productInfoId);
 
 		} else if (type == 3) {
-
-			this.daoUtil.getSmsDAO().delAllOrderRelation(mosms.getSendAddress());
+			//TODO 退订删除;Already processed;edit
+//			this.daoUtil.getSmsDAO().delAllOrderRelation(mosms.getSendAddress());
+			HttpRequestHelper.delAllOrderRelation(mosms.getSendAddress());
 		}
 	}
 
@@ -741,7 +782,7 @@ public class SmsBusinessHandlerImpl {
 		String[] values = mosms.getServiceCode().split("#");
 
 		String _msg = this.dataCache.getSysParams("UP_ONDEMAND_TIP");
-		_msg="{0}make{1}test{2}in{3}line";//TODO 测试数据，待删除
+//		_msg="{0}make{1}test{2}in{3}line";//TODO 测试数据，待删除;Already processed;is ok
 		_msg = _msg.replace("{0}", values[3]);
 		_msg = _msg.replace("{1}", String.valueOf(Double.parseDouble(values[4]) / 100.0D));//资费
 
@@ -750,20 +791,34 @@ public class SmsBusinessHandlerImpl {
 //			_msg = _msg.replace("{2}", dto.getVaspname());
 //			_msg = _msg.replace("{3}", dto.getBusinessphone() == null ? "" : dto.getBusinessphone());
 //		}
-		mosms.setSendAddress("15895861272");
-		mosms.setSequence_Number_1(111);
-		mosms.setSequence_Number_2(222);
-		mosms.setSequence_Number_3(333);
+//		mosms.setSendAddress("15895861272");
+//		mosms.setSequence_Number_1(111);
+//		mosms.setSequence_Number_2(222);
+//		mosms.setSequence_Number_3(333);
 		String send_addr = mosms.getSendAddress();
 		sendMTMsgToQuence(_msg, send_addr);
 
 		logger.info("smsmo send demand success smsmt message [gmessage:" + messageid + ",userphone:" + send_addr
 				+ ",servicecode:" + mosms.getServiceCode() + "]");
-		//TODO 测试数据，待删除
-		String provinceCode ="025091"; //this.daoUtil.getSmsSenderDao().getAreaCodeByUserPhone(send_addr);
-		String cityCode = "0250911";//this.daoUtil.getSmsSenderDao().getCityCodeByUserPhone(send_addr);
+		
+		//TODO 测试数据，待删除;Already processed;edit
+//		String provinceCode ="025091"; 
+//		provinceCode=this.daoUtil.getSmsSenderDao().getAreaCodeByUserPhone(send_addr);
+//		provinceCode = HttpRequestHelper.getAreaCodeByUserPhone(send_addr);
+		
+		//TODO 测试数据，待删除;Already processed;edit
+//		String cityCode = "0250911";
+//		cityCode=this.daoUtil.getSmsSenderDao().getCityCodeByUserPhone(send_addr);
+		
+		//TODO 入库待处理;Already processed;edit
 //		this.daoUtil.getSmsDAO().saveDemandMessage(mosms, provinceCode, cityCode);
-		String url = "192.168.1.116:39095";//this.daoUtil.getSmsSenderDao().getSmsSenderUrl(values[1]);
+		HttpRequestHelper.saveDemandMessage(mosms);
+		
+		//TODO 获取ip和port;待处理;Already processed;edit
+		String url = "192.168.1.116:39095";
+//		url=this.daoUtil.getSmsSenderDao().getSmsSenderUrl(values[1]);
+//		url=HttpRequestHelper.getSmsSenderUrl(values[1]);//
+		url=HttpRequestHelper.getSmsSenderUrl(values[0]);//由于values的第二个属性为null,为产品描述remark;故用第一个字段，是vaspid的值。
 
 		if ((url != null) && (values[0] != null)) {
 			mosms.setNotirySPURL(url);
@@ -792,18 +847,27 @@ public class SmsBusinessHandlerImpl {
      
      String[] values = mosms.getServiceCode().split("#");
      
- 
-     String confirmmsg = this.daoUtil.getSmsDAO().getConfirmmsgByProductid(values[2]);
+     //TODO 数据库查询;Already processed;is ok
+//     String confirmmsg = "确认，请回复Y。";
+     String confirmmsg=HttpRequestHelper.getConfirmmsgByProductid(values[2]);//this.daoUtil.getSmsDAO().getConfirmmsgByProductid(values[2]);
+     logger.info("confirmmsg:"+confirmmsg);
      if ((confirmmsg == null) || (confirmmsg.trim().length() == 0)) {
-       confirmmsg = this.daoUtil.getSmsSenderDao().queryMsg("COREBIZ_SEND_ORDER_MESSAGE");
+    	 //TODO 改为从系统配置中取出默认回复语句;Already processed;is ok
+//       confirmmsg = "111{0}222{1}";
+       confirmmsg=this.dataCache.getSysParams("COREBIZ_SEND_ORDER_MESSAGE");//this.daoUtil.getSmsSenderDao().queryMsg("COREBIZ_SEND_ORDER_MESSAGE");
        confirmmsg = confirmmsg.replace("{0}", values[3]);
        confirmmsg = confirmmsg.replace("{1}", String.valueOf(Double.parseDouble(values[4]) / 100.0D));
        
  
- 
-       SmsSenderDto dto = this.daoUtil.getSmsDAO().getCPInfo(mosms.getVasId());
+       //TODO 改为从内存中获取CPInfo;Already processed;is ok
+//       SmsSenderDto dto = new SmsSenderDto();//this.daoUtil.getSmsDAO().getCPInfo(mosms.getVasId());
+//       dto.setVaspname("testVaspname");
+       SmsSenderDto dto=HttpRequestHelper.getVasSpCpInfo(mosms.getVasId());
+       
        confirmmsg = confirmmsg.replace("{2}", dto.getVaspname());
        confirmmsg = confirmmsg.replace("{3}", dto.getBusinessphone() == null ? "" : dto.getBusinessphone());
+       
+       logger.info("confirmmsg:"+confirmmsg);
      }
      
  
@@ -827,7 +891,7 @@ public class SmsBusinessHandlerImpl {
  
  
      String[] values = mosms.getServiceCode().split("#");
-     String _msg = this.daoUtil.getSmsSenderDao().queryMsg("COREBIZ_SEND_SECONDCONFIRM_MESSAGE");
+     String _msg = this.dataCache.getSysParams("COREBIZ_SEND_SECONDCONFIRM_MESSAGE");//this.daoUtil.getSmsSenderDao().queryMsg("COREBIZ_SEND_SECONDCONFIRM_MESSAGE");
      _msg = _msg.replace("{0}", values[3]);
      _msg = _msg.replace("{1}", String.valueOf(Double.parseDouble(values[4]) / 100.0D));
      _msg = _msg.replace("{2}", values.length >= 7 ? values[6] : "");
@@ -845,7 +909,7 @@ public class SmsBusinessHandlerImpl {
      
  
  
-     String notifyUrl = this.daoUtil.getSmsDAO().getSpurlByVaspid(values[0]);
+     String notifyUrl = this.dataCache.getSpurlByVaspid(values[0]);//this.daoUtil.getSmsDAO().getSpurlByVaspid(values[0]);
      logger.info("smsmo notify sp orderrelation request message [gmessage:" + messageid + ",userphone:" + send_addr + ",notifyurl:" + notifyUrl + "]");
      
  
@@ -868,28 +932,59 @@ public class SmsBusinessHandlerImpl {
      notifyRequest.setUserIdType(Integer.valueOf(1));
      notifyRequest.setGlobalMessageid(mosms.getGlobalMessageid());
      this.messageRouter.doRouter(notifyRequest);
-     
+     System.out.println("need Delete----------------------->send succ");
+     //TODO 保存订单信息
      saveOrderMessage(mosms);
    }
 
 	private void saveOrderMessage(MO_SMMessage mosms) {
 		String[] values = mosms.getServiceCode().split("#");
 
-		Vasservice service = this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(values[2]);
+		// TODO pending;is ok
+		Vasservice service = null;//this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(values[2]);
+		
+		List<Vasservice> servList=HttpRequestHelper.getNormalStatus();
+		if(servList!=null&&servList.size()>0){
+			for(int i=0;i<servList.size();i++){
+				try {
+					if(servList.get(i).getVasserviceReserveInfo().getSpProductid().equals(values[2])){
+						service=servList.get(i);
+						break;
+					}
+				} catch (Exception e) {
+					
+				}
+			}
+		}
+		
 		if (service == null) {
 			logger.info("smsmo order product not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
 					+ mosms.getSendAddress() + "]");
 		}
 
-		UserOrder userOrder = this.daoUtil.getSmsSenderDao().getOrderRelation(mosms.getSendAddress(), values[5]);
-
-		if (userOrder != null) {
+		// TODO pending;is ok
+		UserOrder userOrder = new UserOrder();//this.daoUtil.getSmsSenderDao().getOrderRelation(mosms.getSendAddress(), values[5]);
+		userOrder=HttpRequestHelper.getOrderRelation(mosms.getSendAddress(), values[2]);
+				
+		if (userOrder != null&&(userOrder.getId()!=null&&userOrder.getId().length()>0)) {
 			logger.info("smsmo order orderrelation already exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
 					+ mosms.getSendAddress() + "]");
 		} else {
-			String provinceCode = this.daoUtil.getSmsSenderDao().getAreaCodeByUserPhone(mosms.getSendAddress());
-			String cityCode = this.daoUtil.getSmsSenderDao().getCityCodeByUserPhone(mosms.getSendAddress());
-			this.daoUtil.getSmsDAO().saveOrderMessage(mosms, provinceCode, cityCode, "1");
+			// TODO pending;is ok
+			String[] areaCode=HttpRequestHelper.getAreaCodeByUserPhone(mosms.getSendAddress());
+			if(areaCode!=null&&areaCode.length==2){
+				String provinceCode =areaCode[0];
+				String cityCode =areaCode[1];
+				//TODO not need saveOrderMessage
+//				this.daoUtil.getSmsDAO().saveOrderMessage(mosms, provinceCode, cityCode, "1");
+			}
+			String phoneNumber=mosms.getSendAddress();
+			String spInfoId=mosms.getVaspId();
+			String productInfoId = HttpRequestHelper.getServuniqueIdbySpproductid(values[2]);
+			String fee=values[4];
+			String notifyflag="1";
+			
+			HttpRequestHelper.saveOrderMessage(phoneNumber,spInfoId,productInfoId,fee,notifyflag);
 
 			logger.info("smsmo order orderrelation save db sucess[gmessage:" + mosms.getGlobalMessageid()
 					+ ",userphone:" + mosms.getSendAddress() + "]");
@@ -921,7 +1016,7 @@ public class SmsBusinessHandlerImpl {
 	}
 
 	private OperatorType getOperatorType(MO_SMMessage mosms) {
-		String SERVICE_NUMBER = "30100";//this.dataCache.getSysParams("ACC_NUMBER");
+		String SERVICE_NUMBER = this.dataCache.getSysParams("ACC_NUMBER");
 		String TAKE_ACC_NUMBER = this.dataCache.getSysParams("TAKE_ACC_NUMBER");
 
 		String phoneNumber = mosms.getSendAddress();
@@ -931,8 +1026,9 @@ public class SmsBusinessHandlerImpl {
 		logger.info("smsmo set operator type[gmessageid:" + mosms.getGlobalMessageid() + ",smstext:" + smstext
 				+ ",phoneNumber:" + phoneNumber + ",spNumber:" + vasId + "]");
 
-//		TODO 测试删除，后续需要增加数据
-//		this.daoUtil.getSmsSenderDao().saveMoMsg(smstext, phoneNumber, spNumber);
+//		TODO 测试删除，后续需要增加数据;Already processed;is ok
+//		this.daoUtil.getSmsSenderDao().saveMoMsg(smstext, phoneNumber, vasId);
+		HttpRequestHelper.saveMoMsg(smstext, phoneNumber, vasId);
 		logger.info("smsmo save database [gmessageid:" + mosms.getGlobalMessageid());
 
 		if ((smstext == null) || ("".equals(smstext.trim()))) {
@@ -958,8 +1054,10 @@ public class SmsBusinessHandlerImpl {
 		}
 
 		if ("00000".equals(smstext)) {
-			String sp_productids = this.daoUtil.getSmsDAO().getProductIds(phoneNumber);
-
+			//TODO pending;edit
+			String sp_productids = "128398";//this.daoUtil.getSmsDAO().getProductIds(phoneNumber);
+			sp_productids=HttpRequestHelper.getProductIds(phoneNumber);
+			
 			if (sp_productids == null) {
 				logger.info("smsmo cancel 00000 vas service is null [gmessageid:" + mosms.getGlobalMessageid()
 						+ ",spnumber:" + vasId + ",smstext:" + smstext + "]");
@@ -973,10 +1071,23 @@ public class SmsBusinessHandlerImpl {
 			optype.setProduct_id(sp_productids);
 			return optype;
 		}
-
-		if (("0000".equals(smstext)) && (vasId.length() > SERVICE_NUMBER.length())) {
-
-			SmsSenderDto dto = this.daoUtil.getSmsDAO().getVasSpCpInfo(vasId);
+		//TODO 判断逻辑修改待验证;Same
+		//if (("0000".equals(smstext)) && (vasId.length() > SERVICE_NUMBER.length())) {
+		if (("0000".equals(smstext)) && (vasId.length() >= SERVICE_NUMBER.length())) {
+			//TODO 通过产品接入号查询业务信息;Already processed;is ok
+			SmsSenderDto dto = new SmsSenderDto();
+//			dto.setServiceId("testiwoeioewo1231233");
+//			dto.setVaspid("vaspid0013010012345");
+//			dto.setSp_productid("128398");
+//			dto.setVaspname("sete");
+//			dto.setProducts(testList);
+			
+			dto=HttpRequestHelper.getVasSpCpInfo(vasId);//this.daoUtil.getSmsDAO().getVasSpCpInfo(vasId);
+			
+			List<SmsSenderDto> testList=new ArrayList<>();
+			SmsSenderDto dto2 = new SmsSenderDto();
+			testList.add(dto2);
+			dto.setProducts(testList);
 
 			if (dto.getProducts().size() == 0) {
 				logger.info("smsmo cancel 0000 vas service is null [gmessageid:" + mosms.getGlobalMessageid()
@@ -998,12 +1109,16 @@ public class SmsBusinessHandlerImpl {
 			return optype;
 		}
 
-		if ((SERVICE_NUMBER.equals(vasId)) && ("Y".equalsIgnoreCase(smstext))) {
+		//TODO 存在疑惑;need confirmed
+		//if ((SERVICE_NUMBER.equals(vasId)) && ("Y".equalsIgnoreCase(smstext))) {
+		if (("Y".equalsIgnoreCase(smstext))) {
 
 			logger.info("smsmo confirm command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
-
-			String[] smsText = this.daoUtil.getSmsDAO().getLatestMoOrderMsgText(phoneNumber, 0L, SERVICE_NUMBER);
+			//TODO 通过手机号码和服务好查询短信内容和sp接入号;Already processed;is ok
+			String[] smsText = {"order001","3010012345"};
+			smsText=HttpRequestHelper.getLatestMoOrderMsgText(phoneNumber, 0L, vasId);//this.daoUtil.getSmsDAO().getLatestMoOrderMsgText(phoneNumber, 0L, SERVICE_NUMBER);
+			
 			Vasservice cofirmVas = this.dataCache.getOrderProduct(smsText[0] + smsText[1], null);
 
 			if (cofirmVas == null) {
@@ -1020,8 +1135,11 @@ public class SmsBusinessHandlerImpl {
 			optype.setServicename(cofirmVas.getServicename());
 			optype.setFee(cofirmVas.getOrderfee());
 			optype.setUniqueid(cofirmVas.getUniqueid());
-
-			SmsSenderDto dto = this.daoUtil.getSmsDAO().getCPInfo(smsText[1]);
+			//TODO 查询cp信息;Already processed;is ok
+			SmsSenderDto dto = new SmsSenderDto();
+			dto.setVaspname("testsp");
+			dto=HttpRequestHelper.getVasSpCpInfo(smsText[1]);//this.daoUtil.getSmsDAO().getCPInfo(smsText[1]);
+			
 			optype.setVaspname(dto.getVaspname());
 			optype.setBusinessphone(dto.getBusinessphone() == null ? "" : dto.getBusinessphone());
 
@@ -1122,9 +1240,9 @@ public class SmsBusinessHandlerImpl {
 		this.messageRouter = messageRouter;
 	}
 
-	public void setDaoUtil(DaoUtil daoUtil) {
-		this.daoUtil = daoUtil;
-	}
+//	public void setDaoUtil(DaoUtil daoUtil) {
+//		this.daoUtil = daoUtil;
+//	}
 
 	public void setDataCache(DataCache dataCache) {
 		this.dataCache = dataCache;

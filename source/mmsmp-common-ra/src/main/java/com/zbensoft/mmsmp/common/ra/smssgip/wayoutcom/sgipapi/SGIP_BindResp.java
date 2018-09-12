@@ -58,7 +58,7 @@ public class SGIP_BindResp extends SGIP_Command {
     }
 
     public int write(Socket sc) throws IOException {
-        int nSend = false;
+        int nSend ;
         byte[] abyte0 = new byte[this.TotalLength];
         OutputStream writer = sc.getOutputStream();
         ByteBuffer sendByte = ByteBuffer.allocate(this.TotalLength);
@@ -70,7 +70,7 @@ public class SGIP_BindResp extends SGIP_Command {
         sendByte.put(this.byteBody);
         sendByte.clear();
         writer.write(sendByte.array());
-        int nSend = sendByte.array().length;
+        nSend = sendByte.array().length;
         this.flag = 1;
         return nSend;
     }

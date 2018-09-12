@@ -1,33 +1,32 @@
  package com.zbensoft.mmsmp.corebiz.handle.impl;
  
- import com.zbensoft.mmsmp.common.ra.common.db.entity.UserOrder;
- import com.zbensoft.mmsmp.common.ra.common.db.entity.Vasservice;
- import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
- import com.zbensoft.mmsmp.common.ra.common.message.CheckRequest;
- import com.zbensoft.mmsmp.common.ra.common.message.CheckResponse;
- import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
- import com.zbensoft.mmsmp.common.ra.common.message.MT_SMMessage;
- import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest;
- import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyResponse;
- import com.zbensoft.mmsmp.common.ra.common.message.WOCheckRequest;
- import com.zbensoft.mmsmp.common.ra.common.message.WOCheckResponse;
- import com.zbensoft.mmsmp.corebiz.cache.DataCache;
- import com.zbensoft.mmsmp.corebiz.dao.DaoUtil;
- import com.zbensoft.mmsmp.corebiz.dao.SmsDAO;
- import com.zbensoft.mmsmp.corebiz.message.OrderRelationMessage;
- import com.zbensoft.mmsmp.corebiz.route.IMessageRouter;
- import com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDao;
- import com.zbensoft.mmsmp.common.ra.send.util.SmsSenderUtil;
- import com.zbensoft.mmsmp.common.ra.utils.DateHelper;
- import com.zbensoft.mmsmp.common.ra.vacNew.util.Utility;
- import com.zbensoft.mmsmp.vas.sjb.data.OrderRelationDAO;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.Constants;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.OrderRelationRequest;
  import java.text.SimpleDateFormat;
- import java.util.Calendar;
- import java.util.Date;
- import java.util.concurrent.ConcurrentHashMap;
- import org.apache.log4j.Logger;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.log4j.Logger;
+
+import com.zbensoft.mmsmp.common.ra.common.db.entity.UserOrder;
+import com.zbensoft.mmsmp.common.ra.common.db.entity.Vasservice;
+import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
+import com.zbensoft.mmsmp.common.ra.common.message.CheckRequest;
+import com.zbensoft.mmsmp.common.ra.common.message.CheckResponse;
+import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
+import com.zbensoft.mmsmp.common.ra.common.message.MT_SMMessage;
+import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest;
+import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyResponse;
+import com.zbensoft.mmsmp.common.ra.common.message.WOCheckRequest;
+import com.zbensoft.mmsmp.common.ra.common.message.WOCheckResponse;
+import com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto;
+import com.zbensoft.mmsmp.common.ra.send.util.SmsSenderUtil;
+import com.zbensoft.mmsmp.common.ra.utils.DateHelper;
+import com.zbensoft.mmsmp.common.ra.vacNew.util.Utility;
+import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.Constants;
+import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.OrderRelationRequest;
+import com.zbensoft.mmsmp.corebiz.cache.DataCache;
+import com.zbensoft.mmsmp.corebiz.message.OrderRelationMessage;
+import com.zbensoft.mmsmp.corebiz.route.IMessageRouter;
  
  
  public class UniBusinessHandlerImpl
@@ -35,8 +34,8 @@
    static final Logger logger = Logger.getLogger(UniBusinessHandlerImpl.class);
    
    IMessageRouter messageRouter;
-   
-   DaoUtil daoUtil;
+   //TODO 本类中所有使用doa的地方都未进行修改，请检查
+//   DaoUtil daoUtil;
    
    DataCache dataCache;
    
@@ -77,7 +76,7 @@
        channel = orderRelationRequest.getChannel();
        status = Integer.valueOf(orderRelationRequest.getStatus()).intValue();
        
-       vasservice = this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(orderRelationRequest.getProductID());
+//       vasservice = this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(orderRelationRequest.getProductID());
        if (vasservice == null) {
          vasservice = new Vasservice();
        }
@@ -141,7 +140,7 @@
            
  
            if ((Constants.OrderRelation_Status_Order == status) || (Constants.OrderRelation_Status_Cancel == status)) {
-             String orderNotifyUrl = this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
+             String orderNotifyUrl = "";//this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
              
              logger.info("the relation notifysp url,  spid:" + orderRelationRequest.getSpCode() + "     url:" + orderNotifyUrl);
              
@@ -175,9 +174,9 @@
              logger.info("send order relation to spAgent ......[user:" + orderRelationRequest.getUserPhone() + "   globalMessageid:" + orderRelationMessage.getGlobalMessageid() + " status:" + status + "]");
            }
            else if (Constants.OrderRelation_Status_Demand == status) {
-             String url = this.daoUtil.getSmsSenderDao().getSmsSenderUrl(orderRelationRequest.getServiceId());
+             String url = "";//this.daoUtil.getSmsSenderDao().getSmsSenderUrl(orderRelationRequest.getServiceId());
              
-             String vasId = this.daoUtil.getSmsSenderDao().getService_idByProduct_id(orderRelationRequest.getProductID());
+             String vasId = "";//this.daoUtil.getSmsSenderDao().getService_idByProduct_id(orderRelationRequest.getProductID());
              
  
              MO_SMMessage mosms = new MO_SMMessage();
@@ -248,7 +247,7 @@
            {
  
  
-             String orderNotifyUrl = this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
+             String orderNotifyUrl = "";//this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
              
  
  
@@ -287,9 +286,9 @@
            }
            else if (Constants.OrderRelation_Status_Demand == orderRelationRequest.getStatus())
            {
-             String url = this.daoUtil.getSmsSenderDao().getSmsSenderUrl(orderRelationRequest.getServiceId());
+             String url = "";//this.daoUtil.getSmsSenderDao().getSmsSenderUrl(orderRelationRequest.getServiceId());
              
-             String vasId = this.daoUtil.getSmsSenderDao().getService_idByProduct_id(orderRelationRequest.getProductID());
+             String vasId = "";//this.daoUtil.getSmsSenderDao().getService_idByProduct_id(orderRelationRequest.getProductID());
              String linkid = "ACE" + SmsSenderUtil.generateRandomCode(5);
              logger.info("linkid generated by aceway is : " + linkid);
              
@@ -325,7 +324,7 @@
        saveOrder(orderRelationMessage.getGlobalMessageid(), 1);
        
  
-       String orderNotifyUrl = this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
+       String orderNotifyUrl = "";//this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
        
        logger.info("the relation notifysp url,  spid:" + orderRelationRequest.getSpCode() + "     url:" + orderNotifyUrl);
        
@@ -373,7 +372,7 @@
      OrderRelationMessage orderRelationMessage = (OrderRelationMessage)this.dataMap.get(response.getGlobalMessageid());
      OrderRelationRequest orderRelationRequest = orderRelationMessage.getOrderRelationRequest();
      int status = Integer.valueOf(orderRelationRequest.getStatus()).intValue();
-     Vasservice vasservice = this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(orderRelationRequest.getProductID());
+     Vasservice vasservice = new Vasservice();//this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(orderRelationRequest.getProductID());
      if (Constants.OrderRelation_Status_Order == status) {
        logger.info("order relation  status" + status);
        if (response.getReturnStr().equals("20000"))
@@ -391,7 +390,7 @@
  
          saveOrder(response.getGlobalMessageid(), 1);
          
-         String orderNotifyUrl = this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
+         String orderNotifyUrl = "";//this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
          
          logger.info("the relation notifysp url,  spid:" + orderRelationRequest.getSpCode() + "     url:" + orderNotifyUrl);
          
@@ -474,8 +473,8 @@
  
          saveOrder(response.getGlobalMessageid(), 2);
          
-         String url = this.daoUtil.getSmsSenderDao().getSmsSenderUrl(orderRelationRequest.getServiceId());
-         String vasId = this.daoUtil.getSmsSenderDao().getService_idByProduct_id(orderRelationRequest.getProductID());
+         String url = "";//this.daoUtil.getSmsSenderDao().getSmsSenderUrl(orderRelationRequest.getServiceId());
+         String vasId = "";//this.daoUtil.getSmsSenderDao().getService_idByProduct_id(orderRelationRequest.getProductID());
          String linkid = "ACE" + SmsSenderUtil.generateRandomCode(5);
          logger.info("linkid generated by aceway is : " + linkid);
          
@@ -512,7 +511,7 @@
      OrderRelationMessage orderRelationMessage = (OrderRelationMessage)this.dataMap.get(response.getCRequest().getGlobalMessageid());
      OrderRelationRequest orderRelationRequest = orderRelationMessage.getOrderRelationRequest();
      int status = Integer.valueOf(orderRelationRequest.getStatus()).intValue();
-     Vasservice vasservice = this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(orderRelationRequest.getProductID());
+     Vasservice vasservice = new Vasservice();//this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(orderRelationRequest.getProductID());
      if ((response.getResult_Code().equals("0")) || (response.getResult_Code().equals("1201")))
      {
        logger.info("=====>order relation check vacAgent successfully!");
@@ -530,7 +529,7 @@
  
          saveOrder(response.getCRequest().getGlobalMessageid(), 1);
          
-         String orderNotifyUrl = this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
+         String orderNotifyUrl = "";//this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(orderRelationRequest.getSpCode());
          
          logger.info("the relation notifysp url,  spid:" + orderRelationRequest.getSpCode() + "     url:" + orderNotifyUrl);
          
@@ -569,8 +568,8 @@
  
          saveOrder(response.getCRequest().getGlobalMessageid(), 2);
          
-         String url = this.daoUtil.getSmsSenderDao().getSmsSenderUrl(orderRelationRequest.getServiceId());
-         String vasId = this.daoUtil.getSmsSenderDao().getService_idByProduct_id(orderRelationRequest.getProductID());
+         String url = "";//this.daoUtil.getSmsSenderDao().getSmsSenderUrl(orderRelationRequest.getServiceId());
+         String vasId = "";//this.daoUtil.getSmsSenderDao().getService_idByProduct_id(orderRelationRequest.getProductID());
          
  
          MO_SMMessage mosms = new MO_SMMessage();
@@ -633,9 +632,10 @@
      OrderRelationRequest orderRelationRequest = ((OrderRelationMessage)this.dataMap.get(globalMessageid)).getOrderRelationRequest();
      String _msg = "";
      String _msg1 = "";
-     com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto smsSenderDto = this.daoUtil.getSmsSenderDao().getProductInfo(orderRelationRequest.getProductID(), feetype);
-     
-     com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto spBean = this.daoUtil.getSmsDAO().getSPInfoByProdId(orderRelationRequest.getProductID());
+     //TODO 
+     SmsSenderDto smsSenderDto = new SmsSenderDto();//this.daoUtil.getSmsSenderDao().getProductInfo(orderRelationRequest.getProductID(), feetype);
+     //TODO 
+     SmsSenderDto spBean = new SmsSenderDto();//this.daoUtil.getSmsDAO().getSPInfoByProdId(orderRelationRequest.getProductID());
      if ((Constants.OrderRelation_Status_Order == orderRelationRequest.getStatus()) || (Constants.OrderRelation_Status_Demand == orderRelationRequest.getStatus())) {
        SaveOrderRaltion(orderRelationRequest.getUserPhone(), orderRelationRequest.getChargeparty(), orderRelationRequest.getProductID(), orderRelationRequest.getSpCode(), orderRelationRequest.getChannel(), "", "1", orderRelationRequest.getPeroid());
        
@@ -656,8 +656,8 @@
      }
      else if (Constants.OrderRelation_Status_Cancel == orderRelationRequest.getStatus()) {
        logger.info("=====>cancel order relation notify sp successfully! status:" + orderRelationRequest.getStatus());
-       int uniqueid = Integer.valueOf(this.daoUtil.getSmsSenderDao().getUniqueid(orderRelationRequest.getProductID())).intValue();
-       this.daoUtil.getOrderRelationDAO().delOrderRelation(orderRelationRequest.getUserPhone(), Integer.valueOf(uniqueid));
+       int uniqueid = 0;//Integer.valueOf(this.daoUtil.getSmsSenderDao().getUniqueid(orderRelationRequest.getProductID())).intValue();
+       //this.daoUtil.getOrderRelationDAO().delOrderRelation(orderRelationRequest.getUserPhone(), Integer.valueOf(uniqueid));
        
        _msg = "您已成功退订" + spBean.getVaspname() + "的" + smsSenderDto.getServicename() + "服务，" + smsSenderDto.getFee() + "元，由联通代收。客服电话" + spBean.getBusinessphone();
      }
@@ -706,21 +706,21 @@
  
    public void SaveOrderRaltion(String userPhone, String chargeparty, String productId, String spId, String channel, String spOrderId, String notifySpFlag, int period)
    {
-     Vasservice service = this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(productId);
+     Vasservice service = new Vasservice();//this.daoUtil.getSmsSenderDao().getVASServiceByServiceCode(productId);
      if (service == null) {
        logger.info("productId not exists!");
      }
-     String uniqueid = this.daoUtil.getSmsSenderDao().getUniqueid(productId);
-     UserOrder userOrder = this.daoUtil.getSmsSenderDao().getOrderRelation(userPhone, uniqueid);
+     String uniqueid = "";//this.daoUtil.getSmsSenderDao().getUniqueid(productId);
+     UserOrder userOrder = new UserOrder();//this.daoUtil.getSmsSenderDao().getOrderRelation(userPhone, uniqueid);
      if ((userOrder != null) && (service.getFeetype().equals("1"))) {
        logger.info("order relation already exists!");
  
      }
      else
      {
-       String provinceCode = this.daoUtil.getSmsSenderDao().getAreaCodeByUserPhone(userPhone);
-       String cityCode = this.daoUtil.getSmsSenderDao().getCityCodeByUserPhone(userPhone);
-       this.daoUtil.getSmsSenderDao().AddOrderRelation(userPhone, chargeparty, service, provinceCode, cityCode, channel, spOrderId, notifySpFlag, String.valueOf(period));
+       String provinceCode = "";//this.daoUtil.getSmsSenderDao().getAreaCodeByUserPhone(userPhone);
+       String cityCode = "";//this.daoUtil.getSmsSenderDao().getCityCodeByUserPhone(userPhone);
+       //this.daoUtil.getSmsSenderDao().AddOrderRelation(userPhone, chargeparty, service, provinceCode, cityCode, channel, spOrderId, notifySpFlag, String.valueOf(period));
      }
    }
    
@@ -731,17 +731,17 @@
      if (response.getResultCode() == 0) {
        logger.info("=====>order relation notify sp successfully!");
        OrderRelationRequest orderRelationRequest = ((OrderRelationMessage)this.dataMap.get(response.getGlobalMessageid())).getOrderRelationRequest();
-       String uniqueid = this.daoUtil.getSmsSenderDao().getUniqueid(orderRelationRequest.getProductID());
-       this.daoUtil.getSmsDAO().updateOrderRelation(orderRelationRequest.getUserPhone(), uniqueid);
+       String uniqueid = "";//this.daoUtil.getSmsSenderDao().getUniqueid(orderRelationRequest.getProductID());
+//       this.daoUtil.getSmsDAO().updateOrderRelation(orderRelationRequest.getUserPhone(), uniqueid);
        logger.info("update userPhone" + orderRelationRequest.getUserPhone() + " serviceuniqueid:" + uniqueid);
      }
    }
    
    public void setMessageRouter(IMessageRouter messageRouter) { this.messageRouter = messageRouter; }
    
-   public void setDaoUtil(DaoUtil daoUtil) {
-     this.daoUtil = daoUtil;
-   }
+//   public void setDaoUtil(DaoUtil daoUtil) {
+//     this.daoUtil = daoUtil;
+//   }
    
    public void setDataCache(DataCache dataCache) { this.dataCache = dataCache; }
    

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="GBK" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+           default-lazy-init="true">
+           
+    <bean id="refreshTask" class="com.aceway.corebiz.task.RefreshTask">
+    	<property name="cacheCenter" ref="cacheCenter"/>
+    	<property name="smsMemoryKeep" value="30"/>
+    	<property name="mmsMemoryKeep" value="180"/>
+    	<property name="uniMemoryKeep" value="30"/>
+    	<property name="commonMemoryKeep" value="30"/>
+    </bean>
+    
+    <bean id="monitorTask" class="com.aceway.corebiz.task.MonitorTask">
+    	
+    	<property name="receiveHeightLevelQueue" ref="receiveHeightLevelQueue"/>
+    	<property name="receiveHeightLevelExtendQueue" ref="receiveHeightLevelExtendQueue"/>
+    	<property name="receiveCommonLevelQueue" ref="receiveCommonLevelQueue"/>
+    	<property name="receiveLowerLevelQueue" ref="receiveLowerLevelQueue"/>
+    	<property name="receiveProxyPayQueue" ref="receiveProxyPayQueue"/>
+    	<property name="dispatchSmsAgentQueue" ref="dispatchSmsAgentQueue"/>
+    	<property name="dispatchMmsAgentQueue" ref="dispatchMmsAgentQueue"/>
+    	<property name="dispatchVacAgentQueue" ref="dispatchVacAgentQueue"/>
+    	<property name="dispatchSpAgentQueue" ref="dispatchSpAgentQueue"/>
+    	<property name="dispatchWoAgentQueue" ref="dispatchWoAgentQueue"/>
+    	<property name="dispatchOwnServiceQueue" ref="dispatchOwnServiceQueue"/>
+    	
+	<property name="mmsDBListener" ref="mmsDBListener"/>
+
+    	
+    	<property name="cacheCenter" ref="cacheCenter"/>
+    </bean>
+    
+    <bean id="refreshDataCacheJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="refreshTask"/>
+		<property name="targetMethod" value="doRefreshDataCache"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="refreshDataMemoryJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="refreshTask"/>
+		<property name="targetMethod" value="doRefreshDataMemory"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="monitorLogerServerJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="monitorTask"/>
+		<property name="targetMethod" value="doCheckLogerServer"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="monitorSystemStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="monitorTask"/>
+		<property name="targetMethod" value="doCheckSystemStatus"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="refreshDataCacheTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="refreshDataCacheJob"/>
+		<property name="startDelay" value="0"/>
+		<property name="repeatInterval" value="600000"/>
+	</bean>
+	
+	<bean id="refreshDataMemoryTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="refreshDataMemoryJob"/>
+		<property name="startDelay" value="5000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<!-- 监控日志服务
+	<bean id="monitorLogerServerTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="monitorLogerServerJob"/>
+		<property name="startDelay" value="10000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	 -->
+	<bean id="monitorSystemStatusTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="monitorSystemStatusJob"/>
+		<property name="startDelay" value="3000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<!-- bean id="refreshDataCenterTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="refreshDataCenterJob"/>
+		<property name="cronExpression" value="0 10 8 * * ?"/>
+	</bean-->
+	
+	<bean autowire="no" id="taskScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="true"/>
+		<property name="triggers">
+			<list>
+				<ref local="refreshDataCacheTrigger" />
+				<ref local="refreshDataMemoryTrigger" />
+				<!--<ref local="monitorLogerServerTrigger" /> -->
+				<ref local="monitorSystemStatusTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="taskListener" class="com.aceway.corebiz.task.TaskListener">
+		<property name="scheduler" ref="taskScheduler"/>
+	</bean>
+	
+</beans>

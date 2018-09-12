@@ -2,23 +2,8 @@
 
 package com.zbensoft.mmsmp.ownbiz.ra.own.server;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
+import com.alibaba.fastjson.JSON;
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
 import com.zbensoft.mmsmp.ownbiz.ra.own.cache.DataCache;
 import com.zbensoft.mmsmp.ownbiz.ra.own.dao.ProxyPayMessageDao;
 import com.zbensoft.mmsmp.ownbiz.ra.own.dao.UserOrderDao;
@@ -27,9 +12,24 @@ import com.zbensoft.mmsmp.ownbiz.ra.own.entity.VasServiceRelationEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.queue.MessageQuene;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.AppContants;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.ValidateMessageUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import net.sf.json.JSONObject;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
+
+@WebServlet(urlPatterns = "/billing/web")
 public class UserBillingWebServlet extends HttpServlet {
     private static final long serialVersionUID = 5321499768558169999L;
     private static final Log log = LogFactory.getLog(UserBillingWebServlet.class);
@@ -89,7 +89,7 @@ public class UserBillingWebServlet extends HttpServlet {
                             log.error(AppContants.RETURN_CODE_MOBILE_UNEQUAL_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                             returnMap.put("returnCode", AppContants.RETURN_CODE_MOBILE_UNEQUAL);
                             returnMap.put("returnDesc", AppContants.RETURN_CODE_MOBILE_UNEQUAL_DESC);
-                            strResult = JSONObject.fromObject(returnMap).toString();
+                            strResult =  JSON.toJSONString(returnMap);
                             writer.write(strResult);
                             return;
                         }
@@ -98,7 +98,7 @@ public class UserBillingWebServlet extends HttpServlet {
                             log.error(AppContants.RETURN_CODE_REPEAT_REQUEST_DESC);
                             returnMap.put("returnCode", AppContants.RETURN_CODE_REPEAT_REQUEST + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                             returnMap.put("returnDesc", AppContants.RETURN_CODE_REPEAT_REQUEST_DESC);
-                            strResult = JSONObject.fromObject(returnMap).toString();
+                            strResult =  JSON.toJSONString(returnMap);
                             writer.write(strResult);
                             return;
                         }
@@ -111,7 +111,7 @@ public class UserBillingWebServlet extends HttpServlet {
                                 log.error(AppContants.RETURN_CODE_PREDETERMINED_TIME_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",Content=" + strContent + ")");
                                 returnMap.put("returnCode", AppContants.RETURN_CODE_PREDETERMINED_TIME);
                                 returnMap.put("returnDesc", AppContants.RETURN_CODE_PREDETERMINED_TIME_DESC);
-                                strResult = JSONObject.fromObject(returnMap).toString();
+                                strResult = JSON.toJSONString(returnMap);
                                 writer.write(strResult);
                                 return;
                             }
@@ -124,7 +124,7 @@ public class UserBillingWebServlet extends HttpServlet {
                             log.error(AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                             returnMap.put("returnCode", AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL);
                             returnMap.put("returnDesc", AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL_DESC);
-                            strResult = JSONObject.fromObject(returnMap).toString();
+                            strResult =  JSON.toJSONString(returnMap);
                             writer.write(strResult);
                             return;
                         }
@@ -134,12 +134,13 @@ public class UserBillingWebServlet extends HttpServlet {
                             log.error(AppContants.RETURN_CODE_KEY_VALIDATE_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                             returnMap.put("returnCode", AppContants.RETURN_CODE_KEY_VALIDATE_ERROR);
                             returnMap.put("returnDesc", AppContants.RETURN_CODE_KEY_VALIDATE_ERROR_DESC);
-                            strResult = JSONObject.fromObject(returnMap).toString();
+                            strResult =  JSON.toJSONString(returnMap);
                             writer.write(strResult);
                             return;
                         }
 
                         VasServiceRelationEntity vsr = DataCache.getVasServiceRelationEntity(strProductId);
+
                         if (vsr == null) {
                             vsr = this.vasServiceRelationDao.getVasServiceRelation(strProductId);
                         }
@@ -148,7 +149,7 @@ public class UserBillingWebServlet extends HttpServlet {
                             log.error(AppContants.RETURN_CODE_VAS_SERVICE_NULL + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                             returnMap.put("returnCode", AppContants.RETURN_CODE_VAS_SERVICE_NULL);
                             returnMap.put("returnDesc", AppContants.RETURN_CODE_VAS_SERVICE_NULL_DESC);
-                            strResult = JSONObject.fromObject(returnMap).toString();
+                            strResult =  JSON.toJSONString(returnMap);
                             writer.write(strResult);
                             return;
                         }
@@ -157,7 +158,7 @@ public class UserBillingWebServlet extends HttpServlet {
                             log.error(AppContants.RETURN_CODE_VALIDATE_CODE_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                             returnMap.put("returnCode", AppContants.RETURN_CODE_VALIDATE_CODE_ERROR);
                             returnMap.put("returnDesc", AppContants.RETURN_CODE_VALIDATE_CODE_ERROR_DESC);
-                            strResult = JSONObject.fromObject(returnMap).toString();
+                            strResult = JSON.toJSONString(returnMap);
                             writer.write(strResult);
                             return;
                         }
@@ -170,7 +171,7 @@ public class UserBillingWebServlet extends HttpServlet {
                                     log.error(AppContants.RETRUE_ORDERING_RELATIONS_ISEXISTS_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                                     returnMap.put("returnCode", AppContants.RETRUE_ORDERING_RELATIONS_ISEXISTS_CODE);
                                     returnMap.put("returnDesc", AppContants.RETRUE_ORDERING_RELATIONS_ISEXISTS_DESC);
-                                    strResult = JSONObject.fromObject(returnMap).toString();
+                                    strResult =  JSON.toJSONString(returnMap);
                                     writer.write(strResult);
                                     return;
                                 }
@@ -180,7 +181,7 @@ public class UserBillingWebServlet extends HttpServlet {
                                 if (!strInstruction.toLowerCase().equals(vsr.getCancelOrderCode().toLowerCase())) {
                                     returnMap.put("returnCode", AppContants.RETURN_CODE_INSTRUCTION_ERROR);
                                     returnMap.put("returnDesc", AppContants.RETURN_CODE_INSTRUCTION_ERROR_DESC);
-                                    strResult = JSONObject.fromObject(returnMap).toString();
+                                    strResult =  JSON.toJSONString(returnMap);
                                     writer.write(strResult);
                                     return;
                                 }
@@ -194,7 +195,7 @@ public class UserBillingWebServlet extends HttpServlet {
                             if (!strInstruction.toLowerCase().equals(vsr.getOnDemandCode().toLowerCase())) {
                                 returnMap.put("returnCode", AppContants.RETURN_CODE_INSTRUCTION_ERROR);
                                 returnMap.put("returnDesc", AppContants.RETURN_CODE_INSTRUCTION_ERROR_DESC);
-                                strResult = JSONObject.fromObject(returnMap).toString();
+                                strResult =  JSON.toJSONString(returnMap);
                                 writer.write(strResult);
                                 return;
                             }
@@ -221,7 +222,7 @@ public class UserBillingWebServlet extends HttpServlet {
                         messageQuene.addProxyPayMap(strMessageId, proxyPayMessage);
                         returnMap.put("returnCode", AppContants.RETURN_CODE_SUCCESS);
                         returnMap.put("returnDesc", AppContants.RETURN_CODE_SUCCESS_DESC);
-                        strResult = JSONObject.fromObject(returnMap).toString();
+                        strResult =  JSON.toJSONString(returnMap);
                         writer.write(strResult);
                         return;
                     }
@@ -229,7 +230,7 @@ public class UserBillingWebServlet extends HttpServlet {
                     log.error(AppContants.RETURN_CODE_VALIDATE_CODE_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                     returnMap.put("returnCode", AppContants.RETURN_CODE_VALIDATE_REQUEST_NULL_OR_OUT);
                     returnMap.put("returnDesc", AppContants.RETURN_CODE_VALIDATE_REQUEST_NULL_OR_OUT_DESC);
-                    strResult = JSONObject.fromObject(returnMap).toString();
+                    strResult =  JSON.toJSONString(returnMap);
                     writer.write(strResult);
                     return;
                 }
@@ -237,20 +238,20 @@ public class UserBillingWebServlet extends HttpServlet {
                 log.error(AppContants.RETURN_CODE_MOBILE_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                 returnMap.put("returnCode", AppContants.RETURN_CODE_MOBILE_ERROR);
                 returnMap.put("returnDesc", AppContants.RETURN_CODE_MOBILE_ERROR_DESC);
-                strResult = JSONObject.fromObject(returnMap).toString();
+                strResult =  JSON.toJSONString(returnMap);
                 writer.write(strResult);
             } else {
                 log.error(AppContants.RETURN_CODE_DATA_NULL_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",instruction=" + strInstruction + ",messageId=" + strMessageId + ",validateCode=" + strValidateCode + ",Content=" + strContent + ")");
                 returnMap.put("returnCode", AppContants.RETURN_CODE_DATA_NULL);
                 returnMap.put("returnDesc", AppContants.RETURN_CODE_DATA_NULL_DESC);
-                strResult = JSONObject.fromObject(returnMap).toString();
+                strResult =  JSON.toJSONString(returnMap);
                 writer.write(strResult);
             }
         } catch (Exception var27) {
             log.error("send message to corebiz is error");
             returnMap.put("returnCode", AppContants.RETURN_CODE_UNEXPECT_ERROR);
             returnMap.put("returnDesc", AppContants.RETURN_CODE_UNEXPECT_ERROR_DESC);
-            strResult = JSONObject.fromObject(returnMap).toString();
+            strResult =  JSON.toJSONString(returnMap);
             writer.write(strResult);
             return;
         } finally {

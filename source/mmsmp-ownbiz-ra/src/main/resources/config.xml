@@ -26,7 +26,7 @@
 		<mmscID>900001</mmscID>
 		<useSSL>true</useSSL>
 		<!-- 配置ownbiz地址 -->
-		<listenIP>10.199.201.69</listenIP>
+		<listenIP>127.0.0.1</listenIP>
 		<listenPort>8085</listenPort>
 		<backLog>50</backLog>
 		<timeOut>90000</timeOut>

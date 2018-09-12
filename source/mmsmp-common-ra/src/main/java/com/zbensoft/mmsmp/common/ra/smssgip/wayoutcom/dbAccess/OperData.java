@@ -2,9 +2,10 @@ package com.zbensoft.mmsmp.common.ra.smssgip.wayoutcom.dbAccess;
 
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -377,7 +378,7 @@ public class OperData {
                 return list;
             }
 
-            var11 = list;
+            var11 = (ArrayList) list;
         } catch (Exception var14) {
             var14.printStackTrace();
             return list;
@@ -428,7 +429,7 @@ public class OperData {
                 return list;
             }
 
-            var12 = list;
+            var12 = (ArrayList) list;
         } catch (Exception var15) {
             var15.printStackTrace();
             return list;
@@ -479,7 +480,7 @@ public class OperData {
                 return list;
             }
 
-            var12 = list;
+            var12 = (ArrayList) list;
         } catch (Exception var15) {
             var15.printStackTrace();
             return list;

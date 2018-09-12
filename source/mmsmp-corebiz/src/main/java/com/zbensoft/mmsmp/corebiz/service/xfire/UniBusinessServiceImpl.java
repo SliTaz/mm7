@@ -1,18 +1,18 @@
  package com.zbensoft.mmsmp.corebiz.service.xfire;
  
  import com.zbensoft.mmsmp.common.ra.common.message.WOCheckResponse;
- import com.zbensoft.mmsmp.corebiz.app.AppContextFactory;
+import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.OrderRelationRequest;
+import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.UniBusiness;
+import com.zbensoft.mmsmp.corebiz.app.AppContextFactory;
  import com.zbensoft.mmsmp.corebiz.message.OrderRelationMessage;
  import com.zbensoft.mmsmp.corebiz.route.ReceiveRouter;
  import com.zbensoft.mmsmp.corebiz.util.StringUtil;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.Constants;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.OrderRelationRequest;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.ProductManageRequest;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.Response;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.ReverseUnsubscribeManageRequest;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.ServiceCapabilityManageRequest;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.ServiceManageRequest;
- import com.zbensoft.mmsmp.vas.sjb.unibusiness.UniBusiness;
+ import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.Constants;
+ import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.ProductManageRequest;
+ import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.Response;
+ import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.ReverseUnsubscribeManageRequest;
+ import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.ServiceCapabilityManageRequest;
+ import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.ServiceManageRequest;
  import java.io.PrintStream;
  import java.util.Map;
  import javax.jws.WebService;
@@ -26,7 +26,7 @@
  
  
  
- @WebService(serviceName="UniBusinessService", targetNamespace="http://unibusiness.sjb.vas.aceway.com", endpointInterface="com.zbensoft.mmsmp.vas.sjb.unibusiness.UniBusiness")
+ @WebService(serviceName="UniBusinessService", targetNamespace="http://unibusiness.sjb.vas.aceway.com", endpointInterface="com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.UniBusiness")
  public class UniBusinessServiceImpl implements UniBusiness
  {
    private static Logger logger = Logger.getLogger(UniBusinessServiceImpl.class);

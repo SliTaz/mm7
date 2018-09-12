@@ -8,170 +8,41 @@ import com.zbensoft.mmsmp.ownbiz.ra.own.entity.MmsUserEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.SysParametersEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.VasServiceRelationEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.VaspEnitiy;
+import com.zbensoft.mmsmp.ownbiz.ra.own.util.HttpHelper;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.util.List;
 
-public class VasServiceRelationDao extends JdbcDaoSupport {
+public class VasServiceRelationDao implements Dao{
     private static final Log log = LogFactory.getLog(VasServiceRelationDao.class);
 
     public VasServiceRelationDao() {
     }
 
     public List<VasServiceRelationEntity> getDistributeVasServiceRelation(List<VaspEnitiy> own_sps) {
-//        try {
-//            String own_spid = "";
-//
-//            for(int i = 0; i < own_sps.size(); ++i) {
-//                own_spid = own_spid + "'" + ((VaspEnitiy)own_sps.get(i)).getVaspId() + "',";
-//            }
-//
-//            if (own_spid != null && !"".equals(own_spid)) {
-//                own_spid = own_spid.substring(0, own_spid.length() - 1);
-//            } else {
-//                own_spid = "''";
-//            }
-//
-//            String sql = "select vri.SP_PRODUCTID,v.SERVICEID ,v.VASNAME ,vs.CPID,c.CPTYPE,c.ACCESSURL,vs.SERVICENAME ,vs.UNIQUEID,vs.FEETYPE ,vs.ORDERFEE,vs.ONDEMANDFEE ,vs.ORDERCODE,vs.CANCELORDERCODE,vs.ONDEMANDCODE from vas v,vasservice vs,vasservice_reserve_info vri ,CP_INFO c where vs.cpid=c.cpid and vri.productid=vs.servicecode and v.vasid=vs.vasid and vs.VASPID in( " + own_spid + " ) and vs.STATUS='2' and c.STATUS='1' ";
-//            log.info("刷新自主业务产品相关信息sql：" + sql + "{" + own_spid + "}");
-//            ParameterizedRowMapper<VasServiceRelationEntity> rm = new ParameterizedRowMapper<VasServiceRelationEntity>() {
-//                public VasServiceRelationEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                    VasServiceRelationEntity model = new VasServiceRelationEntity();
-//                    model.setSpProductId(rs.getString("SP_PRODUCTID"));
-//                    model.setProductName(rs.getString("SERVICENAME"));
-//                    model.setServiceId(rs.getString("SERVICEID"));
-//                    model.setServiceName(rs.getString("VASNAME"));
-//                    model.setCpId(rs.getLong("CPID"));
-//                    model.setCpType(rs.getInt("CPTYPE"));
-//                    model.setAccessUrl(rs.getString("ACCESSURL"));
-//                    model.setVasserviceUniqueId(rs.getLong("UNIQUEID"));
-//                    model.setOrderFee(rs.getDouble("ORDERFEE"));
-//                    model.setDbFee(rs.getDouble("ONDEMANDFEE"));
-//                    model.setFeeType(rs.getString("FEETYPE"));
-//                    model.setOrderCode(rs.getString("ORDERCODE"));
-//                    model.setCancelOrderCode(rs.getString("CANCELORDERCODE"));
-//                    model.setOnDemandCode(rs.getString("ONDEMANDCODE"));
-//                    return model;
-//                }
-//            };
-//            return this.getJdbcTemplate().query(sql, rm);
-//        } catch (Exception var5) {
-//            log.error(var5.getMessage(), var5);
-//            return null;
-//        }
-        return  null;
+        return  getAllVasServiceRelation();
     }
 
     public List<VaspEnitiy> getAllVaspEnitiy() {
-//        try {
-//            String sql = "select vaspid,vaspname,businessphone from VASP";
-//            log.info("刷新sp相关信息sql：" + sql);
-//            ParameterizedRowMapper<VaspEnitiy> rm = new ParameterizedRowMapper<VaspEnitiy>() {
-//                public VaspEnitiy mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                    VaspEnitiy vasp = new VaspEnitiy();
-//                    vasp.setVaspId(rs.getString("vaspid"));
-//                    vasp.setVaspName(rs.getString("vaspname"));
-//                    vasp.setBusinessPhone(rs.getString("businessphone"));
-//                    return vasp;
-//                }
-//            };
-//            return this.getJdbcTemplate().query(sql, rm);
-//        } catch (Exception var3) {
-//            log.error(var3.getMessage(), var3);
-//            return null;
-//        }
-        return null;
+        return HttpHelper.getAllVaspEnitiy();
     }
 
     public List<VaspEnitiy> getAllOwnVasps() {
-//        try {
-//            String sql = "select vaspid,vaspname,businessphone from VASP where isownbusiness='1'";
-//            log.info("刷新自有业务企业代码：" + sql);
-//            ParameterizedRowMapper<VaspEnitiy> rm = new ParameterizedRowMapper<VaspEnitiy>() {
-//                public VaspEnitiy mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                    VaspEnitiy vasp = new VaspEnitiy();
-//                    vasp.setVaspId(rs.getString("vaspid"));
-//                    vasp.setVaspName(rs.getString("vaspname"));
-//                    vasp.setBusinessPhone(rs.getString("businessphone"));
-//                    return vasp;
-//                }
-//            };
-//            return this.getJdbcTemplate().query(sql, rm);
-//        } catch (Exception var3) {
-//            log.error(var3.getMessage(), var3);
-//            return null;
-//        }
-        return null;
+        return HttpHelper.getAllVaspEnitiy();
     }
 
     public List<VasServiceRelationEntity> getAllVasServiceRelation() {
-//        try {
-//            String sql = "select distinct vri.SP_PRODUCTID,v.SERVICEID ,v.VASNAME,vs.SERVICENAME ,vs.VASPID ,vs.CPID ,vs.UNIQUEID ,vs.FEETYPE,vs.ORDERFEE,vs.ONDEMANDFEE ,vs.CPID ,vs.ORDERCODE,vs.CANCELORDERCODE,vs.ONDEMANDCODE,vs.is_notify_sms,ci.reporturl,ci.CLIENTLINKMANTEL,ci.CPTYPE  from vas v,vasservice_reserve_info vri,vasservice vs LEFT JOIN CP_INFO ci ON ci.CPID = vs.CPID  where vri.productid=vs.servicecode and v.vasid=vs.vasid  and vs.STATUS='2'";
-//            log.info("刷新自主业务产品相关信息sql：" + sql);
-//            ParameterizedRowMapper<VasServiceRelationEntity> rm = new ParameterizedRowMapper<VasServiceRelationEntity>() {
-//                public VasServiceRelationEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                    VasServiceRelationEntity model = new VasServiceRelationEntity();
-//                    model.setSpProductId(rs.getString("SP_PRODUCTID"));
-//                    model.setSpId(rs.getString("VASPID"));
-//                    model.setProductName(rs.getString("SERVICENAME"));
-//                    model.setServiceId(rs.getString("SERVICEID"));
-//                    model.setServiceName(rs.getString("VASNAME"));
-//                    model.setVasserviceUniqueId(rs.getLong("UNIQUEID"));
-//                    model.setOrderFee(rs.getDouble("ORDERFEE"));
-//                    model.setDbFee(rs.getDouble("ONDEMANDFEE"));
-//                    model.setFeeType(rs.getString("FEETYPE"));
-//                    model.setCpId(rs.getLong("CPID"));
-//                    model.setOrderCode(rs.getString("ORDERCODE"));
-//                    model.setCancelOrderCode(rs.getString("CANCELORDERCODE"));
-//                    model.setOnDemandCode(rs.getString("ONDEMANDCODE"));
-//                    model.setIsNotifySms(rs.getString("is_notify_sms"));
-//                    model.setReportUrl(rs.getString("reportUrl"));
-//                    model.setClientLinkManTel(rs.getString("CLIENTLINKMANTEL"));
-//                    model.setCpType(rs.getInt("CPTYPE"));
-//                    return model;
-//                }
-//            };
-//            return this.getJdbcTemplate().query(sql, rm);
-//        } catch (Exception var3) {
-//            log.error(var3.getMessage(), var3);
-//            return null;
-//        }
-        return null;
+        return HttpHelper.getAllVasServiceRelation();
     }
 
     public VasServiceRelationEntity getVasServiceRelation(String sp_productId) {
-//        try {
-//            String sql = "select vri.SP_PRODUCTID,v.SERVICEID ,v.VASNAME,vs.SERVICENAME ,vs.VASPID, vs.UNIQUEID ,vs.FEETYPE,vs.ORDERFEE,vs.ONDEMANDFEE ,vs.CPID from vas v,vasservice vs,vasservice_reserve_info vri where vri.productid=vs.servicecode and v.vasid=vs.vasid and vri.SP_PRODUCTID =? and vs.STATUS='2'";
-//            log.info(sql + "{" + sp_productId + "}");
-//            ParameterizedRowMapper<VasServiceRelationEntity> rm = new ParameterizedRowMapper<VasServiceRelationEntity>() {
-//                public VasServiceRelationEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                    VasServiceRelationEntity model = new VasServiceRelationEntity();
-//                    model.setSpId(rs.getString("VASPID"));
-//                    model.setSpProductId(rs.getString("SP_PRODUCTID"));
-//                    model.setProductName(rs.getString("SERVICENAME"));
-//                    model.setServiceId(rs.getString("SERVICEID"));
-//                    model.setServiceName(rs.getString("VASNAME"));
-//                    model.setVasserviceUniqueId(rs.getLong("UNIQUEID"));
-//                    model.setOrderFee(rs.getDouble("ORDERFEE"));
-//                    model.setDbFee(rs.getDouble("ONDEMANDFEE"));
-//                    model.setFeeType(rs.getString("FEETYPE"));
-//                    model.setCpId(rs.getLong("CPID"));
-//                    return model;
-//                }
-//            };
-//            return (VasServiceRelationEntity)this.getJdbcTemplate().queryForObject(sql, new Object[]{sp_productId}, rm);
-//        } catch (EmptyResultDataAccessException var4) {
-//            return null;
-//        } catch (Exception var5) {
-//            log.error(var5.getMessage(), var5);
-//            return null;
-//        }
-        return null;
+        return HttpHelper.getVasServiceRelation(sp_productId);
     }
 
     public MmsUserEntity queryMmsUserEntity(MO_SMMessage mos) {
+    		//先不写
 //        String sql = "select c.CONTENTID,c.SERVICEID,c.CONTENTNAME,c.CONTENTPATH,vri.REQUESTACC,vri.PRODUCT_EXPAND_CODE  from CONTENT_INFO c ,VASSERVICE v,VASSERVICE_RESERVE_INFO vri where v.SERVICECODE=vri.PRODUCTID and c.SERVICEID=v.UNIQUEID and c.STATUS = '30' and c.CONTENTTYPE ='0' and v.FEETYPE='2' and v.STATUS='2' and v.VASPID = ? and v.VASID = ? and v.UNIQUEID = ? order by c.LASTAUDITTIME desc fetch first 1 row only";
 //
 //        try {
@@ -236,7 +107,7 @@ public class VasServiceRelationDao extends JdbcDaoSupport {
 //            log.error(var6.getMessage(), var6);
 //            return null;
 //        }
-        return null;
+        return HttpHelper.getVasServiceRelation(spProductId);
     }
 
     public int queryContentCount(OrderRelationUpdateNotifyRequest message) {
@@ -256,7 +127,7 @@ public class VasServiceRelationDao extends JdbcDaoSupport {
 //            log.error(var5.getMessage(), var5);
 //            return 0;
 //        }
-        return  1;
+        return  HttpHelper.queryContentCount(message.getProductId());
     }
 
     public List<SysParametersEntity> querySysParameters() {
@@ -277,7 +148,7 @@ public class VasServiceRelationDao extends JdbcDaoSupport {
 //            log.error(var3.getMessage(), var3);
 //            return null;
 //        }
-        return null;
+        return  HttpHelper.querySysParameters();
     }
 
     public String querySysParametersByKey(String key) {
@@ -291,10 +162,10 @@ public class VasServiceRelationDao extends JdbcDaoSupport {
 //            log.error(var5.getMessage(), var5);
 //            return null;
 //        }
-        return null;
+    	 return HttpHelper.getSystemParamBykey(key);
     }
 
-    public void updateNotifySpStatus(long uniqueid, String userPhone, int status) {
+    public void updateNotifySpStatus(String uniqueid, String userPhone, int status) {
 //        try {
 //            String sql = "update user_order_his set notify_sp_flag=? where uniqueid=(select ORDERHISID from user_order where cellphonenumber=? and SERVICEUNIQUEID=? fetch first 1 row only)";
 //            log.info(sql + "{" + status + "," + userPhone + "," + uniqueid + "}");
@@ -302,6 +173,6 @@ public class VasServiceRelationDao extends JdbcDaoSupport {
 //        } catch (Exception var6) {
 //            log.error(var6.getMessage(), var6);
 //        }
-
+    	HttpHelper.updateNotifySpStatus(uniqueid, userPhone, status);
     }
 }

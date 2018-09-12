@@ -144,7 +144,19 @@
 									<div class="col-sm-7">
 										<select class="form-control" id="spInfo" ng-model="ctrl.beanSer.spInfoId" style="width:100%">
 											<option value="" translate="common.choose"></option>
-											<option ng-repeat="x in ctrl.spInfoData" value="{{x.spInfoId}}" ng-bind="x.companyName"></option>
+											<option ng-repeat="x in ctrl.spInfoData" value="{{x.spInfoId}}" ng-bind="x.spInfoId"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label for="spInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.productName"></label>
+									<div class="col-sm-7">
+		                                 <select class="form-control" id="productInfoId" ng-model="ctrl.beanSer.productInfoId" style="width:100%">
+											<option value="" translate="common.choose"></option>
+											<option ng-repeat="x in ctrl.productInfoData" value="{{x.productInfoId}}" ng-bind="x.productName"></option>
 										</select>
 									</div>
 								</div>
@@ -167,16 +179,6 @@
 										</div>
 									</div>
 					        </div>
-					        <div class="row">
-								<div class="form-group col-sm-6">
-									<label for="spInfoId"
-										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.productName"></label>
-									<div class="col-sm-7">
-		                                 <input type="text" class="form-control" autocomplete="off"  ng-model="ctrl.beanSer.productInfoId"
-												placeholder="{{'userOrderHis.productName'   | translate }}">
-									</div>
-								</div>
-							</div>
 								<div class="row">
 									<div class="col-sm-10">
 										<button type="submit" class="btn btn-block btn-info btn-sm"
@@ -487,6 +489,20 @@
 															placeholder="{{'userServiceSend.mmsPath' |translate }}" ng-model="ctrl.bean.mmsPath"  ng-maxlength="1000"></textarea>
 	                                                         <div ng-show=" addEditForm.mmsPath.$error.maxlength" style="color:red" translate="userServiceSend.mmsPath.length">
 	                                                          </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="form-group col-sm-12">
+													<label for="notifySpFlag"
+														class="col-sm-4 control-label control-label-zb" translate="userInfo.notifySpFlag"></label>
+													<div class="col-sm-7">
+														<select class="form-control" id="notifySpFlag" name="notifySpFlag" placeholder="{{'userInfo。notifySpFlag' | translate }}" ng-model="ctrl.bean.notifySpFlag"
+														 ng-options="obj.value as obj.text for obj in ctrl.notifySpFlagData">
+													    <option value="" translate="common.choose"></option>
+													    </select>
 													</div>
 												</div>
 											</div>

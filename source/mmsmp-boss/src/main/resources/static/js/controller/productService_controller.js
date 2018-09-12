@@ -45,8 +45,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	var vm = this;
 	vm.modelTitle = "";
 	vm.readonlyID = false;
-	vm.isFreeFlag=false;
-	vm.isFree=true;
+	vm.isFreeFlag=true;
+	vm.isFree=false;
 	vm.beanSer = {};
     vm.columnStatusData=[];
 	vm.reloadData = reloadData;
@@ -57,27 +57,29 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			DTColumnBuilder.newColumn('productServiceId').withTitle($translate('mmsmp.productService.productServiceId')).notSortable(),
 			DTColumnBuilder.newColumn('productInfoId').withTitle($translate('mmsmp.productInfo.id')).notSortable(),
 			DTColumnBuilder.newColumn('productInfoName').withTitle($translate('mmsmp.productInfo.productName')).notSortable(),
+			DTColumnBuilder.newColumn('spProductId').withTitle($translate('mmsmp.productService.spProductId')).notSortable(),
+			DTColumnBuilder.newColumn('reportMessageUrl').withTitle($translate('mmsmp.productService.reportMessageUrl')).notSortable(),
 			
 			DTColumnBuilder.newColumn('isConfirm').withTitle($translate('mmsmp.productService.isConfirm')).notVisible().notSortable().renderWith(isConfirmHtml),
 			
-			DTColumnBuilder.newColumn('isPresent').withTitle($translate('mmsmp.productService.isPresent')).notSortable().notVisible(),
+			DTColumnBuilder.newColumn('isPresent').withTitle($translate('mmsmp.productService.isPresent')).notSortable().notVisible().renderWith(isPresentHtml),
 			DTColumnBuilder.newColumn('confirmPrompt').withTitle($translate('mmsmp.productService.confirmPrompt')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('succPrompt').withTitle($translate('mmsmp.productService.succPrompt')).notVisible().notSortable(),
 			
 			DTColumnBuilder.newColumn('canncelPrompt').withTitle($translate('mmsmp.productService.canncelPrompt')).notVisible().notSortable(),
-			DTColumnBuilder.newColumn('popularizeStartTime').withTitle($translate('mmsmp.productService.popularizeStartTime')).notSortable(),
-			DTColumnBuilder.newColumn('popularizeEndTime').withTitle($translate('mmsmp.productService.popularizeEndTime')).notSortable(),
+			DTColumnBuilder.newColumn('popularizeStartTime').withTitle($translate('mmsmp.productService.popularizeStartTime')).notSortable().notVisible(),
+			DTColumnBuilder.newColumn('popularizeEndTime').withTitle($translate('mmsmp.productService.popularizeEndTime')).notSortable().notVisible(),
 			
 			DTColumnBuilder.newColumn('isFree').withTitle($translate('mmsmp.productService.isFree')).notSortable().renderWith(isFreeHtml),
 			DTColumnBuilder.newColumn('freeTime').withTitle($translate('mmsmp.productService.freeTime')).notVisible().notSortable(),
-			DTColumnBuilder.newColumn('billingId').withTitle($translate('mmsmp.productService.billingId')).notVisible().notSortable(),
+			DTColumnBuilder.newColumn('billingId').withTitle($translate('mmsmp.productService.billingId')).notSortable(),
 			
 			DTColumnBuilder.newColumn('discountRemark').withTitle($translate('mmsmp.productService.discountRemark')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('discountId').withTitle($translate('mmsmp.productService.discountId')).notVisible().notSortable(),
 	
 			
 			DTColumnBuilder.newColumn('needConfirm').withTitle($translate('mmsmp.productService.needConfirm')).notVisible().notSortable().renderWith(needConfirmHtml),
-			DTColumnBuilder.newColumn('sendNum').withTitle($translate('mmsmp.productService.sendNum')).notVisible().notSortable(),
+			DTColumnBuilder.newColumn('sendNum').withTitle($translate('mmsmp.productService.sendNum')).notSortable(),
 			DTColumnBuilder.newColumn('orderCommandMatch').withTitle($translate('mmsmp.productService.orderCommandMatch')).notVisible().notSortable().renderWith(Match),
 			
 			DTColumnBuilder.newColumn('orderAccess').withTitle($translate('mmsmp.productService.orderAccess')).notVisible().notSortable(),
@@ -104,8 +106,6 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			DTColumnBuilder.newColumn('productCredit').withTitle($translate('mmsmp.productService.productCredit')).notVisible().notSortable(),
 			DTColumnBuilder.newColumn('status').withTitle($translate('mmsmp.productService.status')).notVisible().notSortable(),
 			
-			DTColumnBuilder.newColumn('reportMessageUrl').withTitle($translate('mmsmp.productService.reportMessageUrl')).notVisible().notSortable(),
-			DTColumnBuilder.newColumn('spProductId').withTitle($translate('mmsmp.productService.spProductId')).notVisible().notSortable(),
 			
 			DTColumnBuilder.newColumn(null).withTitle($translate('Actions')).notSortable()
 			.renderWith(actionsHtml) ];
@@ -136,6 +136,16 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}else if(data=='2'){
 		return '<span>'+$translate.instant('mmsmp.productService.unConfirm')+'</span>';
 	}else{
+		return '';
+	}
+		
+	}
+	function isPresentHtml(data, type, full, meta)
+	{  if(data=='1'){
+		return '<span>'+$translate.instant('mmsmp.productInfo.present')+'</span>';
+	}else if(data=='0'){
+		return '<span>'+$translate.instant('mmsmp.productInfo.noPresent')+'</span>';
+	}else {
 		return '';
 	}
 		
@@ -225,21 +235,21 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		
 	});
 	
-//	function selectBank(){
-//		$("#parentProvinceCityId1").select2();
-//		$("#parentProvinceCityId").select2();
-//		$("#myModal").attr("tabindex","");
-//		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
-//		};
-//		//解决selec2在火狐模太框中输入框不能输入end
-//	}
+	function selectBank(){
+		$("#productName").select2();
+		$("#productCity").select2();
+    	$("#myModal").attr("tabindex","");
+		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
+		};
+		//解决selec2在火狐模太框中输入框不能输入end/	
+	}
 
 	function addInit() {
 		vm.bean = {};
 		selData();
 //		vm.ProvinceCityData1=vm.ProvinceCityData;
-//		selectBank();
-		vm.modelTitle = $translate.instant('common.productInfo.add');
+		selectBank();
+		vm.modelTitle = $translate.instant('common.productService.add');
 		vm.readonlyID = false;
 		vm.statusCode="";
 		vm.statusMessage="";
@@ -253,9 +263,17 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 						handleAjaxError(errResponse);
 					console.error('Error while updating Menu.');
 				});
+		productServiceService.searchAllProvinceCitys().then(function(d){
+			vm.ProvinceCityData = d.body;
+			
+		},
+				function(errResponse) {
+						handleAjaxError(errResponse);
+					console.error('Error while updating Menu.');
+				});
 	}
 	$("#queryBtn").click(function(){
-//		selectBank();'
+		selectBank();
 		selData();
 	})
 //	 function deleteData(provinceCityId) {
@@ -271,25 +289,25 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 //		  }
 	function edit(bean) {
 //		selData();
-//		selectBank()
+		selectBank()
 		
 		reloadData();
-		vm.modelTitle = $translate.instant('common.productInfo.edit');
+		vm.modelTitle = $translate.instant('common.productService.edit');
 		vm.readonlyID = true;
 		vm.bean = bean;	
-		
-/*		vm.bean.orderType = vm.bean.orderType+"";
-		vm.bean.status = vm.bean.status+"";
-		vm.bean.runStatus = vm.bean.runStatus+"";
-		vm.bean.sendContentMode = vm.bean.sendContentMode+"";
-		vm.bean.sendMode = vm.bean.sendMode+"";
-		vm.bean.isDefault = vm.bean.isDefault+"";
-		vm.bean.classification = vm.bean.classification+"";
-		vm.bean.productSource = vm.bean.productSource+"";
-		vm.bean.productType = vm.bean.productType+"";
-		vm.bean.isPackage = vm.bean.isPackage+"";
-		vm.bean.isPresent = vm.bean.isPresent+"";
-		vm.bean.dealStatus = vm.bean.dealStatus+"";*/
+
+		vm.bean.isConfirm =  (vm.bean.isConfirm==null?"":vm.bean.isConfirm)+"";
+		vm.bean.isPresent = (vm.bean.isPresent==null?"":vm.bean.isPresent)+"";
+		vm.bean.isFree = (vm.bean.isFree==null?"":vm.bean.isFree)+"";
+		vm.bean.needConfirm =  (vm.bean.needConfirm==null?"":vm.bean.needConfirm)+"";
+		vm.bean.orderCommandMatch =(vm.bean.orderCommandMatch==null?"":vm.bean.orderCommandMatch)+"";
+		vm.bean.orderAccessMatch = (vm.bean.orderAccessMatch==null?"":vm.bean.orderAccessMatch)+"";
+		vm.bean.cancelCommandMatch =(vm.bean.cancelCommandMatch==null?"":vm.bean.cancelCommandMatch)+"";
+		vm.bean.cancelAccessMatch = (vm.bean.cancelAccessMatch==null?"":vm.bean.cancelAccessMatch)+"";
+		vm.bean.onDemandCommandMatch = (vm.bean.onDemandCommandMatch==null?"":vm.bean.onDemandCommandMatch)+"";
+		vm.bean.onDemandAccessMatch = (vm.bean.onDemandAccessMatch==null?"":vm.bean.onDemandAccessMatch)+"";
+		vm.bean.isAloneOrder = (vm.bean.isAloneOrder==null?"":vm.bean.isAloneOrder)+"";
+		vm.bean.notifyType = (vm.bean.notifyType==null?"":vm.bean.notifyType)+"";
 		
 		vm.statusCode="";
 		vm.statusMessage="";

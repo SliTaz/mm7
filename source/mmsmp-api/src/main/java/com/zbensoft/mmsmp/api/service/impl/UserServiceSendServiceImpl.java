@@ -61,4 +61,16 @@ public class UserServiceSendServiceImpl implements UserServiceSendService{
 		return userServiceSendMapper.count(record);
 	}
 
+	@Override
+	public UserServiceSend selectByMessageId(String messageId) {
+		// TODO Auto-generated method stub
+		return userServiceSendMapper.selectByMessageId(messageId);
+	}
+
+	@Override
+	public UserServiceSend selectByRequestId(String requestId) {
+		// TODO Auto-generated method stub
+		return userServiceSendMapper.selectByRequestId(requestId);
+	}
+
 }

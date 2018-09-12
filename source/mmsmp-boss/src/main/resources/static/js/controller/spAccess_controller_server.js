@@ -202,6 +202,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	function submit() {
 		if (!vm.readonlyID) {
 			$.fn.dataTable.ext.errMode = 'none';
+			if(vm.bean.effTime >= vm.bean.expTime){
+				alert($translate.instant('spAccess.effTimeRange'));
+				return;
+			}
 			vm.bean.effTime = timeFormatNew(vm.bean.effTime);
 			vm.bean.expTime = timeFormatNew(vm.bean.expTime);
 			SpAccessService.createAlarmInfo(vm.bean).then(onSubmitSuccess,
@@ -211,6 +215,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 					});
 			vm.reset();
 		} else {
+			if(vm.bean.effTime >= vm.bean.expTime){
+				alert($translate.instant('spAccess.effTimeRange'));
+				return;
+			}
 			vm.bean.effTime = timeFormatNew(vm.bean.effTime);
 			vm.bean.expTime = timeFormatNew(vm.bean.expTime);
 			SpAccessService.updateAlarmInfo(vm.bean, vm.bean.spInfoId).then(onSubmitSuccess,

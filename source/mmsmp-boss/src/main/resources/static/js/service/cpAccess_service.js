@@ -4,8 +4,8 @@ App.factory('AccessInfoService', ['$http', '$q', function($http, $q){
 
 	return {
 		
-			fetchAllCpInfos: function() {
-					return $http.get(apiUrl +"/cpInfo")
+			fetchAllCooperKeys: function() {
+					return $http.get(apiUrl +"/cooperKey")
 							.then(
 									function(response){
 										return response.data;
@@ -17,13 +17,13 @@ App.factory('AccessInfoService', ['$http', '$q', function($http, $q){
 							);
 			},
 		    
-		    createCpInfo: function(cpInfo){
-		    	var a =cpInfo;
+		    createCooperKey: function(cooperKey){
+		    	var a =cooperKey;
 		    	if(a.roleId!=undefined){
 			    	var str =a.roleId.join(",");
 			    	}
 		    	a.roleId=str;
-					return $http.post(apiUrl +"/cpInfo", cpInfo)
+					return $http.post(apiUrl +"/cooperKey", cooperKey)
 							.then(
 									function(response){
 										return response.data;
@@ -35,15 +35,15 @@ App.factory('AccessInfoService', ['$http', '$q', function($http, $q){
 							);
 		    },
 		    
-		    updateCpInfo: function(cpInfo, id){
-		    	var a =cpInfo;
+		    updateCooperKey: function(cooperKey, id){
+		    	var a =cooperKey;
 		    	if(a.roleId!=undefined){
 		    		if (typeof a.roleId === 'object'){
 		             	var str =a.roleId.join(",");
 		             	a.roleId=str;
 		    		}
 		    	}
-					return $http.put(apiUrl +"/cpInfo/"+id, cpInfo)
+					return $http.put(apiUrl +"/cooperKey/"+id, cooperKey)
 							.then(
 									function(response){
 										return response.data;
@@ -70,8 +70,8 @@ App.factory('AccessInfoService', ['$http', '$q', function($http, $q){
 //							);
 //			},
 		    
-			deleteCpInfo: function(id){
-					return $http['delete'](apiUrl +"/cpInfo/"+id)
+			deleteCooperKey: function(id){
+					return $http['delete'](apiUrl +"/cooperKey/"+id)
 							.then(
 									function(response){
 										return response.data;
@@ -83,19 +83,6 @@ App.factory('AccessInfoService', ['$http', '$q', function($http, $q){
 							);
 			},
 			
-			selSpInfo: function() {
-				return $http.get(apiUrl +"/spInfo")
-						.then(
-								function(response){
-									return response.data;
-								}, 
-								function(errResponse){
-									handleAjaxError(errResponse);
-									return $q.reject(errResponse);
-								}
-						);
-			},
-		
 	};
 
 }]);

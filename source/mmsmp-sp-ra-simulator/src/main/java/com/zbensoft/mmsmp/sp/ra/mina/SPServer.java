@@ -14,7 +14,7 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 public class SPServer {
 	
-	static int serverPort=29095;//sp模拟器的端口
+	static int serverPort=39095;//sp模拟器的端口
 	
 	private static final Logger logger = Logger.getLogger(SPServer.class.getName());
 	

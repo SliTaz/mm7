@@ -2,7 +2,8 @@
 
 package com.zbensoft.mmsmp.ownbiz.ra.own.server;
 
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
+import com.alibaba.fastjson.JSON;
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
 import com.zbensoft.mmsmp.ownbiz.ra.own.cache.DataCache;
 import com.zbensoft.mmsmp.ownbiz.ra.own.dao.CooperKeyDao;
 import com.zbensoft.mmsmp.ownbiz.ra.own.dao.ProxyPayMessageDao;
@@ -11,13 +12,13 @@ import com.zbensoft.mmsmp.ownbiz.ra.own.entity.CooperKeyEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.VasServiceRelationEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.queue.MessageQuene;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.*;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+@WebServlet(urlPatterns = "/billing/app")
 public class UserBillingAppServlet extends HttpServlet {
     private static final long serialVersionUID = 1961985726725819129L;
     private static final Log log = LogFactory.getLog(UserBillingAppServlet.class);
@@ -75,7 +77,7 @@ public class UserBillingAppServlet extends HttpServlet {
                         log.error(AppContants.RETURN_CODE_REPEAT_REQUEST_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",Content=" + strContent + ",instruction" + strInstruction + ")");
                         returnMap.put("returnCode", AppContants.RETURN_CODE_REPEAT_REQUEST);
                         returnMap.put("returnDesc", AppContants.RETURN_CODE_REPEAT_REQUEST_DESC);
-                        strResult = JSONObject.fromObject(returnMap).toString();
+                        strResult =  JSON.toJSONString(returnMap);
                         writer.write(strResult);
                         return;
                     }
@@ -95,7 +97,7 @@ public class UserBillingAppServlet extends HttpServlet {
                         log.error(AppContants.RETURN_CODE_MOBILE_OUT_DESC + "(accountId=" + strAccountId + ",mobile=" + arr[0] + ",productId=" + strProductId + ",instruction" + strInstruction + ",Content=" + strContent + ")");
                         returnMap.put("returnCode", AppContants.RETURN_CODE_MOBILE_OUT);
                         returnMap.put("returnDesc", AppContants.RETURN_CODE_MOBILE_OUT_DESC);
-                        strResult = JSONObject.fromObject(returnMap).toString();
+                        strResult =  JSON.toJSONString(returnMap);
                         writer.write(strResult);
                     } else {
                         log.info("用户手机号码为：" + arr[0]);
@@ -108,7 +110,7 @@ public class UserBillingAppServlet extends HttpServlet {
                             log.error(AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL_DESC + "(accountId=" + strAccountId + ",mobile=" + arr[0] + ",productId=" + strProductId + ",instruction" + strInstruction + ",Content=" + strContent + ")");
                             returnMap.put("returnCode", AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL);
                             returnMap.put("returnDesc", AppContants.RETURN_CODE_ACCOUNTID_OR_COOPER_KEY_NULL_DESC);
-                            strResult = JSONObject.fromObject(returnMap).toString();
+                            strResult =  JSON.toJSONString(returnMap);
                             writer.write(strResult);
                         } else {
                             StringBuffer sbKey = new StringBuffer();
@@ -117,7 +119,7 @@ public class UserBillingAppServlet extends HttpServlet {
                                 log.error(AppContants.RETURN_CODE_KEY_VALIDATE_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + arr[0] + ",productId=" + strProductId + ",instruction" + strInstruction + ",Content=" + strContent + ")");
                                 returnMap.put("returnCode", AppContants.RETURN_CODE_KEY_VALIDATE_ERROR);
                                 returnMap.put("returnDesc", AppContants.RETURN_CODE_KEY_VALIDATE_ERROR_DESC);
-                                strResult = JSONObject.fromObject(returnMap).toString();
+                                strResult =  JSON.toJSONString(returnMap);
                                 writer.write(strResult);
                             } else {
                                 VasServiceRelationEntity vsr = DataCache.getVasServiceRelationEntity(strProductId);
@@ -129,7 +131,7 @@ public class UserBillingAppServlet extends HttpServlet {
                                     log.error(AppContants.RETURN_CODE_VAS_SERVICE_NULL_DESC + "(accountId=" + strAccountId + ",mobile=" + arr[0] + ",productId=" + strProductId + ",instruction" + strInstruction + ",Content=" + strContent + ")");
                                     returnMap.put("returnCode", AppContants.RETURN_CODE_VAS_SERVICE_NULL);
                                     returnMap.put("returnDesc", AppContants.RETURN_CODE_VAS_SERVICE_NULL_DESC);
-                                    strResult = JSONObject.fromObject(returnMap).toString();
+                                    strResult =  JSON.toJSONString(returnMap);
                                     writer.write(strResult);
                                 } else {
                                     this.messageQuene.addPayTimeControl(sb.toString(), billingTime);
@@ -151,7 +153,7 @@ public class UserBillingAppServlet extends HttpServlet {
                                                 log.error(AppContants.RETRUE_ORDERING_RELATIONS_ISEXISTS_DESC + "(accountId=" + strAccountId + ",mobile=" + strMobile + ",productId=" + strProductId + ",Content=" + strContent + ",instruction=" + strInstruction + ")");
                                                 returnMap.put("returnCode", AppContants.RETRUE_ORDERING_RELATIONS_ISEXISTS_CODE);
                                                 returnMap.put("returnDesc", AppContants.RETRUE_ORDERING_RELATIONS_ISEXISTS_DESC);
-                                                strResult = JSONObject.fromObject(returnMap).toString();
+                                                strResult =  JSON.toJSONString(returnMap);
                                                 writer.write(strResult);
                                                 return;
                                             }
@@ -162,7 +164,7 @@ public class UserBillingAppServlet extends HttpServlet {
                                                 log.error(AppContants.RETURN_CODE_INSTRUCTION_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + arr[0] + ",productId=" + strProductId + ",instruction" + strInstruction + ",Content=" + strContent + ")");
                                                 returnMap.put("returnCode", AppContants.RETURN_CODE_INSTRUCTION_ERROR);
                                                 returnMap.put("returnDesc", AppContants.RETURN_CODE_INSTRUCTION_ERROR_DESC);
-                                                strResult = JSONObject.fromObject(returnMap).toString();
+                                                strResult = JSON.toJSONString(returnMap);
                                                 writer.write(strResult);
                                                 return;
                                             }
@@ -177,7 +179,7 @@ public class UserBillingAppServlet extends HttpServlet {
                                             log.error(AppContants.RETURN_CODE_INSTRUCTION_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + arr[0] + ",productId=" + strProductId + ",instruction" + strInstruction + ",Content=" + strContent + ")");
                                             returnMap.put("returnCode", AppContants.RETURN_CODE_INSTRUCTION_ERROR);
                                             returnMap.put("returnDesc", AppContants.RETURN_CODE_INSTRUCTION_ERROR_DESC);
-                                            strResult = JSONObject.fromObject(returnMap).toString();
+                                            strResult =  JSON.toJSONString(returnMap);
                                             writer.write(strResult);
                                             return;
                                         }
@@ -191,6 +193,7 @@ public class UserBillingAppServlet extends HttpServlet {
                                     proxyPayMessage.setNotifyURL(cke.getNotifyUrl());
                                     proxyPayMessage.setProductId(strProductId);
                                     proxyPayMessage.setPhoneNumber(arr[0]);
+                                    proxyPayMessage.setUserType("");
                                     proxyPayMessage.setServiceId(vsr.getServiceId());
                                     proxyPayMessage.setServiceName(vsr.getServiceName());
                                     proxyPayMessage.setProductName(vsr.getProductName());
@@ -198,6 +201,7 @@ public class UserBillingAppServlet extends HttpServlet {
                                     proxyPayMessage.setSpId(vsr.getSpId());
                                     proxyPayMessage.setSourceType(2);
                                     proxyPayMessage.setStatus("401");
+                                    proxyPayMessage.setCooperId(cke.getKeyId());
                                     String strDate = DateUtil.getFormatDate();
                                     proxyPayMessage.setCreateDate(strDate);
                                     proxyPayMessage.setUpdateDate(strDate);
@@ -218,10 +222,14 @@ public class UserBillingAppServlet extends HttpServlet {
                                     returnMap.put("serviceTel", cke.getServiceTel());
                                     returnMap.put("tips", strTips);
                                     returnMap.put("confirmurl", strConfirmUrl);
-                                    File file = ImgeUtil.createValidateFile(String.valueOf(validateCode), "/home/mmsmp/" + globalMessageId + ".jpeg");
+                                    returnMap.put("globalMessageId", globalMessageId);
+                                    returnMap.put("validate", validateCode);
+									//测试
+                                    //File file = ImgeUtil.createValidateFile(String.valueOf(validateCode), "/home/mmsmp/" + globalMessageId + ".jpeg");
+                                    File file = ImgeUtil.createValidateFile(String.valueOf(validateCode), "E://" + globalMessageId + ".jpeg");
                                     String strImgString = ImgeUtil.getImageStr(file);
                                     returnMap.put("validateCode", strImgString);
-                                    strResult = JSONObject.fromObject(returnMap).toString();
+                                    strResult =  JSON.toJSONString(returnMap);
                                     writer.write(strResult);
                                     writer.close();
                                     file.delete();
@@ -236,21 +244,21 @@ public class UserBillingAppServlet extends HttpServlet {
                     log.error(AppContants.RETURN_CODE_MOBILE_ERROR_DESC + "(accountId=" + strAccountId + ",mobile=" + strPhoneNumber + ",productId=" + strProductId + ",Content=" + strContent + ",instruction" + strInstruction + ")");
                     returnMap.put("returnCode", AppContants.RETURN_CODE_MOBILE_ERROR);
                     returnMap.put("returnDesc", AppContants.RETURN_CODE_MOBILE_ERROR_DESC);
-                    strResult = JSONObject.fromObject(returnMap).toString();
+                    strResult =  JSON.toJSONString(returnMap);
                     writer.write(strResult);
                 }
             } else {
                 log.error(AppContants.RETURN_CODE_DATA_NULL_DESC + "(mobile=" + strMobile + ",productid=" + strProductId + ",accountId=" + strAccountId + ",instruction" + strInstruction + ")");
                 returnMap.put("returnCode", AppContants.RETURN_CODE_DATA_NULL);
                 returnMap.put("returnDesc", AppContants.RETURN_CODE_DATA_NULL_DESC);
-                strResult = JSONObject.fromObject(returnMap).toString();
+                strResult = JSON.toJSONString(returnMap);
                 writer.write(strResult);
             }
         } catch (Exception var33) {
             log.error(var33.getMessage(), var33);
             returnMap.put("returnCode", AppContants.RETURN_CODE_UNEXPECT_ERROR);
             returnMap.put("returnDesc", AppContants.RETURN_CODE_UNEXPECT_ERROR_DESC);
-            strResult = JSONObject.fromObject(returnMap).toString();
+            strResult =  JSON.toJSONString(returnMap);
             writer.write(strResult);
         } finally {
             writer.close();

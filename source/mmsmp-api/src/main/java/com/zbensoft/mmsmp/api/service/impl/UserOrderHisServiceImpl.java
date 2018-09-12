@@ -61,4 +61,10 @@ public class UserOrderHisServiceImpl implements UserOrderHisService{
 		// TODO Auto-generated method stub
 		return userOrderHisMapper.count(record);
 	}
+
+	@Override
+	public UserOrderHis selectByPhoneAndProductId(UserOrderHis record) {
+		// TODO Auto-generated method stub
+		return userOrderHisMapper.selectByPhoneAndProductId(record);
+	}
 }

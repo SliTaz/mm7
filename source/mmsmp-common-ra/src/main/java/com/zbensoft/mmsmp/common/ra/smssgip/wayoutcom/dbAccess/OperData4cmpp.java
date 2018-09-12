@@ -206,7 +206,7 @@ public class OperData4cmpp {
                 return list;
             }
 
-            var10 = list;
+            var10 = (ArrayList) list;
         } catch (Exception var13) {
             var13.printStackTrace();
             return list;
@@ -253,7 +253,7 @@ public class OperData4cmpp {
                 return list;
             }
 
-            var10 = list;
+            var10 = (ArrayList) list;
         } catch (Exception var13) {
             var13.printStackTrace();
             return list;

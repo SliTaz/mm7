@@ -138,7 +138,7 @@ public class ProvinceCityController {
 
 			return new ResponseRestEntity<Void>(HttpRestStatusFactory.createStatus(list), HttpRestStatusFactory.createStatusMessage(list));
 		}
-		if(provinceCity.getProvinceCityId().equals(""))
+		if(provinceCity.getProvinceCityId().equals("-1"))
 		{
 			return new ResponseRestEntity<Void>(HttpRestStatus.PROVINCECITYNAME_ILLEGA_EXIST);
 		}
@@ -148,7 +148,7 @@ public class ProvinceCityController {
 			return new ResponseRestEntity<Void>(HttpRestStatus.CONFLICT);
 		}
 		
-		if(!provinceCity.getParentProvinceCityId().equals(""))
+		if(!provinceCity.getParentProvinceCityId().equals("-1"))
 		{
 			ProvinceCity bean3 = provinceCityService.selectByPrimaryKey(provinceCity.getParentProvinceCityId());
 			if(bean3==null)
@@ -181,7 +181,7 @@ public class ProvinceCityController {
 		if (currentProvinceCity == null) {
 			return new ResponseRestEntity<ProvinceCity>(HttpRestStatus.NOT_FOUND);
 		}	
-		if(!bean.getParentProvinceCityId().equals(""))
+		if(!bean.getParentProvinceCityId().equals("-1"))
 		{
 			ProvinceCity bean3 = provinceCityService.selectByPrimaryKey(bean.getParentProvinceCityId());
 			if(bean3==null)

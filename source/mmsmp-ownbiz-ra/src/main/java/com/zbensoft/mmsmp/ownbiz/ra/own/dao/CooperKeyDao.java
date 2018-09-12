@@ -3,20 +3,23 @@
 package com.zbensoft.mmsmp.ownbiz.ra.own.dao;
 
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.CooperKeyEntity;
+import com.zbensoft.mmsmp.ownbiz.ra.own.util.HttpHelper;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CooperKeyDao extends JdbcDaoSupport {
+public class CooperKeyDao implements Dao {
     private static final Log log = LogFactory.getLog(CooperKeyDao.class);
 
     public CooperKeyDao() {
     }
 
     public CooperKeyEntity getCooperKeyEntityByAccountId(String spAccountId) {
+    	
+    	
+    
 //        try {
 //            String sql = "select * from MMSP_COOPER_KEY where COOPER_ID = ?";
 //            log.info(sql + "{" + spAccountId + "}");
@@ -45,8 +48,7 @@ public class CooperKeyDao extends JdbcDaoSupport {
 //            log.error(var5.getMessage(), var5);
 //            return null;
 //        }
-
-        return null;
+    	return	HttpHelper.getCooperKeyEntityByAccountId(spAccountId);
     }
 
     public List<CooperKeyEntity> queryAllCooperKeyEntity() {
@@ -76,6 +78,6 @@ public class CooperKeyDao extends JdbcDaoSupport {
 //            log.error(var3.getMessage(), var3);
 //            return null;
 //        }
-        return new ArrayList<>();
+        return HttpHelper.queryAllCooperKeyEntity();
     }
 }

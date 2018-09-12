@@ -52,7 +52,7 @@ public class DESUtil {
     }
 
     public static void main(String[] args) {
-        String str = "18655000011";
+        String str = "13312345678";
         long nowTime = System.currentTimeMillis();
         String password = AppContants.DES_ENCRYPTION_KEY;
         str = str + "," + nowTime;

@@ -1,6 +1,5 @@
 package com.zbensoft.mmsmp.sms.ra.log;
-
-import com.zbensoft.mmsmp.common.ra.util.PropertiesHelper;
+import com.zbensoft.mmsmp.common.ra.utils.PropertiesHelper;
 import org.apache.log4j.Logger;
 
 public class SMS_LOG {

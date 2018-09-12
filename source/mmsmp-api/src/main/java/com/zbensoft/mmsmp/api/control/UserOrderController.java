@@ -27,7 +27,11 @@ import com.zbensoft.mmsmp.api.common.HttpRestStatusFactory;
 import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
 import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
+import com.zbensoft.mmsmp.api.service.api.ProductInfoService;
+import com.zbensoft.mmsmp.api.service.api.ProvinceCityService;
 import com.zbensoft.mmsmp.api.service.api.UserOrderService;
+import com.zbensoft.mmsmp.db.domain.ProductInfo;
+import com.zbensoft.mmsmp.db.domain.ProvinceCity;
 import com.zbensoft.mmsmp.db.domain.UserOrder;
 
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +40,10 @@ import io.swagger.annotations.ApiOperation;
 public class UserOrderController {
 	@Autowired
 	UserOrderService userOrderService;
-	
+	@Autowired
+	ProvinceCityService provinceCityService;
+	@Autowired
+	private ProductInfoService productInfoService;
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 
@@ -45,17 +52,18 @@ public class UserOrderController {
 	@ApiOperation(value = "Query UserOrder，Support paging", notes = "")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseRestEntity<List<UserOrder>> selectPage(
-			@RequestParam(required = false) String id,@RequestParam(required = false) String chargePhoneNumber,
-			@RequestParam(required = false) String spInfoId,@RequestParam(required = false) String productInfoId,
-			@RequestParam(required = false) Integer status,@RequestParam(required = false) Integer priority,
+			@RequestParam(required = false) String id,@RequestParam(required = false) String phoneNumber,
+			@RequestParam(required = false) String chargePhoneNumber,@RequestParam(required = false) String spInfoId,@RequestParam(required = false) String productInfoId,
+			@RequestParam(required = false) Integer status,@RequestParam(required = false) Integer priority,@RequestParam(required = false) Integer notifySpFlag,
 			@RequestParam(required = false) String start,
 			@RequestParam(required = false) String length) {
 		UserOrder UserOrder = new UserOrder();
-		UserOrder.setPhoneNumber(id);
+		UserOrder.setUserOrderId(id);
+		UserOrder.setPhoneNumber(phoneNumber);
 		UserOrder.setChargePhoneNumber(chargePhoneNumber);
 		UserOrder.setSpInfoId(spInfoId);
 		UserOrder.setProductInfoId(productInfoId);
-		
+		UserOrder.setNotifySpFlag(notifySpFlag);
 		if (status != null) {
 			UserOrder.setStatus(status);
 		}
@@ -83,7 +91,24 @@ public class UserOrderController {
 		if (list == null || list.isEmpty()) {
 			return new ResponseRestEntity<List<UserOrder>>(new ArrayList<UserOrder>(), HttpRestStatus.NOT_FOUND);
 		}
-	    return new ResponseRestEntity<List<UserOrder>>(list, HttpRestStatus.OK,count,count);
+		List<UserOrder> listNew = new ArrayList<UserOrder>();
+		for (UserOrder bean : list) {
+			ProvinceCity provinceCity = provinceCityService.selectByPrimaryKey(bean.getArea());
+			ProductInfo productInfo = productInfoService.selectByPrimaryKey(bean.getProductInfoId());
+			ProvinceCity provinceCityNew = provinceCityService.selectByPrimaryKey(provinceCity.getParentProvinceCityId());
+			if (provinceCity != null) {
+				bean.setProvinceCityName(provinceCity.getProvinceCityName());
+				bean.setParentProvinceCityId(provinceCity.getParentProvinceCityId());
+			}
+			if (provinceCityNew != null) {
+				bean.setParentProvinceCityName(provinceCityNew.getProvinceCityName());
+			}
+			if (productInfo != null) {
+				bean.setProductName(productInfo.getProductName());
+			}
+			listNew.add(bean);
+		}
+	    return new ResponseRestEntity<List<UserOrder>>(listNew, HttpRestStatus.OK,count,count);
 	}
 
 	//查询通知
@@ -135,7 +160,8 @@ public class UserOrderController {
 			return new ResponseRestEntity<UserOrder>(HttpRestStatus.NOT_FOUND,localeMessageSourceService.getMessage("common.update.not_found.message"));
 		}
 
-		currentUserOrder.setPhoneNumber(id);
+		currentUserOrder.setUserOrderId(id);
+		currentUserOrder.setPhoneNumber(UserOrder.getPhoneNumber());
 		currentUserOrder.setStatus(UserOrder.getStatus());
 		currentUserOrder.setArea(UserOrder.getArea());
 		currentUserOrder.setChargePhoneNumber(UserOrder.getChargePhoneNumber());
@@ -153,6 +179,7 @@ public class UserOrderController {
 		currentUserOrder.setSpInfoId(UserOrder.getSpInfoId());
 		currentUserOrder.setTransactionId(UserOrder.getTransactionId());
 		currentUserOrder.setVersion(UserOrder.getVersion());
+		currentUserOrder.setNotifySpFlag(UserOrder.getNotifySpFlag());
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
 

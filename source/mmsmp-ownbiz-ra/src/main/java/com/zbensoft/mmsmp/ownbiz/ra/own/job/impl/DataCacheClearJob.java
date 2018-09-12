@@ -1,7 +1,7 @@
 
 package com.zbensoft.mmsmp.ownbiz.ra.own.job.impl;
 
-import com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage;
+import com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage;
 import com.zbensoft.mmsmp.ownbiz.ra.own.job.Job;
 import com.zbensoft.mmsmp.ownbiz.ra.own.queue.MessageQuene;
 import com.zbensoft.mmsmp.ownbiz.ra.own.util.AppContants;

@@ -3,24 +3,24 @@ package com.zbensoft.mmsmp.ownbiz.ra.own.entity;
 import java.io.Serializable;
 
 public class VasServiceRelationEntity implements Serializable {
-    private String spProductId;
-    private String spId;
-    private String productName;
-    private long vasserviceUniqueId;
-    private String accessNumber;
-    private String serviceId;
-    private String serviceName;
+    private String spProductId; //sp产品编号
+    private String spId;		//
+    private String productName;	//产品名称
+    private String vasserviceUniqueId; //产品编号
+    private String accessNumber; 	//接入号
+    private String serviceId;		//产品业务编号
+    private String serviceName;		//产品业务名称	
     private long cpId;
     private int cpType;
-    private String accessUrl;
-    private double orderFee;
-    private String orderCode;
+    private String accessUrl;		
+    private double orderFee;	//订购费率
+    private String orderCode;	//订购指令
     private String cancelOrderCode;
-    private String onDemandCode;
-    private double dbFee;
-    private String feeType;
+    private String onDemandCode;	//点播指令
+    private double dbFee;			//点播费率
+    private String feeType;			//product_info中的orderType
     private String isNotifySms;
-    private String reportUrl;
+    private String reportUrl;		//给sp返回状态报告的url
     private String clientLinkManTel;
 
     public VasServiceRelationEntity() {
@@ -42,11 +42,11 @@ public class VasServiceRelationEntity implements Serializable {
         this.productName = productName;
     }
 
-    public long getVasserviceUniqueId() {
+    public String getVasserviceUniqueId() {
         return this.vasserviceUniqueId;
     }
 
-    public void setVasserviceUniqueId(long vasserviceUniqueId) {
+    public void setVasserviceUniqueId(String vasserviceUniqueId) {
         this.vasserviceUniqueId = vasserviceUniqueId;
     }
 

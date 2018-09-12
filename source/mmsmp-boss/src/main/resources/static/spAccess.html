@@ -295,12 +295,12 @@
 													<label for="spOrderNotifyUrl"
 														class="col-sm-4 control-label control-label-zb" translate="spInfo.spOrderNotifyUrl"></label>
 													<div class="col-sm-7">
-														<textarea type="text" class="form-control" id="spOrderNotifyUrl" name="spOrderNotifyUrl" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+														<textarea type="text" class="form-control" id="spOrderNotifyUrl" name="spOrderNotifyUrl" 
 															placeholder="{{'spInfo.spOrderNotifyUrl'   | translate }}" ng-model="ctrl.bean.spOrderNotifyUrl" ng-maxlength="1000" ></textarea>
 														 <div ng-show="addEditForm.spOrderNotifyUrl.$error.maxlength" style="color:red" translate="spInfo.spOrderNotifyUrl.length">
                                                          </div>
-                                                         <div ng-show="addEditForm.spOrderNotifyUrl.$error.pattern" style="color:red" translate="common.illegalChar">
-									                     </div>
+                                                        <!--  <div ng-show="addEditForm.spOrderNotifyUrl.$error.pattern" style="color:red" translate="common.illegalChar">
+									                     </div> -->
 													</div>
 												</div>
 											</div>

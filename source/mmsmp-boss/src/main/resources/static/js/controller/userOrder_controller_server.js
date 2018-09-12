@@ -45,18 +45,22 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
     vm.columnStatusData=[];
     vm.spInfoData = [];
     vm.phoneNumberData = [];
+    vm.provinceData=[];
+    vm.areaData=[];
     vm.selData = selData;
 	selData();
+	$(".areas").hide();
     //列的状态end
     vm.dtOptions = DTOptionsBuilder.fromSource(getFromSource(apiUrl + '/userOrder')).withOption(
 			'createdRow', createdRow);
 
 	setDtOptionsServerSide(vm);
 	vm.dtColumns = [
+		DTColumnBuilder.newColumn('userOrderId').withTitle($translate('userInfo.userOrderId')).notSortable(),
 		DTColumnBuilder.newColumn('phoneNumber').withTitle($translate('userInfo.phoneNumber')).notSortable(),
-		DTColumnBuilder.newColumn('area').withTitle($translate('userInfo.area')).notSortable(),
+		DTColumnBuilder.newColumn('provinceCityName').withTitle($translate('userInfo.area')).notSortable(),
 		DTColumnBuilder.newColumn('spInfoId').withTitle($translate('spInfo.spInfoId')).notSortable(),
-		DTColumnBuilder.newColumn('productInfoId').withTitle($translate('userInfo.productInfoId')).notSortable(),
+		DTColumnBuilder.newColumn('productName').withTitle($translate('userOrderHis.productName')).notSortable(),
 		DTColumnBuilder.newColumn('chargePhoneNumber').withTitle($translate('userInfo.chargePhoneNumber')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('fee').withTitle($translate('userInfo.fee')).notSortable(),
 		DTColumnBuilder.newColumn('status').withTitle($translate('user.status')).renderWith(statusType).notSortable(),
@@ -71,6 +75,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		DTColumnBuilder.newColumn('effTime').withTitle($translate('spInfo.effTime')).renderWith(timeRender).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('lastBatchId').withTitle($translate('userInfo.lastBatchId')).notSortable().notVisible(),
 		DTColumnBuilder.newColumn('isPackage').withTitle($translate('userInfo.isPackage')).notSortable().renderWith(isPackage).notVisible(),
+		DTColumnBuilder.newColumn('notifySpFlag').withTitle($translate('userInfo.notifySpFlag')).notSortable().renderWith(notifySpFlag).notVisible(),
 		DTColumnBuilder.newColumn(null).withTitle($translate('Actions')).notSortable()
 				.renderWith(actionsHtml) ];
 
@@ -90,14 +95,14 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		return outputmoney(data);
 	}
 	function actionsHtml(data, type, full, meta) {
-		vm.beans[data.phoneNumber] = data;
+		vm.beans[data.userOrderId] = data;
 		return  '<button class="btn btn-warning" data-toggle="modal" data-target="#myModal" title="'+$translate.instant('common.edit')+'" ng-click="ctrl.edit(ctrl.beans[\''
-				+ data.phoneNumber
+				+ data.userOrderId
 				+ '\'])">'
 				+ '   <i class="fa fa-edit"></i>'
 				+ '</button>&nbsp;'
 				+ '<button class="btn btn-danger" title="'+$translate.instant('common.delete')+'" ng-click="ctrl.deleteBean(ctrl.beans[\''
-				+ data.phoneNumber
+				+ data.userOrderId
 				+ '\'])">'
 				+ '   <i class="fa fa-trash-o"></i>'
 				+ '</button>';
@@ -112,6 +117,16 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		UserOrderService.fetchUserInfo().then(function(d) {
 			vm.phoneNumberData = d.body;
 		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
+		UserOrderService.fetchProvince().then(function(d) {
+			vm.provinceData = d.body;
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
+		UserOrderService.selProductInfo().then(function(d) {
+	        vm.productInfoData = d.body;
+       }, function(errResponse) {
 			console.error('Error while fetching fetchAllCoupons');
 		});
 	}
@@ -140,6 +155,10 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		$("#spInfoIds").select2();
 		$("#phoneNumber").select2();
 		$("#phoneNumbers").select2();
+		$("#province").select2();
+		$("#productInfoId").select2();
+		$("#area").select2();
+		$("#areas").select2();
 		$("#myModal").attr("tabindex","");
 		//解决selec2在火狐模太框中输入框不能输入start
 		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
@@ -181,6 +200,15 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			return '';
 		}
 	}
+	function notifySpFlag(data, type, full, meta){
+		if(data=='0'){
+			return $translate.instant('common.informed');
+		}else if(data=='1'){
+			return $translate.instant('common.notNotified');
+		}else{
+			return '';
+		}
+	}
 	function orderRoute(data, type, full, meta){
 		if(data=='1'){
 			return $translate.instant('common.sms');
@@ -196,17 +224,35 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			return '';
 		}
 	}
+	//用户区域选择
+	 $("#area").change(function(){
+		var area=$("#area").val();
+			if(area!=""){
+				$(".areas").show();
+				UserOrderService.selectArea(area).then(function(d) {
+					vm.areaData = d.body;
+				}, function(errResponse) {
+					console.error('Error while fetching fetchAllCoupons');
+				});
+			}else{
+				$(".areas").hide();
+			}
+  });
 	
 	function addInit() {
 		selectDevice();
+		$(".areas").hide();
 		$("#spInfoId").val("").select2();
 		$("#spInfoIds").val("").select2();
 		$("#phoneNumber").val("").select2();
 		$("#phoneNumbers").val("").select2();
+		$("#area").val("").select2();
+		$("#productInfoId2").val('').select2();
 		vm.modelTitle = $translate.instant('userOrder.add');
 		vm.readonlyID = false;
 		vm.disabledID = false;
 		vm.bean = {};
+		vm.bean.userOrderId=null;
 		vm.bean.phoneNumber=null;
 		vm.bean.spInfoId=null;
 		vm.bean.productInfoId=null;
@@ -235,6 +281,9 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		vm.isPackageData = [
 			{value:1,text:$translate.instant('common.package')},
 			{value:0,text:$translate.instant('common.unpackage')}];
+		vm.notifySpFlagData = [
+			{value:0,text:$translate.instant('common.informed')},
+			{value:1,text:$translate.instant('common.notNotified')}];
 		vm.orderRouteData = [
 			{value:1,text:$translate.instant('common.sms')},
 			{value:2,text:$translate.instant('common.mms')},
@@ -246,9 +295,18 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}
 	function edit(bean) {
 		selectDevice();
+		$(".areas").show();
+		UserOrderService.selectArea(bean.parentProvinceCityId).then(function(d) {
+			vm.areaData = d.body;
+		}, function(errResponse) {
+			console.error('Error while fetching fetchAllCoupons');
+		});
 		//bean.fee = outputmoney(bean.fee);
 		$("#spInfoId").val(bean.spInfoId).select2();
 		$("#phoneNumber").val(bean.phoneNumber).select2();
+		$("#areas").val(bean.area).select2();
+		$("#area").val(bean.parentProvinceCityId).select2();
+		$("#productInfoId2").val(bean.productInfoId).select2();
 		reloadData();
 		vm.modelTitle = $translate.instant('userOrder.edit');
 		vm.readonlyID = true;
@@ -270,6 +328,9 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 		vm.isPackageData = [
 			{value:1,text:$translate.instant('common.package')},
 			{value:0,text:$translate.instant('common.unpackage')}];
+		vm.notifySpFlagData = [
+			{value:0,text:$translate.instant('common.informed')},
+			{value:1,text:$translate.instant('common.notNotified')}];
 		vm.bean.orderTime = timeFormatOld(vm.bean.orderTime);
 		vm.bean.notDisturbTime = timeFormatOld(vm.bean.notDisturbTime);
 		vm.bean.effTime = timeFormatOld(vm.bean.effTime);
@@ -301,7 +362,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 				var fee=vm.bean.fee.replace(/\./g,"").replace(/,/g,".");
 				vm.bean.fee = fee;//转换为数据库double
 			}*/
-			UserOrderService.updateAlarmInfo(vm.bean, vm.bean.phoneNumber).then(onSubmitSuccess,
+			UserOrderService.updateAlarmInfo(vm.bean, vm.bean.userOrderId).then(onSubmitSuccess,
 					function(errResponse) {
  						handleAjaxError(errResponse);
 						console.error('Error while updating AlarmLevel.');
@@ -327,7 +388,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 				label : $translate.instant('common.yes'),
 				cssClass : 'btn btn-danger model-tool-right',
 				action : function(dialogItself) {
-					UserOrderService.deleteAlarmInfo(bean.phoneNumber).then(reloadData,
+					UserOrderService.deleteAlarmInfo(bean.userOrderId).then(reloadData,
 					function(errResponse) {
  						handleAjaxError(errResponse);
 						console.error('Error while updating AlarmInfo.');

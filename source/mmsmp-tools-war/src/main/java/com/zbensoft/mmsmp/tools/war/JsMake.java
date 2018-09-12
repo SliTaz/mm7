@@ -24,17 +24,8 @@ public class JsMake {
 	public static List<String> errorList = new ArrayList<>();
 
 	public void doMake() {
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-boss\\src\\main\\resources\\static\\js", ".js");
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-consumer\\src\\main\\resources\\static\\js", ".js");
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-merchant\\src\\main\\resources\\static\\js", ".js");
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-government\\src\\main\\resources\\static\\js", ".js");
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-main\\src\\main\\resources\\static\\js", ".js");
-		
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-boss\\src\\main\\resources\\conf", ".js");
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-consumer\\src\\main\\resources\\conf", ".js");
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-merchant\\src\\main\\resources\\conf", ".js");
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-government\\src\\main\\resources\\conf", ".js");
-		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "e-payment-main\\src\\main\\resources\\conf", ".js");
+		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "mmsmp-boss\\src\\main\\resources\\static\\js", ".js");
+		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + Conf.PROJECT_NAME + Conf.PATH_SPLIT + "mmsmp-boss\\src\\main\\resources\\conf", ".js");
 		
 		doPathNew(Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_01_NAME, ".js");
 	}
@@ -49,7 +40,7 @@ public class JsMake {
 
 			System.out.println("请使用此命令进行测试修改：");
 			System.out.println(Conf.CAMMAD_PATH);
-			System.out.println("cd " + Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + "\\e-payment\\e-payment-tools-war\\lib");
+			System.out.println("cd " + Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + "\\mmsmp\\mmsmp-tools-war\\lib");
 			// System.out.println("java -jar yuicompressor-2.4.9.jar infilename -o outfilename");
 			System.out.println("java -jar yuicompressor-2.4.9.jar --nomunge infilename");
 			System.out.println("");
@@ -81,18 +72,6 @@ public class JsMake {
 		}
 
 	}
-	/*
-	 * private void doPath(String modleName, String endWith) { List<File> list = new ArrayList<File>(); getFile(list, modleName, endWith); for (File file : list) { String filename
-	 * = file.getAbsolutePath().replaceAll(Conf.FOLDER_00_NAME, Conf.FOLDER_04_NAME); filename = file.getAbsolutePath().replaceAll(Conf.FOLDER_01_NAME, Conf.FOLDER_04_NAME); File
-	 * filetmp = new File(filename); if (!filetmp.exists()) { try { filetmp.getParentFile().mkdirs(); filetmp.createNewFile(); } catch (IOException e) { // TODO Auto-generated
-	 * catch block e.printStackTrace(); } } String[] args = { file.getAbsolutePath(), "-o", filename }; try { ZBENYUICompressor.doCompressor(args);
-	 * FileUtils.delFile(file.getAbsolutePath()); FileUtils.copyFile(filename, file.getAbsolutePath()); } catch (Exception e) { errorList.add(file.getPath()); //
-	 * System.err.println("混淆失败:" + file.getPath()); filetmp.delete(); } // String cmd = "cmd /c " + Conf.CAMMAD_PATH + " && " + "cd " + Conf.PROD_HOME + Conf.PATH_SPLIT +
-	 * Conf.FOLDER_00_NAME + Conf.PATH_SPLIT + // "\\e-payment\\e-payment-tools-war\\lib" + // // " && " + "java -jar yuicompressor-2.4.9.jar " + file.getAbsolutePath() + " -o " +
-	 * filename; // if(!runScript(cmd)){ // filetmp.delete(); // } }
-	 * 
-	 * }
-	 */
 
 	public static boolean runScript(String cmd) {
 		System.out.println("执行命令：" + cmd);

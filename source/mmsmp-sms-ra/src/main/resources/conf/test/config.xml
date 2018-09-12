@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+
+	<!-- 通用配置参数 -->
+	<CommonConfig>
+		<!-- 内部通讯webservice地址  业务处理 -->
+		<uniBusinessUrl>http://172.16.4.57:8000/UniBusiness</uniBusinessUrl>
+        <!-- spId -->
+		<vaspId>91597</vaspId>
+		<!-- 彩信存放路径 -->
+		<contentFilePath>/opt/home/ucmms/data/</contentFilePath>
+		
+		<!-- 彩信编码 -->
+		<mmsEncoding>binary</mmsEncoding>
+		
+	</CommonConfig>
+
+	<!--  管理员门户配置参数 -->
+	<AdminConfig>
+	
+		<!-- 产品栏目图标在wap页面保存的路径 -->
+		<localRealPathWeb>d:/adPicture/</localRealPathWeb>
+
+		<!-- 产品图片保存路径  不需要改动-->
+		<serviceViewPicturePath>/home/sjb/data/pic/</serviceViewPicturePath>
+		<serviceSmallPicturePath>/home/sjb/data/pic/</serviceSmallPicturePath>
+
+		<!--  群发号码文件路径 不需要改动-->
+		<groupsendPhonefilePath>/home/sjb/data/file/</groupsendPhonefilePath>
+
+		<!-- 素材提交时，文件上传的路径  不需要改动-->
+		<materialFilePath>/home/sjb/data/material/</materialFilePath>
+
+		<!-- 素材提交时，素材允许的最大值 -->
+		<maxMaterialLength>MAX_MATERIAL_LENGTH</maxMaterialLength>
+		
+		<!-- 素材是文本类型时最大字数 -->
+		<maxTextMaterialNum>MAX_TEXT_MATERIAL_NUM</maxTextMaterialNum>
+
+		<!-- 素材提交时，短信字数的最大值 -->
+		<maxTextCharacterNum>MAX_TEXT_CHARACTER_NUM</maxTextCharacterNum>
+
+		<!-- 每页显示的条数 -->
+		<pageSize>20</pageSize>
+
+		<!-- 彩信最大文件大小 -->
+		<maxFileSize>102400</maxFileSize>
+
+		<!-- 模板路径  不需要改动-->
+		<tempLateFilePath>/home/sjb/data/template/</tempLateFilePath>
+
+		<!-- CP公告附件路径  	不需要改动-->
+		<cpBulletinFilePath>/home/sjb/data/pic/</cpBulletinFilePath>
+
+		<!--批量上传文件路径  	不需要改动-->
+		<contentBatchuploadPath>/home/sjb/data/file/</contentBatchuploadPath>
+		
+		<!-- cp logo 保存路径 	不需要改动-->
+		<cpLogoFilePath>/opt/aceway/data/cplogo/</cpLogoFilePath>
+
+		<!-- 字符串编码 不需要改动-->
+		<needencoder>0</needencoder>
+		<db>UTF-8</db>
+		<needdecoder>0</needdecoder>
+		<code>UTF-8</code>
+
+		<!-- 用户订购关系批量文件格式定义  视业务情况改动-->
+		<!-- 用户号码 -->
+		<cellphonenumber>0</cellphonenumber>
+		<!-- 业务id -->
+		<serviceuniqueid>1</serviceuniqueid>
+		<!-- 状态 -->
+		<status>2</status>
+		<!-- 订购时间 -->
+		<orderTime>3</orderTime>
+		<!-- 取消订购时间 -->
+		<cannelTime>4</cannelTime>
+		
+
+		<!-- 通知消息服务端IP地址 -->
+		<notifyMessageIP>127.0.0.1</notifyMessageIP>
+		<!-- 通知消息服务端端口 与corebizConfig配置中的mtQueueListenPort参数相对应-->
+		<notifyMessagePort>8888</notifyMessagePort>
+		
+		<jdbcTuning>false</jdbcTuning>
+		<jdbcMaxRow>100000</jdbcMaxRow>
+		
+		<!-- 以下广告管理本期不实现，暂时保留 -->
+		<adviewPic>/home/sjb/data/ad/</adviewPic>
+		<advertisementFilePath>/home/sjb/data/ad/</advertisementFilePath>
+		<advertisementViewPicturePath>/home/sjb/data/ad/</advertisementViewPicturePath>
+		<!--业务流程文件本期不实现，暂时保留  -->
+		<serviceFlowFilePath>/opt/aceway/data/content/</serviceFlowFilePath>
+
+		<!--
+		<wapConfFilePath>D:/photo/image/</wapConfFilePath>
+		<querySaveFile>/opt/aceway/data/content/</querySaveFile-->
+		
+		<!-- 需不需要 登陆IP限制, 0 为不限制, 1 为限制 -->
+		<loginIPRestrictions>1</loginIPRestrictions>
+		
+	</AdminConfig>
+
+
+
+
+	<WapOampConfig>
+		<ssoMessage>ssomessage</ssoMessage>
+		<ssotype>ssotype</ssotype>
+		<userRedirectUrl>/userRedirectUrl</userRedirectUrl>
+		<userSsoDesKey>userssodeskey</userSsoDesKey>
+		<userParam>userParam</userParam>
+		<account>account</account>
+		<userInterval>100</userInterval>
+		<deviceId>10</deviceId>
+		<deviceType>2</deviceType>
+		<userReturnUrl>/userReturnUrl</userReturnUrl>
+		<userReturnParam>userReturnParam</userReturnParam>
+		<providor>0</providor>
+		<opt>login</opt>
+		<logout>logout</logout>
+		<corpSSODesKey>coprssodeskey</corpSSODesKey>
+		<userOrderReverseUrl>userOrderReverseUrl</userOrderReverseUrl>
+		<userOrderReverseKey>userOrderReverseKey</userOrderReverseKey>
+		<contentID>contentID</contentID>
+		<contentFilePath>D:/photo/up/content/</contentFilePath>
+		<userOndemandUrl>http://localhost:8080/TE_WAP/SSO</userOndemandUrl>
+		<userOndemandBackUrl>http://localhost:8080/TE_WAP/SSO</userOndemandBackUrl>
+		<userOrderUrl>http://localhost:8080/TE_WAP/SSO</userOrderUrl>
+		<userOrderBackUrl>http://localhost:8080/TE_WAP/SSO</userOrderBackUrl>
+		<userCancelOrderUrl>http://localhost:8080/TE_WAP/SSO</userCancelOrderUrl>
+		<userCancelOrderBackUrl>http://localhost:8080/TE_WAP/SSO</userCancelOrderBackUrl>
+		<wapUrl>http://localhost:7070/SJB_WAP</wapUrl>
+		<subtractSecond>50</subtractSecond>
+	</WapOampConfig>
+
+	<!-- liqiang add 20090402内容状态配置 -->
+	<ContentInfoStates>
+		<!-- 1待内容审核   2待测试 3待发布  4发布  5,6,7,8,9待合成  10已发送 11暂停 -->
+		<!-- 动作中审核通过 撤销 恢复等朝正常方向变更状态 定义为顺向    驳回，暂停等定义为逆向 -->
+
+		<State>
+			<isFirst>1</isFirst>
+			<value>1</value>
+			<nextState>2</nextState>
+			<refusedState>5</refusedState>
+			<name>待内容审核</name>
+		</State>
+
+		<State>
+			<isFirst>0</isFirst>
+			<value>2</value>
+			<nextState>3</nextState>
+			<refusedState>6</refusedState>
+			<name>待测试</name>
+		</State>
+
+		<State>
+		<isFirst>0</isFirst>
+			<value>3</value>
+			<nextState>4</nextState>
+			<refusedState>7</refusedState>
+			<name>待发送审核</name>
+		</State>
+
+		<State>
+		<isFirst>0</isFirst>
+			<value>4</value>
+			<nextState>10</nextState>
+			<refusedState>11</refusedState>
+			<name>待发送</name>
+		</State>
+
+		<State>
+		<isFirst>0</isFirst>
+			<value>5</value>
+			<nextState>1</nextState>
+			<refusedState>0</refusedState>
+			<name>待合成</name>
+		</State>
+
+		<State>
+		<isFirst>0</isFirst>
+			<value>6</value>
+			<nextState>2</nextState>
+			<refusedState>0</refusedState>
+			<name>待合成</name>
+		</State>
+
+		<State>
+		<isFirst>0</isFirst>
+			<value>7</value>
+			<nextState>3</nextState>
+			<refusedState>0</refusedState>
+			<name>待合成</name>
+		</State>
+
+		<State>
+		<isFirst>0</isFirst>
+			<value>8</value>
+			<nextState>0</nextState>
+			<refusedState>0</refusedState>
+			<name>待合成</name>
+		</State>
+		
+		<State>
+		<isFirst>0</isFirst>
+			<value>9</value>
+			<nextState>0</nextState>
+			<refusedState>0</refusedState>
+			<name>待合成</name>
+		</State>
+
+
+		<State>
+		<isFirst>0</isFirst>
+			<value>10</value>
+			<nextState>0</nextState>
+			<refusedState>0</refusedState>
+			<name>已发送</name>
+		</State>
+
+		<State>
+		<isFirst>0</isFirst>
+			<value>11</value>
+			<nextState>4</nextState>
+			<refusedState>0</refusedState>
+			<name>暂停</name>
+		</State>
+	</ContentInfoStates>
+
+	<!-- liqiang add 20090402内容状态配置 -->
+	<!-- corebiz所有的配置都放在这 -->
+	<CorebizConfig>
+		<!-- 处理哪里来的点播消息  1:ISAG ;2:ISMP -->
+		<dealDemand>1</dealDemand>
+
+		<!-- 下行消息队列监听端口 -->
+		<mtQueueListenPort>8888</mtQueueListenPort>
+		<!-- 上行行消息队列监听端口 -->
+		<moQueueListenPort>8889</moQueueListenPort>
+		<!-- 消息报告队列监听端口 -->
+		<reportQueueListenPort>8890</reportQueueListenPort>
+		<!-- 统一业务处理webservice监听端口 -->
+		<uniBusinessListenPort>8080</uniBusinessListenPort>
+		<!-- WAPPUSH地址 -->
+		<wappushUrl>http://localhost:8080/</wappushUrl>
+
+		<!-- 每次从数据库读取用户订购关系数量 -->
+		<!-- 彩信业务读取数量 -->
+		<mmsReqNum>10</mmsReqNum>
+		<!-- 彩E业务读取数量 -->
+		<mmeReqNum>10</mmeReqNum>
+		<!-- 短信业务读取数量 -->
+		<smsReqNum>10</smsReqNum>
+		<!-- WAP业务读取数量 -->
+		<wapReqNum>10</wapReqNum>
+		<!-- 是否手动触发下发 -->
+		<manualWork>false</manualWork>
+		<!-- 彩信下发间隔 -->
+		<mmsInterval>100</mmsInterval>
+		<!-- 彩E下发间隔 -->
+		<mmeInterval>100</mmeInterval>
+		<!-- 短信下发间隔 -->
+		<smsInterval>100</smsInterval>
+		<!-- WAP下发间隔 -->
+		<wapInterval>100</wapInterval>
+		<!-- 彩信和彩E是否同一个产品 -->
+		<sameProduct>true</sameProduct>
+		<!-- 彩信和彩E是否同一个消息队列 -->
+		<sameQueue>true</sameQueue>
+		
+		
+		<!-- 业务互动模块配置 -->
+		
+		<!-- 指令字与答案分隔符 -->
+		<codeAnswerDelim>#</codeAnswerDelim>
+		
+		<!-- 用户重复答题错误提示 -->
+		<sms4AnswerTwice>73990145</sms4AnswerTwice>
+		
+		<!-- 错误答案短信提示 -->
+		<sms4WrongAnswer>73990147</sms4WrongAnswer>
+		
+		<!-- 正确答案短信通知 -->
+		<sms4RightAnswer>86474753</sms4RightAnswer>
+		<!-- 是否根据用户终端类型下发彩信彩E 
+		false:表示根据号段区别。true:表示根据终端类型区别-->
+		<terminalAdapter>false</terminalAdapter>
+		<!-- 是否自动重复下发 -->
+		<autoResend>true</autoResend>
+		<!-- 移动号码前缀序列 -->
+		<mobileSeq>134,135,136,137,138,139,150,151,152,157,158,159,187,188 </mobileSeq>
+		<!-- 电信号码前缀序列 -->
+		<telecomSeq>180,189,133,153</telecomSeq>
+		<!-- 联通号码前缀序列 -->
+		<unicomSeq>130,131,132,155,156,185,186 </unicomSeq>
+	</CorebizConfig>
+	
+	<AgentConfig>
+		
+		<!-- 短信agent-->
+		<smsReceiveThreadNum>5</smsReceiveThreadNum>
+		<smsSendThreadNum>5</smsSendThreadNum>
+		<smsQuenceSize>10000</smsQuenceSize>
+		<smsServerIP>192.168.10.10</smsServerIP>
+		<smsServerPort>19031</smsServerPort>
+		<smsClientIP>192.168.10.10</smsClientIP>
+		<smsClientPort>19011</smsClientPort>
+		
+		<!-- vac agent-->
+		<vacRequestThreadNum>5</vacRequestThreadNum>
+		<vacResponseThreadNum>5</vacResponseThreadNum>
+		<vacQuenceSize>10000</vacQuenceSize>
+		<vacServerIP>127.0.0.1</vacServerIP>
+		<vacServerPort>9090</vacServerPort>
+		<vacClientIP>127.0.0.1</vacClientIP>
+		<vacClientPort>8000</vacClientPort>
+		
+		<!-- sp agent-->
+		<spMOThreadNum>5</spMOThreadNum>
+		<spMTThreadNum>5</spMTThreadNum>
+		<spQuenceSize>10000</spQuenceSize>
+		<spServerIP>127.0.0.1</spServerIP>
+		<spServerPort>9090</spServerPort>
+		<spClientIP>127.0.0.1</spClientIP>
+		<spClientPort>8000</spClientPort>
+		
+		<!-- wo agent-->
+		<woRequestThreadNum>5</woRequestThreadNum>
+		<woResponseThreadNum>5</woResponseThreadNum>
+		<woQuenceSize>10000</woQuenceSize>
+		<woServerIP>127.0.0.1</woServerIP>
+		<woServerPort>9090</woServerPort>
+		<woClientIP>127.0.0.1</woClientIP>
+		<woClientPort>8000</woClientPort>
+		
+	</AgentConfig>
+	
+	
+	<SGIPConnect>
+		<!-- SMG主机地址  10.199.70.151 -->
+		<host>127.0.0.1</host>
+		<!-- SMG主机端口号 -->
+		<port>8801</port>
+		<!-- 操作超时时间(单位：秒) -->
+		<transaction_timeout>10</transaction_timeout>
+		<!-- 物理连接读操作超时时间(单位：秒) -->
+		<read_timeout>15</read_timeout>
+		<!--SP…ID(最大为六位字符)sp接入码-->
+		<source_addr>10655565</source_addr>
+		<!--双方协商的版本号(大于0，小于256)-->
+		<version>1</version>
+		<!-- 服务端地址 -->
+		<localHost>127.0.0.1</localHost>
+		<!-- 服务端端口 -->
+		<localPort>8802</localPort>
+		<!--登陆用户名(最大为六位字符)-->
+		<login_name>10655565</login_name>
+		<!--登陆密码-->
+		<login_pass>W90537</login_pass>
+		<!--是否属于调试状态,true表示属于调试状态，所有的消息被打印输出到屏幕，false表示不属于调试状态，所有的消息不被输出-->
+		<debug>false</debug>
+	</SGIPConnect>
+	<sgipSubmit>
+
+		<spNumber>10655565</spNumber>
+                <agentFlag>0</agentFlag>
+                <expireTime></expireTime>
+                <scheduleTime></scheduleTime>
+                <reportFlag>1</reportFlag>
+                <tp_pid></tp_pid>
+                <tp_udhi></tp_udhi>
+                <messageCoding>15</messageCoding>
+                <messageType></messageType>
+                <corpId>90537</corpId>
+                <serviceType></serviceType>
+                <givenValue></givenValue>
+                <messageLength>70</messageLength>
+                <srcNode>3000090537</srcNode>
+
+	</sgipSubmit>
+	
+</Config>

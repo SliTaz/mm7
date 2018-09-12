@@ -1,7 +1,6 @@
 /*    */ package com.zbensoft.mmsmp.common.ra.common.db.entity;
 /*    */ 
 /*    */ import java.io.Serializable;
-/*    */ import org.apache.commons.lang.builder.ToStringBuilder;
 /*    */ 
 /*    */ public class UserOrderId
 /*    */   implements Serializable
@@ -56,15 +55,5 @@
 /* 74 */     return result;
 /*    */   }
 /*    */ 
-/*    */   public String toString()
-/*    */   {
-/* 82 */     return new ToStringBuilder(this).append("cellphonenumber", 
-/* 83 */       this.cellphonenumber).append("serviceuniqueid", 
-/* 84 */       this.serviceuniqueid).toString();
-/*    */   }
 /*    */ }
 
-/* Location:           E:\项目\2018-MMSMP-中国联调彩信\彩信管理平台MMSMP_20180802\开发参考文档\抓包\home\mmsmp\agent\vac_agent\WEB-INF\lib\mmsms_common.jar
- * Qualified Name:     com.aceway.common.db.entity.UserOrderId
- * JD-Core Version:    0.6.0
- */

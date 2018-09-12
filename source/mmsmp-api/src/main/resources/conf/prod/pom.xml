@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.zbensoft</groupId>
-		<artifactId>e-payment</artifactId>
+		<artifactId>mmsmp</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>e-payment-api</artifactId>
-	<name>e-payment-api</name>
+	<artifactId>mmsmp-api</artifactId>
+	<name>mmsmp-api</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<jjwt.version>0.6.0</jjwt.version>
@@ -68,13 +68,13 @@
 
 		<dependency>
 			<groupId>com.zbensoft</groupId>
-			<artifactId>e-payment-db</artifactId>
+			<artifactId>mmsmp-db</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.zbensoft</groupId>
-			<artifactId>e-payment-common</artifactId>
+			<artifactId>mmsmp-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
@@ -144,13 +144,6 @@
 	      <groupId>junit</groupId>
 	      <artifactId>junit</artifactId>
 	      <version>4.12</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>com.zbensoft</groupId>
-	      <artifactId>e-payment-core</artifactId>
-	      <version>0.0.2-SNAPSHOT</version>
-	      <scope>system</scope>
-	      <systemPath>${project.basedir}/lib/e-payment-core-0.0.3-SNAPSHOT.jar</systemPath>
 	    </dependency>
 	    <dependency>
 	      <groupId>com.zbensoft</groupId>
@@ -235,17 +228,17 @@
 </dependency>
 <dependency>
     <groupId>com.lowagie</groupId>
-    <artifactId>iText</artifactId>
+    <artifactId>itext</artifactId>
     <version>2.1.5</version>
 
-</dependency>       
+</dependency>
 <!--itext生成word文档，需要下面dependency-->
 <dependency>
     <groupId>com.lowagie</groupId>
-    <artifactId>iText-rtf</artifactId>
+    <artifactId>itext-rtf</artifactId>
     <version>2.1.4</version>
 
-</dependency> 
+</dependency>
 <dependency>  
         <groupId>com.itextpdf</groupId>  
         <artifactId>itext-asian</artifactId>  

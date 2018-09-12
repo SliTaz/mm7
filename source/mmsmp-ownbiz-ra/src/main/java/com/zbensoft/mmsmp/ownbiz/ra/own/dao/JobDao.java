@@ -5,21 +5,23 @@ package com.zbensoft.mmsmp.ownbiz.ra.own.dao;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.MmsUserEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.PreUserEntity;
 import com.zbensoft.mmsmp.ownbiz.ra.own.entity.SmsUserEntity;
+import com.zbensoft.mmsmp.ownbiz.ra.own.util.HttpHelper;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.sql.*;
 import java.util.Iterator;
 import java.util.List;
 
-public class JobDao extends JdbcDaoSupport {
+public class JobDao implements Dao{
     Log log = LogFactory.getLog(JobDao.class);
 
     public JobDao() {
     }
 
     public PreUserEntity preMmsUsers() {
+    	//xian bu xie
         PreUserEntity preUser = new PreUserEntity();
 //        Connection con = null;
 //        CallableStatement cstmt = null;
@@ -44,6 +46,7 @@ public class JobDao extends JdbcDaoSupport {
     }
 
     public List<SmsUserEntity> getSendsmsUsers(int rows) {
+    	//xian bu xie
 //        List lsuser = new ArrayList();
 //        Connection con = null;
 //        PreparedStatement stmt = null;
@@ -135,7 +138,7 @@ public class JobDao extends JdbcDaoSupport {
 //
 //            return result;
 //        }
-        return null;
+        return HttpHelper.selectContentIDInSend();
     }
 
     public boolean deleteSendMMSUsersByContentID(Long contentid) {
@@ -155,7 +158,7 @@ public class JobDao extends JdbcDaoSupport {
 //            this.close(con, stmt, (ResultSet)null);
 //        }
 
-        return false;
+        return HttpHelper.deleteSendMMSUsersByContentID(contentid);
     }
 
     public List<MmsUserEntity> getSendmmsUsers(Long contentid, int begin, int size) {
@@ -361,6 +364,10 @@ public class JobDao extends JdbcDaoSupport {
 
     }
 
+    private Connection getConnection() {
+        return null;
+    }
+
     public void updateSendmmsFlag(long contentid) {
 //        Connection con = null;
 //        PreparedStatement stmt = null;
@@ -391,7 +398,6 @@ public class JobDao extends JdbcDaoSupport {
 
             while(var6.hasNext()) {
                 MmsUserEntity send = (MmsUserEntity)var6.next();
-                this.logger.info("updsql:= update user_send_temp set sendcount=sendcount+1 where id " + send.getId());
                 stmt.setLong(1, send.getId());
                 stmt.addBatch();
             }

@@ -66,4 +66,6 @@ public interface ProductServiceMapper {
     ProductService getVasServiceRelation(ProductService record);
     
     int queryContentCount(ProductService record);
+
+    void updateByProductId(ProductService productService);
 }

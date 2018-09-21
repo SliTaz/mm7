@@ -41,27 +41,33 @@ public class WarMake {
 		FileUtils.delFile(projectPath + "\\mmsmp-api\\pom.xml");
 		FileUtils.delFile(projectPath + "\\mmsmp-boss\\pom.xml");
 		FileUtils.delFile(projectPath + "\\mmsmp-corebiz\\pom.xml");
+		
+		FileUtils.delFile(projectPath + "\\mmsmp-mms-ra\\pom.xml");
+		FileUtils.delFile(projectPath + "\\mmsmp-sms-ra\\pom.xml");
+		FileUtils.delFile(projectPath + "\\mmsmp-sp-ra\\pom.xml");
+		FileUtils.delFile(projectPath + "\\mmsmp-vac-ra\\pom.xml");
+		
+		FileUtils.delFile(projectPath + "\\mmsmp-ownbiz-ra\\pom.xml");
+		
 
 		FileUtils.copyFile(projectPath + "\\pom-prod.xml", projectPath + "\\pom.xml");
 		FileUtils.copyFile(projectPath + "\\mmsmp-api\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-api\\pom.xml");
 		FileUtils.copyFile(projectPath + "\\mmsmp-boss\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-boss\\pom.xml");
 		FileUtils.copyFile(projectPath + "\\mmsmp-corebiz\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-corebiz\\pom.xml");
+		FileUtils.copyFile(projectPath + "\\mmsmp-mms-ra\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-mms-ra\\pom.xml");
+		FileUtils.copyFile(projectPath + "\\mmsmp-sms-ra\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-sms-ra\\pom.xml");
+		FileUtils.copyFile(projectPath + "\\mmsmp-sp-ra\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-sp-ra\\pom.xml");
+		FileUtils.copyFile(projectPath + "\\mmsmp-vac-ra\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-vac-ra\\pom.xml");
+		
+		FileUtils.copyFile(projectPath + "\\mmsmp-ownbiz-ra\\src\\main\\resources\\conf\\prod\\pom.xml", projectPath + "\\mmsmp-ownbiz-ra\\pom.xml");
+		
+		
+		
 
 		System.out.println("复制现网配置");
 		runScript("cmd /c xcopy " + projectPath + "\\mmsmp-tools-war\\src\\main\\resources\\conf" + " " + Conf.PROD_HOME + Conf.PATH_SPLIT + Conf.FOLDER_01_NAME + " /e");
 		System.out.println("复制现网配置结束");
 
-		// while (new File(projectPath + "\\mmsmp-tools").exists()) {
-		// System.out.println("删除目录");
-		// runScript("cmd /c rd/s/q " + projectPath + "\\mmsmp-tools");
-		// System.out.println("删除结束");
-		// }
-		//
-		// while (new File(projectPath + "\\mmsmp-tools-war").exists()) {
-		// System.out.println("删除目录");
-		// runScript("cmd /c rd/s/q " + projectPath + "\\mmsmp-tools-war");
-		// System.out.println("删除结束");
-		// }
 		System.out.println("js混淆关闭");
 		
 		//modify by yp

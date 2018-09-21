@@ -78,6 +78,19 @@ App.factory('productInfoService', ['$http', '$q', function($http, $q){
 									}
 							);
 			},
+			
+			searchProductInfoIsPackage: function(isPackage) {
+				return $http.get(apiUrl +"/productInfo?isPackage=" + isPackage)
+						.then(
+								function(response){
+									return response.data;
+								}, 
+								function(errResponse){
+									handleAjaxError(errResponse);
+									return $q.reject(errResponse);
+								}
+						);
+		},
 
 		
 	};

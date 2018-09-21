@@ -2,11 +2,11 @@
 <configuration>
     
     <contextName>mmsmp</contextName>
-    <property name="LOG_PATH" value="/data/mmsmp/log/" />
+    <property name="LOG_PATH" value="/soft/log/mmsmp/api/" />
     <!--设置系统日志目录-->
     <property name="APPDIR" value="mmsmp" />
      <!--设置CDR目录-->
-     <property name="CDR_PATH" value="/data/mmsmp/cdr/" />
+     <property name="CDR_PATH" value="/soft/log/mmsmp/api/cdr/" />
 
     <!-- 日志记录器，滚动记录 -->
     <appender name="FILEERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">

@@ -368,6 +368,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	function selectBank(){
 		$("#companyCode").select2();
 		$("#companyName").select2();
+		$("#packageId").select2();
 		$("#myModal").attr("tabindex","");
 		$.fn.modal.Constructor.prototype.enforceFocus = function () { 
 		};
@@ -394,19 +395,44 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 	}
 	function addInit() {
 		vm.bean = {};
-		selData();
+//		selData();
 		changeData();
+		$('#packageIdChange').hide();
 //		vm.ProvinceCityData1=vm.ProvinceCityData;
 		selectBank();
 		vm.modelTitle = $translate.instant('common.productInfo.add');
-		
 		vm.statusCode="";
 		vm.statusMessage="";
 	}
+	
+	//根据是否为套餐，隐藏显示套餐编号
+//	$('#isPackage').change(function(){
+//	     //要触发的事件
+//		changePackage();
+//	    });
+//	function changePackage()
+//	{	
+//		if($('#isPackage option:selected').val()==0){ 
+//			$('#packageIdChange').hide();
+//		}
+//		else if($('#isPackage option:selected').val()==1){  
+//			$('#packageIdChange').show();
+//		}else{
+//			$('#packageIdChange').hide();
+//		}
+//	}
 	function selData(){
 		productInfoService.searchAllSpInfo().then(function(d){
 			vm.companyCoreData = d.body;	
 			vm.companyNameData=d.body;
+		},
+				function(errResponse) {
+						handleAjaxError(errResponse);
+					console.error('Error while updating Menu.');
+				});	
+		vm.bean.isPackage = 1;
+		productInfoService.searchProductInfoIsPackage(vm.bean.isPackage).then(function(d){
+			vm.productInfoData = d.body;
 		},
 				function(errResponse) {
 						handleAjaxError(errResponse);
@@ -468,6 +494,7 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 					});
 			vm.reset();
 		} else {
+			vm.bean.companyName=$("#companyName").val();
 			vm.bean.applyTime = timeFormatNew(vm.bean.applyTime);
 			productInfoService.updateProductInfo(vm.bean, vm.bean.productInfoId).then(onSubmitSuccess,
 					function(errResponse) {

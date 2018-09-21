@@ -7,11 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.zbensoft.mmsmp.api.service.api.UserOrderService;
 import com.zbensoft.mmsmp.db.domain.UserOrder;
+import com.zbensoft.mmsmp.db.domain.UserStatistics;
 import com.zbensoft.mmsmp.db.mapper.UserOrderMapper;
 @Service
 public class UserOrderServiceImpl implements UserOrderService {
 	@Autowired
-	UserOrderMapper  userOrderMapper;
+	UserOrderMapper userOrderMapper;
 	@Override
 	public int deleteByPrimaryKey(String userOrderId) {
 		return userOrderMapper.deleteByPrimaryKey(userOrderId);
@@ -71,6 +72,24 @@ public class UserOrderServiceImpl implements UserOrderService {
 	@Override
 	public UserOrder selectOrderRelation(UserOrder userOrder) {
 		return userOrderMapper.selectOrderRelation(userOrder);
+	}
+
+//	@Override
+//	public int selectCountByOrderAndSpInfoId(String spInfoId) {
+//		// TODO Auto-generated method stub
+//		return userOrderMapper.selectCountByOrderAndSpInfoId(spInfoId);
+//	}
+
+	@Override
+	public List<UserStatistics> selectCountByOrderAndSpInfoId(UserStatistics record) {
+		// TODO Auto-generated method stub
+		return userOrderMapper.selectCountByOrderAndSpInfoId(record);
+	}
+
+	@Override
+	public List<UserStatistics> selectCountByOnDemandAndSpInfoId(UserStatistics record) {
+		// TODO Auto-generated method stub
+		return userOrderMapper.selectCountByOnDemandAndSpInfoId(record);
 	}
 
 	@Override

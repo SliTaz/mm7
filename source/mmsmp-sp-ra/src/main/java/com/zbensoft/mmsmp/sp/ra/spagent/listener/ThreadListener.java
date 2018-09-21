@@ -92,7 +92,7 @@ public class ThreadListener implements ServletContextListener {
 		mo_SMMessage.setSmsText("100");//必须有
 		mo_SMMessage.setServiceId(0);
 		mo_SMMessage.setContentCode(null);
-		mo_SMMessage.setNotirySPURL("192.168.1.116:39095");//必须有
+		mo_SMMessage.setNotirySPURL("127.0.0.1:39095");//必须有
 		mo_SMMessage.setSequence_Number_1(Integer.valueOf(111));//必须有
 		mo_SMMessage.setSequence_Number_2(Integer.valueOf(222));//必须有
 		mo_SMMessage.setSequence_Number_3(Integer.valueOf(333));//必须有

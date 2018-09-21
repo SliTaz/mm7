@@ -7,9 +7,7 @@
     <artifactId>mmsmp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.zbensoft</groupId>
   <artifactId>mmsmp-vac-ra-simulator</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>mmsmp-vac-ra-simulator</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -122,6 +120,11 @@
 	       	<!-- 使用内部tomcat直接运行 打包需要增加 End-->
 				
 				</configuration>
+			</plugin>
+			<plugin> 
+				<groupId>org.apache.felix</groupId> 
+				<artifactId>maven-bundle-plugin</artifactId> 
+				<extensions>true</extensions> 
 			</plugin>
 		</plugins>
 	</build>

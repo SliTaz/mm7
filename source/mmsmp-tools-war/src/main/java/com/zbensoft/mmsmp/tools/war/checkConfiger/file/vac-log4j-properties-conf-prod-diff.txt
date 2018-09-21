@@ -1,0 +1,2 @@
+log4j.appender.file.file=C:/Wangchenyang/log/mmsmp/vacra/vacra.log <--> log4j.appender.file.file=/soft/log/mmsmp/vacra/vacra.log
+log4j.appender.PROCESS_LOG.File=C:/Wangchenyang/log/mmsmp/vacra/PROCESS_LOG.log <--> log4j.appender.PROCESS_LOG.File=/soft/log/mmsmp/vacra/PROCESS_LOG.log

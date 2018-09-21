@@ -3,6 +3,7 @@ package com.zbensoft.mmsmp.db.mapper;
 import java.util.List;
 
 import com.zbensoft.mmsmp.db.domain.UserOrder;
+import com.zbensoft.mmsmp.db.domain.UserStatistics;
 
 public interface UserOrderMapper {
     /**
@@ -63,8 +64,13 @@ public interface UserOrderMapper {
 	UserOrder selectByPhoneNumber(String phoneNumber);
 
 	UserOrder selectOrderRelation(UserOrder userOrder);
-
 	void deleteByPhoneNumber(String phoneNumber);
 
 	List<UserOrder> getSpProductIds(String phoneNumber);
+//	int selectCountByOrderAndSpInfoId(String spInfoId);
+	
+	List<UserStatistics> selectCountByOrderAndSpInfoId(UserStatistics record);
+	
+	List<UserStatistics> selectCountByOnDemandAndSpInfoId(UserStatistics record);
+	
 }

@@ -85,6 +85,13 @@
             <scope>system</scope>
 	      	<systemPath>${project.basedir}/lib/mm7api.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>jdon</groupId>
+            <artifactId>jdon</artifactId>
+	      	<version>0.0.1</version>
+            <scope>system</scope>
+	      	<systemPath>${project.basedir}/lib/jdon.jar</systemPath>
+        </dependency>
         <!-- mm7 is ok end -->
         
         <!-- xfire is ok start -->
@@ -175,13 +182,7 @@
       <scope>test</scope>
     </dependency>
     
-    	<dependency>
-            <groupId>jdon</groupId>
-            <artifactId>jdon</artifactId>
-	      	<version>0.0.1</version>
-            <scope>system</scope>
-	      	<systemPath>${project.basedir}/lib/jdon.jar</systemPath>
-        </dependency>
+    
 
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -213,6 +214,15 @@
                     <includes> <include>**/*.properties</include>
                     <include>**/*.xml</include> </includes> <filtering>true</filtering>
                 -->
+            </resource>
+            <resource>
+                <directory>lib</directory>
+                <targetPath>../mmsmp-common-ra-0.0.1-SNAPSHOT\WEB-INF\lib</targetPath>
+                <includes>
+                <include>jdon.jar</include>
+		    	<include>mm7.jar</include>
+		    	<include>mm7api.jar</include>
+                </includes>
             </resource>
         </resources>
   	<plugins>

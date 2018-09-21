@@ -1,0 +1,1 @@
+log4j.appender.file.file=/logs/mmsmp/ownbiz/ownbiz.log <--> log4j.appender.file.file=/soft/log/mmsmp/ownbiz/ownbiz.log

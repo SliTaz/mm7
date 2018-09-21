@@ -1,7 +1,9 @@
  package com.zbensoft.mmsmp.corebiz.service.xfire;
  
  import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.UniBusiness;
- import org.apache.commons.logging.Log;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
+import org.apache.commons.logging.Log;
  import org.apache.commons.logging.LogFactory;
  import org.codehaus.xfire.XFire;
  import org.codehaus.xfire.XFireFactory;
@@ -51,11 +53,11 @@
        server.setPort(this.port);
        server.start();
        
-       this.logger.info("xfire server startup with " + this.port);
+       COREBIZ_LOG.INFO("xfire server startup with " + this.port);
      }
      catch (Exception e)
      {
-       this.logger.error("xfire process event " + event + " error", e);
+       COREBIZ_LOG.ERROR("xfire process event " + event + " error", e);
      }
    }
    

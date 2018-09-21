@@ -1,0 +1,7 @@
+		<!-- <dependency> <--> 		 <dependency>
+		</dependency> --> <--> 		</dependency>
+		<dependency> <--> 		<!--<dependency>
+		</dependency> <--> 		</dependency>-->
+	<build><!-- <--> 	<build>
+                    <exclude>conf/test/*</exclude> <-->                     <exclude>conf/prod/*</exclude>
+        </resources>--> <-->         </resources>

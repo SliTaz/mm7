@@ -6,6 +6,8 @@
  import org.springframework.context.ApplicationListener;
  import org.springframework.context.event.ContextClosedEvent;
  import org.springframework.context.event.ContextRefreshedEvent;
+
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
  
  
  
@@ -28,17 +30,17 @@
      {
        if ((event instanceof ContextRefreshedEvent))
        {
-         logger.info("task scheduler started");
+        COREBIZ_LOG.INFO("task scheduler started");
        }
        else if ((event instanceof ContextClosedEvent))
        {
          this.scheduler.shutdown();
-         logger.info("task scheduler stopped");
+        COREBIZ_LOG.INFO("task scheduler stopped");
        }
      }
      catch (Exception ex)
      {
-       logger.error(ex);
+       COREBIZ_LOG.ERROR("",ex);
      }
    }
    

@@ -55,4 +55,6 @@ public interface SpAccessService {
     List<SpAccess> selectPage(SpAccess record);
 
 	int count(SpAccess record);
+
+    String getMaxServiceAccessNumber(String spid);
 }

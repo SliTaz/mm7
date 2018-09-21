@@ -27,9 +27,12 @@ import com.zbensoft.mmsmp.api.common.HttpRestStatusFactory;
 import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
 import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
+import com.zbensoft.mmsmp.api.service.api.CooperKeyService;
 import com.zbensoft.mmsmp.api.service.api.ProductInfoService;
 import com.zbensoft.mmsmp.api.service.api.ProvinceCityService;
 import com.zbensoft.mmsmp.api.service.api.UserOrderPayService;
+import com.zbensoft.mmsmp.db.domain.AccessSendStatistics;
+import com.zbensoft.mmsmp.db.domain.CooperKey;
 import com.zbensoft.mmsmp.db.domain.ProductInfo;
 import com.zbensoft.mmsmp.db.domain.ProvinceCity;
 import com.zbensoft.mmsmp.db.domain.UserOrderPay;
@@ -44,6 +47,9 @@ public class UserOrderPayController {
 	ProvinceCityService provinceCityService;
 	@Autowired
 	private ProductInfoService productInfoService;
+	@Autowired
+	CooperKeyService cooperKeyService;
+	
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 
@@ -210,4 +216,55 @@ public class UserOrderPayController {
 		//删除日志结束
 		return new ResponseRestEntity<UserOrderPay>(HttpRestStatus.NO_CONTENT);
 	}
+	
+	@PreAuthorize("hasRole('R_AST_Q')")
+	@ApiOperation(value = "Query AccessSendStatistics", notes = "")
+	@RequestMapping(value = "/accessSendStatistics", method = RequestMethod.GET)
+	public ResponseRestEntity<List<AccessSendStatistics>> selectAccessSendStatistics(@RequestParam(required = false) String productInfoId,@RequestParam(required = false) String keyId,@RequestParam(required = false) String timeStart,@RequestParam(required = false) String timeEnd) {
+		AccessSendStatistics accessSendStatistics = new AccessSendStatistics();
+		accessSendStatistics.setProductInfoId(productInfoId);
+		accessSendStatistics.setTimeStart(timeStart);
+		accessSendStatistics.setTimeEnd(timeEnd);
+		accessSendStatistics.setKeyId(keyId);
+		List<AccessSendStatistics> orderList = userOrderPayService.selectCountByOrderAndProductInfoId(accessSendStatistics);
+		List<AccessSendStatistics> ondemandList = userOrderPayService.selectCountByOnDemandAndProductInfoId(accessSendStatistics);
+		if(orderList!=null && !orderList.isEmpty()){
+			for (AccessSendStatistics userStatistics2 : orderList) {
+				//获取sp总费用
+				Double orderFee = 0.0 ,onDemandFee = 0.0,orderTotal = 0.0,ondemandTotal = 0.0 ;
+				ProductInfo productInfo = productInfoService.selectByPrimaryKey(userStatistics2.getProductInfoId());
+				//获取订购费用、点播费用、产品名称、业务名称
+				if(productInfo!=null){
+					orderFee = productInfo.getOrderFee();
+					onDemandFee = productInfo.getOnDemandFee();
+					userStatistics2.setOrderFee(orderFee);
+					userStatistics2.setOndemandFee(onDemandFee);
+					userStatistics2.setProductName(productInfo.getProductName());
+					userStatistics2.setServiceName(productInfo.getProductName());
+				}
+				//获取点播数
+				if(ondemandList!=null&&!ondemandList.isEmpty()){
+					for (AccessSendStatistics userStatistics3 : ondemandList) {
+						if(userStatistics2.getProductInfoId()==userStatistics3.getProductInfoId()){
+							userStatistics2.setOndemandCount(userStatistics3.getOndemandCount());
+						}
+					}
+				}
+				orderTotal = orderFee*userStatistics2.getOrderCount();
+				ondemandTotal = onDemandFee*userStatistics2.getOndemandCount();
+				userStatistics2.setOrderTotal(orderTotal);
+				userStatistics2.setOndemandTotal(ondemandTotal);
+				
+				UserOrderPay userOrderPay = new UserOrderPay();
+				userOrderPay.setProductInfoId(userStatistics2.getProductInfoId());
+				List<UserOrderPay> userOrderPayList = userOrderPayService.selectPage(userOrderPay);
+				if(userOrderPayList!=null && !userOrderPayList.isEmpty()){
+					CooperKey cooperKey = cooperKeyService.selectByPrimaryKey(userOrderPayList.get(0).getKeyId());
+					userStatistics2.setCooperName(cooperKey.getCooperName());
+				}
+			}
+		}
+		return new ResponseRestEntity<List<AccessSendStatistics>>(orderList, HttpRestStatus.OK);
+	}
+
 }

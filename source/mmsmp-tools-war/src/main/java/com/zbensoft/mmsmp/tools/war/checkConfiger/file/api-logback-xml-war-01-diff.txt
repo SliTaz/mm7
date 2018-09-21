@@ -2,3 +2,6 @@
      <property name="CDR_PATH" value="C:\\Wangchenyang\\log\\mmsmp\\cdr" /> <-->      <property name="CDR_PATH" value="/data/mmsmp/cdr/" />
         <!-- 生产环境将请stdout,testfile去掉 --> <-->         <!-- 生产环境将请stdout,testfile去掉 
         <appender-ref ref="STDOUT" /> <-->         <appender-ref ref="STDOUT" />-->
+          <property name="LOG_PATH" value="C:\\Wangchenyang\\log\\mmsmp" /> <-->     <property name="LOG_PATH" value="/soft/log/mmsmp/api/" />
+     <property name="CDR_PATH" value="C:\\Wangchenyang\\log\\mmsmp\\cdr" /> <-->      <property name="CDR_PATH" value="/soft/log/mmsmp/api/cdr/" />
+        

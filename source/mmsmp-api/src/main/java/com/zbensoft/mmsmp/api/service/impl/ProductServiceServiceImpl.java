@@ -97,6 +97,10 @@ public class ProductServiceServiceImpl implements ProductServiceService{
 		return productServiceMapper.queryContentCount(record);
 	}
 
+	@Override
+	public void updateByProductId(ProductService productService) {
+		 productServiceMapper.updateByProductId(productService);
+	}
 
 
 }

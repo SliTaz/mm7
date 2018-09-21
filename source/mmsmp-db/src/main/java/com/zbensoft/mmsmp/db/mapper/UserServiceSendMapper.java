@@ -59,4 +59,6 @@ public interface UserServiceSendMapper {
     UserServiceSend selectByMessageId(String messageId);
 
 	UserServiceSend selectByRequestId(String requestId);
+	
+	int getCountBySpInfoId(String spInfoId);
 }

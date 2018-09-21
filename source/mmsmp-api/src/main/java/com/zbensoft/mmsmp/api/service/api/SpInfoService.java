@@ -61,4 +61,10 @@ public interface SpInfoService {
 	List<SpInfo> selectAll();
 	
 	List<SpInfo> getSpInfoByCompanyCode(String productInfoId);
+
+    int getSpInfoCountById(String spId);
+
+    void sycDeleteSpInfo(String spId);
+
+    List<String> getALlSpIds();
 }

@@ -44,13 +44,14 @@ public class MinaServerListener implements ApplicationListener {
     private ProxyPayMessageDao proxyPayMessageDao;
     private VasServiceRelationDao vasServiceRelationDao;
     private MessageQuene messageQuene = null;
+    private static volatile boolean started;
 
     public MinaServerListener() {
     }
 
     public void onApplicationEvent(ApplicationEvent event) {
 
-        if(!(event instanceof ContextRefreshedEvent)){
+        if(!(event instanceof ContextRefreshedEvent) || started){
             return;
         }
 
@@ -116,6 +117,8 @@ public class MinaServerListener implements ApplicationListener {
         } catch (Throwable var5) {
             _log.error(String.format("MinaServer 启动失败，错误消息：%s.", var5.getMessage()), var5);
         }
+
+        started =  true;
 
     }
 

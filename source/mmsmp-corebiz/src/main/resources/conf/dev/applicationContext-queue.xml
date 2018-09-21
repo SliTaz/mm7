@@ -23,7 +23,7 @@
 	<!-- 前置接收路由队列(中) -->
 	<bean id="receiveCommonLevelQueue" class="com.zbensoft.mmsmp.corebiz.util.ProxyQueue">
 		<constructor-arg index="0">
-                    <value>/logs/mmsmp/corebiz_queue</value>
+                    <value>/soft/log/mmsmp/corebiz_queue</value>
                 </constructor-arg>
 	        <constructor-arg index="1">
                     <value>receiveCommonLevelQueue</value>
@@ -95,7 +95,7 @@
         	 <!-- 管理门户（彩信测试、短信测试）、个人门户获取验证码 所用-->
         	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.SendNotificationMessage" value-ref="receiveLowerLevelQueue"/>
 	 		<!-- ownservice 代支付消息对象 -->
-        	 <entry key="com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage" value-ref="receiveProxyPayQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage" value-ref="receiveProxyPayQueue"/>
         	 
         	</map> 
     	</constructor-arg>  
@@ -132,7 +132,7 @@
         	 
         	 <entry key="com.zbensoft.mmsmp.corebiz.message.OrderRelationMessage" value="portal"/>
         	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.SendNotificationMessage" value="admin"/>
-    		 <entry key="com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage" value="ownservice"/>
+    		 <entry key="com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage" value="ownservice"/>
     		 
         	</map> 
     	</constructor-arg>  
@@ -154,7 +154,7 @@
         	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MT_SMMessage" value-ref="dispatchSmsAgentQueue"/>
         	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest" value-ref="dispatchSpAgentQueue"/>
         	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage" value-ref="dispatchSpAgentQueue"/>
-        	 <entry key="com.zbensoft.mmsmp.corebiz.message.ProxyPayMessage" value-ref="dispatchOwnServiceQueue"/>
+        	 <entry key="com.zbensoft.mmsmp.common.ra.common.message.ProxyPayMessage" value-ref="dispatchOwnServiceQueue"/>
         	  
     		</map> 
     	</constructor-arg>  

@@ -65,4 +65,6 @@ public interface ProductServiceService {
 	List<ProductService> getSpProductId(String cpAccessId);
 	ProductService getVasServiceRelation(ProductService record);
 	 int queryContentCount(ProductService record);
+
+    void updateByProductId(ProductService productService);
 }

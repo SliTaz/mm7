@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -21,6 +22,7 @@ import com.zbensoft.mmsmp.common.ra.common.db.entity.VaspReserveInfo;
 import com.zbensoft.mmsmp.common.ra.common.db.entity.Vasservice;
 import com.zbensoft.mmsmp.common.ra.common.db.entity.VasserviceReserveInfo;
 import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
+import com.zbensoft.mmsmp.config.SpringBeanUtil;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto;
 import com.zbensoft.mmsmp.corebiz.message.MmsHistoryMessage;
 
@@ -33,14 +35,18 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HttpRequestHelper {
-	static String apiUrl = "http://localhost:8080";
-	@Value("${api.url}")
-	private static String API_URL;
-	   
+	
+
+	
+	private Environment env = SpringBeanUtil.getBean(Environment.class);
+	private String API_URL= env.getProperty("api.url");
+	
+	private static HttpRequestHelper hrh = new HttpRequestHelper();
+	
 	public static List<UserBlackWhiteList> getWhiteList() {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/whiteList")
+	             .url(hrh.API_URL + "/corbiz/whiteList")
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -78,7 +84,7 @@ public class HttpRequestHelper {
 	public static List<CpInfo> getCpInfo() {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/cpInfo")
+	             .url(hrh.API_URL + "/corbiz/cpInfo")
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -141,7 +147,7 @@ public class HttpRequestHelper {
 	public static UserOrder getUserOrder(String charge,String unique) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/userOrder?phoneNumber = " + charge + "&productInfoId = " + unique)
+	             .url(hrh.API_URL + "/corbiz/userOrder?phoneNumber = " + charge + "&productInfoId = " + unique)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -187,7 +193,7 @@ public class HttpRequestHelper {
 	public static String getSpurlByVaspid(String spInfoId) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getSpurlByVaspid?spInfoId = " + spInfoId)
+	             .url(hrh.API_URL + "/corbiz/getSpurlByVaspid?spInfoId = " + spInfoId)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -218,7 +224,7 @@ public class HttpRequestHelper {
 	public static ProductService requestacc(String onDemandAccess) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/requestacc?onDemandAccess=" + onDemandAccess)
+	             .url(hrh.API_URL + "/corbiz/requestacc?onDemandAccess=" + onDemandAccess)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -290,7 +296,7 @@ public class HttpRequestHelper {
 	public static List<SysParameters> getSysConfig() {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getSysConfig")
+	             .url(hrh.API_URL + "/corbiz/getSysConfig")
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -331,7 +337,7 @@ public class HttpRequestHelper {
 	public static String getServiceIDbyProductid(String spProductid) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getServiceIDbyProductid?spProductId=" + spProductid)
+	             .url(hrh.API_URL + "/corbiz/getServiceIDbyProductid?spProductId=" + spProductid)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -351,17 +357,22 @@ public class HttpRequestHelper {
 		 JSONObject jsonObject = JSONObject.parseObject(responseData);
 	     String statusCode=jsonObject.getString("statusCode");;
 	     String productServiceId = null;
+	     String vasIdAndvaspid="";
+	     String vasId="";
+	     String vaspid="";
 	     if("OK".equals(statusCode)){
 	    	 JSONObject message = jsonObject.getJSONObject("body");
-	    	 productServiceId = message.getString("productServiceId");
+	    	 vasId = message.getString("cpAccessId");
+	    	 vaspid = message.getString("companyCode");
 	     }
-	     return productServiceId;
+	     vasIdAndvaspid=vasId+"#"+vaspid;
+	     return vasIdAndvaspid;
 	}
 	
 	public static String getServuniqueIdbySpproductid(String spProductid) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getServiceIDbyProductid?spProductId=" + spProductid)
+	             .url(hrh.API_URL + "/corbiz/getServiceIDbyProductid?spProductId=" + spProductid)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -391,7 +402,7 @@ public class HttpRequestHelper {
 	public static String getSpReportUrlByServiceCode(String spProductid) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getSpReportUrlByServiceCode?spProductId=" + spProductid)
+	             .url(hrh.API_URL + "/corbiz/getSpReportUrlByServiceCode?spProductId=" + spProductid)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -421,7 +432,7 @@ public class HttpRequestHelper {
 	public static List<UserBlackWhiteList> getBlackList() {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/blackList")
+				.url(hrh.API_URL + "/corbiz/blackList")
 				.get()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -458,7 +469,7 @@ public class HttpRequestHelper {
 	public static List<Vasp> getSpInfo() {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/spInfo")
+				.url(hrh.API_URL + "/corbiz/spInfo")
 				.get()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -526,7 +537,7 @@ public class HttpRequestHelper {
 	public static List<Vasservice> getNormalStatus() {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/productService")
+				.url(hrh.API_URL + "/corbiz/productService")
 				.get()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -604,7 +615,7 @@ public class HttpRequestHelper {
 	public static String getSpIdByVasId(String vasId) {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/productInfo?vasId="+vasId)
+				.url(hrh.API_URL + "/corbiz/productInfo?vasId="+vasId)
 				.get()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -634,7 +645,7 @@ public class HttpRequestHelper {
 	public static String getConfirmmsgByProductid(String spProductid) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getConfirmmsgByProductid?spProductId=" + spProductid)
+	             .url(hrh.API_URL + "/corbiz/getConfirmmsgByProductid?spProductId=" + spProductid)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -660,11 +671,41 @@ public class HttpRequestHelper {
 	     }
 	     return confirmPrompt;
 	}
+	
+	public static String getSuccPromptByProductid(String spProductid) {
+		 RequestBody body = new FormBody.Builder().build();
+	     Request request = new Request.Builder()
+	             .url(hrh.API_URL + "/corbiz/getSuccPromptByProductid?spProductId=" + spProductid)
+	             .get()
+	             .build();
+	     OkHttpClient okHttp = new OkHttpClient();
+	     Call call = okHttp.newCall(request);
+	     Response response = null;
+	     try {
+	         response = call.execute();
+	     } catch (IOException e) {
+	         e.printStackTrace();
+	     }
+	    String responseData = null;
+		try {
+			responseData = response.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		 JSONObject jsonObject = JSONObject.parseObject(responseData);
+	     String statusCode=jsonObject.getString("statusCode");;
+	     String confirmPrompt = null;
+	     if("OK".equals(statusCode)){
+	    	 JSONObject message = jsonObject.getJSONObject("body");
+	    	 confirmPrompt = message.getString("succPrompt");
+	     }
+	     return confirmPrompt;
+	}
 
 	public static List<String> getProductId(String vasId) {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/getSpProductId?cpAccessId="+vasId)
+				.url(hrh.API_URL + "/corbiz/getSpProductId?cpAccessId="+vasId)
 				.get()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -694,10 +735,10 @@ public class HttpRequestHelper {
 		return vasservice;
 	}
 
-	public static void delServiceOrderRelation(String sendAddress, String productInfoId) {
+	public static void delServiceOrderRelation(String sendAddress, String vasId) {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/delUserOrder/"+sendAddress+"/"+productInfoId)
+				.url(hrh.API_URL + "/corbiz/delUserOrder/"+sendAddress+"/"+vasId)
 				.delete()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -716,10 +757,10 @@ public class HttpRequestHelper {
 		}  
 	}
 
-	public static UserOrder getOrderRelation(String phoneNumber, String spProductId) {
+	public static UserOrder getOrderRelation(String phoneNumber, String string) {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/selectUserOrder/"+phoneNumber+"/"+spProductId)
+				.url(hrh.API_URL + "/corbiz/selectUserOrder/"+phoneNumber)
 				.get()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -750,7 +791,7 @@ public class HttpRequestHelper {
 	public static void delOrderRelation(String sendAddress, String vasId) {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/delUserOrder/"+sendAddress+"/"+vasId)
+				.url(hrh.API_URL + "/corbiz/delUserOrder/"+sendAddress+"/"+vasId)
 				.delete()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -773,7 +814,7 @@ public class HttpRequestHelper {
 	public static void saveMoMsg(String smstext, String phoneNumber,String spNumber) {
 		 RequestBody body = new FormBody.Builder().add("messageContent", smstext).add("phoneNumber", phoneNumber).build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/userRecv")
+	             .url(hrh.API_URL + "/corbiz/userRecv")
 	             .post(body)
 	             .build();
 	     
@@ -792,7 +833,7 @@ public class HttpRequestHelper {
 	public static String[] getLatestMoOrderMsgText(String phoneNumber,Long s ,String spAccessNumber) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getLatestMoOrderMsgText?phoneNumber=" + phoneNumber)
+	             .url(hrh.API_URL + "/corbiz/getLatestMoOrderMsgText?phoneNumber=" + phoneNumber)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -823,7 +864,7 @@ public class HttpRequestHelper {
 	public static String[] getServiceNameByAcc(String cpAccessId) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getServiceNameByAcc?cpAccessId=" + cpAccessId)
+	             .url(hrh.API_URL + "/corbiz/getServiceNameByAcc?cpAccessId=" + cpAccessId)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -854,7 +895,7 @@ public class HttpRequestHelper {
 	public static SmsSenderDto getVasSpCpInfo(String cpAccessId) {
 		 RequestBody body = new FormBody.Builder().build();
 	     Request request = new Request.Builder()
-	             .url(apiUrl + "/corbiz/getVasSpCpInfo?cpAccessId=" + cpAccessId)
+	             .url(hrh.API_URL + "/corbiz/getVasSpCpInfo?cpAccessId=" + cpAccessId)
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();
@@ -894,7 +935,7 @@ public class HttpRequestHelper {
 	public static void delAllOrderRelation(String phoneNumber) {
 		RequestBody body = new FormBody.Builder().build();
 		Request request = new Request.Builder()
-				.url(apiUrl + "/corbiz/delAllOrderRelation/"+phoneNumber)
+				.url(hrh.API_URL + "/corbiz/delAllOrderRelation/"+phoneNumber)
 				.delete()
 				.build();
 		OkHttpClient okHttp = new OkHttpClient();
@@ -917,7 +958,7 @@ public class HttpRequestHelper {
 		public static String[] getAreaCodeByUserPhone(String phoneNumber) {
 			 RequestBody body = new FormBody.Builder().build();
 		     Request request = new Request.Builder()
-		             .url(apiUrl + "/corbiz/getAreaCodeByUserPhone?phoneNumber=" + phoneNumber)
+		             .url(hrh.API_URL + "/corbiz/getAreaCodeByUserPhone?phoneNumber=" + phoneNumber)
 		             .get()
 		             .build();
 		     OkHttpClient okHttp = new OkHttpClient();
@@ -951,7 +992,7 @@ public class HttpRequestHelper {
 			jsonArray.add(0,mms);
 			RequestBody body = RequestBody.create(mediaType,jsonArray.toString());
 		    Request request = new Request.Builder()
-		            .url(apiUrl + "/corbiz/saveDemandMessage")
+		            .url(hrh.API_URL + "/corbiz/saveDemandMessage")
 		            .post(body)
 		            .build();
 		    OkHttpClient okHttp = new OkHttpClient();
@@ -979,7 +1020,7 @@ public class HttpRequestHelper {
 		public static String getSmsSenderUrl(String spInfoId) {
 			 RequestBody body = new FormBody.Builder().build();
 			 Request request = new Request.Builder()
-			            .url(apiUrl + "/corbiz/getSmsSenderUrl?spInfoId="+spInfoId)
+			            .url(hrh.API_URL + "/corbiz/getSmsSenderUrl?spInfoId="+spInfoId)
 			            .get()
 			            .build();
 		     OkHttpClient okHttp = new OkHttpClient();
@@ -1011,7 +1052,7 @@ public class HttpRequestHelper {
 		public static void updateMmsGrsCode(String status, String messageId, String string2) {
 			 RequestBody body = new FormBody.Builder().build();
 			 Request request = new Request.Builder()
-			            .url(apiUrl + "/corbiz/updateMmsGrsCode?messageId="+messageId+"&status="+status)
+			            .url(hrh.API_URL + "/corbiz/updateMmsGrsCode?messageId="+messageId+"&status="+status)
 			            .get()
 			            .build();
 		     OkHttpClient okHttp = new OkHttpClient();
@@ -1034,7 +1075,7 @@ public class HttpRequestHelper {
 				String spInfoId, String messageId, String productInfoId) {
 			 RequestBody body = new FormBody.Builder().build();
 			 Request request = new Request.Builder()
-			            .url(apiUrl + "/corbiz/saveUserZSMTRecord?phoneNumber="+phoneNumber+"&chargePhoneNumber="
+			            .url(hrh.API_URL + "/corbiz/saveUserZSMTRecord?phoneNumber="+phoneNumber+"&chargePhoneNumber="
 			                    +chargePhoneNumber+"&contentInfoId="+contentInfoId+"&spInfoId="+spInfoId+"&productInfoId="+productInfoId+"&messageId="+messageId)
 			            .get()
 			            .build();
@@ -1057,7 +1098,7 @@ public class HttpRequestHelper {
 		public static void updateSpMMSSendRecord(String status, String requestId, String mmscode) {
 			 RequestBody body = new FormBody.Builder().build();
 			 Request request = new Request.Builder()
-			            .url(apiUrl + "/corbiz/updateSpMMSSendRecord?status="+status+"&requestId="+requestId)
+			            .url(hrh.API_URL + "/corbiz/updateSpMMSSendRecord?status="+status+"&requestId="+requestId)
 			            .get()
 			            .build();
 		     OkHttpClient okHttp = new OkHttpClient();
@@ -1084,7 +1125,7 @@ public class HttpRequestHelper {
 			}
 			RequestBody body = RequestBody.create(mediaType,jsonArray.toString());
 		    Request request = new Request.Builder()
-		            .url(apiUrl + "/corbiz/batchInsertMTRecords")
+		            .url(hrh.API_URL + "/corbiz/batchInsertMTRecords")
 		            .post(body)
 		            .build();
 		    OkHttpClient client = new OkHttpClient();
@@ -1112,7 +1153,7 @@ public class HttpRequestHelper {
 		public static boolean updateGatewaySRecord(String status,String messageId,String reqId) {
 			 RequestBody body = new FormBody.Builder().build();
 		     Request request = new Request.Builder()
-		             .url(apiUrl + "/corbiz/updateGatewaySRecord?status=" + status +"&messageId="+messageId+"&reqId="+reqId)
+		             .url(hrh.API_URL + "/corbiz/updateGatewaySRecord?status=" + status +"&messageId="+messageId+"&reqId="+reqId)
 		             .get()
 		             .build();
 		     OkHttpClient okHttp = new OkHttpClient();
@@ -1144,7 +1185,7 @@ public class HttpRequestHelper {
 			String orderRoute="0";
 			String serviceUniqueId="";
 			Request request = new Request.Builder()
-		            .url(apiUrl + "/corbiz/saveOrderMessage?phoneNumber="+phoneNumber+"&chargePhoneNumber="+chargePhoneNumber
+		            .url(hrh.API_URL + "/corbiz/saveOrderMessage?phoneNumber="+phoneNumber+"&chargePhoneNumber="+chargePhoneNumber
 		            		+"&orderTime="+orderTime+"&orderRoute="+orderRoute+"&spInfoId="+spInfoId+"&fee="+fee+"&serviceUniqueId="+serviceUniqueId+"&productInfoId="+productInfoId)
 		            .get()
 		            .build();
@@ -1173,7 +1214,7 @@ public class HttpRequestHelper {
 		public static Boolean updateOrderMessage(MO_SMMessage mos) {
 			 RequestBody body = new FormBody.Builder().build();
 		     Request request = new Request.Builder()
-		             .url(apiUrl + "/corbiz/updateOrderMessage?phoneNumber=" + mos.getSendAddress() + "&serviceCode=" + mos.getServiceCode())
+		             .url(hrh.API_URL + "/corbiz/updateOrderMessage?phoneNumber=" + mos.getSendAddress() + "&serviceCode=" + mos.getServiceCode())
 		             .get()
 		             .build();
 		     OkHttpClient okHttp = new OkHttpClient();
@@ -1202,7 +1243,7 @@ public class HttpRequestHelper {
 			 String spProductIds="";
 			 RequestBody body = new FormBody.Builder().build();
 		     Request request = new Request.Builder()
-		             .url(apiUrl + "/corbiz/getSpProductIds?phoneNumber=" + phoneNumber )
+		             .url(hrh.API_URL + "/corbiz/getSpProductIds?phoneNumber=" + phoneNumber )
 		             .get()
 		             .build();
 		     OkHttpClient okHttp = new OkHttpClient();

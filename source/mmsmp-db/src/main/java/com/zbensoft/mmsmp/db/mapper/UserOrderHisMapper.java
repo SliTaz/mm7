@@ -58,4 +58,8 @@ public interface UserOrderHisMapper {
     int count(UserOrderHis record);
     
     UserOrderHis selectByPhoneAndProductId(UserOrderHis record);
+
+	void updateStatus(UserOrderHis record);
+
+	void updateStatusByPhoneNumber(UserOrderHis record);
 }

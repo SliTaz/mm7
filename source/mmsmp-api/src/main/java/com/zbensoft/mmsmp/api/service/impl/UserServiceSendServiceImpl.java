@@ -73,4 +73,10 @@ public class UserServiceSendServiceImpl implements UserServiceSendService{
 		return userServiceSendMapper.selectByRequestId(requestId);
 	}
 
+	@Override
+	public int getCountBySpInfoId(String spInfoId) {
+		// TODO Auto-generated method stub
+		return userServiceSendMapper.getCountBySpInfoId(spInfoId);
+	}
+
 }

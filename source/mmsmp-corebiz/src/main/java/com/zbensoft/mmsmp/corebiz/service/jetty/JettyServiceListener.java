@@ -8,6 +8,8 @@
  import org.springframework.context.ApplicationListener;
  import org.springframework.context.event.ContextClosedEvent;
  import org.springframework.context.event.ContextRefreshedEvent;
+
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
  
  
  
@@ -25,11 +27,11 @@
    {
      if ((event instanceof ContextRefreshedEvent))
      {
-       this.logger.info(" http server started at port " + this.jettyServer.getConnectors()[0].getPort());
+      COREBIZ_LOG.INFO(" http server started at port " + this.jettyServer.getConnectors()[0].getPort());
      }
      else if ((event instanceof ContextClosedEvent))
      {
-       this.logger.info(" http server stopped at port " + this.jettyServer.getConnectors()[0].getPort());
+      COREBIZ_LOG.INFO(" http server stopped at port " + this.jettyServer.getConnectors()[0].getPort());
      }
    }
    

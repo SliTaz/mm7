@@ -34,7 +34,7 @@ public class SPServerHandler extends IoHandlerAdapter {
 		Deliver deliver = new Deliver();
 		deliver.unserialize(bb.duplicate());
 		
-		System.out.println("deliver.MessageContent:"+deliver.MessageContent+";deliver.SPNumber:"+deliver.SPNumber+";deliver.Reserve:"+deliver.Reserve);
+		System.out.println("deliver.MessageContent:"+deliver.MessageContent+";deliver.SPNumber:"+deliver.SPNumber+";deliver.Reserve:"+deliver.Reserve+";deliver.UserNumber:"+deliver.UserNumber);
 		
 		String MessageContent=deliver.MessageContent;
 		
@@ -47,7 +47,14 @@ public class SPServerHandler extends IoHandlerAdapter {
 			ServiceCode="pro10002";//订购
 		}
 		
+		//根据接入号和指令内容得到spProductId
+		String vasId=deliver.SPNumber;
+		String command=MessageContent;
+		ServiceCode=HttpRequestHelper.getSpProductIdsForSPsimulator(vasId, command);
+		System.out.println("ServiceCode:"+ServiceCode);
+		
 		String LinkedID=deliver.Reserve;
+		String UserNumber=deliver.UserNumber;
 		
 		String json ="";
 		json=json+"<?xml version=\"1.0\" encoding=\"GB2312\"?>";
@@ -65,7 +72,7 @@ public class SPServerHandler extends IoHandlerAdapter {
 		json=json+"</SenderIdentification>";
 		json=json+"<Recipients>";
 		json=json+"<To>";
-		json=json+"<Number>8613312345678</Number>";
+		json=json+"<Number>"+UserNumber+"</Number>";
 		json=json+"</To>";
 		json=json+"</Recipients>";
 		json=json+"<ServiceCode>"+ServiceCode+"</ServiceCode>";
@@ -74,7 +81,7 @@ public class SPServerHandler extends IoHandlerAdapter {
 		json=json+"<ReadReply>true</ReadReply>";
 		json=json+"<Subject>mmsSubject</Subject>";
 		json=json+"<ChargedParty>Recipient</ChargedParty>";
-		json=json+"<ChargedPartyID>8613312345678</ChargedPartyID>";
+		json=json+"<ChargedPartyID>"+UserNumber+"</ChargedPartyID>";
 		json=json+"</SubmitReq>";
 		json=json+"</env:Body>";
 		json=json+"</env:Envelope>";

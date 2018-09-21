@@ -315,9 +315,12 @@
      <if test=" null != officeAddr and '' != officeAddr and 'undefined'!= officeAddr">
         and office_addr = #{officeAddr,jdbcType=VARCHAR}
      </if>
-     <if test=" null != createTime and '' != createTime and 'undefined'!= createTime">
-        and create_time = #{createTime,jdbcType=TIMESTAMP}
-     </if>
+     <if test="createTimeStart != null and createTimeStart !=''">
+        <![CDATA[   and DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%S')>=  DATE_FORMAT(#{createTimeStart}, '%Y-%m-%d %H:%i:%S')   ]]>  
+      </if>
+      <if test="createTimeEnd != null and createTimeEnd !=''">
+       <![CDATA[   and DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%S')<=  DATE_FORMAT(#{createTimeEnd}, '%Y-%m-%d %H:%i:%S')   ]]>  
+      </if>
      <if test=" null != province and '' != province and 'undefined'!= province">
         and province = #{province,jdbcType=VARCHAR}
      </if>
@@ -371,9 +374,12 @@
      <if test=" null != officeAddr and '' != officeAddr and 'undefined'!= officeAddr">
         and office_addr = #{officeAddr,jdbcType=VARCHAR}
      </if>
-     <if test=" null != createTime and '' != createTime and 'undefined'!= createTime">
-        and create_time = #{createTime,jdbcType=TIMESTAMP}
-     </if>
+     <if test="createTimeStart != null and createTimeStart !=''">
+        <![CDATA[   and DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%S')>=  DATE_FORMAT(#{createTimeStart}, '%Y-%m-%d %H:%i:%S')   ]]>  
+      </if>
+      <if test="createTimeEnd != null and createTimeEnd !=''">
+       <![CDATA[   and DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%S')<=  DATE_FORMAT(#{createTimeEnd}, '%Y-%m-%d %H:%i:%S')   ]]>  
+      </if>
      <if test=" null != province and '' != province and 'undefined'!= province">
         and province = #{province,jdbcType=VARCHAR}
      </if>
@@ -434,4 +440,19 @@
     from sp_info sp , product_info pi
     where sp.company_code = pi.company_code and pi.product_info_id = #{productInfoId,jdbcType=VARCHAR} 
   </select>
+
+
+    <select id="getSpInfoCountById" parameterType="java.lang.String" resultType="int">
+        select count(1) from sp_info  where sp_info_id = #{spId,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="sycDeleteSpInfo" parameterType="java.lang.String">
+        delete s,a from sp_info s,sp_access a where s.sp_info_id = #{spId,jdbcType=VARCHAR} and a.sp_info_id = #{spId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getALlSpIds" resultType="java.lang.String">
+         select distinct sp_info_id   from sp_info
+    </select>
+
 </mapper>

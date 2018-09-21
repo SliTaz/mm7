@@ -36,6 +36,8 @@ import java.util.Set;
  import java.util.concurrent.ConcurrentHashMap;
  import org.apache.log4j.Logger;
 import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
 import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -133,7 +135,7 @@ import okhttp3.Response;
 //     long begin = System.currentTimeMillis();
 //     this.thirdOrder = new HashSet(300000);
 //     this.thirdOrder.addAll(this.daoUtil.getSmsDAO().getThirdOrder());
-//     log.info("@load@ thirdOrder in :" + (System.currentTimeMillis() - begin) + " millisecond");
+//     COREBIZ_LOG.INFO("@load@ thirdOrder in :" + (System.currentTimeMillis() - begin) + " millisecond");
    }
    
    public int getThridOrderCacheSize() {
@@ -608,11 +610,11 @@ import okhttp3.Response;
 		System.out.println(sysParameters.getValue());
 	}
      SysParameters sysParam = null;
-     log.info("refresh system parameters\n");
+     COREBIZ_LOG.INFO("refresh system parameters\n");
      for (int i = 0; i < sysParamsList.size(); i++) {
        sysParam = (SysParameters)sysParamsList.get(i);
        sysParams.put(sysParam.getName(), sysParam.getValue());
-       log.info("[" + sysParam.getName() + ":" + sysParam.getValue() + "]");
+       COREBIZ_LOG.INFO("[" + sysParam.getName() + ":" + sysParam.getValue() + "]");
      }
      this.sysParams = sysParams;
    }
@@ -850,7 +852,7 @@ import okhttp3.Response;
            try {
              jieruhao = moText.substring(moText.indexOf("10655565"));//不理解
            } catch (Exception e) {
-             log.error("convert err : " + e.getMessage());
+             COREBIZ_LOG.ERROR("convert err : " + e.getMessage());
            }
            return (Vasservice)this.productInfoByOrderText.get(ordertext + jieruhao);
          }
@@ -900,13 +902,13 @@ import okhttp3.Response;
  
  
  
-       log.info("vasService:" + vasService);
+       COREBIZ_LOG.INFO("vasService:" + vasService);
        if (vasService != null) {
          return vasService;
        }
        
        String demandtext = (String)this.demandTextMap.get(accessNumber);
-       log.info("moText:" + moText + "accessNumber:" + accessNumber + "demandtext:" + demandtext);
+       COREBIZ_LOG.INFO("moText:" + moText + "accessNumber:" + accessNumber + "demandtext:" + demandtext);
        if ((demandtext != null) && (!"".equals(demandtext)) && (moText.startsWith(demandtext.replaceAll("#", ""))))
        {
          return (Vasservice)this.productInfoByMoDemand.get(demandtext + accessNumber);
@@ -996,8 +998,8 @@ import okhttp3.Response;
 		   /**OwnerBiz**/
 		   
 		   this.VasidsByOwner.put("3010012345", "3010012345");
-		   this.spurlByProductid.put("pro10001", "http://192.168.1.116/mmsmpspsimulator/SPServerServlet");//sp地址指向
-		   this.spurlByVASPID.put("vaspid0013010012345","http://192.168.1.116/mmsmpspsimulator/services/SyncNotifySP");//订购时发送ws请求
+		   this.spurlByProductid.put("pro10001", "http://127.0.0.1/mmsmpspsimulator/SPServerServlet");//sp地址指向
+		   this.spurlByVASPID.put("vaspid0013010012345","http://127.0.0.1/mmsmpspsimulator/services/SyncNotifySP");//订购时发送ws请求
 		   this.uniqueidByProductids.put("pro10001", (int)(Math.random()*100)+"");
 		   this.serviceIdByProductids.put("pro10001",vasservice.getVasid()+"#"+vasservice.getVaspid());
 		   this.sysParams.put("MT_ORDER_QUOTA", "5");

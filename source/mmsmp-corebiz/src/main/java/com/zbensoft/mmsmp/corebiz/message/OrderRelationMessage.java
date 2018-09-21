@@ -3,7 +3,7 @@
  import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.DecodeMessageException;
 import com.zbensoft.mmsmp.common.ra.common.message.MessageType;
-import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.OrderRelationRequest;
+import com.zbensoft.mmsmp.corebiz.cxf.uniBusiness.vo.OrderRelationRequest;
  
  
  

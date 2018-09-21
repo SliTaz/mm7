@@ -60,5 +60,10 @@ public interface ProductInfoMapper {
     ProductInfo getVasSpCpInfo(ProductInfo record);
     
     List<ProductInfo> getAllVasServiceRelation();
-    
+
+	List<ProductInfo> getSpProductIdsForSPsimulator(ProductInfo record);
+
+	ProductInfo getVasSpCpInfoByOrder(ProductInfo record);
+
+    void deleteProductByProductId(String productId);
 }

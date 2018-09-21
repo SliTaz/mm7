@@ -914,5 +914,60 @@ public interface MessageDef {
 		/** 2：已过期**/
 		public static int GAS_EXPIRED = 2;
 	}
+	public interface ORDER_TYPE {
+		
+		/** 1：包月 **/
+		public static int ORDER_MONTHLY = 1;
+		/** 2：点播**/
+		public static int ORDER_ONDEMAND = 2;
+		/** 3：免费**/
+		public static int ORDER_FREE = 3;
+	}
+	
+    public interface ORDERHIS_STATUS {
+		
+		/** 0：订购**/
+		public static int ORDERHIS_ORDER = 0;
+		/** 1：冻结**/
+		public static int ORDERHIS_FREEZE = 1;
+		/** 2：取消订购**/
+		public static int ORDERHIS_CANCEL = 2;
+	}
+    
+    public interface SEND_SERVICE_TYPE {
+    	
+    	/** 0:点播**/
+    	public static int ON_DEMAND = 0;
+    	/** 1:定购**/
+    	public static int ORDER = 1;
+    	/** 2:免费**/
+    	public static int FREE = 2;
+    	/** 3:群发**/
+    	public static int BULK_HAIR = 3;
+    	/** 4:取消定购**/
+    	public static int CANCEL_ORDER = 4;
+    }
+    public interface USER_SERVICE_SEND_STATUS {
+    	
+    	/** 1:下发中**/
+    	public static int ISSUED = 1;
+    	/** 2:成功提交**/
+    	public static int SUCCESSFULLY_SUBMITTED = 2;
+    	/** 3:未知状态**/
+    	public static int UNKNOWN_STATE = 3;
+    	/** 4:鉴权失败**/
+    	public static int AUTHENTICATION_FAILURE = 4;
+    	/** 5:终端成功接收**/
+    	public static int TERMINAL_SUCCESS_RECEIVED = 5;
+    	/** 6:成功提交paylayX**/
+    	public static int SUCCESSFULLY_SUBMITTED_PAYLAYX = 6;
+    	/** 7:下发出现异常**/
+    	public static int AN_EXCEPTION_OCCURRED = 7;
+    	/** 8:isag正在排队等候**/
+    	public static int ISAG_IS_WAITING = 8;
+    }
 
+    public interface FTP {
+		public static String SP_SYSC_API_KEY = "0029e8bbc02fce75eb7f60d957765a9e";
+    }
 }

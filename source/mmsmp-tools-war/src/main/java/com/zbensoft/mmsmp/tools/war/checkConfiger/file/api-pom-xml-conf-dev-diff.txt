@@ -11,3 +11,4 @@
 </dependency> <--> </dependency>       
     <artifactId>itext-rtf</artifactId> <-->     <artifactId>iText-rtf</artifactId>
 </dependency> <--> </dependency> 
+		    <include>zbensoft-license-1.0.jar</include> <--> 		    		<include>zbensoft-license-1.0.jar</include>

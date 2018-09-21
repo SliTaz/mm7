@@ -101,6 +101,13 @@
                     <include>application.properties</include>
                 </includes>
             </resource>
+             <resource>
+                <directory>lib</directory>
+                <targetPath>../mmsmp-sp-ra-0.0.1-SNAPSHOT\WEB-INF\lib</targetPath>
+                <includes>
+                <include>bigqueue-0.7.0.jar</include>
+                </includes>
+            </resource>
             
         </resources>-->
 		<plugins>

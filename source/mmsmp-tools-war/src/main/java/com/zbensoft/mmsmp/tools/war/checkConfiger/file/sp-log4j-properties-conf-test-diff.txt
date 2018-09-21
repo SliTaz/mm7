@@ -1,0 +1,1 @@
+log4j.appender.file.file=/Wangchenyang/log/mmsmp/spagent/spagent.log <--> log4j.appender.file.file=/soft/log/mmsmp/spagent/spagent.log

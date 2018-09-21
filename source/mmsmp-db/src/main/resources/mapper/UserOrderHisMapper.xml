@@ -493,4 +493,24 @@
     from user_order_his
     where phone_number = #{phoneNumber,jdbcType=VARCHAR} and product_info_id = #{productInfoId,jdbcType=VARCHAR}
   </select>
+  
+  <update id="updateStatus" parameterType="com.zbensoft.mmsmp.db.domain.UserOrderHis">
+    update user_order_his
+    set 
+      cancel_time = #{cancelTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where 
+    	phone_number = #{phoneNumber,jdbcType=VARCHAR} 
+    	and 
+    	product_info_id = #{productInfoId,jdbcType=VARCHAR} 
+  </update>
+  
+  <update id="updateStatusByPhoneNumber" parameterType="com.zbensoft.mmsmp.db.domain.UserOrderHis">
+    update user_order_his
+    set 
+      cancel_time = #{cancelTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where 
+    	phone_number = #{phoneNumber,jdbcType=VARCHAR} 
+  </update>
 </mapper>

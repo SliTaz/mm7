@@ -58,4 +58,8 @@ public interface UserOrderHisService {
     int count(UserOrderHis record);
     
     UserOrderHis selectByPhoneAndProductId(UserOrderHis record);
+
+	void updateStatus(UserOrderHis userOrderHis);
+
+	void updateStatusByPhoneNumber(UserOrderHis userOrderHis);
 }

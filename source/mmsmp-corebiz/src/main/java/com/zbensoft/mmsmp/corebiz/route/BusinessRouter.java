@@ -7,6 +7,8 @@
  import java.util.concurrent.BlockingQueue;
  import java.util.concurrent.ConcurrentHashMap;
  import org.apache.log4j.Logger;
+
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
  
  
  
@@ -45,7 +47,7 @@
      }
      catch (Exception ex)
      {
-       logger.error(ex);
+      COREBIZ_LOG.ERROR("",ex);
      }
    }
    
@@ -91,10 +93,10 @@
  
              for (int i = 0; i < qList.size(); i++) {
                BlockingQueue tq = (BlockingQueue)qList.get(i);
-               BusinessRouter.logger.warn(i + " queue size:" + tq.size());
+               COREBIZ_LOG.INFO(i + " queue size:" + tq.size());
                ArrayList<String> tc = (ArrayList)sbList.get(i);
                for (String c : tc) {
-                 BusinessRouter.logger.warn("    " + c + " SUM:" + ((BusinessRouter.Counter)BusinessRouter.this.countMap.get(c)).getNumber());
+                 COREBIZ_LOG.INFO("    " + c + " SUM:" + ((BusinessRouter.Counter)BusinessRouter.this.countMap.get(c)).getNumber());
                }
              }
              try

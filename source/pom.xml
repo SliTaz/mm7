@@ -21,6 +21,8 @@
 		<module>mmsmp-sp-ra-simulator</module>
 		<module>mmsmp-mms-ra-simulator</module>
 		<module>mmsmp-ownbiz-ra</module>
+		<module>mmsmp-ownbiz-simulator</module>
+		<module>mmsmp-ftp</module>
 	</modules>
 	<groupId>com.zbensoft</groupId>
 	<artifactId>mmsmp</artifactId>

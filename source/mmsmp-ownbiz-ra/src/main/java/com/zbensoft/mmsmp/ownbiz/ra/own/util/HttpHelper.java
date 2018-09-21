@@ -87,7 +87,7 @@ public static long insertUserOrderHis(UserOrderEntity userOrderHis) {
 	 RequestBody body = new FormBody.Builder().build();
     Request request = new Request.Builder()
             .url(apiUrl + "/ownbiz/userOrderHis?phoneNumber="+phoneNumber+"&chargePhoneNumber="+chargePhoneNumber
-            		+"&orderTime="+orderTime+"&orderRoute="+orderRoute+"&fee="+fee+"&spInfoId="+userOrderHis.getSpInfoId() + "&serviceUniqueId="+userOrderHis.getServiceUniqueId())
+            		+"&orderTime="+orderTime+"&orderRoute="+orderRoute+"&fee="+fee+"&spInfoId="+userOrderHis.getSpInfoId() + "&serviceUniqueId="+userOrderHis.getServiceUniqueId()+"&orderType="+userOrderHis.getFeeType())
             .get()
             .build();
     OkHttpClient okHttp = new OkHttpClient();
@@ -122,7 +122,7 @@ public static long insertUserOrder(UserOrderEntity userOrder, long hisID) {
 	 RequestBody body = new FormBody.Builder().build();
     Request request = new Request.Builder()
             .url(apiUrl + "/ownbiz/userOrder?phoneNumber="+phoneNumber+"&chargePhoneNumber="+chargePhoneNumber
-            		+"&orderTime="+orderTime+"&orderRoute="+orderRoute+"&spInfoId="+spInfoId+"&fee="+fee+"&serviceUniqueId="+userOrder.getServiceUniqueId())
+            		+"&orderTime="+orderTime+"&orderRoute="+orderRoute+"&spInfoId="+spInfoId+"&fee="+fee+"&serviceUniqueId="+userOrder.getServiceUniqueId()+"&orderType="+userOrder.getFeeType())
             .get()
             .build();
     OkHttpClient okHttp = new OkHttpClient();
@@ -562,7 +562,7 @@ public static boolean deleteSendMMSUsersByContentID(Long contentInfoIds) {
 	     Request request = new Request.Builder()
 	             .url(apiUrl + "/ownbiz/userOrderPay?userOrderPayId=" + ppm.getCellPhonenum() 
 	                +"&phoneNumber="+ppm.getCellPhonenum()+"&orderTime="+ppm.getOrderTime()+"&fee="+ppm.getFee()
-	                +"&productInfoId="+ppm.getServiceUniqueid()+""+"&status="+ppm.getStatus()+"&spInfoId="+ppm.getSpId()+"&keyId="+ppm.getKeyId())
+	                +"&productInfoId="+ppm.getServiceUniqueid()+""+"&status="+ppm.getStatus()+"&spInfoId="+ppm.getSpId()+"&keyId="+ppm.getKeyId() + "&orderType=" +  ppm.getFeeType())
 	             .get()
 	             .build();
 	     OkHttpClient okHttp = new OkHttpClient();

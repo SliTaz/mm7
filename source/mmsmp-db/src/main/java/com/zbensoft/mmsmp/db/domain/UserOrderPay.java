@@ -189,6 +189,8 @@ public class UserOrderPay {
      *
      * @mbg.generated Mon Aug 27 14:33:07 CST 2018
      */
+    private String keyId;
+    
     public String getUserOrderPayId() {
         return userOrderPayId;
     }
@@ -667,6 +669,14 @@ public class UserOrderPay {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
 	}
     
 }

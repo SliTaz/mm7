@@ -90,5 +90,11 @@ public class ProvinceCityServiceImpl implements ProvinceCityService{
 		// TODO Auto-generated method stub
 		return provinceCityMapper.AdvanceCount(ProvinceCity);
 	}
+
+	@Override
+	public int countAllProvinceAndCity(ProvinceCity provinceCity) {
+		// TODO Auto-generated method stub
+		return provinceCityMapper.countAllProvinceAndCity(provinceCity);
+	}
     
 }

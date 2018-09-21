@@ -64,5 +64,5 @@ public interface ProvinceCityMapper {
     
     int AdvanceCount(ProvinceCity ProvinceCity);
     
-   
+    int countAllProvinceAndCity(ProvinceCity provinceCity);
 }

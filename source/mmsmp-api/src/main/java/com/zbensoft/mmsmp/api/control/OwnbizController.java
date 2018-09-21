@@ -122,7 +122,7 @@ public class OwnbizController {
 	@ApiOperation(value = "Add UserOrderHis", notes = "")
 	@RequestMapping(value = "/userOrderHis", method = RequestMethod.GET)
 	public ResponseRestEntity<Void> createUserOrderHis(@RequestParam(required = false) String phoneNumber,@RequestParam(required = false) String chargePhoneNumber,
-			@RequestParam(required = false) String orderTime,@RequestParam(required = false) String orderRoute,@RequestParam(required = false) String fee,@RequestParam(required = false) String spInfoId,@RequestParam(required = false) String serviceUniqueId) {
+			@RequestParam(required = false) String orderTime,@RequestParam(required = false) String orderRoute,@RequestParam(required = false) String fee,@RequestParam(required = false) String spInfoId,@RequestParam(required = false) String serviceUniqueId,@RequestParam(required = false) Integer orderType) {
 		UserOrderHis userOrderHis=new UserOrderHis();
 		userOrderHis.setUserOrderHisId(IDGenerate.generateCommTwo(IDGenerate.CONSUMER_COUPON));
 		userOrderHis.setPhoneNumber(phoneNumber);
@@ -132,6 +132,7 @@ public class OwnbizController {
 		userOrderHis.setFee(Double.parseDouble(fee));
 		userOrderHis.setProductInfoId(serviceUniqueId);
 		userOrderHis.setSpInfoId(spInfoId);
+		userOrderHis.setOrderType(orderType);
 		userOrderHisService.insert(userOrderHis);
 		return new ResponseRestEntity<Void>(HttpRestStatus.CREATED);
 	}
@@ -139,7 +140,7 @@ public class OwnbizController {
 	@ApiOperation(value = "Add UserOrder", notes = "")
 	@RequestMapping(value = "/userOrder", method = RequestMethod.GET)
 	public ResponseRestEntity<Void> createUserOrder(@RequestParam(required = false) String phoneNumber,@RequestParam(required = false) String chargePhoneNumber,
-			@RequestParam(required = false) String orderTime,@RequestParam(required = false) String orderRoute,@RequestParam(required = false) String fee,@RequestParam(required = false) String spInfoId,@RequestParam(required = false) String serviceUniqueId) {
+			@RequestParam(required = false) String orderTime,@RequestParam(required = false) String orderRoute,@RequestParam(required = false) String fee,@RequestParam(required = false) String spInfoId,@RequestParam(required = false) String serviceUniqueId,@RequestParam(required = false) Integer orderType) {
 		UserOrder userOrderHis=new UserOrder();
 		userOrderHis.setUserOrderId(IDGenerate.generateCommTwo(IDGenerate.CUSTOMER_MANAGER));
 		userOrderHis.setSpInfoId(spInfoId);
@@ -149,6 +150,7 @@ public class OwnbizController {
 		userOrderHis.setOrderTime(new Date());
 		userOrderHis.setOrderRoute(Integer.parseInt(orderRoute));
 		userOrderHis.setFee(Double.parseDouble(fee));
+		userOrderHis.setOrderType(orderType);
 		userOrderService.insert(userOrderHis);
 		return new ResponseRestEntity<Void>(HttpRestStatus.CREATED);
 	}
@@ -306,7 +308,7 @@ public class OwnbizController {
 	public void userOrderPaySelect(@RequestParam(required = false) String userOrderPayId,
 			@RequestParam(required = false) String phoneNumber,@RequestParam(required = false) String orderTime,
 			@RequestParam(required = false) Double fee,@RequestParam(required = false) String productInfoId,
-			@RequestParam(required = false) Integer status,@RequestParam(required = false) String spInfoId) {
+			@RequestParam(required = false) Integer status,@RequestParam(required = false) String spInfoId,@RequestParam(required = false) Integer orderType) {
 		UserOrderPay userOrderPay = new UserOrderPay();
 		userOrderPay.setUserOrderPayId(IDGenerate.generateCommTwo(IDGenerate.CONSUMER_COUPON));
 		userOrderPay.setPhoneNumber(phoneNumber);
@@ -315,6 +317,7 @@ public class OwnbizController {
 		userOrderPay.setProductInfoId(productInfoId);
 		userOrderPay.setStatus(status);
 		userOrderPay.setSpInfoId(spInfoId);
+		userOrderPay.setOrderType(orderType);
 		
 		//插入前进行判断。如果该手机号码已存在则不进行插入 start
 		UserOrderPay userOrderPayTmp=userOrderPayService.selectByPhoneNumberAndProductInfoId(userOrderPay);

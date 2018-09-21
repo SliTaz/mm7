@@ -3,6 +3,7 @@ package com.zbensoft.mmsmp.db.mapper;
 import java.util.List;
 
 import com.zbensoft.mmsmp.db.domain.SpInfo;
+import org.apache.ibatis.annotations.Param;
 
 public interface SpInfoMapper {
     /**
@@ -61,4 +62,10 @@ public interface SpInfoMapper {
 	List<SpInfo> selectAll();
 	
 	List<SpInfo> getSpInfoByCompanyCode(String productInfoId);
+
+    int getSpInfoCountById(@Param("spId") String spId);
+
+    void sycDeleteSpInfo(@Param("spId")String spId);
+
+    List<String> getALlSpIds();
 }

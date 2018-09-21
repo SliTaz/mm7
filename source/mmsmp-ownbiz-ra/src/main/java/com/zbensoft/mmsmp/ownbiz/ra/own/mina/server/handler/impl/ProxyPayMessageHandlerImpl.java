@@ -71,6 +71,7 @@ public class ProxyPayMessageHandlerImpl {
                 uope.setFee(vsr.getOrderFee());
                 uope.setKeyId(proxyPayMessage.getCooperId());
                 if (proxyPayMessage.getFeeType().equals("1")) {
+                    uope.setFeeType("1");
                     this.getProxyPayMessageDao().insertUserOrderPay(uope);
                 } else if (proxyPayMessage.getFeeType().equals("2")) {
                     this.getProxyPayMessageDao().deleteUserOrderPay(uope);

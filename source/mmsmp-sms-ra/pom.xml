@@ -9,7 +9,7 @@
   </parent>
   <artifactId>mmsmp-sms-ra</artifactId>
   <packaging>war</packaging>
-  <name>mmsmp-sms-ra Maven Webapp</name>
+  <name>mmsmp-sms-ra</name>
   <url>http://maven.apache.org</url>
   <dependencies>
 		<dependency>
@@ -20,7 +20,6 @@
 		<!-- <dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-web</artifactId>
-		    移除嵌入式tomcat插件
 		    <exclusions>
 		        <exclusion>
 		            <groupId>org.springframework.boot</groupId>
@@ -87,7 +86,6 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>conf/test/*</exclude>
-                    <exclude>static/js/zben.js</exclude>
                     <exclude>application.properties</exclude>
                 </excludes>
             </resource>
@@ -98,13 +96,7 @@
                     <include>application.properties</include>
                 </includes>
             </resource>
-            <resource>
-                <directory>src/main/resources/conf/${environment}</directory>
-                <targetPath>static/js</targetPath>
-                <includes>
-                    <include>zben.js</include>
-                </includes>
-            </resource>
+           
         </resources>-->
 		<plugins>
 			<plugin>

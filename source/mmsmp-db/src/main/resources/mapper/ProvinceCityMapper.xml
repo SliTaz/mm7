@@ -149,6 +149,20 @@
      </otherwise>
      </choose>
  </select>
+ 
+  <select id="countAllProvinceAndCity" parameterType="com.zbensoft.mmsmp.db.domain.ProvinceCity" resultType="int">
+   select 
+    count(1)
+    from province_city
+    where 1=1
+    <if test=" null != provinceCityId and '' != provinceCityId and 'undefined'!= provinceCityId">
+        and province_city_id = #{provinceCityId,jdbcType=VARCHAR}
+     </if>
+     <if test=" null != provinceCityName and '' != provinceCityName and 'undefined'!= provinceCityName">
+        and province_city_name = #{provinceCityName,jdbcType=VARCHAR}
+     </if>
+ </select>
+ 
  <select id="AdvanceSelectPage" parameterType="com.zbensoft.mmsmp.db.domain.ProvinceCity" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

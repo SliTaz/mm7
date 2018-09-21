@@ -277,9 +277,8 @@
             </resource>
             <resource>
                 <directory>lib</directory>
-                <targetPath>../e-payment-api-0.0.1-SNAPSHOT\WEB-INF\lib</targetPath>
+                <targetPath>../mmsmp-api-0.0.1-SNAPSHOT\WEB-INF\lib</targetPath>
                 <includes>
-                    <include>e-payment-core-0.0.3-SNAPSHOT.jar</include>
 		    <include>zbensoft-license-1.0.jar</include>
                 </includes>
             </resource>
@@ -316,7 +315,6 @@
                     <configuration>  
                         <sources>  
                             <source>${basedir}/src/main/job</source> 
-			    <source>${basedir}/src/main/DJEncryption</source>   
                         </sources> 
 			 
                     </configuration>  

@@ -45,6 +45,14 @@ public class WsServer {
 			String resultUrl=Utils.SPReceiveMTMMS_url;//"http://localhost:9095/SPReceiveMTMMS";
 			String ServiceCode="pro10002";//deliver.SPNumber;
 			String LinkedID=orderRelationUpdateNotifyRequest.getLinkId();
+			String phoneNumber=orderRelationUpdateNotifyRequest.getUserId();
+			if (!phoneNumber.startsWith("86")) {
+				phoneNumber = "86" + phoneNumber;
+			}
+			logger.info("phoneNumber:"+phoneNumber);
+			
+			ServiceCode=orderRelationUpdateNotifyRequest.getProductId();
+			System.out.println("ServiceCode:"+ServiceCode);
 			
 			String json ="";
 			json=json+"<?xml version=\"1.0\" encoding=\"GB2312\"?>";
@@ -62,7 +70,7 @@ public class WsServer {
 			json=json+"</SenderIdentification>";
 			json=json+"<Recipients>";
 			json=json+"<To>";
-			json=json+"<Number>8613312345678</Number>";
+			json=json+"<Number>"+phoneNumber+"</Number>";
 			json=json+"</To>";
 			json=json+"</Recipients>";
 			json=json+"<ServiceCode>"+ServiceCode+"</ServiceCode>";
@@ -71,7 +79,7 @@ public class WsServer {
 			json=json+"<ReadReply>true</ReadReply>";
 			json=json+"<Subject>mmsSubject</Subject>";
 			json=json+"<ChargedParty>Recipient</ChargedParty>";
-			json=json+"<ChargedPartyID>8613312345678</ChargedPartyID>";
+			json=json+"<ChargedPartyID>"+phoneNumber+"</ChargedPartyID>";
 			json=json+"</SubmitReq>";
 			json=json+"</env:Body>";
 			json=json+"</env:Envelope>";

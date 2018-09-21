@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zbensoft.mmsmp.api.service.api.UserOrderPayService;
+import com.zbensoft.mmsmp.db.domain.AccessSendStatistics;
 import com.zbensoft.mmsmp.db.domain.UserOrderPay;
 import com.zbensoft.mmsmp.db.mapper.UserOrderPayMapper;
 @Service
@@ -60,6 +61,18 @@ public class UserOrderPayServiceImpl implements UserOrderPayService {
 	@Override
 	public UserOrderPay selectByPhoneNumberAndProductInfoId(UserOrderPay userOrderPay) {
 		return userOrderPayMapper.selectByPhoneNumberAndProductInfoId(userOrderPay);
+	}
+
+	@Override
+	public List<AccessSendStatistics> selectCountByOrderAndProductInfoId(AccessSendStatistics access) {
+		// TODO Auto-generated method stub
+		return userOrderPayMapper.selectCountByOrderAndProductInfoId(access);
+	}
+
+	@Override
+	public List<AccessSendStatistics> selectCountByOnDemandAndProductInfoId(AccessSendStatistics access) {
+		// TODO Auto-generated method stub
+		return userOrderPayMapper.selectCountByOnDemandAndProductInfoId(access);
 	}
 
 }

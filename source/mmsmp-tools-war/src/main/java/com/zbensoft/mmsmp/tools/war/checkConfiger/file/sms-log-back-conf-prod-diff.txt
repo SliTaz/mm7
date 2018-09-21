@@ -1,0 +1,3 @@
+    <property name="LOG_PATH" value="d:\\log\\mmsmp" /> <-->     <property name="LOG_PATH" value="c:\\Wangchenyang\\log\\mmsmp" />
+    <property name="LOG_PATH" value="d:\\log\\mmsmp" /> <-->     <property name="LOG_PATH" value="/soft/log/mmsmp" />
+    

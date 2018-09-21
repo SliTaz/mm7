@@ -2,6 +2,7 @@
  
  import com.zbensoft.mmsmp.corebiz.dao.SmsDAO;
 import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
 
 import java.util.ArrayList;
  import java.util.concurrent.ArrayBlockingQueue;
@@ -88,7 +89,7 @@ import java.util.ArrayList;
                }
              }
              
-             MmsDBListener.logger.error("MmsDBListener queues size:" + sum);
+             COREBIZ_LOG.ERROR("MmsDBListener queues size:" + sum);
              try {
                Thread.sleep(1000L);
              }
@@ -134,7 +135,7 @@ import java.util.ArrayList;
            }
          }
        } catch (Exception ex) {
-         MmsDBListener.logger.error(MmsDBListener.this.name + " listener exception:" + ex.getMessage());
+         COREBIZ_LOG.ERROR(MmsDBListener.this.name + " listener exception:" + ex.getMessage());
          ex.printStackTrace();
          MmsDBListener.this.sleeping(MmsDBListener.this.idle * 3);
        }

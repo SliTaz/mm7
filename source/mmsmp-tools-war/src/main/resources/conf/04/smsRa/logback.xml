@@ -2,7 +2,7 @@
 <configuration>
     
     <contextName>mmsmp</contextName>
-    <property name="LOG_PATH" value="/soft/log/mmsmp" />
+    <property name="LOG_PATH" value="/soft/log/mmsmp/smsRa" />
     <!--设置系统日志目录-->
     <property name="APPDIR" value="sms-ra" />
 

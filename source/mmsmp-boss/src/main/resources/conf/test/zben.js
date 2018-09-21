@@ -1,6 +1,6 @@
 'use strict';
 
-var apiUrl = "http://localhost:8080";
+var apiUrl = "http://123.126.34.57:9093/api";
 var address=window.location.hostname;
 var tokenRequestHeaderKey = "Authorization";
 var platform = "mmsmpboss" + "_";

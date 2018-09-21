@@ -2,6 +2,7 @@ package com.zbensoft.mmsmp.api.service.api;
 
 import java.util.List;
 
+import com.zbensoft.mmsmp.db.domain.AccessSendStatistics;
 import com.zbensoft.mmsmp.db.domain.UserOrderPay;
 
 public interface UserOrderPayService {
@@ -60,4 +61,8 @@ public interface UserOrderPayService {
 	void deleteByPnPi(UserOrderPay userOrderPay);
 
 	UserOrderPay selectByPhoneNumberAndProductInfoId(UserOrderPay userOrderPay);
+	
+	List<AccessSendStatistics> selectCountByOrderAndProductInfoId(AccessSendStatistics access);
+	
+	List<AccessSendStatistics> selectCountByOnDemandAndProductInfoId(AccessSendStatistics access);
 }

@@ -194,6 +194,9 @@ public class IDGenerate {
 	public static AtomicLong CUSTOMER_MANAGER = new AtomicLong(1);
 	/** 内容信息敏感字 **/
 	public static AtomicLong CONTENT_SENSITIVE_WORD = new AtomicLong(1);
+
+	/** 产品服务 **/
+	public static AtomicLong PRODUCT_SERVICE = new AtomicLong(1);
 	
 	////////////////////////////////// 以下是共同方法/////////////////////////////////////////
 
@@ -234,6 +237,11 @@ public class IDGenerate {
 	private static String generateUSER(AtomicLong SEQ, String type) {
 		return type + generateCommTwo(SEQ);
 	}
+	/** 消费产品服务编号 **/
+	public static String generateProductServiceId() {
+		return generateCommTwo(PRODUCT_SERVICE);
+	}
+
 
 	private static String generateComm(AtomicLong SEQ, int len) {
 		String timeStr = getTimeString();

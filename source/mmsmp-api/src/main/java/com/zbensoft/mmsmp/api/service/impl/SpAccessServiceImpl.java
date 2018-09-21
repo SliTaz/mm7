@@ -52,4 +52,9 @@ public class SpAccessServiceImpl implements SpAccessService {
 		return scpAccess.count(record);
 	}
 
+	@Override
+	public String getMaxServiceAccessNumber(String spid) {
+		return scpAccess.getMaxServiceAccessNumber(spid);
+	}
+
 }

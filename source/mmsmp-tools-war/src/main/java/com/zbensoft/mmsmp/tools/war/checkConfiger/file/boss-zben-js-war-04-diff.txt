@@ -16,6 +16,4 @@ var ipPix=ipAddrStrs[0]+"."+ipAddrStrs[1]+"."+ipAddrStrs[2]+"."; <--> //var ipPi
 	         apiUrl = "http://"+ipPix+"7/api"; <--> 		apiUrl = "http://"+address+"/api";
 													window.location = "/"; <--> 													window.location = "./";
 		window.location = "/"; <--> 		window.location = "./";
-		var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://192.168.1.87/api";
-		var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://192.168.1.87:8779/api";
-		var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://www.zbensoft.com:8779/api";
+var apiUrl = "http://localhost:8080"; <--> var apiUrl = "http://123.126.34.57:9093/api";

@@ -243,6 +243,7 @@ public enum SystemConfigKey {
     
     
     GAS_COUPON_TO_DB_THREAD_GET_ONCE("gas_coupon_to_db_thread_get_once", "500", "gas coupon to db thread get once", "一次取出的数据条数"),
+    ALARM_MO_REQUEST_MAX("alarm_mo_request_max", "50", "MO reuqest caps max", "MO 请求caps阀值"),
     
     
 	TEST("test", "test", "test", "test")     ;//

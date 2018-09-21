@@ -1,1 +1,2 @@
-server.port=9091 <--> #server.port=9091
+server.port=9010 <--> #server.port=9010
+api.url=http://localhost:8080 <--> api.url=http://192.168.10.10:9093/api

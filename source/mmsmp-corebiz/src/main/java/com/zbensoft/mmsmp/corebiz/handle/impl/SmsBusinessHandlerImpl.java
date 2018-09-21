@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
+
 import com.zbensoft.mmsmp.common.ra.common.db.entity.UserOrder;
 import com.zbensoft.mmsmp.common.ra.common.db.entity.Vasservice;
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
@@ -18,13 +19,13 @@ import com.zbensoft.mmsmp.common.ra.common.message.MT_SMMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest;
 import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyResponse;
 import com.zbensoft.mmsmp.corebiz.cache.DataCache;
-import com.zbensoft.mmsmp.corebiz.dao.DaoUtil;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.EnumOptype;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.OperatorType;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.SmsSenderDto;
 import com.zbensoft.mmsmp.corebiz.handle.impl.sms.Utility;
 import com.zbensoft.mmsmp.corebiz.route.IMessageRouter;
 import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
 
 /**
  *  短消息处理类
@@ -64,7 +65,7 @@ public class SmsBusinessHandlerImpl {
 			String spNumber = mosms.getVasId();
 			String smstext = mosms.getSmsText().toLowerCase().trim();
 
-			logger.info("smsmo receive one message [messageid:" + mosms.getGlobalMessageid() + ",usernumber:"
+			COREBIZ_LOG.INFO("smsmo receive one message [messageid:" + mosms.getGlobalMessageid() + ",usernumber:"
 					+ mosms.getSendAddress() + ",SMS_MO_MAPREDUCE:" + SMS_MO_MAPREDUCE + "]");
 
 			if (SMS_MO_MAPREDUCE.equals("ON")) {
@@ -85,7 +86,7 @@ public class SmsBusinessHandlerImpl {
 						subMo.setGlobalMessageid(mosms.getGlobalMessageid() + product.getSp_productid());
 						subMo.setSendAddress(mosms.getSendAddress());
 						subMo.setSmsText(product.getCancelordercode());
-						logger.info("smsmo split 0000 message [parentmessageid:" + mosms.getGlobalMessageid()
+						COREBIZ_LOG.INFO("smsmo split 0000 message [parentmessageid:" + mosms.getGlobalMessageid()
 								+ "messageid:" + subMo.getGlobalMessageid() + ",usernumber:" + mosms.getSendAddress()
 								+ ",parent smstext:" + smstext + ", smstext:" + subMo.getSmsText() + ",vasid:"
 								+ subMo.getVasId() + "]");
@@ -113,7 +114,7 @@ public class SmsBusinessHandlerImpl {
 						subMo.setSendAddress(mosms.getSendAddress());
 						subMo.setSmsText(productcmd[1]);
 
-						logger.info("smsmo split 00000 message [parentmessageid:" + mosms.getGlobalMessageid()
+						COREBIZ_LOG.INFO("smsmo split 00000 message [parentmessageid:" + mosms.getGlobalMessageid()
 								+ "messageid:" + subMo.getGlobalMessageid() + ",usernumber:" + mosms.getSendAddress()
 								+ ",parent smstext:" + smstext + ", smstext:" + subMo.getSmsText() + ",vasid:"
 								+ subMo.getVasId() + "]");
@@ -146,7 +147,7 @@ public class SmsBusinessHandlerImpl {
 				OperatorType optype = getOperatorType(mosms);
 
 				if ((optype.getType() != EnumOptype.OTHER) && (optype.getSpid() != null)) {
-					logger.info("smsmo vas service match result success optype:" + optype.getType() + " [gmessageid:"
+					COREBIZ_LOG.INFO("smsmo vas service match result success optype:" + optype.getType() + " [gmessageid:"
 							+ mosms.getGlobalMessageid() + ",spid:" + optype.getSpid() + ",sp_product_id:"
 							+ optype.getProduct_id() + ",servicename:" + optype.getServicename() + ",uniqueid:"
 							+ optype.getUniqueid() + ",fee:" + optype.getFee() + "]");
@@ -156,7 +157,7 @@ public class SmsBusinessHandlerImpl {
 							+ "#" + optype.getServicename() + "#" + optype.getFee() + "#" + optype.getUniqueid() + "#"
 							+ optype.getVaspname() + "#" + optype.getBusinessphone());
 				} else {
-					logger.info("smsmo vas service match result failure optype:" + optype.getType() + "[gmessageid:"
+					COREBIZ_LOG.INFO("smsmo vas service match result failure optype:" + optype.getType() + "[gmessageid:"
 							+ mosms.getGlobalMessageid() + ",spid:" + optype.getSpid() + ",sp_product_id:"
 							+ optype.getProduct_id() + ",servicename:" + optype.getServicename() + ",uniqueid:"
 							+ optype.getUniqueid() + "fee:" + optype.getFee() + "]");
@@ -167,7 +168,7 @@ public class SmsBusinessHandlerImpl {
 				switch (optype.getType()) {//业务分类处理
 				
 				case TAKE_NUMBER:
-					logger.info("smsmo take number bussiness message route to ownbiz queue");
+					COREBIZ_LOG.INFO("smsmo take number bussiness message route to ownbiz queue");
 					this.messageRouter.doRouter(mosms);
 					return;
 
@@ -178,7 +179,7 @@ public class SmsBusinessHandlerImpl {
 
 				case DIANBO:
 					if (!inWhiteList) {
-						logger.info("smsmo demand vac auth(4) request[gmessageid:" + mosms.getGlobalMessageid()
+						COREBIZ_LOG.INFO("smsmo demand vac auth(4) request[gmessageid:" + mosms.getGlobalMessageid()
 								+ "userphone:" + mosms.getSendAddress() + " product_id:" + optype.getProduct_id()
 								+ " spid :" + optype.getSpid() + "]");
 
@@ -187,7 +188,7 @@ public class SmsBusinessHandlerImpl {
 						dianborequest.setGlobalMessageid(mosms.getGlobalMessageid());
 						this.messageRouter.doRouter(dianborequest);
 					} else {//白名单，直接下发点拨资费
-						logger.info("smsmo demand white user [gmessageid:" + mosms.getGlobalMessageid() + "userphone:"
+						COREBIZ_LOG.INFO("smsmo demand white user [gmessageid:" + mosms.getGlobalMessageid() + "userphone:"
 								+ mosms.getSendAddress() + " product_id:" + optype.getProduct_id() + " spid :"
 								+ optype.getSpid() + "]");
 
@@ -199,7 +200,7 @@ public class SmsBusinessHandlerImpl {
 
 				case ORDER:
 					if (!inWhiteList) {
-						logger.info("smsmo vac auth(7) request[gmessageid:" + mosms.getGlobalMessageid() + "userphone:"
+						COREBIZ_LOG.INFO("smsmo vac auth(7) request[gmessageid:" + mosms.getGlobalMessageid() + "userphone:"
 								+ mosms.getSendAddress() + " product_id:" + optype.getProduct_id() + " spid :"
 								+ optype.getSpid() + "]");
 
@@ -208,7 +209,7 @@ public class SmsBusinessHandlerImpl {
 						orderrequest.setGlobalMessageid(mosms.getGlobalMessageid());
 						this.messageRouter.doRouter(orderrequest);
 					} else {
-						logger.info("smsmo order white user [gmessageid:" + mosms.getGlobalMessageid() + "userphone:"
+						COREBIZ_LOG.INFO("smsmo order white user [gmessageid:" + mosms.getGlobalMessageid() + "userphone:"
 								+ mosms.getSendAddress() + " product_id:" + optype.getProduct_id() + " spid :"
 								+ optype.getSpid() + "]");
 
@@ -219,7 +220,7 @@ public class SmsBusinessHandlerImpl {
 
 				case CONFIRM:
 					if (!inWhiteList) {
-						logger.info("smsmo order vac auth(1) confrimrequest[gmessageid:" + mosms.getGlobalMessageid()
+						COREBIZ_LOG.INFO("smsmo order vac auth(1) confrimrequest[gmessageid:" + mosms.getGlobalMessageid()
 								+ "userphone:" + mosms.getSendAddress() + " product_id:" + optype.getProduct_id()
 								+ " spid :" + optype.getSpid() + "]");
 
@@ -228,7 +229,7 @@ public class SmsBusinessHandlerImpl {
 						confirmrequest.setGlobalMessageid(mosms.getGlobalMessageid());
 						this.messageRouter.doRouter(confirmrequest);
 					} else {
-						logger.info("smsmo order white user confrim[gmessageid:" + mosms.getGlobalMessageid()
+						COREBIZ_LOG.INFO("smsmo order white user confrim[gmessageid:" + mosms.getGlobalMessageid()
 								+ "userphone:" + mosms.getSendAddress() + " product_id:" + optype.getProduct_id()
 								+ " spid :" + optype.getSpid() + "]");
 
@@ -239,7 +240,7 @@ public class SmsBusinessHandlerImpl {
 
 				case CANCEL:
 					if (!inWhiteList) {
-						logger.info("smsmo order vac auth(2) cancel  normal request[gmessageid:"
+						COREBIZ_LOG.INFO("smsmo order vac auth(2) cancel  normal request[gmessageid:"
 								+ mosms.getGlobalMessageid() + "userphone:" + mosms.getSendAddress() + " product_id:"
 								+ optype.getProduct_id() + " spid :" + optype.getSpid() + "]");
 
@@ -248,7 +249,7 @@ public class SmsBusinessHandlerImpl {
 						cancelrequest.setGlobalMessageid(mosms.getGlobalMessageid());
 						this.messageRouter.doRouter(cancelrequest);
 					} else {
-						logger.info("smsmo order white user cancel normal [gmessageid:" + mosms.getGlobalMessageid()
+						COREBIZ_LOG.INFO("smsmo order white user cancel normal [gmessageid:" + mosms.getGlobalMessageid()
 								+ "userphone:" + mosms.getSendAddress() + " product_id:" + optype.getProduct_id()
 								+ " spid :" + optype.getSpid() + "]");
 
@@ -259,7 +260,7 @@ public class SmsBusinessHandlerImpl {
 
 				case CANCEL_SERVICE:
 					if (!inWhiteList) {
-						logger.info("smsmo order vac auth(2) cancel 0000 request[gmessageid:"
+						COREBIZ_LOG.INFO("smsmo order vac auth(2) cancel 0000 request[gmessageid:"
 								+ mosms.getGlobalMessageid() + "userphone:" + mosms.getSendAddress() + " serviceid:"
 								+ optype.getService_id() + " spid :" + optype.getSpid() + "]");
 
@@ -268,7 +269,7 @@ public class SmsBusinessHandlerImpl {
 						cancelrequest.setGlobalMessageid(mosms.getGlobalMessageid());
 						this.messageRouter.doRouter(cancelrequest);
 					} else {
-						logger.info("smsmo order white user cancel 0000[gmessageid:" + mosms.getGlobalMessageid()
+						COREBIZ_LOG.INFO("smsmo order white user cancel 0000[gmessageid:" + mosms.getGlobalMessageid()
 								+ "userphone:" + mosms.getSendAddress() + " serviceid:" + optype.getService_id()
 								+ " spid :" + optype.getSpid() + "]");
 
@@ -279,7 +280,7 @@ public class SmsBusinessHandlerImpl {
 
 				case CANCEL_ALL:
 					if (!inWhiteList) {
-						logger.info("smsmo order vac auth(3) cancel 00000 request[gmessageid:"
+						COREBIZ_LOG.INFO("smsmo order vac auth(3) cancel 00000 request[gmessageid:"
 								+ mosms.getGlobalMessageid() + "userphone:" + mosms.getSendAddress() + " product_ids:"
 								+ optype.getProduct_id() + " spid :" + optype.getSpid() + "]");
 
@@ -289,7 +290,7 @@ public class SmsBusinessHandlerImpl {
 						this.messageRouter.doRouter(cancelrequest);
 
 					} else {
-						logger.info("smsmo order white user cancel 00000 [gmessageid:" + mosms.getGlobalMessageid()
+						COREBIZ_LOG.INFO("smsmo order white user cancel 00000 [gmessageid:" + mosms.getGlobalMessageid()
 								+ "userphone:" + mosms.getSendAddress() + " product_ids:" + optype.getProduct_id()
 								+ " spid :" + optype.getSpid() + "]");
 
@@ -299,7 +300,7 @@ public class SmsBusinessHandlerImpl {
 					break;
 
 				default:
-					logger.info("smsmo command type match failure [gmessageid:" + mosms.getGlobalMessageid()
+					COREBIZ_LOG.INFO("smsmo command type match failure [gmessageid:" + mosms.getGlobalMessageid()
 							+ "userphone:" + mosms.getSendAddress() + " product_id:" + optype.getProduct_id()
 							+ " spid :" + optype.getSpid() + "]");
 
@@ -316,7 +317,7 @@ public class SmsBusinessHandlerImpl {
 				String gmsgid = cresponse.getGlobalMessageid();
 
 				if ((gmsgid == null) || (!this.dataMap.containsKey(gmsgid))) {
-					logger.info("sms vac auth(" + cresponse.getCRequest().getServiceType()
+					COREBIZ_LOG.INFO("sms vac auth(" + cresponse.getCRequest().getServiceType()
 							+ ") response match failure[gmsgid:" + gmsgid + "]");
 					return;
 				}
@@ -332,7 +333,7 @@ public class SmsBusinessHandlerImpl {
 
 						if ((linkid != null) && (!"".equals(linkid))) {
 
-							logger.info("sms vac auth(4) response success[gmsid:" + mosms.getGlobalMessageid()
+							COREBIZ_LOG.INFO("sms vac auth(4) response success[gmsid:" + mosms.getGlobalMessageid()
 									+ ",userphone: " + mosms.getSendAddress() + ", linkid:" + cresponse.getLinkID()
 									+ ",returncode:" + returncode + ",ChargetNumber:" + crequest.getChargetNumber()
 									+ "]");
@@ -341,7 +342,7 @@ public class SmsBusinessHandlerImpl {
 							dealDianbo(mosms);
 
 						} else {
-							logger.info("sms vac auth(4) response check(1003) failure[gmsid:"
+							COREBIZ_LOG.INFO("sms vac auth(4) response check(1003) failure[gmsid:"
 									+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress() + ", linkid:"
 									+ cresponse.getLinkID() + ",returncode:" + returncode + ",ChargetNumber:"
 									+ crequest.getChargetNumber() + "]");
@@ -351,7 +352,7 @@ public class SmsBusinessHandlerImpl {
 						}
 
 					} else {
-						logger.info("sms vac auth(4) response check returncode(~0) failure[gmsid:"
+						COREBIZ_LOG.INFO("sms vac auth(4) response check returncode(~0) failure[gmsid:"
 								+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress() + ", linkid:"
 								+ cresponse.getLinkID() + ",returncode:" + returncode + ",ChargetNumber:"
 								+ crequest.getChargetNumber() + "]");
@@ -374,7 +375,7 @@ public class SmsBusinessHandlerImpl {
 				} else if ("7".equals(crequest.getServiceType())) {
 
 					if (returncode == 0) {
-						logger.info("sms vac auth(7) response check orderrelation already exist[gmsid:"
+						COREBIZ_LOG.INFO("sms vac auth(7) response check orderrelation already exist[gmsid:"
 								+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress() + ",returncode:"
 								+ returncode + ",ChargetNumber:" + crequest.getChargetNumber() + "]");
 
@@ -387,7 +388,7 @@ public class SmsBusinessHandlerImpl {
 
 					} else {
 
-						logger.info("sms vac auth(7) response check returncode(~0) failure[gmsid:"
+						COREBIZ_LOG.INFO("sms vac auth(7) response check returncode(~0) failure[gmsid:"
 								+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress() + ",returncode:"
 								+ returncode + ",ChargetNumber:" + crequest.getChargetNumber() + "]");
 
@@ -399,14 +400,14 @@ public class SmsBusinessHandlerImpl {
 				} else if ("1".equals(crequest.getServiceType())) {
 
 					if (returncode == 0) {
-						logger.info("sms vac auth(1) response check returncode(0) sucess[gmsid:"
+						COREBIZ_LOG.INFO("sms vac auth(1) response check returncode(0) sucess[gmsid:"
 								+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress() + ",returncode:"
 								+ returncode + ",ChargetNumber:" + crequest.getChargetNumber() + "]");
 
 						dealConfirm(mosms.getGlobalMessageid());
 
 					} else {
-						logger.info("sms vac auth(1) response check returncode(~0) failure[gmsid:"
+						COREBIZ_LOG.INFO("sms vac auth(1) response check returncode(~0) failure[gmsid:"
 								+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress() + ",returncode:"
 								+ returncode + ",ChargetNumber:" + crequest.getChargetNumber() + "]");
 
@@ -417,14 +418,14 @@ public class SmsBusinessHandlerImpl {
 				} else if ("2".equals(crequest.getServiceType())) {
 					if (returncode == 0) {
 						if (crequest.getSp_product_id() != null) {
-							logger.info("sms vac auth(2) response check normal returncode(0) sucess[gmsid:"
+							COREBIZ_LOG.INFO("sms vac auth(2) response check normal returncode(0) sucess[gmsid:"
 									+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress()
 									+ ",returncode:" + returncode + ",ChargetNumber:" + crequest.getChargetNumber()
 									+ "]");
 
 							dealCancelOrder(mosms.getGlobalMessageid());
 						} else if (crequest.getService_id() != null) {
-							logger.info("sms vac auth(2) response check 0000 returncode(0) sucess[gmsid:"
+							COREBIZ_LOG.INFO("sms vac auth(2) response check 0000 returncode(0) sucess[gmsid:"
 									+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress()
 									+ ",returncode:" + returncode + ",ChargetNumber:" + crequest.getChargetNumber()
 									+ "]");
@@ -439,14 +440,14 @@ public class SmsBusinessHandlerImpl {
 
 				} else if ("3".equals(crequest.getServiceType())) {
 					if (returncode == 0) {
-						logger.info("sms vac auth(3) response check 00000 returncode(0) sucess[gmsid:"
+						COREBIZ_LOG.INFO("sms vac auth(3) response check 00000 returncode(0) sucess[gmsid:"
 								+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress() + ",returncode:"
 								+ returncode + ",ChargetNumber:" + crequest.getChargetNumber() + "]");
 
 						dealCancelOrderAll(mosms.getGlobalMessageid());
 
 					} else {
-						logger.info("sms vac auth(3) response check 00000 returncode(~0) failure[gmsid:"
+						COREBIZ_LOG.INFO("sms vac auth(3) response check 00000 returncode(~0) failure[gmsid:"
 								+ mosms.getGlobalMessageid() + ",userphone: " + mosms.getSendAddress() + ",returncode:"
 								+ returncode + ",ChargetNumber:" + crequest.getChargetNumber() + "]");
 
@@ -454,7 +455,7 @@ public class SmsBusinessHandlerImpl {
 					}
 
 				} else {
-					logger.info("the CheckResponse message is error,[messageid:" + mosms.getGlobalMessageid() + "]");
+					COREBIZ_LOG.INFO("the CheckResponse message is error,[messageid:" + mosms.getGlobalMessageid() + "]");
 
 					this.dataMap.remove(gmsgid);
 				}
@@ -464,7 +465,7 @@ public class SmsBusinessHandlerImpl {
 					OrderRelationUpdateNotifyResponse notifyResponse = (OrderRelationUpdateNotifyResponse) msg;
 					int returncode = notifyResponse.getResultCode();
 
-					logger.info("sp return code :" + returncode + "   updatetype:"
+					COREBIZ_LOG.INFO("sp return code :" + returncode + "   updatetype:"
 							+ notifyResponse.getOrderRequest().getUpdateType());
 
 					if ((returncode == 0) && ("1".equals(notifyResponse.getOrderRequest().getUpdateType()))) {
@@ -480,7 +481,7 @@ public class SmsBusinessHandlerImpl {
 
 			return;
 		} catch (Exception e) {
-			logger.error("上行短信的核心处理方法错误：" + e.getMessage(), e);
+			COREBIZ_LOG.ERROR("上行短信的核心处理方法错误：" + e.getMessage(), e);
 			e.printStackTrace();
 		}
 	}
@@ -506,7 +507,7 @@ public class SmsBusinessHandlerImpl {
 					mosms.getVasId());
 		}
 
-		logger.info("smsmo check phone is white user " + inWhiteList + " [gmessageid:"
+		COREBIZ_LOG.INFO("smsmo check phone is white user " + inWhiteList + " [gmessageid:"
 				+ mosms.getGlobalMessageid() + "userphone:" + mosms.getSendAddress() + "]");
 		return inWhiteList;
 	}
@@ -527,7 +528,7 @@ public class SmsBusinessHandlerImpl {
 	private void dealCancelOrderAll(String messageid) {
 		MO_SMMessage mosms = (MO_SMMessage) this.dataMap.remove(messageid);
 		if (mosms == null) {
-			logger.info("smsmo get cancel 00000 message from datamap is null,messageid:" + messageid);
+			COREBIZ_LOG.INFO("smsmo get cancel 00000 message from datamap is null,messageid:" + messageid);
 			return;
 		}
 
@@ -572,18 +573,18 @@ public class SmsBusinessHandlerImpl {
 
 					this.messageRouter.doRouter(notifyRequest);
 
-					logger.info("smsmo notify sp orderrelation cancel 00000 request message [gmessage:" + messageid
+					COREBIZ_LOG.INFO("smsmo notify sp orderrelation cancel 00000 request message [gmessage:" + messageid
 							+ ",userphone:" + mosms.getSendAddress() + ",product: " + vas.getServicecode()
 							+ ",notifyurl:" + notifyUrl + "]");
 
 				}
 
 			} else {
-				logger.info("smsmo notify sp orderrelation cancel 00000 match failure [gmessage:" + messageid
+				COREBIZ_LOG.INFO("smsmo notify sp orderrelation cancel 00000 match failure [gmessage:" + messageid
 						+ ",userphone:" + mosms.getSendAddress() + "]");
 			}
 		} catch (Exception e) {
-			logger.info("cancel_all notify sp error!!!!", e);
+			COREBIZ_LOG.ERROR("cancel_all notify sp error!!!!", e);
 		}
 
 		cancelOrderRaltion(mosms, 3);
@@ -592,7 +593,7 @@ public class SmsBusinessHandlerImpl {
 	private void dealCancelOrderService(String messageid) {
 		MO_SMMessage mosms = (MO_SMMessage) this.dataMap.remove(messageid);
 		if (mosms == null) {
-			logger.info("smsmo get cancel 0000 message from datamap is null,messageid:" + messageid);
+			COREBIZ_LOG.INFO("smsmo get cancel 0000 message from datamap is null,messageid:" + messageid);
 			return;
 		}
 
@@ -636,16 +637,16 @@ public class SmsBusinessHandlerImpl {
 					products = products + (String) sp_productidList.get(i);
 				}
 
-				logger.info("smsmo notify sp orderrelation cancel 0000 request message [gmessage:" + messageid
+				COREBIZ_LOG.INFO("smsmo notify sp orderrelation cancel 0000 request message [gmessage:" + messageid
 						+ ",userphone:" + mosms.getSendAddress() + ",products: " + products + ",notifyurl:" + notifyUrl
 						+ "]");
 
 			} else {
-				logger.info("smsmo notify sp orderrelation cancel 0000 match product failure [gmessage:" + messageid
+				COREBIZ_LOG.INFO("smsmo notify sp orderrelation cancel 0000 match product failure [gmessage:" + messageid
 						+ ",userphone:" + mosms.getSendAddress() + ",notifyurl:" + notifyUrl + "]");
 			}
 		} catch (Exception e) {
-			logger.error("cancel_service notify sp error!!!!", e);
+			COREBIZ_LOG.ERROR("cancel_service notify sp error!!!!", e);
 		}
 
 		cancelOrderRaltion(mosms, 2);
@@ -656,7 +657,7 @@ public class SmsBusinessHandlerImpl {
      MO_SMMessage mosms = (MO_SMMessage)this.dataMap.remove(messageid);
      if (mosms == null)
      {
-       logger.info("smsmo get cancel normal message from datamap is null,messageid:" + messageid);
+       COREBIZ_LOG.INFO("smsmo get cancel normal message from datamap is null,messageid:" + messageid);
        return;
      }
      
@@ -666,7 +667,7 @@ public class SmsBusinessHandlerImpl {
      UserOrder userOrder = new UserOrder();//this.daoUtil.getSmsSenderDao().getOrderRelation(mosms.getSendAddress(), values[5]);
      if (userOrder == null)
      {
-       logger.info("smsmo cancel orderrelation not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:" + mosms.getSendAddress() + ",serviceuniqid:" + values[5] + "]");
+       COREBIZ_LOG.INFO("smsmo cancel orderrelation not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:" + mosms.getSendAddress() + ",serviceuniqid:" + values[5] + "]");
        
        return;
      }
@@ -686,7 +687,7 @@ public class SmsBusinessHandlerImpl {
      
      //TODO 获取通知url;processing; is ok
      String notifyUrl = HttpRequestHelper.getSpReportUrlByServiceCode(values[0]);//this.daoUtil.getSmsSenderDao().getRelationNotifyUrl(values[0]);
-     logger.info("smsmo notify sp orderrelation cancel normal request message [gmessage:" + messageid + ",userphone:" + mosms.getSendAddress() + ",notifyurl:" + notifyUrl + "]");
+     COREBIZ_LOG.INFO("smsmo notify sp orderrelation cancel normal request message [gmessage:" + messageid + ",userphone:" + mosms.getSendAddress() + ",notifyurl:" + notifyUrl + "]");
      
  
  
@@ -738,14 +739,14 @@ public class SmsBusinessHandlerImpl {
 			}
 
 			if (service == null) {
-				logger.info("smsmo cancel product not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
+				COREBIZ_LOG.INFO("smsmo cancel product not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
 						+ mosms.getSendAddress() + "]");
 			}
 			//TODO 查询订购关系;Already processed;is ok
 			UserOrder userOrder = null;
 			userOrder=HttpRequestHelper.getOrderRelation(mosms.getSendAddress(), values[5]);//this.daoUtil.getSmsSenderDao().getOrderRelation(mosms.getSendAddress(), values[5]);
 			if (userOrder == null) {
-				logger.info("smsmo cancel orderrelation not exist[gmessage:" + mosms.getGlobalMessageid()
+				COREBIZ_LOG.INFO("smsmo cancel orderrelation not exist[gmessage:" + mosms.getGlobalMessageid()
 						+ ",userphone:" + mosms.getSendAddress() + "]");
 			} else {
 				//TODO 删除订购关系;Already processed;is ok
@@ -781,7 +782,8 @@ public class SmsBusinessHandlerImpl {
 
 		String[] values = mosms.getServiceCode().split("#");
 
-		String _msg = this.dataCache.getSysParams("UP_ONDEMAND_TIP");
+//		String _msg = this.dataCache.getSysParams("UP_ONDEMAND_TIP");
+		String _msg = HttpRequestHelper.getSuccPromptByProductid(values[2]);
 //		_msg="{0}make{1}test{2}in{3}line";//TODO 测试数据，待删除;Already processed;is ok
 		_msg = _msg.replace("{0}", values[3]);
 		_msg = _msg.replace("{1}", String.valueOf(Double.parseDouble(values[4]) / 100.0D));//资费
@@ -798,7 +800,7 @@ public class SmsBusinessHandlerImpl {
 		String send_addr = mosms.getSendAddress();
 		sendMTMsgToQuence(_msg, send_addr);
 
-		logger.info("smsmo send demand success smsmt message [gmessage:" + messageid + ",userphone:" + send_addr
+		COREBIZ_LOG.INFO("smsmo send demand success smsmt message [gmessage:" + messageid + ",userphone:" + send_addr
 				+ ",servicecode:" + mosms.getServiceCode() + "]");
 		
 		//TODO 测试数据，待删除;Already processed;edit
@@ -824,12 +826,12 @@ public class SmsBusinessHandlerImpl {
 			mosms.setNotirySPURL(url);
 			this.messageRouter.doRouter(mosms);// 通知SP进行点播
 
-			logger.info("smsmo notify sp demand mosms message [gmessage:" + messageid + ",userphone:" + send_addr
+			COREBIZ_LOG.INFO("smsmo notify sp demand mosms message [gmessage:" + messageid + ",userphone:" + send_addr
 					+ ",notifyurl:" + url + ", linkid :" + mosms.getLinkId() + ",serviceid:" + values[1] + ",vaspid:"
 					+ mosms.getVaspId() + "]");
 
 		} else {
-			logger.info("smsmo notify sp demand url match failure[gmessage:" + messageid + ",userphone:" + send_addr
+			COREBIZ_LOG.INFO("smsmo notify sp demand url match failure[gmessage:" + messageid + ",userphone:" + send_addr
 					+ ",notifyurl:" + url + ", linkid :" + mosms.getLinkId() + ",serviceid:" + values[1] + ",vaspid:"
 					+ mosms.getVaspId() + "]");
 		}
@@ -841,7 +843,7 @@ public class SmsBusinessHandlerImpl {
      
      if (mosms == null)
      {
-       logger.info("smsmo get message from datamap is null,messageid:" + messageid);
+       COREBIZ_LOG.INFO("smsmo get message from datamap is null,messageid:" + messageid);
        return;
      }
      
@@ -850,7 +852,7 @@ public class SmsBusinessHandlerImpl {
      //TODO 数据库查询;Already processed;is ok
 //     String confirmmsg = "确认，请回复Y。";
      String confirmmsg=HttpRequestHelper.getConfirmmsgByProductid(values[2]);//this.daoUtil.getSmsDAO().getConfirmmsgByProductid(values[2]);
-     logger.info("confirmmsg:"+confirmmsg);
+     COREBIZ_LOG.INFO("confirmmsg:"+confirmmsg);
      if ((confirmmsg == null) || (confirmmsg.trim().length() == 0)) {
     	 //TODO 改为从系统配置中取出默认回复语句;Already processed;is ok
 //       confirmmsg = "111{0}222{1}";
@@ -867,14 +869,14 @@ public class SmsBusinessHandlerImpl {
        confirmmsg = confirmmsg.replace("{2}", dto.getVaspname());
        confirmmsg = confirmmsg.replace("{3}", dto.getBusinessphone() == null ? "" : dto.getBusinessphone());
        
-       logger.info("confirmmsg:"+confirmmsg);
+       COREBIZ_LOG.INFO("confirmmsg:"+confirmmsg);
      }
      
  
      String send_addr = mosms.getSendAddress();
      sendMTMsgToQuence(confirmmsg, send_addr);
      
-     logger.info("smsmo send one confirm prepare sms message [gmessage:" + messageid + ",userphone:" + send_addr + "]");
+     COREBIZ_LOG.INFO("smsmo send one confirm prepare sms message [gmessage:" + messageid + ",userphone:" + send_addr + "]");
    }
 
 	private void dealConfirm(String messageid)
@@ -884,14 +886,15 @@ public class SmsBusinessHandlerImpl {
  
      if (mosms == null)
      {
-       logger.info("smsmo get message from datamap is null,messageid:" + messageid);
+       COREBIZ_LOG.INFO("smsmo get message from datamap is null,messageid:" + messageid);
        return;
      }
      
  
  
      String[] values = mosms.getServiceCode().split("#");
-     String _msg = this.dataCache.getSysParams("COREBIZ_SEND_SECONDCONFIRM_MESSAGE");//this.daoUtil.getSmsSenderDao().queryMsg("COREBIZ_SEND_SECONDCONFIRM_MESSAGE");
+//     String _msg = this.dataCache.getSysParams("COREBIZ_SEND_SECONDCONFIRM_MESSAGE");//this.daoUtil.getSmsSenderDao().queryMsg("COREBIZ_SEND_SECONDCONFIRM_MESSAGE");
+     String _msg = HttpRequestHelper.getSuccPromptByProductid(values[2]);//this.daoUtil.getSmsSenderDao().queryMsg("COREBIZ_SEND_SECONDCONFIRM_MESSAGE");
      _msg = _msg.replace("{0}", values[3]);
      _msg = _msg.replace("{1}", String.valueOf(Double.parseDouble(values[4]) / 100.0D));
      _msg = _msg.replace("{2}", values.length >= 7 ? values[6] : "");
@@ -905,12 +908,12 @@ public class SmsBusinessHandlerImpl {
      String send_addr = mosms.getSendAddress();
      sendMTMsgToQuence(_msg, send_addr);
      
-     logger.info("smsmo send confirm success sms message [gmessage:" + messageid + ",userphone:" + send_addr + ",servicecode:" + mosms.getServiceCode() + "]");
+     COREBIZ_LOG.INFO("smsmo send confirm success sms message [gmessage:" + messageid + ",userphone:" + send_addr + ",servicecode:" + mosms.getServiceCode() + "]");
      
  
  
      String notifyUrl = this.dataCache.getSpurlByVaspid(values[0]);//this.daoUtil.getSmsDAO().getSpurlByVaspid(values[0]);
-     logger.info("smsmo notify sp orderrelation request message [gmessage:" + messageid + ",userphone:" + send_addr + ",notifyurl:" + notifyUrl + "]");
+     COREBIZ_LOG.INFO("smsmo notify sp orderrelation request message [gmessage:" + messageid + ",userphone:" + send_addr + ",notifyurl:" + notifyUrl + "]");
      
  
      OrderRelationUpdateNotifyRequest notifyRequest = new OrderRelationUpdateNotifyRequest();
@@ -958,7 +961,7 @@ public class SmsBusinessHandlerImpl {
 		}
 		
 		if (service == null) {
-			logger.info("smsmo order product not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
+			COREBIZ_LOG.INFO("smsmo order product not exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
 					+ mosms.getSendAddress() + "]");
 		}
 
@@ -967,7 +970,7 @@ public class SmsBusinessHandlerImpl {
 		userOrder=HttpRequestHelper.getOrderRelation(mosms.getSendAddress(), values[2]);
 				
 		if (userOrder != null&&(userOrder.getId()!=null&&userOrder.getId().length()>0)) {
-			logger.info("smsmo order orderrelation already exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
+			COREBIZ_LOG.INFO("smsmo order orderrelation already exist[gmessage:" + mosms.getGlobalMessageid() + ",userphone:"
 					+ mosms.getSendAddress() + "]");
 		} else {
 			// TODO pending;is ok
@@ -986,7 +989,7 @@ public class SmsBusinessHandlerImpl {
 			
 			HttpRequestHelper.saveOrderMessage(phoneNumber,spInfoId,productInfoId,fee,notifyflag);
 
-			logger.info("smsmo order orderrelation save db sucess[gmessage:" + mosms.getGlobalMessageid()
+			COREBIZ_LOG.INFO("smsmo order orderrelation save db sucess[gmessage:" + mosms.getGlobalMessageid()
 					+ ",userphone:" + mosms.getSendAddress() + "]");
 		}
 	}
@@ -1023,29 +1026,29 @@ public class SmsBusinessHandlerImpl {
 		String vasId = mosms.getVasId();//3010012345
 		String smstext = mosms.getSmsText().toLowerCase().trim();
 
-		logger.info("smsmo set operator type[gmessageid:" + mosms.getGlobalMessageid() + ",smstext:" + smstext
+		COREBIZ_LOG.INFO("smsmo set operator type[gmessageid:" + mosms.getGlobalMessageid() + ",smstext:" + smstext
 				+ ",phoneNumber:" + phoneNumber + ",spNumber:" + vasId + "]");
 
 //		TODO 测试删除，后续需要增加数据;Already processed;is ok
 //		this.daoUtil.getSmsSenderDao().saveMoMsg(smstext, phoneNumber, vasId);
 		HttpRequestHelper.saveMoMsg(smstext, phoneNumber, vasId);
-		logger.info("smsmo save database [gmessageid:" + mosms.getGlobalMessageid());
+		COREBIZ_LOG.INFO("smsmo save database [gmessageid:" + mosms.getGlobalMessageid());
 
 		if ((smstext == null) || ("".equals(smstext.trim()))) {
-			logger.info("smsmo content is empty [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
+			COREBIZ_LOG.INFO("smsmo content is empty [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 			return new OperatorType(EnumOptype.OTHER);
 		}
 
 		if (!vasId.startsWith(SERVICE_NUMBER)) {
-			logger.info("smsmo vasid is wrong [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
+			COREBIZ_LOG.INFO("smsmo vasid is wrong [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 			return new OperatorType(EnumOptype.OTHER);
 		}
 
 		if ((TAKE_ACC_NUMBER != null) && (!TAKE_ACC_NUMBER.trim().equals(""))
 				&& (vasId.startsWith(TAKE_ACC_NUMBER))) {
-			logger.info("smsmo take number command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
+			COREBIZ_LOG.INFO("smsmo take number command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 
 			OperatorType operatorType = new OperatorType(EnumOptype.TAKE_NUMBER);
@@ -1059,12 +1062,12 @@ public class SmsBusinessHandlerImpl {
 			sp_productids=HttpRequestHelper.getProductIds(phoneNumber);
 			
 			if (sp_productids == null) {
-				logger.info("smsmo cancel 00000 vas service is null [gmessageid:" + mosms.getGlobalMessageid()
+				COREBIZ_LOG.INFO("smsmo cancel 00000 vas service is null [gmessageid:" + mosms.getGlobalMessageid()
 						+ ",spnumber:" + vasId + ",smstext:" + smstext + "]");
 				return new OperatorType(EnumOptype.OTHER);
 			}
 
-			logger.info("smsmo cancel all command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
+			COREBIZ_LOG.INFO("smsmo cancel all command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + ",products:" + sp_productids + "]");
 
 			OperatorType optype = new OperatorType(EnumOptype.CANCEL_ALL);
@@ -1090,12 +1093,12 @@ public class SmsBusinessHandlerImpl {
 			dto.setProducts(testList);
 
 			if (dto.getProducts().size() == 0) {
-				logger.info("smsmo cancel 0000 vas service is null [gmessageid:" + mosms.getGlobalMessageid()
+				COREBIZ_LOG.INFO("smsmo cancel 0000 vas service is null [gmessageid:" + mosms.getGlobalMessageid()
 						+ ",spnumber:" + vasId + ",smstext:" + smstext + "]");
 				return new OperatorType(EnumOptype.OTHER);
 			}
 
-			logger.info("smsmo cancel current command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:"
+			COREBIZ_LOG.INFO("smsmo cancel current command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:"
 					+ vasId + ",smstext:" + smstext + ",products:" + dto.getSp_productid() + "]");
 
 			OperatorType optype = new OperatorType(EnumOptype.CANCEL_SERVICE);
@@ -1113,7 +1116,7 @@ public class SmsBusinessHandlerImpl {
 		//if ((SERVICE_NUMBER.equals(vasId)) && ("Y".equalsIgnoreCase(smstext))) {
 		if (("Y".equalsIgnoreCase(smstext))) {
 
-			logger.info("smsmo confirm command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
+			COREBIZ_LOG.INFO("smsmo confirm command [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 			//TODO 通过手机号码和服务好查询短信内容和sp接入号;Already processed;is ok
 			String[] smsText = {"order001","3010012345"};
@@ -1122,7 +1125,7 @@ public class SmsBusinessHandlerImpl {
 			Vasservice cofirmVas = this.dataCache.getOrderProduct(smsText[0] + smsText[1], null);
 
 			if (cofirmVas == null) {
-				logger.info("smsmo confirm vas service is null [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:"
+				COREBIZ_LOG.INFO("smsmo confirm vas service is null [gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:"
 						+ smsText[1] + ",smstext:" + smsText[0] + "]");
 				return new OperatorType(EnumOptype.OTHER);
 			}
@@ -1147,14 +1150,14 @@ public class SmsBusinessHandlerImpl {
 		}
 
 		if (this.dataCache.getVasidsByOwner(vasId) != null) {
-			logger.info("smsmo owner service command[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
+			COREBIZ_LOG.INFO("smsmo owner service command[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 					+ ",smstext:" + smstext + "]");
 
 			Vasservice vasservice = this.dataCache.getOwnerProduct(smstext, vasId);
 			OperatorType optype = new OperatorType(EnumOptype.OTHER);
 
 			if (vasservice == null) {
-				logger.info("smsmo owner service vas service is null[gmessageid:" + mosms.getGlobalMessageid()
+				COREBIZ_LOG.INFO("smsmo owner service vas service is null[gmessageid:" + mosms.getGlobalMessageid()
 						+ ",spnumber:" + vasId + ",smstext:" + smstext + "]");
 				return optype;
 			}
@@ -1181,14 +1184,14 @@ public class SmsBusinessHandlerImpl {
 			return optype;
 		}
 
-		logger.info("smsmo sp service command[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
+		COREBIZ_LOG.INFO("smsmo sp service command[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:" + vasId
 				+ ",smstext:" + smstext + "]");
 
 		Vasservice vasservice = this.dataCache.getSpProduct(smstext, vasId);
 		OperatorType optype = new OperatorType(EnumOptype.OTHER);
 
 		if (vasservice == null) {
-			logger.info("smsmo sp service vas service is null[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:"
+			COREBIZ_LOG.INFO("smsmo sp service vas service is null[gmessageid:" + mosms.getGlobalMessageid() + ",spnumber:"
 					+ vasId + ",smstext:" + smstext + "]");
 			return optype;
 		}
@@ -1214,7 +1217,7 @@ public class SmsBusinessHandlerImpl {
 	}
 
 	public String getClientMessage(String errorCode) {//错误吗获取，需要从数据库改到内存
-		logger.info("get error  code : " + errorCode);
+		COREBIZ_LOG.INFO("get error  code : " + errorCode);
 		if (errorCode == null) {
 			return "未知错误";
 		}

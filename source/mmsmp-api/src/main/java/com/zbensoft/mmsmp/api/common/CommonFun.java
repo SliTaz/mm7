@@ -36,6 +36,8 @@ public class CommonFun {
 	
 	public static int ORDER_INT=1;//订购
 	public static int DIANBO_INT=2;//点播
+	
+	public static int STATUS_CANCEL=2;//取消订购
 
 	private static final Logger log = LoggerFactory.getLogger(CommonFun.class);
 

@@ -11,6 +11,8 @@
  import org.springframework.context.ApplicationListener;
  import org.springframework.context.event.ContextClosedEvent;
  import org.springframework.context.event.ContextRefreshedEvent;
+
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
  
  
  
@@ -36,17 +38,17 @@
          
          if ((event instanceof ContextRefreshedEvent))
          {
-           this.logger.info(key + " mina server started at port " + socket.getDefaultLocalAddress().getPort());
+           COREBIZ_LOG.INFO(key + " mina server started at port " + socket.getDefaultLocalAddress().getPort());
          }
          else if ((event instanceof ContextClosedEvent))
          {
-           this.logger.info(key + " mina server stopped at port " + socket.getDefaultLocalAddress().getPort());
+           COREBIZ_LOG.INFO(key + " mina server stopped at port " + socket.getDefaultLocalAddress().getPort());
          }
        }
      }
      catch (Exception ex)
      {
-       this.logger.error(ex);
+       COREBIZ_LOG.ERROR("",ex);
      }
    }
    

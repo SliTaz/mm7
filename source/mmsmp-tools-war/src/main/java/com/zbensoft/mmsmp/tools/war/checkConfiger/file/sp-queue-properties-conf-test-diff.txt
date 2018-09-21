@@ -1,0 +1,1 @@
+baseDir=/Wangchenyang/log/mmsmp/spagent_queue <--> baseDir=/soft/log/mmsmp/spagent_queue

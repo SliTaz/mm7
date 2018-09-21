@@ -7,7 +7,8 @@ import com.zbensoft.mmsmp.corebiz.app.AppContextFactory;
  import com.zbensoft.mmsmp.corebiz.message.OrderRelationMessage;
  import com.zbensoft.mmsmp.corebiz.route.ReceiveRouter;
  import com.zbensoft.mmsmp.corebiz.util.StringUtil;
- import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.Constants;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.Constants;
  import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.ProductManageRequest;
  import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.Response;
  import com.zbensoft.mmsmp.common.ra.vas.sjb.unibusiness.ReverseUnsubscribeManageRequest;
@@ -41,7 +42,7 @@ import com.zbensoft.mmsmp.corebiz.app.AppContextFactory;
  
    public Response orderRelationManage(OrderRelationRequest request)
    {
-     logger.info("received  orderRelationManage request : " + request.toString());
+     COREBIZ_LOG.INFO("received  orderRelationManage request : " + request.toString());
      Response res = new Response();
      res.setDesc("业务已受理");
      res.setCodeType(Constants.ResponseCodeType_MMSMP);
@@ -93,7 +94,7 @@ import com.zbensoft.mmsmp.corebiz.app.AppContextFactory;
      OrderRelationMessage.setGlobalMessageid(globalMessageid);
      
      this.receiveRouter.doRouter(OrderRelationMessage);
-     logger.info("OrderRelationMessage doRouter  [channel:" + channel + " globalMessageid:" + globalMessageid + "]");
+     COREBIZ_LOG.INFO("OrderRelationMessage doRouter  [channel:" + channel + " globalMessageid:" + globalMessageid + "]");
      return res;
    }
    
@@ -101,21 +102,21 @@ import com.zbensoft.mmsmp.corebiz.app.AppContextFactory;
  
    public Response produceManage(ProductManageRequest request)
    {
-     logger.info("=======admin管理门户 内容暂停恢复消息通知corbize =========" + request.getProductID());
+     COREBIZ_LOG.INFO("=======admin管理门户 内容暂停恢复消息通知corbize =========" + request.getProductID());
      
      String[] str = request.getProductID().split("[|]");
      System.out.println("sp_productID=======" + str[6]);
      
      if (request.getProductID().startsWith("HF"))
      {
-       logger.info("恢复Map key=======ZT" + str[6]);
+       COREBIZ_LOG.INFO("恢复Map key=======ZT" + str[6]);
        ((Map)AppContextFactory.getApplicationContext().getBean("commonDataMemory")).remove("ZT" + str[6]);
      }
      else
      {
        WOCheckResponse wc = new WOCheckResponse();
        wc.setMessageid(request.getProductID());
-       logger.info("暂停Map key=======ZT" + str[6]);
+       COREBIZ_LOG.INFO("暂停Map key=======ZT" + str[6]);
        ((Map)AppContextFactory.getApplicationContext().getBean("commonDataMemory")).put("ZT" + str[6], wc);
      }
      

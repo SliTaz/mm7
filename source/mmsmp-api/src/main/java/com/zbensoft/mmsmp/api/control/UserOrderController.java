@@ -1,6 +1,7 @@
 package com.zbensoft.mmsmp.api.control;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -29,10 +30,14 @@ import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
 import com.zbensoft.mmsmp.api.service.api.ProductInfoService;
 import com.zbensoft.mmsmp.api.service.api.ProvinceCityService;
+import com.zbensoft.mmsmp.api.service.api.SpInfoService;
 import com.zbensoft.mmsmp.api.service.api.UserOrderService;
+import com.zbensoft.mmsmp.api.service.api.UserServiceSendService;
 import com.zbensoft.mmsmp.db.domain.ProductInfo;
 import com.zbensoft.mmsmp.db.domain.ProvinceCity;
+import com.zbensoft.mmsmp.db.domain.SpInfo;
 import com.zbensoft.mmsmp.db.domain.UserOrder;
+import com.zbensoft.mmsmp.db.domain.UserStatistics;
 
 import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/userOrder")
@@ -44,6 +49,10 @@ public class UserOrderController {
 	ProvinceCityService provinceCityService;
 	@Autowired
 	private ProductInfoService productInfoService;
+	@Autowired
+	SpInfoService spInfoService;
+	@Autowired
+	UserServiceSendService userServiceSendService;
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 
@@ -211,5 +220,87 @@ public class UserOrderController {
 		CommonLogImpl.insertLog(CommonLogImpl.OPERTYPE_DELETE, delBean,CommonLogImpl.CUSTOMER_MANAGE);
 		//删除日志结束
 		return new ResponseRestEntity<UserOrder>(HttpRestStatus.NO_CONTENT);
+	}
+	
+	//用户统计数
+	@PreAuthorize("hasRole('R_USST_Q')")
+	@ApiOperation(value = "Query UserStatistics", notes = "")
+	@RequestMapping(value = "/userStatistics", method = RequestMethod.GET)
+	public ResponseRestEntity<List<UserStatistics>> selectUserStatistics(@RequestParam(required = false) String spInfoId,@RequestParam(required = false) String monthStart,@RequestParam(required = false) String monthEnd) {
+		UserStatistics userStatistics = new UserStatistics();
+		userStatistics.setSpInfoId(spInfoId);
+		
+		if(monthStart!=null){
+			monthStart = monthStart + "-01 00:00:00";
+			userStatistics.setMonthStart(monthStart);
+		}
+		if(monthEnd!=null){
+			monthEnd = monthFormat(monthEnd) + "-01 00:00:00";
+			userStatistics.setMonthEnd(monthEnd);
+		}
+		userStatistics.setMonthEnd(monthEnd);
+		List<UserStatistics> orderList = userOrderService.selectCountByOrderAndSpInfoId(userStatistics);
+		List<UserStatistics> onDemandList = userOrderService.selectCountByOnDemandAndSpInfoId(userStatistics);
+		if(orderList!=null && !orderList.isEmpty()){
+			for (UserStatistics userStatistics2 : orderList) {
+				//获取sp总费用
+				Double orderFee = 0.0 ,onDemandFee = 0.0,spTotalCost = 0.0 ;
+//				orderFee = userStatistics2.getOrderFee();
+				SpInfo spInfo = spInfoService.selectByPrimaryKey(userStatistics2.getSpInfoId());
+				//获取发送总条数
+				int sendCount = userServiceSendService.getCountBySpInfoId(userStatistics2.getSpInfoId());
+				userStatistics2.setSendCount(sendCount);
+				List<ProductInfo> productInfoList = new ArrayList<ProductInfo>();
+				if(spInfo!=null){
+					//获取企业代码
+					userStatistics2.setCompanyCode(spInfo.getCompanyCode());
+					ProductInfo productInfo = new ProductInfo();
+					productInfo.setCompanyCode(spInfo.getCompanyCode());
+					productInfoList = productInfoService.selectPage(productInfo);
+					if(productInfoList!=null && !productInfoList.isEmpty()){
+						for (ProductInfo productInfo2 : productInfoList) {
+							orderFee = productInfo2.getOrderFee();
+							onDemandFee = productInfo2.getOnDemandFee();
+						}
+					}
+				}else{
+					continue;
+				}
+				//获取点播数
+				if(onDemandList!=null&&!onDemandList.isEmpty()){
+					for (UserStatistics userStatistics3 : onDemandList) {
+						if(userStatistics2.getSpInfoId()==userStatistics3.getSpInfoId()){
+							userStatistics2.setOnDemandCount(userStatistics3.getOnDemandCount());
+//							userStatistics2.setOnDemandFee(userStatistics3.getOnDemandFee());
+						}
+					}
+				}
+//				onDemandFee = userStatistics2.getOnDemandFee();
+				if(onDemandFee == null){
+					onDemandFee = 0.0;
+				}
+				if(orderFee == null){
+					orderFee = 0.0;
+				}
+				spTotalCost = orderFee*userStatistics2.getOrderCount() + onDemandFee*userStatistics2.getOnDemandCount();
+				userStatistics2.setSpTotalCost(spTotalCost);
+			}
+		}
+		
+		return new ResponseRestEntity<List<UserStatistics>>(orderList, HttpRestStatus.OK);
+	}
+	//时间转换
+	public static String monthFormat(String monthEnd){
+		String[] time = monthEnd.split("-");
+		int year = Integer.valueOf(time[0]);
+		int month = Integer.valueOf(time[1]);
+		if (month <= 11) {
+			month+=1;
+		}else if(month == 12){
+			month = 1;
+			year+=1;
+		}
+		String timeNew = year + "-" + month;
+		return timeNew;
 	}
 }

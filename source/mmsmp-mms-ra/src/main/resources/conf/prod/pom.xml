@@ -62,6 +62,28 @@
 			<artifactId>mmsmp-common-ra</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>mm7</groupId>
+            <artifactId>mm7</artifactId>
+	      	<version>0.0.1</version>
+            <scope>system</scope>
+	      	<systemPath>${project.basedir}/lib/mm7.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>mm7api</groupId>
+            <artifactId>mm7api</artifactId>
+	      	<version>0.0.1</version>
+            <scope>system</scope>
+	      	<systemPath>${project.basedir}/lib/mm7api.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>jdon</groupId>
+            <artifactId>jdon</artifactId>
+	      	<version>0.0.1</version>
+            <scope>system</scope>
+	      	<systemPath>${project.basedir}/lib/jdon.jar</systemPath>
+        </dependency>
 	</dependencies>
 	<build>
      <resources>
@@ -80,7 +102,15 @@
                     <include>application.properties</include>
                 </includes>
             </resource>
-           
+             <resource>
+                <directory>lib</directory>
+                <targetPath>../mmsmp-mms-ra-0.0.1-SNAPSHOT\WEB-INF\lib</targetPath>
+                <includes>
+                <include>jdon.jar</include>
+		    	<include>mm7.jar</include>
+		    	<include>mm7api.jar</include>
+                </includes>
+            </resource>
         </resources>
 		<plugins>
 			<plugin>
@@ -101,6 +131,8 @@
 				
 				</configuration>
 			</plugin>
+			
+			
 			
 			<plugin> 
 				<groupId>org.apache.felix</groupId> 

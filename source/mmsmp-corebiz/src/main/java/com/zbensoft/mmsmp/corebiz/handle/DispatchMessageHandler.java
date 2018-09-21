@@ -2,6 +2,8 @@ package com.zbensoft.mmsmp.corebiz.handle;
 
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
 import com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
 import org.apache.log4j.Logger;
 
 public class DispatchMessageHandler implements IMessageHandler {
@@ -13,7 +15,7 @@ public class DispatchMessageHandler implements IMessageHandler {
 		try {
 			this.minaClientProxy.send((AbstractMessage) message);
 		} catch (Exception ex) {
-			logger.error(ex);
+			COREBIZ_LOG.ERROR("",ex);
 			throw ex;
 		}
 	}

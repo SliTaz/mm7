@@ -52,7 +52,7 @@ public class StSuccRatioController {
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;
 	
-//	@PreAuthorize("hasRole('R_UR_Q')")
+	@PreAuthorize("hasRole('R_PFSR_Q')")
 	@ApiOperation(value = "Query stSuccRatio，Support paging", notes = "")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseRestEntity<List<StSuccRatio>> selectPage(@RequestParam(required = false) String province,@RequestParam(required = false) String productInfoId,

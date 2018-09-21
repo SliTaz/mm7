@@ -2,7 +2,9 @@
  
  import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
  import com.zbensoft.mmsmp.corebiz.handle.IMessageHandler;
- import java.util.concurrent.ExecutorService;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
+import java.util.concurrent.ExecutorService;
  import java.util.concurrent.Executors;
  import java.util.concurrent.LinkedBlockingQueue;
  import java.util.concurrent.ThreadFactory;
@@ -98,7 +100,7 @@
              MessageListener.this.execor.execute(mh);
            }
          }
-       } catch (Exception ex) { MessageListener.logger.error(MessageListener.this.name + " listener exception:" + ex.getMessage());
+       } catch (Exception ex) { COREBIZ_LOG.ERROR(MessageListener.this.name + " listener exception:" + ex.getMessage());
          ex.printStackTrace();
        }
      }
@@ -124,13 +126,13 @@
        catch (Exception e) {
          try {
            if (this.message != null) {
-        	   messageListener.logger.error("ChargetNumber : " + this.message.getChargetNumber() + "ServiceId : \t" + this.message.getServiceId() + "GlobalMessageid : \t" + this.message.getGlobalMessageid() + "\t" + e.getMessage());
+        	   COREBIZ_LOG.ERROR("ChargetNumber : " + this.message.getChargetNumber() + "ServiceId : \t" + this.message.getServiceId() + "GlobalMessageid : \t" + this.message.getGlobalMessageid() + "\t" + e.getMessage());
            } else {
-        	   messageListener.logger.error("message is null" + e.getMessage());
+        	   COREBIZ_LOG.ERROR("message is null" + e.getMessage());
            }
          }
          catch (Exception e1) {
-        	 messageListener.logger.error("exception: \t" + e1.getMessage());
+        	 COREBIZ_LOG.ERROR("exception: \t" + e1.getMessage());
          }
        }
      }

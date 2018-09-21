@@ -327,7 +327,215 @@ public class ProductServiceExtend {
    
    private String spProductId;
    
+   private String spInfoId;
+   
+   private String companyCode;
+   
    private String productInfoName;
+   
+   private Integer newBuyTimes;
+   
+   private double newBuySum;
+   
+
+private Integer orderTimes;
+   
+   private Integer newOrderTimes;
+   
+   private  Double onDemandFee;
+   
+   private  Double buyFee;
+   
+   private Integer newBuyer;
+
+private String YearMonth;
+   
+   private Double TotalMonth;
+   
+   private Double sum;
+   
+   private Double orderSum;
+   
+   private Double buySum;
+   
+   private Integer orderCount;
+   private String province;
+   
+   private Integer buyCount;
+   
+   private Integer unsubscribe;
+   
+   private Double newTotal;
+   private Double newOrderSum;
+   public Integer getUnsubscribe() {
+	return unsubscribe;
+}
+
+public void setUnsubscribe(Integer unsubscribe) {
+	this.unsubscribe = unsubscribe;
+}
+
+public double getNewBuySum() {
+	   return newBuySum;
+   }
+   
+   public void setNewBuySum(double newBuySum) {
+	   this.newBuySum = newBuySum;
+   }
+   
+   public Integer getNewBuyTimes() {
+	   return newBuyTimes;
+   }
+   
+   public void setNewBuyTimes(Integer newBuyTimes) {
+	   this.newBuyTimes = newBuyTimes;
+   }
+   
+   public Integer getNewOrderTimes() {
+	   return newOrderTimes;
+   }
+   
+   public void setNewOrderTimes(Integer newOrderTimes) {
+	   this.newOrderTimes = newOrderTimes;
+   }
+   public Double getBuyFee() {
+	   return buyFee;
+   }
+   
+   public void setBuyFee(Double buyFee) {
+	   this.buyFee = buyFee;
+   }
+   
+   public Integer getNewBuyer() {
+	   return newBuyer;
+   }
+   
+   public void setNewBuyer(Integer newBuyer) {
+	   this.newBuyer = newBuyer;
+   }
+   
+   public String getProvince() {
+	   return province;
+   }
+   
+   public void setProvince(String province) {
+	   this.province = province;
+   }
+
+   public String getSpInfoId() {
+	return spInfoId;
+}
+
+public Double getSum() {
+	return sum;
+}
+
+public void setSum(Double sum) {
+	this.sum = sum;
+}
+
+public Double getOrderSum() {
+	return orderSum;
+}
+
+public void setOrderSum(Double orderSum) {
+	this.orderSum = orderSum;
+}
+
+public Double getBuySum() {
+	return buySum;
+}
+
+public void setBuySum(Double buySum) {
+	this.buySum = buySum;
+}
+
+public Integer getOrderCount() {
+	return orderCount;
+}
+
+public void setOrderCount(Integer orderCount) {
+	this.orderCount = orderCount;
+}
+
+public Integer getBuyCount() {
+	return buyCount;
+}
+
+public void setBuyCount(Integer buyCount) {
+	this.buyCount = buyCount;
+}
+
+public void setTotalMonth(Double totalMonth) {
+	TotalMonth = totalMonth;
+}
+
+public void setSpInfoId(String spInfoId) {
+	this.spInfoId = spInfoId;
+}
+
+public String getCompanyCode() {
+	return companyCode;
+}
+
+public void setCompanyCode(String companyCode) {
+	this.companyCode = companyCode;
+}
+
+public Integer getOrderTimes() {
+	return orderTimes;
+}
+
+public void setOrderTimes(Integer orderTimes) {
+	this.orderTimes = orderTimes;
+}
+
+public Double getOnDemandFee() {
+	return onDemandFee;
+}
+
+public void setOnDemandFee(Double onDemandFee) {
+	this.onDemandFee = onDemandFee;
+}
+
+public String getYearMonth() {
+	return YearMonth;
+}
+
+public void setYearMonth(String yearMonth) {
+	YearMonth = yearMonth;
+}
+
+public Double getTotalMonth() {
+	return TotalMonth;
+}
+
+public void setTotalMonth() {
+	if(this.getOnDemandFee()!=null&&this.getOrderTimes()!=null)
+	{TotalMonth = this.getOnDemandFee()*this.getOrderTimes();
+	}
+	}
+
+public Double getRatioByNextYear() {
+	return ratioByNextYear;
+}
+
+public void setRatioByNextYear(Double ratioByNextYear) {
+	this.ratioByNextYear = ratioByNextYear;
+}
+
+public Double getRatioByNearMonth() {
+	return ratioByNearMonth;
+}
+
+public void setRatioByNearMonth(Double ratioByNearMonth) {
+	this.ratioByNearMonth = ratioByNearMonth;
+}
+
+private Double ratioByNextYear;
+   
+   private Double ratioByNearMonth; 
+   
    public String getSpProductId() {
 	return spProductId;
 }
@@ -1184,4 +1392,20 @@ public void setProductInfoName(String productInfoName) {
    public void setReportMessageUrl(String reportMessageUrl) {
        this.reportMessageUrl = reportMessageUrl;
    }
+
+public Double getNewTotal() {
+	return newTotal;
+}
+
+public void setNewTotal(Double newTotal) {
+	this.newTotal = newTotal;
+}
+
+public Double getNewOrderSum() {
+	return newOrderSum;
+}
+
+public void setNewOrderSum(Double newOrderSum) {
+	this.newOrderSum = newOrderSum;
+}
 }

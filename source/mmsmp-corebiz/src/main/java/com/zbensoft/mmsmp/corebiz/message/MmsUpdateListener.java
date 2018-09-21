@@ -2,6 +2,7 @@
  
  import com.zbensoft.mmsmp.corebiz.dao.SmsDAO;
 import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
 
 import java.util.Date;
  import java.util.concurrent.ArrayBlockingQueue;
@@ -90,9 +91,9 @@ import java.util.Date;
                HttpRequestHelper.updateGatewaySRecord(mhm.getStatus(), mhm.getMessageId(), mhm.getReqId());
                if (result <= 0) {
                  MmsUpdateListener.this.mmsUpdate.put(mhm);
-                 MmsUpdateListener.logger.info(" update fail ! ");
+                 COREBIZ_LOG.INFO(" update fail ! ");
                } else {
-                 MmsUpdateListener.logger.info(" update success ! ");
+                 COREBIZ_LOG.INFO(" update success ! ");
                }
              }
            }
@@ -100,7 +101,7 @@ import java.util.Date;
              MmsUpdateListener.this.sleeping(MmsUpdateListener.this.idle);
            }
          }
-       } catch (Exception ex) { MmsUpdateListener.logger.error(MmsUpdateListener.this.name + " listener exception:" + ex.getMessage());
+       } catch (Exception ex) { COREBIZ_LOG.ERROR(MmsUpdateListener.this.name + " listener exception:" + ex.getMessage());
          ex.printStackTrace();
          MmsUpdateListener.this.sleeping(MmsUpdateListener.this.idle * 3);
        }

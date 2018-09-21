@@ -2,7 +2,9 @@
  
  import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
  import com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy;
- import java.io.Serializable;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
+import java.io.Serializable;
  import java.util.concurrent.ConcurrentHashMap;
  import org.apache.log4j.Logger;
  
@@ -33,7 +35,7 @@
      }
      catch (Exception ex)
      {
-       logger.error(ex);
+    	 COREBIZ_LOG.ERROR("",ex);
      }
    }
    

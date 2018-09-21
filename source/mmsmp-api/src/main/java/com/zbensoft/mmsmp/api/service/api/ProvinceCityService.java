@@ -62,5 +62,5 @@ public interface ProvinceCityService {
     
     int AdvanceCount(ProvinceCity ProvinceCity);
 
-  
+    int countAllProvinceAndCity(ProvinceCity provinceCity);
 }

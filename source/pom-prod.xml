@@ -9,7 +9,12 @@
 		<module>mmsmp-db</module>
 		<module>mmsmp-boss</module>
 		<module>mmsmp-common-ra</module>
+		<module>mmsmp-vac-ra</module>
+		<module>mmsmp-sms-ra</module>
+		<module>mmsmp-sp-ra</module>
+		<module>mmsmp-mms-ra</module>
 		<module>mmsmp-corebiz</module>
+		<module>mmsmp-ownbiz-ra</module>
 	</modules>
 	<groupId>com.zbensoft</groupId>
 	<artifactId>mmsmp</artifactId>

@@ -91,6 +91,8 @@ function ServerSideCtrl(DTOptionsBuilder, DTColumnBuilder, $translate, $scope,
 			return '<span translate="userServiceSend.order"></span>';
 		} else if (data == '1') {
 			return '<span translate="common.frozen"></span>';
+		} else if (data == '2') {
+			return '<span translate="userServiceSend.cancelOrder"></span>';
 		} else {
 			return '';
 		}

@@ -33,6 +33,7 @@ public class Constants {
 	public static String ResponseCode_StatusError = "21";
 
 	public static String ResponseCode_IDError = "19";
+	public static String ResponseCode_VerifyCodeError = "22";
 
 	public static String ResponseCode_OtherError = "99";
 

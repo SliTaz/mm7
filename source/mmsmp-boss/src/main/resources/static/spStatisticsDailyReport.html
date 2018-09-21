@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+<title></title>
+<link rel="icon" type="image/x-icon" href="imgs/title.ico">
+<!-- css -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/AdminLTE.min.css">
+<link rel="stylesheet" href="lib/AdminLTE/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="lib/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet"
+	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
+<link rel="stylesheet"
+	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
+<link rel="stylesheet"
+	href="lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="lib/datepicker/datepicker3.css">
+<link rel="stylesheet" href="lib/datetimepicker/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="css/zben.css">
+<link rel="stylesheet" href="lib/select2/dist/css/select2.css">
+<!-- js -->
+<script src="lib/jquery/jquery-2.2.3.min.js"></script>
+<script src="lib/jquery/jQuery.resizeEnd.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/angularjs/angular.min.js"></script>
+<script src="lib/angularjs/angular-cookies.min.js"></script>
+<script src="lib/angular-translate/angular-translate.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script
+	src="lib/angular-translate/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+<script src="lib/angularjs/angular-sanitize.min.js"></script>
+<script src="lib/angular-datatables/angular-datatables.min.js"></script>
+<script src="lib/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script
+	src="lib/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.colVis.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="lib/datatables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script
+	src="lib/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js"></script>
+<script src="lib/datatables-columnfilter/dataTables.columnFilter.js"></script>
+<script
+	src="lib/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="lib//bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+<script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
+<script src="lib/jQueryUI/jquery-ui.min.js"></script>
+<script src="lib/angular-ui-tree/angular-ui-tree.min.js"></script>
+<script src="lib/AdminLTE/js/app.js"></script>
+<script src="lib/AdminLTE/js/demo.js"></script>
+<script src="lib/datepicker/bootstrap-datepicker.js"></script>
+<script src="lib/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="lib/daterangepicker/moment.min.js"></script>
+<script src="lib/select2/dist/js/select2.js"></script>
+<script src="js/zben.js"></script>
+<script src="js/controller/spStatisticsDailyReport_controller_server.js"></script>
+<script src="js/service/spStatisticsDailyReport_service.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" ng-app="spStatisticsDailyReportModule"
+	id="content-wrapper" ng-controller="ServerSideCtrl as ctrl">
+
+<div class="wrapper">
+
+
+	<!-- 头部和左侧 开始 -->
+		<div>
+			<header class="main-header" ng-include="'html/top.html'">
+			</header>
+			
+			<aside class="main-sidebar" ng-include="'html/left.html'">
+			</aside>
+		</div>
+		
+	<div id="content-wrapper" class="content-wrapper">
+		<section class="content-header" id="content_section">
+				<h1 translate="common.spStatisticsDailyReport"></h1>
+				<ol class="breadcrumb">
+				<li translate="common.home"><a href="#"><i class="fa fa-dashboard"></i></a></li>
+					<li class="active" translate="common.statistics"></li>
+				</ol>
+		</section>
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="box box-primary collapsed-box">
+						<form class="form-horizontal" ng-submit="ctrl.reloadData()"
+							name="searchForm">
+						<div class="box-search-info">
+								<div class="box-header with-border">
+									<div class="row">
+										<div class="col-sm-4 pull-right">
+											<button type="button"
+												class="btn btn-info btn-sm table-tool-right" id="queryBtn"
+												data-widget="collapse" data-toggle="tooltip" title="">
+												<i class="fa  fa-angle-double-down" translate="common.expand.query">&nbsp;</i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- end box-search-info -->
+							<div class="box-body" style="display: none">
+								<div class="row">
+									 <div class="form-group col-sm-6">
+									<label for="cpInfoId"
+										class="col-sm-4 control-label control-label-zb" translate="userOrderHis.spInfo"></label>
+									<div class="col-sm-7">
+										<select class="form-control" id="spInfo" ng-model="ctrl.beanSer.spInfoId" style="width:100%">
+											<option value="" translate="common.choose"></option>
+											<option ng-repeat="x in ctrl.spInfoData" value="{{x.spInfoId}}" ng-bind="x.spInfoId"></option>
+										</select>
+									</div>
+								</div>
+									</div>
+									   <div class="row">
+					        	 <div class="form-group col-sm-6">
+										<label for="isEnable"
+											class="col-sm-4 control-label control-label-zb" translate="userOrderHis.orderTimeStart"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="orderTimeStart" autocomplete="off" name="orderTimeStart"
+												placeholder="{{'userOrderHis.orderTimeStart'   | translate }}" ng-model="ctrl.beanSer.orderTimeStart">
+										</div>
+									</div>
+						      <div class="form-group col-sm-6">
+										<label for="status"
+											class="col-sm-4 control-label control-label-zb" translate="userOrderHis.orderTimeEnd"></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="orderTimeEnd" autocomplete="off" name="orderTimeEnd"
+												placeholder="{{'userOrderHis.orderTimeEnd'   | translate }}" ng-model="ctrl.beanSer.orderTimeEnd">
+										</div>
+									</div>
+					        </div>
+								<div class="row">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-block btn-info btn-sm"
+										style="float: right; width: 75px;" id="bth-searchDate" translate="search"></button>
+									</div>
+								</div>
+							</div>
+							<!-- end box-body -->
+
+						</form>
+					</div>
+
+
+					<!-- table start -->
+					<div class="box box-primary" id="example">
+						<div class="box-body">
+							<table datatable="" id="table_id" dt-options="ctrl.dtOptions"
+								dt-columns="ctrl.dtColumns" dt-instance="ctrl.dtInstance"
+								class="row-border hover">
+							</table>
+						</div>
+						<!-- /.box-body -->
+						<div id="loadDiv"  style="position: absolute;top: 50%; left: 50%;width: 100%; height: 40px;margin-left: -50%;
+                            margin-top: -25px;padding-top: 20px;text-align: center;font-size: 1.2em;"translate="common.loading"></div>
+					</div>
+					<!-- table end -->
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+</body>
+
+</html>

@@ -1,14 +1,27 @@
 package com.zbensoft.mmsmp.api.control;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +38,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.github.pagehelper.PageHelper;
 import com.zbensoft.mmsmp.api.common.HttpRestStatus;
 import com.zbensoft.mmsmp.api.common.HttpRestStatusFactory;
+import com.zbensoft.mmsmp.api.common.IDGenerate;
 import com.zbensoft.mmsmp.api.common.LocaleMessageSourceService;
 import com.zbensoft.mmsmp.api.common.PageHelperUtil;
 import com.zbensoft.mmsmp.api.common.ResponseRestEntity;
@@ -39,10 +53,13 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/mobileSegment")
 @RestController
 public class MobileSegmentController {
+	private static final Logger log = LoggerFactory.getLogger(MobileSegmentController.class);
 	@Autowired
 	MobileSegmentService mobileSegmentService;
 	@Autowired
 	ProvinceCityService provinceCityService;
+	@Value("${upload.file.mobile.segment}")
+	private String UPLOAD_FILE_MOBILE_SEGMENT;
 	@Resource
 	private LocaleMessageSourceService localeMessageSourceService;	
 	@PreAuthorize("hasRole('R_MS_Q')")
@@ -192,5 +209,93 @@ public class MobileSegmentController {
 		mobileSegmentService.deleteByPrimaryKey(id);
 		return new ResponseRestEntity<MobileSegment>(HttpRestStatus.NO_CONTENT);
 	}
+
+	
+	//号段导入
+	@PreAuthorize("hasRole('R_MS_E')")
+	@RequestMapping(value = "/singleUpload", method = RequestMethod.POST)
+	public Map<String, Object> singleFileUpload(HttpServletRequest request, @RequestParam("name") String name) throws Exception {
+		String filePre = System.currentTimeMillis() + "";
+		name = filePre + "_" + name;
+		String path = UPLOAD_FILE_MOBILE_SEGMENT;// request.getSession().getServletContext().getRealPath("upload");
+
+		File targetFile = new File(path, name);
+		if (!targetFile.getParentFile().exists()) {
+			targetFile.getParentFile().mkdirs();
+		}
+
+		write(path, name, request.getInputStream());
+
+		int import_int = insertToDB(targetFile);
+
+		Map<String, Object> result_map = new HashMap<String, Object>();
+		result_map.put("importNum", import_int);
+		return result_map;
+	}
+	private void write(String path, String filename, InputStream in) {
+		File file = new File(path);
+		if (!file.exists()) {
+			if (!file.mkdirs()) {// 若创建文件夹不成功
+			}
+		}
+
+		File targetfile = new File(path + filename);
+		OutputStream os = null;
+		try {
+			os = new FileOutputStream(targetfile);
+			int ch = 0;
+			while ((ch = in.read()) != -1) {
+				os.write(ch);
+			}
+			os.flush();
+		} catch (Exception e) {
+			log.error("",e);
+		} finally {
+			try {
+				os.close();
+				in.close();
+			} catch (Exception e) {
+				log.error("",e);
+			}
+		}
+	}
+	private int insertToDB(File file) {
+		List<MobileSegment> consumerGasCouponList = new ArrayList<MobileSegment>();
+		int import_int = 0;
+			try {
+				InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
+				BufferedReader in = new BufferedReader(isr);
+				String s;
+				while ((s = in.readLine()) != null && StringUtils.isNotEmpty(s)) {
+					String[] str = s.split(",");
+					MobileSegment mobileSegment = new MobileSegment();
+					if (str != null) {
+					if(str[1].trim().equals("本张表已网间交换小计：")){
+						continue;
+					}else{
+							mobileSegment.setSegment(str[0].trim());
+							mobileSegment.setProvinceId(str[3].trim());
+							mobileSegment.setAreaCode(str[5].trim());
+							mobileSegment.setCityId(str[6].trim());
+					}
+					consumerGasCouponList.add(mobileSegment);
+					}
+				}
+				
+				for (MobileSegment mobileSegment : consumerGasCouponList) {
+					MobileSegment mobileSegmentNew = new MobileSegment();
+					mobileSegmentNew.setMobileSegmentId(IDGenerate.generateCommTwo(IDGenerate.CUSTOMER_MANAGER));
+					mobileSegmentNew.setSegment(mobileSegment.getSegment());
+					mobileSegmentNew.setAreaCode(mobileSegment.getAreaCode());
+					mobileSegmentNew.setCityId(mobileSegment.getCityId());
+					mobileSegmentNew.setProvinceId(mobileSegment.getProvinceId());
+					mobileSegmentService.insert(mobileSegmentNew);
+				}
+					return import_int+1;
+					} catch (Exception e) {
+						log.error("",e);
+					}
+					return 0;
+				}
 
 }

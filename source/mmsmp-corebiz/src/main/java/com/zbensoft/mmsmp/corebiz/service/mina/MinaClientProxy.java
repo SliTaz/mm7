@@ -1,6 +1,7 @@
 package com.zbensoft.mmsmp.corebiz.service.mina;
 
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
 
 import java.net.InetSocketAddress;
 
@@ -39,7 +40,7 @@ public class MinaClientProxy
 
 			if (this.future.isDone()) {
 				if (!this.future.isConnected()) {
-					logger.info("mina fail to connect " + this.host);
+					COREBIZ_LOG.INFO("mina fail to connect " + this.host);
 					this.connector.dispose();
 				}
 			}
@@ -53,9 +54,9 @@ public class MinaClientProxy
 			int int_3=this.connector != null ? 1 : 0;
 			int int_4=this.connector.isDisposed() ? 0 : 1;
 			if ((int_1==1) & (int_2==1) & (int_3==1) &this.session.isConnected()& this.future.isConnected() & (int_4 != 0) && this.connector.isActive()){
-				logger.info("mina client connection " + this.host + ":" + this.port + " success");
+				COREBIZ_LOG.INFO("mina client connection " + this.host + ":" + this.port + " success");
 			} else {
-				logger.info("mina client connection " + this.host + ":" + this.port + " failure");
+				COREBIZ_LOG.INFO("mina client connection " + this.host + ":" + this.port + " failure");
 			}
 		}
 	}
@@ -65,7 +66,7 @@ public class MinaClientProxy
   {
     try
     {
-      this.logger.info("mina client reconnection " + this.host + ":" + this.port + " try again");
+      COREBIZ_LOG.INFO("mina client reconnection " + this.host + ":" + this.port + " try again");
       
       Thread.sleep(200L);
       dispose();
@@ -113,7 +114,7 @@ public class MinaClientProxy
     {
       if (message == null)
       {
-        this.logger.info(this.info + " message is null");
+        COREBIZ_LOG.INFO(this.info + " message is null");
         return;
       }
       
@@ -124,11 +125,11 @@ public class MinaClientProxy
       }
       
       this.session.write(message);
-      this.logger.info(this.info + " one message success[gmsgid:" + message.getGlobalMessageid() + 
+      COREBIZ_LOG.INFO(this.info + " one message success[gmsgid:" + message.getGlobalMessageid() + 
         ",classType:" + message.getClass().getSimpleName() + "]");
     }
     catch (Exception ex) {
-      this.logger.error(this.info + " one message failure[gmsgid:" + message.getGlobalMessageid() + 
+      COREBIZ_LOG.ERROR(this.info + " one message failure[gmsgid:" + message.getGlobalMessageid() + 
         ",classType:" + message.getClass().getSimpleName() + "]", ex);
       throw ex;
     }

@@ -1,0 +1,1 @@
+log4j.appender.COREBIZ_LOG.File=/Wangchenyang/log/mmsmp/COREBIZ_LOG.log <--> log4j.appender.COREBIZ_LOG.File=/soft/log/mmsmp/COREBIZ_LOG.log

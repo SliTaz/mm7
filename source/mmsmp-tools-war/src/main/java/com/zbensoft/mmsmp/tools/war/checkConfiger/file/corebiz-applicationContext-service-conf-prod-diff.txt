@@ -1,0 +1,7 @@
+		<property name="host" value="192.168.1.16"/> <--> 		<property name="host" value="192.168.10.10"/>
+		<property name="host" value="192.168.1.116"/> <--> 		<property name="host" value="192.168.10.10"/>
+		<property name="host" value="192.168.1.116"/> <--> 		<property name="host" value="192.168.10.10"/>
+		<property name="host" value="192.168.1.116"/> <--> 		<property name="host" value="192.168.10.10"/>
+		<property name="host" value="192.168.1.16"/> <--> 		<property name="host" value="192.168.10.10"/>
+		<property name="host" value="10.199.201.70"/> <--> 		<property name="host" value="192.168.10.10"/>
+		<property name="host" value="192.168.1.8"/> <--> 		<property name="host" value="192.168.10.10"/>

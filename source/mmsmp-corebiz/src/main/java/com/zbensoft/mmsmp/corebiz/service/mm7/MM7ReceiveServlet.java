@@ -2,8 +2,10 @@
  
  import com.zbensoft.mmsmp.common.ra.MM7.sp.SubmitReq;
  import com.zbensoft.mmsmp.common.ra.common.message.MT_SPMMHttpMessage;
- import com.zbensoft.mmsmp.corebiz.app.AppContextFactory;
- import java.io.IOException;
+import com.zbensoft.mmsmp.config.SpringBeanUtil;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
+import java.io.IOException;
  import java.io.InputStream;
  import java.io.PrintWriter;
  import java.util.ArrayList;
@@ -36,14 +38,14 @@
      throws ServletException
    {
      String queueName = config.getInitParameter("receiveQueue");
-     this.receiveQueue = ((LinkedBlockingQueue)AppContextFactory.getBean(queueName));
+     this.receiveQueue = ((LinkedBlockingQueue)SpringBeanUtil.getBean(queueName));
      
      super.init(config);
    }
    
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException
    {
-     logger.info("ownbiz mms message areave corebiz");
+     COREBIZ_LOG.INFO("ownbiz mms message areave corebiz");
      if (!"POST".equals(req.getMethod()))
      {
        res.sendError(400, "Http Method Must Be POST!");
@@ -54,7 +56,7 @@
      SubmitReq submit = new SubmitReq();
      submit.parser(request.getContent());
      
-     logger.info("corebiz<- ownbiz one mmsmt message normal[phones:" + submit.getTo() + "]");
+     COREBIZ_LOG.INFO("corebiz<- ownbiz one mmsmt message normal[phones:" + submit.getTo() + "]");
      
      StringBuilder body = new StringBuilder();
      InputStream is = request.getInputStream();
@@ -107,14 +109,14 @@
  
  
      this.receiveQueue.addAll(spmts);
-     logger.info("corebiz handler ownbiz mms over");
+     COREBIZ_LOG.INFO("corebiz handler ownbiz mms over");
      try {
        is.close();is = null;
      } catch (Exception localException1) {}
      PrintWriter out = res.getWriter();
      out.write(SubmitResp.getSubmitResp(submit.getTransactionID(), String.valueOf(System.currentTimeMillis()), "1000", "corebiz receive mmsmt success"));
      
-     logger.info("corebiz send message tip to ownbiz");
+     COREBIZ_LOG.INFO("corebiz send message tip to ownbiz");
    }
    
    public String replaceTo(String body, String to)

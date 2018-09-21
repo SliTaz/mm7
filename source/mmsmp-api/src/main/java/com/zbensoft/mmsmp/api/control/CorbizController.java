@@ -317,14 +317,27 @@ public class CorbizController {
 	
 	@ApiOperation(value = "Query ProductService By onDemandAccess，Support paging", notes = "")
 	@RequestMapping(value = "/getServiceIDbyProductid", method = RequestMethod.GET)
-	public ResponseRestEntity<ProductService> selectSpProductId1(@RequestParam(required = false) String spProductId) {
+	public ResponseRestEntity<ProductInfo> selectSpProductId1(@RequestParam(required = false) String spProductId) {
 		ProductService productService = new ProductService();
 		productService.setSpProductId(spProductId);
 		ProductService p = productServiceService.getServiceIDbyProductid(productService);
 		if (p == null) {
-			return new ResponseRestEntity<ProductService>(new ProductService(), HttpRestStatus.NOT_FOUND);
+			return new ResponseRestEntity<ProductInfo>(new ProductInfo(), HttpRestStatus.NOT_FOUND);
+		}else{
+			String productInfoId = p.getProductInfoId();
+			ProductInfo productInfo = null;
+			if (CommonFun.isEmpty(productInfoId)) {
+				return new ResponseRestEntity<ProductInfo>(new ProductInfo(), HttpRestStatus.NOT_FOUND);
+			} else {
+				productInfo = productInfoService.selectByPrimaryKey(productInfoId);
+				if (productInfo == null) {
+					return new ResponseRestEntity<ProductInfo>(new ProductInfo(), HttpRestStatus.NOT_FOUND);
+				} else {
+					return new ResponseRestEntity<ProductInfo>(productInfo, HttpRestStatus.OK);
+				}
+			}
 		}
-	    return new ResponseRestEntity<ProductService>(p, HttpRestStatus.OK);
+	    
 	}
 	
 	@ApiOperation(value = "Query SpAccess By onDemandAccess，Support paging", notes = "")
@@ -400,6 +413,18 @@ public class CorbizController {
 	    return new ResponseRestEntity<ProductService>(p, HttpRestStatus.OK);
 	}
 	
+	@ApiOperation(value = "get succ order message", notes = "")
+	@RequestMapping(value = "/getSuccPromptByProductid", method = RequestMethod.GET)
+	public ResponseRestEntity<ProductService> getSuccPromptByProductid(@RequestParam(required = false) String spProductId) {
+		ProductService productService = new ProductService();
+		productService.setSpProductId(spProductId);
+		ProductService p = productServiceService.getServiceIDbyProductid(productService);
+		if (p == null) {
+			return new ResponseRestEntity<ProductService>(new ProductService(), HttpRestStatus.NOT_FOUND);
+		}
+	    return new ResponseRestEntity<ProductService>(p, HttpRestStatus.OK);
+	}
+	
 	@ApiOperation(value = "Query ProductService By onDemandAccess，Support paging", notes = "")
 	@RequestMapping(value = "/getSpProductId", method = RequestMethod.GET)
 	public ResponseRestEntity<List<ProductService>> getSpProductId(@RequestParam(required = false) String cpAccessId) {
@@ -413,6 +438,16 @@ public class CorbizController {
 	@ApiOperation(value = "Delete UserOrder", notes = "")
 	@RequestMapping(value = "/delUserOrder/{sendAddress}/{productInfoId}", method = RequestMethod.DELETE)
 	public ResponseRestEntity<UserOrder> delete(@PathVariable("sendAddress") String sendAddress,@PathVariable("productInfoId") String productInfoId) {
+		try {
+			//更新用户订购历史表的status为2:取消订购
+			UserOrderHis userOrderHis=new UserOrderHis();
+			userOrderHis.setPhoneNumber(sendAddress);
+			userOrderHis.setProductInfoId(productInfoId);
+			userOrderHis.setCancelTime(new Date());
+			userOrderHis.setStatus(CommonFun.STATUS_CANCEL);
+			userOrderHisService.updateStatus(userOrderHis);
+		} catch (Exception e) {}
+		
 		UserOrder userOrder=new UserOrder();
 		userOrder.setPhoneNumber(sendAddress);
 		userOrder.setProductInfoId(productInfoId);
@@ -452,6 +487,7 @@ public class CorbizController {
 		userRecv.setMessageContent((s[0].split("="))[1]);
 		userRecv.setPhoneNumber((s[1].split("="))[1]);
 		userRecv.setIsOrder(1);
+		userRecv.setRecvTime(new Date());
 		userRecvService.insert(userRecv);
 		//新增日志
 		CommonLogImpl.insertLog(CommonLogImpl.OPERTYPE_INSERT, userRecv,CommonLogImpl.CUSTOMER_MANAGE);
@@ -492,9 +528,10 @@ public class CorbizController {
 	public ResponseRestEntity<ProductInfo> selectProductInfo(@RequestParam(required = false) String cpAccessId) {
 		ProductInfo p = new ProductInfo();
 		p.setCpAccessId(cpAccessId);
+		p.setOrderType(CommonFun.ORDER_INT+"");
 		//接入号此处做产品编号
 //		ProductService productService = productServiceService.getVasSpCpInfo(cpAccessId);
-		ProductInfo productInfo = productInfoService.getVasSpCpInfo(p);
+		ProductInfo productInfo = productInfoService.getVasSpCpInfoByOrder(p);
 		if (productInfo == null) {
 			return new ResponseRestEntity<ProductInfo>(new ProductInfo(), HttpRestStatus.NOT_FOUND);
 		}
@@ -504,6 +541,16 @@ public class CorbizController {
 	@ApiOperation(value = "Delete All UserOrder", notes = "")
 	@RequestMapping(value = "/delAllOrderRelation/{phoneNumber}", method = RequestMethod.DELETE)
 	public ResponseRestEntity<UserOrder> delete(@PathVariable("phoneNumber") String phoneNumber) {
+		
+		try {
+			//更新用户订购历史表的status为2:取消订购
+			UserOrderHis userOrderHis=new UserOrderHis();
+			userOrderHis.setPhoneNumber(phoneNumber);
+			userOrderHis.setCancelTime(new Date());
+			userOrderHis.setStatus(CommonFun.STATUS_CANCEL);
+			userOrderHisService.updateStatusByPhoneNumber(userOrderHis);
+		} catch (Exception e) {}
+		
 		userOrderService.deleteByPhoneNumber(phoneNumber);
 		return new ResponseRestEntity<UserOrder>(HttpRestStatus.NO_CONTENT);
 	}
@@ -533,6 +580,7 @@ public class CorbizController {
 		userOrderHis.setUserOrderHisId(IDGenerate.generateCommTwo(IDGenerate.CONSUMER_COUPON));
 		userOrderHis.setPhoneNumber(jsonObject.getString("sendAddress"));
 		userOrderHis.setSpInfoId(jsonObject.getString("vaspId"));
+		userOrderHis.setOrderTime(new Date());
 		userOrderHis.setEffTime(new Date());
 		userOrderHis.setOrderType(CommonFun.DIANBO_INT);
 		
@@ -552,7 +600,33 @@ public class CorbizController {
 			userOrderHis.setProductInfoId(productServiceTmp.getProductInfoId());
 		}
 		
+		//保存产品资费
+		try {
+			String fee=serviceCode.split("#")[4];
+			userOrderHis.setFee(Double.parseDouble(fee));
+		} catch (Exception e1) {}
+		
 		userOrderHisService.insert(userOrderHis);
+		
+		//保存手机号码到user-info表
+		try {
+			String phoneNumber=jsonObject.getString("sendAddress");
+			UserInfo userInfo = userInfoService.selectByPrimaryKey(phoneNumber);
+			if(userInfo==null){
+				userInfo=new UserInfo();
+				userInfo.setPhoneNumber(phoneNumber);
+				userInfo.setChargePhoneNumber(phoneNumber);
+				if(mobileSegmentLists!=null&&mobileSegmentLists.size()>0){
+					userInfo.setProvince(mobileSegmentLists.get(0).getProvinceId());
+					userInfo.setCity(mobileSegmentLists.get(0).getCityId());
+				}
+				userInfo.setStatus(1);//1表示正常
+				userInfo.setCreateTime(new Date());
+				userInfo.setDeleteFlag(0);//0表示正常
+				
+				userInfoService.insert(userInfo);
+			}
+		} catch (Exception e) {}
 		return new ResponseRestEntity<Void>(HttpRestStatus.CREATED);
 	}
 	
@@ -611,6 +685,10 @@ public class CorbizController {
 		userServiceSend.setSpInfoId(spInfoId);
 		userServiceSend.setProductInfoId(productInfoId);
 		userServiceSend.setMessageId(messageId);
+		userServiceSend.setStatus(1);
+		userServiceSend.setContentInfoId("1");
+		userServiceSend.setSendTime(new Date());
+		
 		userServiceSendService.insert(userServiceSend);
 		return new ResponseRestEntity<Void>(HttpRestStatus.CREATED);
 	}
@@ -706,6 +784,25 @@ public class CorbizController {
 		//插入用户订购关系历史表
 		userOrderHisService.insert(userOrderHisTmp);
 		
+		//保存手机号码到user-info表
+		try {
+			UserInfo userInfo = userInfoService.selectByPrimaryKey(phoneNumber);
+			if(userInfo==null){
+				userInfo=new UserInfo();
+				userInfo.setPhoneNumber(phoneNumber);
+				userInfo.setChargePhoneNumber(phoneNumber);
+				if(mobileSegmentLists!=null&&mobileSegmentLists.size()>0){
+					userInfo.setProvince(mobileSegmentLists.get(0).getProvinceId());
+					userInfo.setCity(mobileSegmentLists.get(0).getCityId());
+				}
+				userInfo.setStatus(1);//1表示正常
+				userInfo.setCreateTime(new Date());
+				userInfo.setDeleteFlag(0);//0表示正常
+				
+				userInfoService.insert(userInfo);
+			}
+		} catch (Exception e) {}
+		
 		return new ResponseRestEntity<Void>(HttpRestStatus.CREATED);
 	}
 	
@@ -728,6 +825,27 @@ public class CorbizController {
 		}
 		userOrderService.updateByPrimaryKeySelective(userOrderList.get(0));
 		return new ResponseRestEntity<UserOrder>(userOrderList.get(0), HttpRestStatus.OK,localeMessageSourceService.getMessage("UserOrder In CorbizController.update.ok.message"));
+	}
+	
+	@ApiOperation(value = "get all sp_product_id for vasId and command", notes = "")
+	@RequestMapping(value = "/getSpProductIdsForSPsimulator", method = RequestMethod.GET)
+	public ResponseRestEntity<List<String>> getSpProductIdsForSPsimulator(@RequestParam(required = false) String vasId,@RequestParam(required = false) String command) {
+		ProductInfo productInfo=new ProductInfo();
+		productInfo.setCpAccessId(vasId);
+		productInfo.setOrderCommand(command);//sql语句中执行(order_command='xxxx' or on_demand_command='xxxx')
+		
+		List<ProductInfo> lists=new ArrayList<ProductInfo>();
+		lists=productInfoService.getSpProductIdsForSPsimulator(productInfo);
+		
+		if (lists == null || lists.isEmpty()) {
+			return new ResponseRestEntity<List<String>>(new ArrayList<String>(), HttpRestStatus.NOT_FOUND);
+		}else{
+			List<String> strLists = new ArrayList<String>();
+			for (int i = 0; i < lists.size(); i++) {
+				strLists.add(lists.get(i).getSpProductId());
+			}
+			return new ResponseRestEntity<List<String>>(strLists, HttpRestStatus.OK);
+		}
 	}
 	
 	@ApiOperation(value = "get all sp_product_id for phonenumber", notes = "")

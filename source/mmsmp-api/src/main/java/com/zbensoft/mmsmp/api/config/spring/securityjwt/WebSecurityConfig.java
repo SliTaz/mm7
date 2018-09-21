@@ -199,7 +199,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/corbiz/getSpProductIds").permitAll()
 				.antMatchers("/ownbiz/userOrderCheck").permitAll()
                 .antMatchers("/ownbiz/getProxyPayMessageById").permitAll()
-				
+
+				//ftp sysc
+				.antMatchers("/spInfo/getSpInfoCountById").permitAll()
+				.antMatchers("/spInfo/sycUpdateSpInfo").permitAll()
+				.antMatchers("/spInfo/sycDeleteSpInfo").permitAll()
+				.antMatchers("/spInfo/getAllSpIds").permitAll()
+
+				.antMatchers("/productInfo/sysDeleteProduct").permitAll()
+				.antMatchers("/productInfo/sysSaveOrUpdateProduct").permitAll()
+
+				.antMatchers("/spAccess/sysDeleteAccess").permitAll()
+				.antMatchers("/spAccess/sysSaveOrUpdateAccess").permitAll()
+
 				// .antMatchers("/**/**").permitAll()
 				// 除上面外的所有请求全部需要鉴权认证
 				.anyRequest().authenticated();

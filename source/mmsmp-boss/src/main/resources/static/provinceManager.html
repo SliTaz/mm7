@@ -14,6 +14,7 @@
 <link rel="stylesheet"
 	href="lib/FixedColumns/css/dataTables.fixedColumns.min.css">
 <link rel="stylesheet" href="lib/select2/dist/css/select2.css">
+<link rel="stylesheet" href="lib/web_uploader/webuploader.css">
 <link rel="stylesheet"
 	href="lib/datatables/extensions/Buttons/css/buttons.dataTables.css">
 <link rel="stylesheet"
@@ -57,6 +58,7 @@
 <script src="lib/AdminLTE/js/app.js"></script>
 <script src="lib/AdminLTE/js/demo.js"></script>
 <script src="lib/ztree/jquery.ztree.all-3.5.min.js"></script>
+<script src="lib/web_uploader/webuploader.js"></script>
 <script src="lib/select2/dist/js/select2.js"></script>
 <script src="js/zben.js"></script>
 <script src="js/controller/provinceManager_controller.js"></script>
@@ -98,6 +100,9 @@
 													class="btn btn-primary btn-sm table-tool-left" id="btn-add"
 													data-toggle="modal" data-target="#myModal"
 													ng-click="ctrl.addInit()" translate="common.add"></button>
+												<button type="button"
+													class="btn btn-primary btn-sm table-tool-left" id="btn-add"
+													ng-click="ctrl.importInit()" translate="common.import"></button>
 											</div>
 											<div class="col-sm-4 pull-right">
                                      <button type="button"	class="btn btn-info btn-sm table-tool-right"

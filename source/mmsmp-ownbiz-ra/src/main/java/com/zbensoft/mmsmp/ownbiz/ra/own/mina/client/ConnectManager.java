@@ -9,7 +9,7 @@ import org.apache.mina.core.RuntimeIoException;
 public class ConnectManager extends Thread {
     private static final Logger _log = Logger.getLogger(ConnectManager.class);
     private static final String CLASS_NAME = "ConnectManager ";
-    private static final int SLEEP_SECOND = 60;
+    private static final int SLEEP_SECOND = 10;
 
     public ConnectManager() {
     }
@@ -34,8 +34,8 @@ public class ConnectManager extends Thread {
             }
 
             try {
-                _log.info(String.format("%s重新连接失败，等待%d秒钟，再次尝试.", "ConnectManager ", 60));
-                Thread.sleep(60000L);
+                _log.info(String.format("%s重新连接失败，等待%d秒钟，再次尝试.", "ConnectManager ", 10));
+                Thread.sleep(10000L);
             } catch (InterruptedException var5) {
                 var5.printStackTrace();
             }

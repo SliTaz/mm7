@@ -366,12 +366,10 @@
 													<label for="reportMessageUrl"
 														class="col-sm-4 control-label control-label-zb" translate="spInfo.reportMessageUrl"></label>
 													<div class="col-sm-7">
-														<textarea type="text" class="form-control" id="reportMessageUrl" name="reportMessageUrl" ng-pattern="/^(?!.*[~!@$#%^&*<>)/(])/"
+														<textarea type="text" class="form-control" id="reportMessageUrl" name="reportMessageUrl" 
 															placeholder="{{'spInfo.reportMessageUrl'   | translate }}" ng-model="ctrl.bean.reportMessageUrl" ng-maxlength="1000" ></textarea>
 														 <div ng-show="addEditForm.reportMessageUrl.$error.maxlength" style="color:red" translate="spInfo.reportMessageUrl.length">
                                                          </div>
-                                                         <div ng-show="addEditForm.reportMessageUrl.$error.pattern" style="color:red" translate="common.illegalChar">
-									                     </div>
 													</div>
 												</div>
 											</div>

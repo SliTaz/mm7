@@ -3,6 +3,8 @@ package com.zbensoft.mmsmp.corebiz.task;
 import com.zbensoft.mmsmp.corebiz.cache.CacheCenter;
 import com.zbensoft.mmsmp.corebiz.cache.DataMemory;
 import com.zbensoft.mmsmp.corebiz.message.MmsDBListener;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,7 +39,7 @@ public class MonitorTask
   
   public void doCheckLogerServer()
   {
-    logger.info("echo udp link layer message " + new SimpleDateFormat("yyyyMMddHHmmss ").format(new Date()));
+    COREBIZ_LOG.INFO("echo udp link layer message " + new SimpleDateFormat("yyyyMMddHHmmss ").format(new Date()));
   }
   
 
@@ -89,7 +91,7 @@ public class MonitorTask
 
 
 
-    logger.info(sb.toString());
+    COREBIZ_LOG.INFO(sb.toString());
   }
   
 

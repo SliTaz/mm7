@@ -340,7 +340,7 @@
 	
 	<SGIPConnect>
 		<!-- SMG主机地址  10.199.70.151 -->
-		<host>127.0.0.1</host>
+		<host>192.168.1.6</host>
 		<!-- SMG主机端口号 -->
 		<port>8801</port>
 		<!-- 操作超时时间(单位：秒) -->
@@ -352,7 +352,7 @@
 		<!--双方协商的版本号(大于0，小于256)-->
 		<version>1</version>
 		<!-- 服务端地址 -->
-		<localHost>127.0.0.1</localHost>
+		<localHost>192.168.1.6</localHost>
 		<!-- 服务端端口 -->
 		<localPort>8802</localPort>
 		<!--登陆用户名(最大为六位字符)-->

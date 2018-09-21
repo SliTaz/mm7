@@ -7,9 +7,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.log4j.Logger;
-
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.CheckRequest;
 import com.zbensoft.mmsmp.common.ra.common.message.CheckResponse;
@@ -26,7 +23,6 @@ import com.zbensoft.mmsmp.common.ra.send.sgipsms.SmsSenderDto;
 import com.zbensoft.mmsmp.common.ra.send.util.XmlElementReplace;
 import com.zbensoft.mmsmp.common.ra.vas.sjb.data.DemandDto;
 import com.zbensoft.mmsmp.corebiz.cache.DataCache;
-import com.zbensoft.mmsmp.corebiz.dao.DaoUtil;
 import com.zbensoft.mmsmp.corebiz.message.MT_MMHttpSPMessage_Report;
 import com.zbensoft.mmsmp.corebiz.message.MmsDBListener;
 import com.zbensoft.mmsmp.corebiz.message.MmsHistoryMessage;
@@ -37,9 +33,9 @@ import com.zbensoft.mmsmp.corebiz.service.mm7.SubmitReq;
 import com.zbensoft.mmsmp.corebiz.service.mm7.SubmitResp;
 import com.zbensoft.mmsmp.corebiz.util.HttpRequestHelper;
 import com.zbensoft.mmsmp.corebiz.util.StringUtil;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
 
 public class MmsBusinessHandlerImpl {
-	static final Logger logger = Logger.getLogger(MmsBusinessHandlerImpl.class);
 
 	static final String SERVICEN_NUMBER = "10655565";
 
@@ -82,8 +78,8 @@ public class MmsBusinessHandlerImpl {
 				doCR((CheckResponse) message);
 			}
 		} catch (Exception ex) {
-			logger.info("mms business exception:" + ex.getMessage());
-			logger.error("mms business exception:", ex);
+			COREBIZ_LOG.INFO("mms business exception:" + ex.getMessage());
+			COREBIZ_LOG.ERROR("mms business exception:", ex);
 		}
 	}
 
@@ -104,7 +100,7 @@ public class MmsBusinessHandlerImpl {
 		DemandDto dto = this.dataCache.getDemandDtoBySendto(sendto);
 
 		if ((dto == null) || (dto.getServiceid() == null) || ("".equals(dto.getServiceid().trim()))) {
-			logger.info("mmsmo service not exists [gmsgid:" + gmsgid + ",phone:" + phone + ",sendto:" + sendto + "]");
+			COREBIZ_LOG.INFO("mmsmo service not exists [gmsgid:" + gmsgid + ",phone:" + phone + ",sendto:" + sendto + "]");
 
 			smsmt.setSmsText(this.dataCache.queryErrorMsgTemplate() + "发送失败，请检查接入号是否正确！");
 			sendSmsMessage(smsmt);
@@ -112,7 +108,7 @@ public class MmsBusinessHandlerImpl {
 			return;
 		}
 		if ((dto.getSpreporturl() == null) || ("".equals(dto.getSpreporturl().trim()))) {
-			logger.info("mmsmo spurl is empty [gmsgid:" + gmsgid + ",phone:" + phone + ",sendto:" + sendto + "]");
+			COREBIZ_LOG.INFO("mmsmo spurl is empty [gmsgid:" + gmsgid + ",phone:" + phone + ",sendto:" + sendto + "]");
 			saveMmsmoHistory(msg, "1");
 			return;
 		}
@@ -125,7 +121,7 @@ public class MmsBusinessHandlerImpl {
 		msg.setCheckType(4);
 
 		if (this.dataCache.isWhiteUser(phone, dto.getProductId(), null)) {
-			logger.info("mmsmo user is white list[gmsgid:" + gmsgid + ",phone:" + phone + ",productId:"
+			COREBIZ_LOG.INFO("mmsmo user is white list[gmsgid:" + gmsgid + ",phone:" + phone + ",productId:"
 					+ dto.getProductId() + "]");
 			this.messageRouter.doRouter(msg);
 
@@ -149,7 +145,7 @@ public class MmsBusinessHandlerImpl {
 		} else {
 			this.dataMap.put(gmsgid, msg);
 
-			logger.info("mmsmo vac auth(4) request[gmsgid:" + gmsgid + ",phone:" + phone + ",sendto:" + sendto
+			COREBIZ_LOG.INFO("mmsmo vac auth(4) request[gmsgid:" + gmsgid + ",phone:" + phone + ",sendto:" + sendto
 					+ ",needconfirm:" + msg.getNeedConfirm() + "]");
 
 			CheckRequest cr4 = new CheckRequest(phone, msg.getProductId(), msg.getSpid(), null, null, "4", null);
@@ -169,7 +165,7 @@ public class MmsBusinessHandlerImpl {
 		String content = msg.getContent();
 		String mmsCode = msg.getMsgType();
 
-		logger.info("mmsmh submit result transfer[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:" + reqid
+		COREBIZ_LOG.INFO("mmsmh submit result transfer[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:" + reqid
 				+ ",status:" + status + "]");
 
 		MO_ReportMessage mr = new MO_ReportMessage();
@@ -179,16 +175,16 @@ public class MmsBusinessHandlerImpl {
 		mr.setContent(content);
 
 		if ((reqid == null) || ("".equals(reqid.trim()))) {
-			logger.info("mmsmh submit result reqid is null[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:"
+			COREBIZ_LOG.INFO("mmsmh submit result reqid is null[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:"
 					+ reqid + ",status:" + status + "]");
 
 		} else if (this.mmsReportDataMap.get(gmsgid) == null) {
-			logger.info("mmsmh submit result match failure[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:"
+			COREBIZ_LOG.INFO("mmsmh submit result match failure[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:"
 					+ reqid + ",status:" + status + "]");
 
 		} else {
 
-			logger.info("mmsmh submit result match success[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:"
+			COREBIZ_LOG.INFO("mmsmh submit result match success[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:"
 					+ reqid + ",status:" + status + "]");
 
 			String gmhid = "MMS-MH" + reqid;
@@ -220,11 +216,11 @@ public class MmsBusinessHandlerImpl {
 			mhm.setReceiveDate(new Date());
 			this.mmsUpdateListener.put(mhm);
 
-			logger.info("mmsmh save mh history success[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:" + reqid
+			COREBIZ_LOG.INFO("mmsmh save mh history success[gmsgid:" + gmsgid + ",messageid:" + messageid + ",reqid:" + reqid
 					+ ",status:" + status + ",mmsCode:" + mmsCode + ",exectime:" + (System.currentTimeMillis() - btime)
 					+ "]");
 		} catch (Exception ex) {
-			logger.error("mmsmh submit result update", ex);
+			COREBIZ_LOG.ERROR("mmsmh submit result update", ex);
 		}
 	}
 
@@ -244,7 +240,7 @@ public class MmsBusinessHandlerImpl {
 			String spid = mt.getSpid();
 			String sendnumber = "";
 
-			logger.info("mmsmr status report transfer[gmsgid:" + mt.getGlobalMessageid() + ",mtmessageid:" + mtmessageid
+			COREBIZ_LOG.INFO("mmsmr status report transfer[gmsgid:" + mt.getGlobalMessageid() + ",mtmessageid:" + mtmessageid
 					+ ",gmrid :" + gmsgid + ",phone:" + phone + ",sequence:" + sequence + ",mmscode:" + mmscode + "]");
 
 			mr.setServiceCode(mt.getSp_productid());
@@ -255,7 +251,7 @@ public class MmsBusinessHandlerImpl {
 			this.messageRouter.doRouter(mr);
 
 			if ((sequence != null) && (!sequence.trim().equals(""))) {
-				logger.info("mmsmt on demand vac auth(6) request[gmsgid:" + mt.getSourceGlobalMessageid() + ",phone:"
+				COREBIZ_LOG.INFO("mmsmt on demand vac auth(6) request[gmsgid:" + mt.getSourceGlobalMessageid() + ",phone:"
 						+ phone + ",sequence:" + sequence + ",sp_productid:" + mt.getSp_productid() + ",spid:" + spid
 						+ ",serviceid" + mt.getServiceid() + "]");
 
@@ -269,7 +265,7 @@ public class MmsBusinessHandlerImpl {
 
 			removeReportMessage(gmhid);
 		} else {
-			logger.info("mmsmr status report match failure[gmsgid:" + gmsgid + ",matchkey:" + gmhid + ",reqid:" + reqid
+			COREBIZ_LOG.INFO("mmsmr status report match failure[gmsgid:" + gmsgid + ",matchkey:" + gmhid + ",reqid:" + reqid
 					+ "]");
 		}
 
@@ -278,10 +274,10 @@ public class MmsBusinessHandlerImpl {
 			//TODO MO_ReportMessage 入库更新;Already processed;edit
 			//this.daoUtil.getDemandDao().updateSpMMSSendRecord("5", reqid, mmscode);
             HttpRequestHelper.updateSpMMSSendRecord("5", reqid, mmscode);
-			logger.info("mmsmr save mr history success[gmsgid:" + gmsgid + ",reqid:" + reqid + "mmsCode:" + mmscode
+			COREBIZ_LOG.INFO("mmsmr save mr history success[gmsgid:" + gmsgid + ",reqid:" + reqid + "mmsCode:" + mmscode
 					+ ",exectime:" + (System.currentTimeMillis() - btime) + "]");
 		} catch (Exception ex) {
-			logger.error("mmsmr report status update", ex);
+			COREBIZ_LOG.ERROR("mmsmr report status update", ex);
 		}
 	}
 
@@ -309,9 +305,9 @@ public class MmsBusinessHandlerImpl {
 		try {
 			submit.parser(new String(msg.getContentbyte()));
 		} catch (Exception ex) {
-			logger.info((new StringBuilder("mmsmt parse content byte failure[gmsgid:")).append(msg.getGlobalMessageid())
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt parse content byte failure[gmsgid:")).append(msg.getGlobalMessageid())
 					.append("]").toString());
-			logger.error((new StringBuilder("mmsmt parse content byte exception[gmsgid:"))
+			COREBIZ_LOG.ERROR((new StringBuilder("mmsmt parse content byte exception[gmsgid:"))
 					.append(msg.getGlobalMessageid()).append("]").toString(), ex);
 			return;
 		}
@@ -350,7 +346,7 @@ public class MmsBusinessHandlerImpl {
 		mt.setSourceType(mmsmtType);
 		mt.setContentid(msg.getContentid());
 		if (gmsgid.startsWith("WO") && commonMap.get(ztkey) != null) {
-			logger.info((new StringBuilder("mmsmt send paused user[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt send paused user[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",productid:").append(products[0]).append("]").toString());
 			WOCheckResponse worsp = (WOCheckResponse) commonMap.get(ztkey);
 			String value[] = worsp.getMessageid().split("[|]");
@@ -367,7 +363,7 @@ public class MmsBusinessHandlerImpl {
 			user.setSendAddress(sendAdress);
 			// TODO 插入用户信息;Already processed;pending 临时表，没有表结构
 //			daoUtil.getSmsDAO().insertPauseUser(user);
-			logger.info((new StringBuilder("mmsmt save paused user[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt save paused user[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",productid:").append(products[0]).append(",contentid:")
 					.append(user.getContentId()).append("]").toString());
 			return;
@@ -375,7 +371,7 @@ public class MmsBusinessHandlerImpl {
 		if (charge != null && !"".equals(charge)) {
 			mt.setChargetNumber(charge);
 			isPresent = 1;
-			logger.info((new StringBuilder("mmsmt present by own[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt present by own[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",presenter:").append(charge).append(",productid:")
 					.append(products[0]).append("]").toString());
 		} else if (commonMap.get(zskey) != null) {
@@ -384,7 +380,7 @@ public class MmsBusinessHandlerImpl {
 			mt.setChargetNumber(charge);
 			commonMap.remove(zskey);
 			isPresent = 2;
-			logger.info((new StringBuilder("mmsmt present by sp[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt present by sp[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",presenter:").append(charge).append(",productid:")
 					.append(products[0]).append("]").toString());
 		}
@@ -393,7 +389,7 @@ public class MmsBusinessHandlerImpl {
 		mr.setMessageId(msg.getMessageid());
 		String mrUrl = dataCache.getSpurlByProductid(products[0]);
 		if (mrUrl == null || mrUrl.length() == 0) {
-			logger.info((new StringBuilder("mmsmt url does not exist[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt url does not exist[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",vaspid:").append(submit.getVASPID()).append(",productid:")
 					.append(products[0]).append("]").toString());
 			String str = SubmitResp.getSubmitResp(submit.getTransactionID(), msg.getMessageid(), "3000",
@@ -402,14 +398,14 @@ public class MmsBusinessHandlerImpl {
 			messageRouter.doRouter(mr);
 			return;
 		}
-		logger.info((new StringBuilder("mmsmt match url success[gmsgid:")).append(gmsgid).append(",to:")
+		COREBIZ_LOG.INFO((new StringBuilder("mmsmt match url success[gmsgid:")).append(gmsgid).append(",to:")
 				.append(submit.getTo()).append(",vaspid:").append(submit.getVASPID()).append(",productid:")
 				.append(products[0]).append(",reporturl:").append(mrUrl).append("]").toString());
 		mt.setGlobalReportUrl(mrUrl);
 		mr.setReportUrl(mrUrl);
 		uniqueid = dataCache.getUniqueidByProductid(products[0]);
 		if (uniqueid == null || uniqueid.length() == 0) {
-			logger.info((new StringBuilder("mmsmt productid does not exist[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt productid does not exist[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",vaspid:").append(submit.getVASPID()).append(",productid:")
 					.append(products[0]).append("]").toString());
 			String str = SubmitResp.getSubmitResp(submit.getTransactionID(), msg.getMessageid(), "2003",
@@ -420,7 +416,7 @@ public class MmsBusinessHandlerImpl {
 		}
 		String vasIdAndvaspid = dataCache.getServiceIdByProductid(products[0]);
 		if (vasIdAndvaspid == null || vasIdAndvaspid.length() == 0) {
-			logger.info((new StringBuilder("mmsmt serviceid does not exist[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt serviceid does not exist[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",vaspid:").append(submit.getVASPID()).append(",productid:")
 					.append(productid).append("]").toString());
 			String str = SubmitResp.getSubmitResp(submit.getTransactionID(), msg.getMessageid(), "2004",
@@ -432,7 +428,7 @@ public class MmsBusinessHandlerImpl {
 		if (productSize == 2) {
 			zsuniqueid = dataCache.getUniqueidByProductid(products[1]);
 			if (zsuniqueid == null || zsuniqueid.length() == 0) {
-				logger.info((new StringBuilder("mmsmt zsproductid does not exist[gmsgid:")).append(gmsgid)
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmt zsproductid does not exist[gmsgid:")).append(gmsgid)
 						.append(",to:").append(submit.getTo()).append(",vaspid:").append(submit.getVASPID())
 						.append(",productid:").append(products[0]).append("]").toString());
 				String str = SubmitResp.getSubmitResp(submit.getTransactionID(), msg.getMessageid(), "2003",
@@ -463,18 +459,20 @@ public class MmsBusinessHandlerImpl {
 				mmsHM.setServiceCode(products[0]);
 				mmsHM.setReceiveDate(new Date());
 				mmsHM.setType(0);
-				mmsDBListener.put(mmsHM);
+//				mmsDBListener.put(mmsHM);//由放入MQ中，改为单条插入
+				
+				HttpRequestHelper.saveUserZSMTRecord(phone, charge, submit.getTransactionID(), vaspid, vaspid,msg.getMessageid(), products[0]);
 			}
-			logger.info((new StringBuilder("mmsmt save mt history success[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt save mt history success[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",address:").append(submit.getSenderAddress()).append("]")
 					.toString());
 		} catch (Exception ex) {
-			logger.error(ex.getMessage());
+			COREBIZ_LOG.ERROR(ex.getMessage());
 			String str = SubmitResp.getSubmitResp(submit.getTransactionID(), msg.getMessageid(), "2005",
 					"system is busy now, please try again laster");
 			mr.setContent(str);
 			messageRouter.doRouter(mr);
-			logger.info((new StringBuilder("mmsmt save mt history failure[gmsgid:")).append(gmsgid).append(",to:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt save mt history failure[gmsgid:")).append(gmsgid).append(",to:")
 					.append(submit.getTo()).append(",address:").append(submit.getSenderAddress()).append("]")
 					.toString());
 			return;
@@ -495,7 +493,7 @@ public class MmsBusinessHandlerImpl {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			logger.info((new StringBuilder("mmsmt servicecode replace failure[gmsgid:")).append(gmsgid)
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt servicecode replace failure[gmsgid:")).append(gmsgid)
 					.append(",phone:").append(phone).append(",productid:").append(productid).append(",serviceid:")
 					.append(serviceid).append("]]").toString());
 		} finally {
@@ -517,19 +515,19 @@ public class MmsBusinessHandlerImpl {
 
 		}
 
-		logger.info((new StringBuilder("mmsmt servicecode replace success[gmsgid:")).append(gmsgid).append(",phone:")
+		COREBIZ_LOG.INFO((new StringBuilder("mmsmt servicecode replace success[gmsgid:")).append(gmsgid).append(",phone:")
 				.append(phone).append(",productid:").append(productid).append(",serviceid:").append(serviceid)
 				.append("]").toString());
 		if (productSize == 2){
 			if (dataCache.isExistOrderRelation(charge, uniqueid)) {
-				logger.info((new StringBuilder("mmsmt user is zsservice list[gmsgid:")).append(gmsgid).append(",phone:")
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmt user is zsservice list[gmsgid:")).append(gmsgid).append(",phone:")
 						.append(phone).append(",productid:").append(productid).append(",sendadress:").append(sendAdress)
 						.append("serviceid:").append(serviceid).append("]").toString());
 				messageRouter.doRouter(mt);
 				mmsReportDataMap.put(gmsgid, getMMHTttpSpMessageReport(mt));
 				return;
 			} else {
-				logger.info((new StringBuilder("mmsmt user is not order zsservice list[gmsgid:")).append(gmsgid)
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmt user is not order zsservice list[gmsgid:")).append(gmsgid)
 						.append(",phone:").append(phone).append(",productid:").append(productid).append(",sendadress:")
 						.append(sendAdress).append("serviceid:").append(serviceid).append("]").toString());
 				String str = SubmitResp.getSubmitResp(submit.getTransactionID(), msg.getMessageid(), "2005",
@@ -541,7 +539,7 @@ public class MmsBusinessHandlerImpl {
 		}
 		int white_type = dataCache.isWhiteUserMMS_MT(phone, productid, sendAdress);
 		if (white_type == 2 || white_type == 1 || white_type == 0 || white_type == 30) {
-			logger.info((new StringBuilder("mmsmt user is white list[gmsgid:")).append(gmsgid).append(",phone:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt user is white list[gmsgid:")).append(gmsgid).append(",phone:")
 					.append(phone).append(",productid:").append(productid).append(",sendadress:").append(sendAdress)
 					.append(", white_type :").append(white_type).append("]").toString());
 			messageRouter.doRouter(mt);
@@ -550,7 +548,7 @@ public class MmsBusinessHandlerImpl {
 		}
 		if (white_type == 31) {
 			boolean exist = dataCache.isThridOrderExist(phone, productid);
-			logger.info((new StringBuilder("mmsmt user is white list[gmsgid:")).append(gmsgid).append(",phone:")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt user is white list[gmsgid:")).append(gmsgid).append(",phone:")
 					.append(phone).append(",productid:").append(productid).append(",sendadress:").append(sendAdress)
 					.append(", white_type :").append(white_type).append(", thridOrderExist:").append(exist).append(" ]")
 					.toString());
@@ -569,7 +567,7 @@ public class MmsBusinessHandlerImpl {
 		}
 		int quota = Integer.parseInt(dataCache.getSysParams(mmsmtType != 0 ? "MT_ORDER_QUOTA" : "MT_ONDEMAND_QUOTA", "0"));
 		if (quota <= 0) {
-			logger.info((new StringBuilder("mmsmt on ")).append(mmsmtType != 0 ? "order" : "demand")
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt on ")).append(mmsmtType != 0 ? "order" : "demand")
 					.append(" quota less zero[gmsgid:").append(gmsgid).append(",phone:").append(phone).append(",quota:")
 					.append(quota).append("]").toString());
 			return;
@@ -578,7 +576,7 @@ public class MmsBusinessHandlerImpl {
 		String capacity = dataCache.getMmsmtLimitByServiceid(serviceid);
 		if (capacity != null && "2".equals(capacity))
 		{
-			logger.info((new StringBuilder("mmsmt service beyond number limited [gmsgid:")).append(gmsgid)
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt service beyond number limited [gmsgid:")).append(gmsgid)
 					.append(",phone:").append(phone).append(",productid:").append(productid).append(",serviceid:")
 					.append(serviceid).append("]").toString());
 			String str = StringUtil.getReportString(
@@ -596,13 +594,13 @@ public class MmsBusinessHandlerImpl {
 				CheckRequest cr5 = new CheckRequest(num, null, spid, serviceid, null, "5", linkid);
 				cr5.setGlobalMessageid(mt.getGlobalMessageid());
 				messageRouter.doRouter(cr5);
-				logger.info((new StringBuilder("mmsmt on demand vac auth(5) request[gmsgid:")).append(gmsgid)
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmt on demand vac auth(5) request[gmsgid:")).append(gmsgid)
 						.append(",phone:").append(num).append(",linkid:").append(linkid).append("]").toString());
 				break;
 			}
 			String woKey = (new StringBuilder("WO")).append(linkid).append(phone).toString();
 			if (commonMap.get(woKey) != null) {
-				logger.info((new StringBuilder("mmsmt on demand wo auth(2) request[gmsgid:")).append(gmsgid)
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmt on demand wo auth(2) request[gmsgid:")).append(gmsgid)
 						.append(",phone:").append(phone).append(",linkid:").append(linkid).append("]").toString());
 				WOCheckResponse worsp = (WOCheckResponse) commonMap.get(woKey);
 				WOCheckRequest woreq = worsp.getWoRequest();
@@ -611,7 +609,7 @@ public class MmsBusinessHandlerImpl {
 				messageRouter.doRouter(woreq);
 				commonMap.remove(woKey);
 			} else {
-				logger.info((new StringBuilder("mmsmt on demand match wo auth(1) request failure[gmsgid:"))
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmt on demand match wo auth(1) request failure[gmsgid:"))
 						.append(gmsgid).append(",wokey:").append(woKey).append("]").toString());
 				return;
 			}
@@ -621,10 +619,10 @@ public class MmsBusinessHandlerImpl {
 			//TODO iphone 特殊处理;Already processed;is ok
 			boolean isIphone = false;
 //			isIphone=daoUtil.getMm7dao().isFromIphoneOrder(phone, productid);
-			logger.info("isIphone:"+isIphone);
+			COREBIZ_LOG.INFO("isIphone:"+isIphone);
 			
 			if (isIphone) {
-				logger.info((new StringBuilder("mmsmt on order wo auth(needn't) request[gmsgid:")).append(gmsgid)
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmt on order wo auth(needn't) request[gmsgid:")).append(gmsgid)
 						.append(",phone:").append(phone).append(",productid:").append(productid).append("]")
 						.toString());
 				messageRouter.doRouter(mt);
@@ -635,7 +633,7 @@ public class MmsBusinessHandlerImpl {
 			CheckRequest cr7 = new CheckRequest(num, productid, spid, null, null, "7", null);
 			cr7.setGlobalMessageid(mt.getGlobalMessageid());
 			messageRouter.doRouter(cr7);
-			logger.info((new StringBuilder("mmsmt on order vac auth(7) request[gmsgid:")).append(gmsgid)
+			COREBIZ_LOG.INFO((new StringBuilder("mmsmt on order vac auth(7) request[gmsgid:")).append(gmsgid)
 					.append(",phone:").append(num).append(",productid:").append(productid).append("]").toString());
 			break;
 		default:
@@ -651,7 +649,7 @@ public class MmsBusinessHandlerImpl {
 		String gmsgid = rsp.getWoRequest().getGlobalMessageid();
 
 		if (this.dataMap.get(gmsgid) == null) {
-			logger.info("mmsmt wo auth(" + rsp.getReqType() + ") response match key failure[gmsgid:" + gmsgid + "]");
+			COREBIZ_LOG.INFO("mmsmt wo auth(" + rsp.getReqType() + ") response match key failure[gmsgid:" + gmsgid + "]");
 			return;
 		}
 
@@ -664,12 +662,12 @@ public class MmsBusinessHandlerImpl {
 			String messageid = mmsmt.getMessageid();
 
 			if (20000 == rspCode) {
-				logger.info("mmsmt wo auth(" + rsp.getReqType() + ") response success[gmsgid:" + gmsgid + ",phone:"
+				COREBIZ_LOG.INFO("mmsmt wo auth(" + rsp.getReqType() + ") response success[gmsgid:" + gmsgid + ",phone:"
 						+ mmsmt.getPhone() + ",result:" + (rspCode == 20000 ? "success" : "failue") + "]");
 
 				this.messageRouter.doRouter(mmsmt);
 			} else {
-				logger.info("mmsmt wo auth(" + rsp.getReqType() + ") response failure[gmsgid:" + gmsgid + ",phone:"
+				COREBIZ_LOG.INFO("mmsmt wo auth(" + rsp.getReqType() + ") response failure[gmsgid:" + gmsgid + ",phone:"
 						+ mmsmt.getPhone() + ",code:" + rspCode + ",messageid:" + messageid + "]");
 
 				// this.daoUtil.getSmsDAO().updateMmsGrsCode("4", messageid,
@@ -678,7 +676,7 @@ public class MmsBusinessHandlerImpl {
 				recycleMessage(gmsgid);
 			}
 		} else {
-			logger.info("mmsmt wo auth(" + rsp.getReqType() + ") response match class error[gmsgid:" + gmsgid
+			COREBIZ_LOG.INFO("mmsmt wo auth(" + rsp.getReqType() + ") response match class error[gmsgid:" + gmsgid
 					+ ",classtype:" + msg.getClass().getName() + "]");
 		}
 	}
@@ -698,14 +696,14 @@ public class MmsBusinessHandlerImpl {
 		gmsgid = rsp.getCRequest().getGlobalMessageid();
 		if ("6".equals(rsp.getCRequest().getServiceType())) {
 			String result = rsp.getResult_Code() == null || !"0".equals(rsp.getResult_Code()) ? "failure" : "success";
-			logger.info((new StringBuilder("mms vac auth(6) response ")).append(result).append("[gmsgid:")
+			COREBIZ_LOG.INFO((new StringBuilder("mms vac auth(6) response ")).append(result).append("[gmsgid:")
 					.append(gmsgid).append(",phone:").append(rsp.getCRequest().getUser_number()).append(",rspcode:")
 					.append(rsp.getResult_Code()).append("]").toString());
 			recycleMessage(gmsgid);
 			return;
 		}
 		if (gmsgid == null || dataMap.get(gmsgid) == null) {
-			logger.info((new StringBuilder("mms vac auth(")).append(rsp.getCRequest().getServiceType())
+			COREBIZ_LOG.INFO((new StringBuilder("mms vac auth(")).append(rsp.getCRequest().getServiceType())
 					.append(") response match failure[gmsgid:").append(gmsgid).append("]").toString());
 			return;
 		}
@@ -726,7 +724,7 @@ public class MmsBusinessHandlerImpl {
 				smsmt.setServiceCode("10655565");
 				saveMmsmoHistory(mmsmo, rspCode);
 				if (rspCode == null || rspCode.trim().equals("") || rspCode.toLowerCase().equals("null")) {
-					logger.info((new StringBuilder("mmsmo vac auth(4) response failure[gmsgid:")).append(gmsgid)
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmo vac auth(4) response failure[gmsgid:")).append(gmsgid)
 							.append(",phone:").append(phone).append(",desc:code is null]").toString());
 					smsmt.setSmsText((new StringBuilder(String.valueOf(dataCache.queryErrorMsgTemplate())))
 							.append("系统响应超时，请稍后再试").toString());
@@ -735,7 +733,7 @@ public class MmsBusinessHandlerImpl {
 					return;
 				}
 				if (!rspCode.equals("0")) {
-					logger.info((new StringBuilder("mmsmo vac auth(4) response failure[gmsgid:")).append(gmsgid)
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmo vac auth(4) response failure[gmsgid:")).append(gmsgid)
 							.append(",phone:").append(phone).append(",rspcode:").append(rspCode).append("]")
 							.toString());
 					smsmt.setSmsText((new StringBuilder(String.valueOf(dataCache.queryErrorMsgTemplate())))
@@ -745,7 +743,7 @@ public class MmsBusinessHandlerImpl {
 					return;
 				}
 				if (linkid == null || linkid.length() <= 0 || "NULL".equalsIgnoreCase(linkid.toUpperCase())) {
-					logger.info((new StringBuilder("mmsmo vac auth(4) response failure[gmsgid:")).append(gmsgid)
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmo vac auth(4) response failure[gmsgid:")).append(gmsgid)
 							.append(",phone:").append(phone).append(",desc:linkid is null]").toString());
 					smsmt.setSmsText((new StringBuilder(String.valueOf(dataCache.queryErrorMsgTemplate())))
 							.append("系统响应超时，请稍后再试").toString());
@@ -753,7 +751,7 @@ public class MmsBusinessHandlerImpl {
 					recycleMessage(gmsgid);
 					return;
 				}
-				logger.info((new StringBuilder("mmsmo vac auth(4) response success[gmsgid:")).append(gmsgid)
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmo vac auth(4) response success[gmsgid:")).append(gmsgid)
 						.append(",phone:").append(phone).append(",linkid:").append(linkid).append("]").toString());
 				mmsmo.setLinkId(linkid);
 				smsmt.setLinkId(linkid);
@@ -767,13 +765,13 @@ public class MmsBusinessHandlerImpl {
 					while ((len = io.read(data)) > 0) {
 						os.write(data, 0, len);
 						mmsmo.setContentByte(os.toByteArray());
-						logger.info((new StringBuilder("mmsmo linkid replace success[gmsgid:")).append(gmsgid)
+						COREBIZ_LOG.INFO((new StringBuilder("mmsmo linkid replace success[gmsgid:")).append(gmsgid)
 								.append(",phone:").append(phone).append(",linkid:").append(linkid).append("]")
 								.toString());
 					}
 				} catch (Exception ex) {
-					logger.error("mmsmo linkid replace exception", ex);
-					logger.info((new StringBuilder("mmsmo linkid replace failure[gmsgid:")).append(gmsgid)
+					COREBIZ_LOG.ERROR("mmsmo linkid replace exception", ex);
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmo linkid replace failure[gmsgid:")).append(gmsgid)
 							.append(",phone:").append(phone).append(",linkid:").append(linkid).append("]").toString());
 				} finally {
 					try {
@@ -788,11 +786,11 @@ public class MmsBusinessHandlerImpl {
 					}
 				}
 
-				logger.info((new StringBuilder("mmsmo message original transfer[gmsgid:")).append(gmsgid)
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmo message original transfer[gmsgid:")).append(gmsgid)
 						.append(",phone:").append(phone).append(",linkid:").append(linkid).append("]").toString());
 				messageRouter.doRouter(mmsmo);
 				if (mmsmo.getNeedConfirm() != null && mmsmo.getNeedConfirm().equals("1")) {
-					logger.info((new StringBuilder("mmsmo vac auth(5) request[gmsgid:")).append(gmsgid)
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmo vac auth(5) request[gmsgid:")).append(gmsgid)
 							.append(",phone:").append(phone).append(",linkid:").append(linkid).append("]").toString());
 					CheckRequest cr5 = new CheckRequest(phone, mmsmo.getProductId(), mmsmo.getSpid(),
 							mmsmo.getServicesId(), null, "5", linkid);
@@ -819,12 +817,12 @@ public class MmsBusinessHandlerImpl {
 				smsmt.setSmsText(smsText);
 				sendSmsMessage(smsmt);
 			} else if ("5".equals(rsp.getCRequest().getServiceType())) {
-				logger.info((new StringBuilder("mmsmo vac auth(5) repsonse[gmsgid:")).append(gmsgid).append(",phone:")
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmo vac auth(5) repsonse[gmsgid:")).append(gmsgid).append(",phone:")
 						.append(phone).append(",code:").append(rspCode).append(",linkid:").append(linkid).append("]")
 						.toString());
 				recycleMessage(gmsgid);
 			} else {
-				logger.info((new StringBuilder("mmsmo vac auth(")).append(rsp.getCRequest().getServiceType())
+				COREBIZ_LOG.INFO((new StringBuilder("mmsmo vac auth(")).append(rsp.getCRequest().getServiceType())
 						.append(") repsonse type error[gmsgid:").append(gmsgid).append("]").toString());
 			}
 		} else if (msg instanceof MT_MMHttpSPMessage) {
@@ -839,7 +837,7 @@ public class MmsBusinessHandlerImpl {
 			switch (mtType) {
 			case 0: // '\0'
 				if (rspCode1 == 0) {
-					logger.info((new StringBuilder("mmsmt on demand vac auth(5) response success[gmsgid:"))
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmt on demand vac auth(5) response success[gmsgid:"))
 							.append(gmsgid).append(",phone:").append(phone1).append(",result:").append(rspCode1)
 							.append(",needConfirm:").append(rsp.getNeedConfirm()).append(",sequence:")
 							.append(rsp.getSrc_SequenceNumber()).append("]").toString());
@@ -850,7 +848,7 @@ public class MmsBusinessHandlerImpl {
 					recycleMessage(gmsgid);
 					mmsReportDataMap.put(gmsgid, getMMHTttpSpMessageReport(mmsmt));
 				} else {
-					logger.info((new StringBuilder("mmsmt on demand vac auth(5) response failure[gmsgid:"))
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmt on demand vac auth(5) response failure[gmsgid:"))
 							.append(gmsgid).append(",phone:").append(phone1).append(",result:").append(rspCode1)
 							.append(",serverResult_code:").append(rsp.getServerResult_code()).append("]").toString());
 					String str = StringUtil.getReportString(
@@ -867,14 +865,14 @@ public class MmsBusinessHandlerImpl {
 
 			case 1: // '\001'
 				if (rspCode1 == 0) {
-					logger.info((new StringBuilder("mmsmt on order vac auth(7) response success[gmsgid:"))
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmt on order vac auth(7) response success[gmsgid:"))
 							.append(gmsgid).append(",phone:").append(phone1).append(",result:").append(rspCode1)
 							.append("]").toString());
 					messageRouter.doRouter(mmsmt);
 					recycleMessage(gmsgid);
 					mmsReportDataMap.put(gmsgid, getMMHTttpSpMessageReport(mmsmt));
 				} else if (1 == rspCode1) {
-					logger.info((new StringBuilder("mmsmt on order vac auth(7) response failure[gmsgid:"))
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmt on order vac auth(7) response failure[gmsgid:"))
 							.append(gmsgid).append(",phone:").append(phone1).append(",result:").append(rspCode1)
 							.append("serverResult_code:").append(rsp.getServerResult_code()).append("]").toString());
 					String str = StringUtil.getReportString(
@@ -887,7 +885,7 @@ public class MmsBusinessHandlerImpl {
 					HttpRequestHelper.updateMmsGrsCode("4", messageid,(new StringBuilder(String.valueOf(rspCode1))).toString());
 					recycleMessage(gmsgid);
 				} else {
-					logger.info((new StringBuilder("mmsmt on order vac auth(7) response failure[gmsgid:"))
+					COREBIZ_LOG.INFO((new StringBuilder("mmsmt on order vac auth(7) response failure[gmsgid:"))
 							.append(gmsgid).append(",phone:").append(phone1).append(",result:").append(rspCode1)
 							.append("serverResult_code:").append(rsp.getServerResult_code()).append("]").toString());
 					String str = StringUtil.getReportString(
@@ -903,9 +901,9 @@ public class MmsBusinessHandlerImpl {
 				break;
 			}
 		} else {
-			logger.info((new StringBuilder("mms doCR(CheckResponse) class error")).append(msg.getClass().getName())
+			COREBIZ_LOG.INFO((new StringBuilder("mms doCR(CheckResponse) class error")).append(msg.getClass().getName())
 					.toString());
-			logger.error((new StringBuilder("mms doCR(CheckResponse) class error")).append(msg.getClass().getName())
+			COREBIZ_LOG.ERROR((new StringBuilder("mms doCR(CheckResponse) class error")).append(msg.getClass().getName())
 					.toString());
 		}
 	}
@@ -914,24 +912,24 @@ public class MmsBusinessHandlerImpl {
 		try {
 			this.dataMap.remove(msgid);
 
-			logger.info("recycleMessage msgid : " + msgid);
+			COREBIZ_LOG.INFO("recycleMessage msgid : " + msgid);
 		} catch (Exception ex) {
-			logger.error("recycleMessage msgid : " + msgid + "\t" + ex.getMessage());
+			COREBIZ_LOG.ERROR("recycleMessage msgid : " + msgid + "\t" + ex.getMessage());
 		}
 	}
 
 	public void removeReportMessage(String msgid) {
 		try {
 			this.mmsReportDataMap.remove(msgid);
-			logger.info("removeReportMessage msgid : " + msgid);
+			COREBIZ_LOG.INFO("removeReportMessage msgid : " + msgid);
 		} catch (Exception ex) {
-			logger.error("removeReportMessage msgid : " + msgid + "\t" + ex.getMessage());
+			COREBIZ_LOG.ERROR("removeReportMessage msgid : " + msgid + "\t" + ex.getMessage());
 		}
 	}
 
 	void sendSmsMessage(MT_SMMessage sms) {
 		try {
-			logger.info("mmsmo short message service[gmsgid:" + sms.getGlobalMessageid() + ",phone:"
+			COREBIZ_LOG.INFO("mmsmo short message service[gmsgid:" + sms.getGlobalMessageid() + ",phone:"
 					+ sms.getRcvAddresses()[0] + ",text:" + sms.getSmsText() + "]");
 
 			this.messageRouter.doRouter(sms);
@@ -952,10 +950,10 @@ public class MmsBusinessHandlerImpl {
 			//TODO 保存MO MMS 消息
 //			this.daoUtil.getLogDao().saveMoMMSMsg(msg, sendto, Integer.valueOf(isCorrect));
 
-			logger.info("mmsmo save mo history success[gmsgid:" + mmsmo.getGlobalMessageid() + ",phone:"
+			COREBIZ_LOG.INFO("mmsmo save mo history success[gmsgid:" + mmsmo.getGlobalMessageid() + ",phone:"
 					+ mmsmo.getSender() + ",exectime:" + (System.currentTimeMillis() - btime) + "]");
 		} catch (Exception ex) {
-			logger.error("mmsmo save mo history exception", ex);
+			COREBIZ_LOG.ERROR("mmsmo save mo history exception", ex);
 		}
 	}
 

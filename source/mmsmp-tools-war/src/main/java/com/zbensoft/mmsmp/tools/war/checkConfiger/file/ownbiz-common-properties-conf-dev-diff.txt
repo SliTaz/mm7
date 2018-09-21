@@ -1,0 +1,1 @@
+mmsmp.api.url=http://127.0.0.1:8080 <--> mmsmp.api.url=http://192.168.10.10:9093/api

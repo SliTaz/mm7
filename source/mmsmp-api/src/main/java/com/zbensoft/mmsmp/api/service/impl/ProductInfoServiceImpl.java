@@ -84,5 +84,20 @@ public class ProductInfoServiceImpl implements ProductInfoService{
 		return productInfoMapper.getAllVasServiceRelation();
 	}
 
+	@Override
+	public List<ProductInfo> getSpProductIdsForSPsimulator(ProductInfo record) {
+		// TODO Auto-generated method stub
+		return productInfoMapper.getSpProductIdsForSPsimulator(record);
+	}
 
+	@Override
+	public ProductInfo getVasSpCpInfoByOrder(ProductInfo record) {
+		// TODO Auto-generated method stub
+		return productInfoMapper.getVasSpCpInfoByOrder(record);
+	}
+
+	@Override
+	public void deleteProductByProductId(String productId) {
+		 productInfoMapper.deleteProductByProductId(productId);
+	}
 }

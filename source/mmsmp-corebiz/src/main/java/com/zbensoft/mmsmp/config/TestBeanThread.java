@@ -13,14 +13,19 @@ public class TestBeanThread extends Thread {
 	
 	@Override
 	public void run() {
-		try {
 			
 			while (true) {
-				DataCache dataCache = SpringBeanUtil.getBean(DataCache.class);
-//				dataCache.init();
-				dataCache.refreshSysParmas();
-				dataCache.refreshProductInfo();
-				Thread.sleep(30000);
+				try {
+					DataCache dataCache = SpringBeanUtil.getBean(DataCache.class);
+//					dataCache.init();
+					dataCache.refreshSysParmas();
+					dataCache.refreshProductInfo();
+				} catch (Exception e1) {
+				}
+				
+				try {
+					Thread.sleep(30000);
+				} catch (Exception e) {}
 //				IMessageRouter messageRouter = SpringBeanUtil.getBean(BusinessRouter.class);
 //				SmsBusinessHandlerImpl smsBusinessHandlerImpl = SpringBeanUtil.getBean(SmsBusinessHandlerImpl.class);
 //				System.out.println("Send Test info to VAC");
@@ -35,9 +40,7 @@ public class TestBeanThread extends Thread {
 //				messageRouter.doRouter(dianborequest);
 				
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 		
 	}
 

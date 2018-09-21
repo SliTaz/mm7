@@ -1,7 +1,9 @@
  package com.zbensoft.mmsmp.corebiz.service.mina;
  
  import com.zbensoft.mmsmp.corebiz.route.IMessageRouter;
- import java.io.Serializable;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
+import java.io.Serializable;
  import org.apache.log4j.Logger;
  import org.apache.mina.core.service.IoHandlerAdapter;
  import org.apache.mina.core.session.IdleStatus;
@@ -53,7 +55,7 @@
    public void exceptionCaught(IoSession session, Throwable cause)
      throws Exception
    {
-     logger.error("Unexpected exception:", cause);
+     COREBIZ_LOG.ERROR("Unexpected exception:", cause);
      session.close(true);
    }
    

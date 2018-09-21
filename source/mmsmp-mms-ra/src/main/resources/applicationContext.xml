@@ -39,7 +39,7 @@
 	</bean>
 	
 	<bean id="minaClientProxy" class="com.zbensoft.mmsmp.mms.ra.mmsagent.MinaClientProxy">
-		<property name="host" value="192.168.1.116"/>
+		<property name="host" value="127.0.0.1"/>
 		<property name="port" value="19011"/>
 	</bean>
 	

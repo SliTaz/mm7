@@ -277,4 +277,9 @@
         and report_message_url = #{reportMessageUrl,jdbcType=VARCHAR}
      </if>
   </select>
+
+    <select id="getMaxServiceAccessNumber" parameterType="java.lang.String" resultType="int">
+        select max(sp_access_number) from sp_access where sp_info_id = #{spInfoId,jdbcType=VARCHAR}
+    </select>
 </mapper>
+

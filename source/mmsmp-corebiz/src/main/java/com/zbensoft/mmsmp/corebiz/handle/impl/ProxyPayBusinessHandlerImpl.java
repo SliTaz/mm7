@@ -2,6 +2,8 @@ package com.zbensoft.mmsmp.corebiz.handle.impl;
 
 import com.zbensoft.mmsmp.common.ra.common.message.*;
 import com.zbensoft.mmsmp.corebiz.route.IMessageRouter;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
 import org.apache.log4j.Logger;
 
 public class ProxyPayBusinessHandlerImpl {
@@ -11,37 +13,37 @@ public class ProxyPayBusinessHandlerImpl {
 
 	public void doHandler(AbstractMessage message) {
 		if ((message instanceof ProxyPayMessage)) {
-			logger.info("ownservice ---> corebiz");
+			COREBIZ_LOG.INFO("ownservice ---> corebiz");
 
 			ProxyPayMessage ppy = (ProxyPayMessage) message;
 
 			int status = Integer.parseInt(ppy.getFeeType());
 
 			if (9 == status) {
-				logger.info("doHandler validate sms message proxy Instead of sending[feetype:" + status + "gmsgid:"
+				COREBIZ_LOG.INFO("doHandler validate sms message proxy Instead of sending[feetype:" + status + "gmsgid:"
 						+ ppy.getGlobalMessageid() + " phoneNumber:" + ppy.getPhoneNumber() + "]");
 				sendMTMsgToQuence(ppy.getSmsText(), ppy.getPhoneNumber());
 
 			} else if (1 == status) {
-				logger.info("doHandler proxypaymessage vac auth(1) checkrequest[gmsgid:" + ppy.getGlobalMessageid()
+				COREBIZ_LOG.INFO("doHandler proxypaymessage vac auth(1) checkrequest[gmsgid:" + ppy.getGlobalMessageid()
 						+ ",phone:" + ppy.getPhoneNumber() + "]");
 				doPPM(ppy);
 			} else if (2 == status) {
-				logger.info("doHandler proxypaymessage vac auth(2) checkrequest[gmsgid:" + ppy.getGlobalMessageid()
+				COREBIZ_LOG.INFO("doHandler proxypaymessage vac auth(2) checkrequest[gmsgid:" + ppy.getGlobalMessageid()
 						+ ",phone:" + ppy.getPhoneNumber() + "]");
 				doPPM(ppy);
 			} else if (4 == status) {
-				logger.info("doHandler proxypaymessage vac auth(4) checkrequest[gmsgid:" + ppy.getGlobalMessageid()
+				COREBIZ_LOG.INFO("doHandler proxypaymessage vac auth(4) checkrequest[gmsgid:" + ppy.getGlobalMessageid()
 						+ ",phone:" + ppy.getPhoneNumber() + "]");
 				doPPM(ppy);
 			} else {
-				logger.info("doHandler proxypaymessage feetype is error,checkrequest failed[gmsgid:"
+				COREBIZ_LOG.INFO("doHandler proxypaymessage feetype is error,checkrequest failed[gmsgid:"
 						+ ppy.getGlobalMessageid() + ",phone:" + ppy.getPhoneNumber() + "]");
 			}
 
 		} else if ((message instanceof CheckResponse)) {
 			CheckResponse response = (CheckResponse) message;
-			logger.info("=====> proxypay receive CheckResponse from vacAgent !  code:" + response.getResult_Code());
+			COREBIZ_LOG.INFO("=====> proxypay receive CheckResponse from vacAgent !  code:" + response.getResult_Code());
 			doCR(response);
 		}
 	}
@@ -63,19 +65,19 @@ public class ProxyPayBusinessHandlerImpl {
 		ppy.setSmsText(response.getReturnMessage());
 
 		if ("1".equals(request.getServiceType())) {
-			logger.info("proxypaymessage vac auth(" + request.getServiceType() + ") repsonse[gmsgid:"
+			COREBIZ_LOG.INFO("proxypaymessage vac auth(" + request.getServiceType() + ") repsonse[gmsgid:"
 					+ response.getCRequest().getGlobalMessageid() + ",phone:" + response.getCRequest().getUser_number()
 					+ ",code:" + rspCode + "]");
 			this.messageRouter.doRouter(ppy);
 
 		} else if ("2".equals(request.getServiceType())) {
-			logger.info("proxypaymessage vac auth(" + request.getServiceType() + ") repsonse[gmsgid:"
+			COREBIZ_LOG.INFO("proxypaymessage vac auth(" + request.getServiceType() + ") repsonse[gmsgid:"
 					+ response.getCRequest().getGlobalMessageid() + ",phone:" + response.getCRequest().getUser_number()
 					+ ",code:" + rspCode + "]");
 			this.messageRouter.doRouter(ppy);
 
 		} else if ("4".equals(request.getServiceType())) {
-			logger.info("vac -->corebize checkresponse  return_code :" + response.getResult_Code() + " service type:"
+			COREBIZ_LOG.INFO("vac -->corebize checkresponse  return_code :" + response.getResult_Code() + " service type:"
 					+ request.getServiceType());
 
 			String gmsgid = request.getGlobalMessageid();
@@ -83,7 +85,7 @@ public class ProxyPayBusinessHandlerImpl {
 			String linkid = response.getLinkID();
 
 			if ((rspCode == null) || (rspCode.trim().equals("")) || (rspCode.toLowerCase().equals("null"))) {
-				logger.info("proxypaymessage vac auth(4) response failure[gmsgid:" + gmsgid + ",phone:" + phone
+				COREBIZ_LOG.INFO("proxypaymessage vac auth(4) response failure[gmsgid:" + gmsgid + ",phone:" + phone
 						+ ",desc:code is null]");
 
 				ppy.setSmsText("系统响应超时，请稍后再试");
@@ -92,7 +94,7 @@ public class ProxyPayBusinessHandlerImpl {
 			}
 
 			if (!rspCode.equals("0")) {
-				logger.info("proxypaymessage vac auth(4) response failure[gmsgid:" + gmsgid + ",phone:" + phone
+				COREBIZ_LOG.INFO("proxypaymessage vac auth(4) response failure[gmsgid:" + gmsgid + ",phone:" + phone
 						+ ",rspcode:" + rspCode + "]");
 				ppy.setSmsText("系统响应超时，请稍后再试");
 				this.messageRouter.doRouter(ppy);
@@ -100,7 +102,7 @@ public class ProxyPayBusinessHandlerImpl {
 			}
 
 			if ((linkid == null) || (linkid.length() <= 0) || ("NULL".equalsIgnoreCase(linkid.toUpperCase()))) {
-				logger.info("proxypaymessage vac auth(4) response failure[gmsgid:" + gmsgid + ",phone:" + phone
+				COREBIZ_LOG.INFO("proxypaymessage vac auth(4) response failure[gmsgid:" + gmsgid + ",phone:" + phone
 						+ ",desc:linkid is null]");
 				ppy.setSmsText("系统响应超时，请稍后再试");
 				this.messageRouter.doRouter(ppy);
@@ -108,7 +110,7 @@ public class ProxyPayBusinessHandlerImpl {
 			}
 			ppy.setFeeType("5");
 
-			logger.info("proxypaymessage vac auth(5) checkrequest[gmsgid:" + response.getCRequest().getGlobalMessageid()
+			COREBIZ_LOG.INFO("proxypaymessage vac auth(5) checkrequest[gmsgid:" + response.getCRequest().getGlobalMessageid()
 					+ ",phone:" + response.getCRequest().getUser_number() + ",code:" + rspCode + ",linkid:"
 					+ response.getLinkID() + "]");
 
@@ -123,7 +125,7 @@ public class ProxyPayBusinessHandlerImpl {
 			this.messageRouter.doRouter(checkRequest);
 
 		} else if ("5".equals(request.getServiceType())) {
-			logger.info("proxypaymessage vac auth(5) repsonse[gmsgid:" + response.getCRequest().getGlobalMessageid()
+			COREBIZ_LOG.INFO("proxypaymessage vac auth(5) repsonse[gmsgid:" + response.getCRequest().getGlobalMessageid()
 					+ ",phone:" + response.getCRequest().getUser_number() + ",code:" + rspCode + ",linkid:"
 					+ response.getLinkID() + "]");
 
@@ -141,10 +143,10 @@ public class ProxyPayBusinessHandlerImpl {
 			this.messageRouter.doRouter(ppy);
 
 		} else if ("6".equals(request.getServiceType())) {
-			logger.info("proxypaymessage vac auth(6) repsonse[gmsgid:" + response.getCRequest().getGlobalMessageid()
+			COREBIZ_LOG.INFO("proxypaymessage vac auth(6) repsonse[gmsgid:" + response.getCRequest().getGlobalMessageid()
 					+ ",phone:" + response.getCRequest().getUser_number() + ",code:" + rspCode + "]");
 		} else {
-			logger.info("proxypaymessage vac auth(" + response.getCRequest().getServiceType()
+			COREBIZ_LOG.INFO("proxypaymessage vac auth(" + response.getCRequest().getServiceType()
 					+ ") repsonse type error[gmsgid:" + response.getCRequest().getGlobalMessageid() + "]");
 		}
 	}

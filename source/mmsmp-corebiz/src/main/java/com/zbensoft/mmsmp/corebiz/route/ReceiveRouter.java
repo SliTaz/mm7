@@ -3,6 +3,8 @@ package com.zbensoft.mmsmp.corebiz.route;
 import com.zbensoft.mmsmp.common.ra.common.message.AbstractMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.CheckRequest;
 import com.zbensoft.mmsmp.common.ra.common.message.CheckResponse;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,7 +39,7 @@ public class ReceiveRouter implements IMessageRouter {
 			if ((message instanceof AbstractMessage)) {
 				msg = (AbstractMessage) message;
 
-				logger.info("corebiz<- " + getClientName(msg.getClass().getName()) + " one message normal[gmsgid:"
+				COREBIZ_LOG.INFO("corebiz<- " + getClientName(msg.getClass().getName()) + " one message normal[gmsgid:"
 						+ msg.getGlobalMessageid() + ",classType:" + msg.getClass().getSimpleName() + "]");
 
 				long time = System.currentTimeMillis();
@@ -60,10 +62,10 @@ public class ReceiveRouter implements IMessageRouter {
 				}
 			} else if (!(message instanceof String)) {
 
-				logger.info("corebiz<- client one other type message[classType:" + message.getClass().getName() + "]");
+				COREBIZ_LOG.INFO("corebiz<- client one other type message[classType:" + message.getClass().getName() + "]");
 			}
 		} catch (Exception ex) {
-			logger.error("corebiz receive message", ex);
+			COREBIZ_LOG.ERROR("corebiz receive message", ex);
 		}
 	}
 
@@ -105,10 +107,10 @@ public class ReceiveRouter implements IMessageRouter {
 
 						for (int i = 0; i < qList.size(); i++) {
 							BlockingQueue tq = (BlockingQueue) qList.get(i);
-							ReceiveRouter.logger.error(i + " queue size:" + tq.size());
+							COREBIZ_LOG.ERROR(i + " queue size:" + tq.size());
 							ArrayList<String> tc = (ArrayList) sbList.get(i);
 							for (String c : tc) {
-								ReceiveRouter.logger.error("    " + c + " SUM:"
+								COREBIZ_LOG.ERROR("    " + c + " SUM:"
 										+ ((ReceiveRouter.Counter) ReceiveRouter.this.countMap.get(c)).getNumber());
 							}
 						}

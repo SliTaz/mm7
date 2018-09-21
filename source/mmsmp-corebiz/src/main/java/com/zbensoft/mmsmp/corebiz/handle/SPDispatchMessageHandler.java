@@ -6,6 +6,8 @@ import com.zbensoft.mmsmp.common.ra.common.message.MO_SMMessage;
 import com.zbensoft.mmsmp.common.ra.common.message.OrderRelationUpdateNotifyRequest;
 import com.zbensoft.mmsmp.corebiz.cache.DataCache;
 import com.zbensoft.mmsmp.corebiz.service.mina.MinaClientProxy;
+import com.zbensoft.mmsmp.log.COREBIZ_LOG;
+
 import org.apache.log4j.Logger;
 
 public class SPDispatchMessageHandler extends DispatchMessageHandler implements IMessageHandler {
@@ -23,7 +25,7 @@ public class SPDispatchMessageHandler extends DispatchMessageHandler implements 
 
 			MO_ReportMessage report = (MO_ReportMessage) msg;
 			if ((report.getReportUrl() != null) && (this.dataCache.getOwnSpReportUrl(report.getReportUrl()) != null)) {
-				logger.info(
+				COREBIZ_LOG.INFO(
 						"send one owner mmsmt report notify message[globalMessageid:" + msg.getGlobalMessageid() + "]");
 				this.ownerClientProxy.send(msg);
 			} else {
@@ -33,7 +35,7 @@ public class SPDispatchMessageHandler extends DispatchMessageHandler implements 
 		} else if ((msg instanceof OrderRelationUpdateNotifyRequest)) {
 			OrderRelationUpdateNotifyRequest order = (OrderRelationUpdateNotifyRequest) msg;
 			if ((order.getSpId() != null) && (this.dataCache.getOwnSpInfoBySpId(order.getSpId()) != null)) {
-				logger.info("send one owner order relation notify message[globalMessageid:" + msg.getGlobalMessageid()
+				COREBIZ_LOG.INFO("send one owner order relation notify message[globalMessageid:" + msg.getGlobalMessageid()
 						+ "]");
 
 				this.ownerClientProxy.send(msg);
@@ -44,7 +46,7 @@ public class SPDispatchMessageHandler extends DispatchMessageHandler implements 
 		} else if ((msg instanceof MO_SMMessage)) {
 			MO_SMMessage mosms = (MO_SMMessage) msg;
 			if (this.dataCache.getOwnSpInfoBySpId(mosms.getVaspId()) != null) {
-				logger.info("send one owner MO_SMMessage message[globalMessageid:" + msg.getGlobalMessageid() + "]");
+				COREBIZ_LOG.INFO("send one owner MO_SMMessage message[globalMessageid:" + msg.getGlobalMessageid() + "]");
 
 				this.ownerClientProxy.send(msg);
 			} else {
